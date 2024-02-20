@@ -31,7 +31,7 @@ function buildHeroBlock(main) {
 }
 
 /**
- * load fonts.css and set a session storage flag
+ * load fonts.css and set a session storage flag test comment 
  */
 async function loadFonts() {
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
