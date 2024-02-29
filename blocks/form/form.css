@@ -129,6 +129,11 @@ main .form select {
     border-radius: 0.25rem;
 }
 
+main .form select {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 main .form input[type='file'] {
     border: none;
     padding-inline-start:0;
@@ -263,17 +268,22 @@ main .form form .item-remove {
     padding-left: 10px;
 }
 
+main .form .file-description .file-description-name {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 main .form form .item-remove span {
     display: block;
     width: 20px;
     height: 20px;
-    background: url('/icons/delete.svg') no-repeat;
+    background: url('./icons/delete.svg') no-repeat;
 }
 
 main .form-file-wrapper .file-description button {
     --form-button-padding: 15px;
 
-    background: url('/icons/delete.svg') no-repeat;
+    background: url('./icons/delete.svg') no-repeat;
     width: unset;
     border: unset;
     text-align: center;
@@ -486,4 +496,15 @@ main .form .form-message.error-message {
     background-color: #f8d7da;
     border-color: #f5c2c7;
     flex: 100%;
+}
+
+main .form .form-file-wrapper .form-file-drag-area {
+  border: 1px dashed var(--border-color);
+  border-radius: 5px;
+  padding: 10px 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 }

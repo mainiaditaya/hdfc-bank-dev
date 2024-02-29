@@ -18,7 +18,7 @@
 * the terms of the Adobe license agreement accompanying it.
 *************************************************************************/
 
-import { propertyChange, ExecuteRule, Initialize, RemoveItem, FormLoad, FieldChanged, ValidationComplete, Change, Valid, Invalid, SubmitSuccess, CustomEvent, SubmitFailure, Submit, RemoveInstance, AddInstance, Reset, AddItem, Click } from './afb-events.js';
+import { propertyChange, ExecuteRule, Initialize, RemoveItem, FormLoad, FieldChanged, ValidationComplete, Change, Valid, Invalid, SubmitSuccess, CustomEvent, SubmitError, SubmitFailure, Submit, RemoveInstance, AddInstance, Reset, AddItem, Click } from './afb-events.js';
 import Formula from '../formula/index.js';
 import { format, parseDefaultDate, datetimeToNumber, parseDateSkeleton, formatDate, numberToDatetime } from './afb-formatters.min.js';
 
@@ -828,7 +828,11 @@ class BaseNode {
             index: this.index,
             parent: undefined,
             qualifiedName: this.qualifiedName,
-            repeatable: this.repeatable === true ? true : undefined,
+            ...(this.repeatable === true ? {
+                repeatable: true,
+                minOccur: this.parent.minItems,
+                maxOccur: this.parent.maxItems
+            } : {}),
             ':type': this[':type'],
             ...(forRestore ? {
                 _dependents: this._dependents.length ? this._dependents.map(x => x.node.id) : undefined,
@@ -2203,7 +2207,8 @@ const request = async (context, uri, httpVerb, payload, success, error, headers)
     else {
         context.form.logger.error('Error invoking a rest API');
         const eName = getCustomEventName(error);
-        if (error === 'submitFailure') {
+        if (error === 'submitError') {
+            context.form.dispatch(new SubmitError(result, true));
             context.form.dispatch(new SubmitFailure(result, true));
         }
         else {
@@ -2775,7 +2780,7 @@ class Form extends Container {
         if (!validate_form || this.validate().length === 0) {
             const payload = action?.payload || {};
             const successEventName = payload?.success ? payload?.success : 'submitSuccess';
-            const failureEventName = payload?.error ? payload?.error : 'submitFailure';
+            const failureEventName = payload?.error ? payload?.error : 'submitError';
             submit(context, successEventName, failureEventName, payload?.submit_as, payload?.data);
         }
     }
@@ -4244,9 +4249,13 @@ const createFormInstance = (formModel, callback, logLevel = 'error', fModel = un
 const defaultOptions = {
     logLevel: 'error'
 };
-const restoreFormInstance = (formModel, { logLevel } = defaultOptions) => {
+const restoreFormInstance = (formModel, data = null, { logLevel } = defaultOptions) => {
     try {
         const form = new Form({ ...formModel }, FormFieldFactory, new RuleEngine(), new EventQueue(new Logger(logLevel)), logLevel, 'restore');
+        if (data) {
+            form._bindToDataModel(new DataGroup('$form', data));
+            form.syncDataAndFormModel(form.getDataNode());
+        }
         form.getEventQueue().empty();
         return form;
     }

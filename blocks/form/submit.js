@@ -107,7 +107,7 @@ export async function handleSubmit(e, form) {
       // hide error message in case it was shown before
       form.querySelectorAll('.form-message.show').forEach((el) => el.classList.remove('show'));
 
-      if (form.dataset.src === 'sheet') {
+      if (form.dataset.source === 'sheet') {
         await submitDocBasedForm(form);
       }
     }

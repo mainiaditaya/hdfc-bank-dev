@@ -87,11 +87,14 @@ export function createButton(fd) {
     wrapper.classList.add(`form-${fd?.buttonType}-wrapper`);
   }
   const button = document.createElement('button');
-  button.textContent = fd?.label?.value || '';
+  button.textContent = fd?.label?.visible === false ? '' : fd?.label?.value;
   button.type = fd.buttonType || 'button';
   button.classList.add('button');
   button.id = fd.id;
   button.name = fd.name;
+  if (fd?.label?.visible === false) {
+    button.setAttribute('aria-label', fd?.label?.value || '');
+  }
   if (fd.enabled === false) {
     button.disabled = true;
     button.setAttribute('disabled', '');
