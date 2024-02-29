@@ -10,6 +10,7 @@ import componentDecorater from './mappings.js';
 import DocBasedFormToAF from './transform.js';
 import transferRepeatableDOM from './components/repeat.js';
 import { handleSubmit } from './submit.js';
+import { submitBaseUrl } from './constant.js';
 
 export const DELAY_MS = 0;
 let captchaField;
@@ -22,8 +23,8 @@ const withFieldWrapper = (element) => (fd) => {
 };
 
 function setPlaceholder(element, fd) {
-  if (fd.placeHolder) {
-    element.setAttribute('placeholder', fd.placeHolder);
+  if (fd.placeholder) {
+    element.setAttribute('placeholder', fd.placeholder);
   }
 }
 
@@ -124,9 +125,10 @@ function createFieldSet(fd) {
   if (fd.fieldType === 'panel') {
     wrapper.classList.add('form-panel-wrapper');
   }
-  if (fd.repeatable === 'true') {
+  if (fd.repeatable === 'true' || fd.repeatable === true) {
     setConstraints(wrapper, fd);
     wrapper.dataset.repeatable = true;
+    wrapper.dataset.index = fd.index || 0;
   }
   return wrapper;
 }
@@ -141,7 +143,7 @@ function createRadioOrCheckboxGroup(fd) {
   const wrapper = createFieldSet({ ...fd });
   const type = fd.fieldType.split('-')[0];
   fd.enum.forEach((value, index) => {
-    const label = typeof fd.enumNames[index] === 'object' ? fd.enumNames[index].value : fd.enumNames[index];
+    const label = typeof fd.enumNames?.[index] === 'object' ? fd.enumNames[index].value : fd.enumNames?.[index] || value;
     const id = getId(fd.name);
     const field = createRadioOrCheckbox({
       name: fd.name,
@@ -160,9 +162,15 @@ function createRadioOrCheckboxGroup(fd) {
     if ((index === 0 && type === 'radio') || type === 'checkbox') {
       input.required = fd.required;
     }
+    if (fd.enabled === false || fd.readOnly === true) {
+      input.setAttribute('disabled', 'disabled');
+    }
     wrapper.appendChild(field);
   });
   wrapper.dataset.required = fd.required;
+  if (fd.tooltip) {
+    wrapper.title = stripTags(fd.tooltip, '');
+  }
   setConstraintsMessage(wrapper, fd.constraintMessages);
   return wrapper;
 }
@@ -223,10 +231,15 @@ function inputDecorator(field, element) {
   if (input) {
     input.id = field.id;
     input.name = field.name;
-    input.tooltip = field.tooltip;
+    if (field.tooltip) {
+      input.title = stripTags(field.tooltip, '');
+    }
     input.readOnly = field.readOnly;
     input.autocomplete = field.autoComplete ?? 'off';
     input.disabled = field.enabled === false;
+    if (field.fieldType === 'drop-down' && field.readOnly) {
+      input.disabled = true;
+    }
     const fieldType = getHTMLRenderType(field);
     if (['number', 'date'].includes(fieldType) && field.displayFormat !== undefined) {
       field.type = fieldType;
@@ -301,7 +314,7 @@ export async function generateFormRendition(panel, container) {
         return element;
       }
       if (typeof decorator === 'function') {
-        return decorator(element, field);
+        return decorator(element, field, container);
       }
       return element;
     }
@@ -367,6 +380,11 @@ function isDocumentBasedForm(formDef) {
   return formDef?.[':type'] === 'sheet' && formDef?.data;
 }
 
+function cleanUp(content) {
+  const formDef = content.replaceAll('^(([^<>()\\\\[\\\\]\\\\\\\\.,;:\\\\s@\\"]+(\\\\.[^<>()\\\\[\\\\]\\\\\\\\.,;:\\\\s@\\"]+)*)|(\\".+\\"))@((\\\\[[0-9]{1,3}\\\\.[0-9]{1,3}\\\\.[0-9]{1,3}\\\\.[0-9]{1,3}])|(([a-zA-Z\\\\-0-9]+\\\\.)\\+[a-zA-Z]{2,}))$', '');
+  return formDef?.replace(/\x83\n|\n|\s\s+/g, '');
+}
+
 export default async function decorate(block) {
   let container = block.querySelector('a[href$=".json"]');
   let formDef;
@@ -379,24 +397,31 @@ export default async function decorate(block) {
     const codeEl = container?.querySelector('code');
     const content = codeEl?.textContent;
     if (content) {
-      formDef = JSON.parse(content?.replace(/\x83\n|\n|\s\s+/g, ''));
+      formDef = JSON.parse(cleanUp(content));
     }
   }
+  let { rules, source } = { rules: true, source: 'aem' };
+  let form;
   if (formDef) {
     if (isDocumentBasedForm(formDef)) {
-      const { data } = formDef;
+      rules = false;
       const transform = new DocBasedFormToAF();
-      const afFormDef = transform.transform(formDef);
-      const form = await createForm(afFormDef, data);
-      form.dataset.action = pathname?.split('.json')[0];
-      form.dataset.src = 'sheet';
-      container.replaceWith(form);
-    } else {
+      formDef = transform.transform(formDef);
+      source = 'sheet';
+    }
+
+    formDef.action = submitBaseUrl + (formDef.action || '');
+    if (rules) {
       afModule = await import('./rules/index.js');
       if (afModule && afModule.initAdaptiveForm) {
-        const form = await afModule.initAdaptiveForm(formDef, createForm);
-        container.replaceWith(form);
+        form = await afModule.initAdaptiveForm(formDef, createForm);
       }
+    } else {
+      form = await createForm(formDef);
     }
+    form.dataset.action = formDef.action || pathname?.split('.json')[0];
+    form.dataset.source = source;
+    form.dataset.rules = rules;
+    container.replaceWith(form);
   }
 }

@@ -130,7 +130,7 @@ async function fieldChanged(payload, form, generateFormRendition) {
         }
         break;
       case 'items':
-        generateFormRendition({ items: [currentValue] }, field);
+        generateFormRendition({ items: [currentValue] }, field?.querySelector('.form-repeat-wrapper'));
         break;
       default:
         break;
@@ -155,19 +155,21 @@ function applyRuleEngine(htmlForm, form, captcha) {
     const {
       id, value, name, checked,
     } = field;
-    if ((field.type === 'checkbox' && field.dataset.fieldType === 'checkbox-group')
-      || (field.type === 'radio' && field.dataset.fieldType === 'radio-group')) {
+    if ((field.type === 'checkbox' && field.dataset.fieldType === 'checkbox-group')) {
       const val = getCheckboxGroupValue(name, htmlForm);
       const el = form.getElement(name);
       el.value = val;
+    } else if ((field.type === 'radio' && field.dataset.fieldType === 'radio-group')) {
+      const el = form.getElement(name);
+      el.value = value;
     } else if (field.type === 'checkbox') {
       form.getElement(id).value = checked ? value : field.dataset.uncheckedValue;
     } else if (field.type === 'file') {
-      form.getElement(id).value = Array.from(field.files);
+      form.getElement(id).value = Array.from(e?.detail?.files || field.files);
     } else {
       form.getElement(id).value = value;
     }
-    console.log(JSON.stringify(form.exportData(), null, 2));
+    // console.log(JSON.stringify(form.exportData(), null, 2));
   });
 
   htmlForm.addEventListener('click', async (e) => {
@@ -186,11 +188,7 @@ function applyRuleEngine(htmlForm, form, captcha) {
 
 export async function loadRuleEngine(formDef, htmlForm, captcha, genFormRendition, data) {
   const ruleEngine = await import('./model/afb-runtime.js');
-  const form = ruleEngine.restoreFormInstance(formDef);
-  if (data && Object.keys(data).length > 0) {
-    form.importData(data);
-  }
-
+  const form = ruleEngine.restoreFormInstance(formDef, data);
   window.myForm = form;
 
   form.subscribe((e) => {
