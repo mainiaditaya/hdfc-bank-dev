@@ -14,6 +14,7 @@ function getFullName(firstname, lastname) {
 }
 /**
  * On Wizard Init.
+ * @name onWizardInit Runs on initialization of wizard
  */
 function onWizardInit() {}
 
