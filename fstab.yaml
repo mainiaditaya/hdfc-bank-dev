@@ -2,4 +2,4 @@ mountpoints:
   /:
     url: https://author-p10652-e203356-cmstg.adobeaemcloud.com/
     type: "markup"
-    suffix: ".md.html"
+    suffix: ".md.html?wcmmode=disabled"
