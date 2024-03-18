@@ -28,9 +28,15 @@ function toClassName(name) {
     : '';
 }
 
+const clear = Symbol('clear');
+
 export const getId = (function getId() {
-  const ids = {};
+  let ids = {};
   return (name) => {
+    if (name === clear) {
+      ids = {};
+      return '';
+    }
     const slug = toClassName(name);
     ids[slug] = ids[slug] || 0;
     const idSuffix = ids[slug] ? `-${ids[slug]}` : '';
@@ -38,6 +44,14 @@ export const getId = (function getId() {
     return `${slug}${idSuffix}`;
   };
 }());
+
+/**
+ * Resets the ids for the getId function
+ * @returns {void}
+ */
+export function resetIds() {
+  getId(clear);
+}
 
 export function createLabel(fd, tagName = 'label') {
   if (fd.label && fd.label.value) {
@@ -66,9 +80,9 @@ export function getHTMLRenderType(fd) {
 
 export function createFieldWrapper(fd, tagName = 'div', labelFn = createLabel) {
   const fieldWrapper = document.createElement(tagName);
-  const nameStyle = fd.name ? ` form-${toClassName(fd.name)}` : '';
+  const nameStyle = fd.name ? ` field-${toClassName(fd.name)}` : '';
   const renderType = getHTMLRenderType(fd);
-  const fieldId = `form-${renderType}-wrapper${nameStyle}`;
+  const fieldId = `${renderType}-wrapper${nameStyle}`;
   fieldWrapper.className = fieldId;
   if (fd.visible === false) {
     fieldWrapper.dataset.visible = fd.visible;
@@ -84,7 +98,7 @@ export function createFieldWrapper(fd, tagName = 'div', labelFn = createLabel) {
 export function createButton(fd) {
   const wrapper = createFieldWrapper(fd);
   if (fd.buttonType) {
-    wrapper.classList.add(`form-${fd?.buttonType}-wrapper`);
+    wrapper.classList.add(`${fd?.buttonType}-wrapper`);
   }
   const button = document.createElement('button');
   button.textContent = fd?.label?.visible === false ? '' : fd?.label?.value;
