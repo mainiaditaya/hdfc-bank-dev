@@ -10,7 +10,7 @@ import componentDecorater from './mappings.js';
 import DocBasedFormToAF from './transform.js';
 import transferRepeatableDOM from './components/repeat.js';
 import { handleSubmit } from './submit.js';
-import { submitBaseUrl } from './constant.js';
+import { getSubmitBaseUrl } from './constant.js';
 
 export const DELAY_MS = 0;
 let captchaField;
@@ -82,7 +82,7 @@ const createSelect = withFieldWrapper((fd) => {
 
   const addOption = (label, value) => {
     const option = document.createElement('option');
-    option.textContent = label?.trim();
+    option.textContent = label instanceof Object ? label?.value?.trim() : label?.trim();
     option.value = value?.trim() || label?.trim();
     if (fd.value === option.value || (Array.isArray(fd.value) && fd.value.includes(option.value))) {
       option.setAttribute('selected', '');
@@ -94,13 +94,42 @@ const createSelect = withFieldWrapper((fd) => {
 
   const options = fd?.enum || [];
   const optionNames = fd?.enumNames ?? options;
-  options.forEach((value, index) => addOption(optionNames?.[index], value));
+
+  if (options.length === 1
+    && options?.[0]?.startsWith('https://')) {
+    const optionsUrl = new URL(options?.[0]);
+    // using async to avoid rendering
+    if (optionsUrl.hostname.endsWith('hlx.page')
+    || optionsUrl.hostname.endsWith('hlx.live')) {
+      fetch(`${optionsUrl.pathname}${optionsUrl.search}`)
+        .then(async (response) => {
+          const json = await response.json();
+          const values = [];
+          json.data.forEach((opt) => {
+            addOption(opt.Option, opt.Value);
+            values.push(opt.Value || opt.Option);
+          });
+        });
+    }
+  } else {
+    options.forEach((value, index) => addOption(optionNames?.[index], value));
+  }
 
   if (ph && optionSelected === false) {
     ph.setAttribute('selected', '');
   }
   return select;
 });
+
+function createHeading(fd) {
+  const wrapper = createFieldWrapper(fd);
+  const heading = document.createElement('h2');
+  heading.textContent = fd.value || fd.label.value;
+  heading.id = fd.id;
+  wrapper.append(heading);
+
+  return wrapper;
+}
 
 function createRadioOrCheckbox(fd) {
   const wrapper = createFieldWrapper(fd);
@@ -123,9 +152,9 @@ function createFieldSet(fd) {
   wrapper.id = fd.id;
   wrapper.name = fd.name;
   if (fd.fieldType === 'panel') {
-    wrapper.classList.add('form-panel-wrapper');
+    wrapper.classList.add('panel-wrapper');
   }
-  if (fd.repeatable === 'true' || fd.repeatable === true) {
+  if (fd.repeatable === true) {
     setConstraints(wrapper, fd);
     wrapper.dataset.repeatable = true;
     wrapper.dataset.index = fd.index || 0;
@@ -153,7 +182,7 @@ function createRadioOrCheckboxGroup(fd) {
       enum: [value],
       required: fd.required,
     });
-    field.classList.remove('field-wrapper', `form-${fd.name}`);
+    field.classList.remove('field-wrapper', `field-${fd.name}`);
     const input = field.querySelector('input');
     input.id = id;
     input.dataset.fieldType = fd.fieldType;
@@ -188,6 +217,18 @@ function createPlainText(fd) {
   return wrapper;
 }
 
+function createImage(fd) {
+  const field = createFieldWrapper(fd);
+  const image = `
+  <picture>
+    <source srcset="${fd.source}?width=2000&optimize=medium" media="(min-width: 600px)">
+    <source srcset="${fd.source}?width=750&optimize=medium">
+    <img alt="${fd.altText || fd.name}" src="${fd.source}?width=750&optimize=medium">
+  </picture>`;
+  field.innerHTML = image;
+  return field;
+}
+
 const fieldRenderers = {
   'drop-down': createSelect,
   'plain-text': createPlainText,
@@ -198,6 +239,8 @@ const fieldRenderers = {
   radio: createRadioOrCheckbox,
   'radio-group': createRadioOrCheckboxGroup,
   'checkbox-group': createRadioOrCheckboxGroup,
+  image: createImage,
+  heading: createHeading,
 };
 
 async function fetchForm(pathname) {
@@ -241,7 +284,7 @@ function inputDecorator(field, element) {
       input.disabled = true;
     }
     const fieldType = getHTMLRenderType(field);
-    if (['number', 'date'].includes(fieldType) && field.displayFormat !== undefined) {
+    if (['number', 'date'].includes(fieldType) && (field.displayFormat || field.displayValueExpression)) {
       field.type = fieldType;
       input.setAttribute('edit-value', field.value ?? '');
       input.setAttribute('display-value', field.displayValue ?? '');
@@ -307,6 +350,9 @@ export async function generateFormRendition(panel, container) {
       captchaField = field;
     } else {
       const element = renderField(field);
+      if (field.appliedCssClassNames) {
+        element.className += ` ${field.appliedCssClassNames}`;
+      }
       colSpanDecorator(field, element);
       const decorator = await componentDecorater(field);
       if (field?.fieldType === 'panel') {
@@ -351,11 +397,14 @@ export async function createForm(formDef, data) {
   const form = document.createElement('form');
   form.dataset.action = formPath;
   form.noValidate = true;
+  if (formDef.appliedCssClassNames) {
+    form.className = formDef.appliedCssClassNames;
+  }
   await generateFormRendition(formDef, form);
 
   let captcha;
   if (captchaField) {
-    const siteKey = captchaField?.properties?.['fd:captcha']?.config?.siteKey;
+    const siteKey = captchaField?.properties?.['fd:captcha']?.config?.siteKey || captchaField?.value;
     captcha = new GoogleReCaptcha(siteKey, captchaField.id);
     captcha.loadCaptcha(form);
   }
@@ -370,7 +419,7 @@ export async function createForm(formDef, data) {
   }
 
   form.addEventListener('submit', (e) => {
-    handleSubmit(e, form);
+    handleSubmit(e, form, captcha);
   });
 
   return form;
@@ -400,24 +449,24 @@ export default async function decorate(block) {
       formDef = JSON.parse(cleanUp(content));
     }
   }
-  let { rules, source } = { rules: true, source: 'aem' };
+  let source = 'aem';
+  let rules = true;
   let form;
   if (formDef) {
+    formDef.action = getSubmitBaseUrl() + (formDef.action || '');
     if (isDocumentBasedForm(formDef)) {
-      rules = false;
       const transform = new DocBasedFormToAF();
       formDef = transform.transform(formDef);
       source = 'sheet';
-    }
-
-    formDef.action = submitBaseUrl + (formDef.action || '');
-    if (rules) {
+      form = await createForm(formDef);
+      const docRuleEngine = await import('./rules-doc/index.js');
+      docRuleEngine.default(formDef, form);
+      rules = false;
+    } else {
       afModule = await import('./rules/index.js');
       if (afModule && afModule.initAdaptiveForm) {
         form = await afModule.initAdaptiveForm(formDef, createForm);
       }
-    } else {
-      form = await createForm(formDef);
     }
     form.dataset.action = formDef.action || pathname?.split('.json')[0];
     form.dataset.source = source;

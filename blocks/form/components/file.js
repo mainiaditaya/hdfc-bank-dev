@@ -151,15 +151,15 @@ function fileElement(file, index) {
 function createDragAndDropArea(wrapper) {
   const input = wrapper.querySelector('input');
   const dragArea = `
-    <div class="form-file-dragIcon"></div>
-    <div class="form-file-dragText">${dragDropText}</div>
-    <button class="form-file-attachButton" type="button">${fileAttachmentText}</button>
+    <div class="file-dragIcon"></div>
+    <div class="file-dragText">${dragDropText}</div>
+    <button class="file-attachButton" type="button">${fileAttachmentText}</button>
   `;
   const dragContainer = document.createElement('div');
   if (input.title) {
     dragContainer.title = stripTags(input.title, '');
   }
-  dragContainer.className = 'form-file-drag-area';
+  dragContainer.className = 'file-drag-area';
   dragContainer.innerHTML = dragArea;
   dragContainer.appendChild(input.cloneNode(true));
   input.parentNode.replaceChild(dragContainer, input);
@@ -223,7 +223,7 @@ export default async function decorate(fieldDiv, field, htmlForm) {
   fieldDiv.classList.add('decorated');
   const fileListElement = document.createElement('div');
   fileListElement.classList.add('files-list');
-  const attachButton = dragArea.querySelector('.form-file-attachButton');
+  const attachButton = dragArea.querySelector('.file-attachButton');
   attachButton.addEventListener('click', () => input.click());
   const fileHandler = createFileHandler(allFiles, input);
   input.addEventListener('change', (event) => {
@@ -234,7 +234,7 @@ export default async function decorate(fieldDiv, field, htmlForm) {
   });
   dragArea.addEventListener('drop', (event) => {
     event.preventDefault();
-    dragArea.classList.remove('form-file-dragArea-active');
+    dragArea.classList.remove('file-dragArea-active');
     fileHandler.attachFiles(input, (event?.dataTransfer?.files || []));
   });
   dragArea.addEventListener('paste', (event) => {
@@ -243,10 +243,10 @@ export default async function decorate(fieldDiv, field, htmlForm) {
   });
   dragArea.addEventListener('dragover', (event) => {
     event.preventDefault();
-    dragArea.classList.add('form-file-dragArea-active');
+    dragArea.classList.add('file-dragArea-active');
   });
   dragArea.addEventListener('dragleave', () => {
-    dragArea.classList.remove('form-file-dragArea-active');
+    dragArea.classList.remove('file-dragArea-active');
   });
   fileListElement.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {

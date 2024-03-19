@@ -110,6 +110,6 @@ export default function transferRepeatableDOM(form) {
       el.setAttribute('data-index', 0);
     }
     div.append(addButton);
-    div.className = 'form-repeat-wrapper';
+    div.className = 'repeat-wrapper';
   });
 }
