@@ -37,5 +37,13 @@ function days(endDate, startDate) {
   return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 }
 
+/**
+ * Called on form init.
+ * @name onFormInit Is called on form init
+ */
+function onFormInit() {}
+
 // eslint-disable-next-line import/prefer-default-export
-export { getFullName, onWizardInit, days };
+export {
+  getFullName, onWizardInit, days, onFormInit,
+};
