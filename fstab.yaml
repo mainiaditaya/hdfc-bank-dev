@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: https://author-p10652-e203356-cmstg.adobeaemcloud.com/
+    url: https://15.207.56.66/
     type: "markup"
     suffix: ".md.html?wcmmode=disabled"
