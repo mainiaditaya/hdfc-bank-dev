@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: https://author-p10652-e203356-cmstg.adobeaemcloud.com/
+    url: https://applyonlinedev.hdfcbank.com/
     type: "markup"
-    suffix: ".md.html?wcmmode=disabled"
+    suffix: ".md.html"
