@@ -384,11 +384,7 @@ function enableValidation(form) {
   });
 
   form.addEventListener('change', (event) => {
-    const { validity } = event.target;
-    if (validity.valid) {
-      // only to remove the error message
-      checkValidation(event.target);
-    }
+    checkValidation(event.target);
   });
 }
 
