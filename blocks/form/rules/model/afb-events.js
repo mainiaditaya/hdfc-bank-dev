@@ -23,6 +23,7 @@ class ActionImpl {
     _type;
     _payload;
     _target;
+    _currentTarget;
     constructor(payload, type, _metadata) {
         this._metadata = _metadata;
         this._payload = payload;
@@ -39,6 +40,9 @@ class ActionImpl {
     }
     get target() {
         return this._target;
+    }
+    get currentTarget() {
+        return this._currentTarget;
     }
     get isCustomEvent() {
         return false;

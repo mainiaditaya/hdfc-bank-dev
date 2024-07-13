@@ -1,3 +1,5 @@
+@import url('./styles.css');
+
 :root {
     --background-color-primary: #fff;
     --label-color: #666;
@@ -59,32 +61,32 @@
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 form output {
-    display: block;
-    font-weight: 700;
-    font-size: 1.625rem;
+  display: block;
+  font-weight: 700;
+  font-size: 1.625rem;
 }
 
-form [data-visible="false"] {
-    display: none !important;
+form [data-visible='false'] {
+  display: none !important;
 }
 
 main .form-container {
-    background-color: var(--form-background-color);
-    padding: var(--form-padding);
-    width: var(--form-width);
-    margin: var(--nav-height) auto;
+  background-color: var(--form-background-color);
+  padding: var(--form-padding);
+  width: var(--form-width);
+  margin: var(--nav-height) auto;
 }
 
 main .form {
-    background-color: var(--form-background-color);
+  background-color: var(--form-background-color);
 }
 
 main .form > div:not(:first-child) {
-    display: none;
+  display: none;
 }
 
 main .form form {
@@ -94,39 +96,39 @@ main .form form {
 }
 
 main .form form fieldset {
-    border: var(--form-fieldset-border);
-    margin: var(--form-fieldset-marign);
-    width: 100%;
+  border: var(--form-fieldset-border);
+  margin: var(--form-fieldset-marign);
+  width: 100%;
 }
 
 main .form form fieldset fieldset {
-    padding: 0;
+  padding: 0;
 }
 
 main .form .field-description {
-    color: var(--form-label-color);
-    font-size: var(--form-font-size-xs);
+  color: var(--form-label-color);
+  font-size: var(--form-font-size-xs);
 }
 
 main .form form .field-invalid .field-description {
-    color: var(--form-error-color);
-    font-weight: 700;
+  color: var(--form-error-color);
+  font-weight: 700;
 }
 
 main .form input,
 main .form textarea,
 main .form select {
-    background-color: var(--form-input-background-color);
-    border: var(--form-input-border-size) solid var(--form-input-border-color);
-    width: 100%;
-    height: 42px;
-    color: var(--form-label-color);
-    padding: var(--form-input-padding);
-    font-size: var(--form-input-font-size);
-    max-width: unset;
-    margin-top: .5rem;
-    margin-bottom: 1rem;
-    border-radius: 0.25rem;
+  background-color: var(--form-input-background-color);
+  border: var(--form-input-border-size) solid var(--form-input-border-color);
+  width: 100%;
+  height: 42px;
+  color: var(--form-label-color);
+  padding: var(--form-input-padding);
+  font-size: var(--form-input-font-size);
+  max-width: unset;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
 }
 
 main .form select {
@@ -135,50 +137,51 @@ main .form select {
 }
 
 main .form input[type='file'] {
-    border: none;
-    padding-inline-start:0;
-    background: unset;
-    color: unset;
+  border: none;
+  padding-inline-start: 0;
+  background: unset;
+  color: unset;
 }
 
 main .form input[type='checkbox'],
 main .form input[type='radio'] {
-    width: 16px;
-    height: 16px;
-    flex: none;
-    margin: 0;
-    position: static;
-    z-index: 1;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  margin: 0;
+  position: static;
+  z-index: 1;
 }
 
 main .form textarea {
-    min-height: 100px;
+  min-height: 100px;
 }
 
-main .form input:hover, main .form select:hover {
-    border-color: rgb(90 92 96);
+main .form input:hover,
+main .form select:hover {
+  border-color: rgb(90 92 96);
 }
 
 main .form fieldset legend {
-    font-weight: var(--form-fieldset-legend-font-weight);
-    font-size: var(--form-fieldset-legend-font-size);
-    color: var(--form-fieldset-legend-color);
-    border-bottom: var(--form-fieldset-legend-border);
-    width: 100%;
-    padding: var(--form-fieldset-legend-padding);
-    margin-bottom: 10px;
+  font-weight: var(--form-fieldset-legend-font-weight);
+  font-size: var(--form-fieldset-legend-font-size);
+  color: var(--form-fieldset-legend-color);
+  border-bottom: var(--form-fieldset-legend-border);
+  width: 100%;
+  padding: var(--form-fieldset-legend-padding);
+  margin-bottom: 10px;
 }
 
 main .form label {
-    font-weight: var(--form-label-font-weight);
-    font-size: var(--form-label-font-size);
-    color: var(--form-label-color);
+  font-weight: var(--form-label-font-weight);
+  font-size: var(--form-label-font-size);
+  color: var(--form-label-color);
 }
 
 main .form label.required::after {
-    content: "*";
-    color: var(--form-label-color);
-    padding-inline-start: 5px;
+  content: '*';
+  color: var(--form-label-color);
+  padding-inline-start: 5px;
 }
 
 main .form form p,
@@ -190,10 +193,10 @@ main .form form .field-wrapper {
 }
 
 main .form form p {
-    font-size: var(--form-paragraph-font-size);
-    font-style: var(--form-paragraph-font-style);
-    color: var(--form-paragraph-color);
-    margin: var(--form-paragraph-margin);
+  font-size: var(--form-paragraph-font-size);
+  font-style: var(--form-paragraph-font-style);
+  color: var(--form-paragraph-color);
+  margin: var(--form-paragraph-margin);
 }
 
 main .form form .checkbox-wrapper, main .form form .radio-wrapper {
@@ -214,20 +217,20 @@ main .form .checkbox-wrapper label {
 }
 
 input::file-selector-button {
-    color: var(--form-upload-color);
-    background: var(--form-upload-background-color);
-    font-size: var(--form-upload-font-size);
-    text-align: center;
+  color: var(--form-upload-color);
+  background: var(--form-upload-background-color);
+  font-size: var(--form-upload-font-size);
+  text-align: center;
 }
 
 main .form button {
-    color: var(--form-button-color);
-    background: var(--form-button-background-color);
-    border: var(--form-button-border);
-    padding: var(--form-button-padding);
-    font-size: var(--form-button-font-size);
-    border-radius: unset;
-    width: 100%;
+  color: var(--form-button-color);
+  background: var(--form-button-background-color);
+  border: var(--form-button-border);
+  padding: var(--form-button-padding);
+  font-size: var(--form-button-font-size);
+  border-radius: unset;
+  width: 100%;
 }
 
 main form .file-wrapper > button{
@@ -235,7 +238,7 @@ main form .file-wrapper > button{
 }
 
 main .form button:hover {
-    background: var(--form-button-background-hover-color);
+  background: var(--form-button-background-hover-color);
 }
 
 main .submit-wrapper{
@@ -246,7 +249,7 @@ main .form input:disabled,
 main .form textarea:disabled,
 main .form select:disabled,
 main .form button:disabled {
-    background-color: var(--form-input-disable-color);
+  background-color: var(--form-input-disable-color);
 }
 
 main .file-wrapper.decorated input[type="file"] {
@@ -263,9 +266,9 @@ main .file-wrapper .field-dropregion {
 }
 
 main .form form .item-remove {
-    padding: 0;
-    background: #fff;
-    padding-left: 10px;
+  padding: 0;
+  background: #fff;
+  padding-left: 10px;
 }
 
 main .form .file-description .file-description-name {
@@ -389,9 +392,9 @@ main .form form .wizard .wizard-menu-active-item::before{
 }
 
 @media (width >= 600px) {
-    main .form button {
-        width: unset;
-    }
+  main .form button {
+    width: unset;
+  }
 }
 
 /* wizard title on left */

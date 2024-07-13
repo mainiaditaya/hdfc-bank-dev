@@ -1,6 +1,6 @@
 import { submitSuccess, submitFailure } from '../submit.js';
 import {
-  createHelpText, createLabel, updateOrCreateInvalidMsg, getCheckboxGroupValue,
+  createHelpText, createLabel, updateOrCreateInvalidMsg, getCheckboxGroupValue, removeInvalidMsg,
 } from '../util.js';
 import registerCustomFunctions from './functionRegistration.js';
 import { externalize } from './functions.js';
@@ -16,7 +16,7 @@ function compare(fieldVal, htmlVal, type) {
     return fieldVal === Number(htmlVal);
   }
   if (type === 'boolean') {
-    return fieldVal.toString() === htmlVal;
+    return fieldVal?.toString() === htmlVal;
   }
   return fieldVal === htmlVal;
 }
@@ -41,10 +41,14 @@ async function fieldChanged(payload, form, generateFormRendition) {
         }
         break;
       case 'validationMessage':
-        if (field.setCustomValidity && payload.field.expressionMismatch) {
+      {
+        const { validity } = payload.field;
+        if (field.setCustomValidity
+            && (validity?.expressionMismatch || validity?.customConstraint)) {
           field.setCustomValidity(currentValue);
           updateOrCreateInvalidMsg(field, currentValue);
         }
+      }
         break;
       case 'value':
         if (['number', 'date'].includes(field.type) && (displayFormat || displayValueExpression)) {
@@ -59,6 +63,8 @@ async function fieldChanged(payload, form, generateFormRendition) {
           });
         } else if (fieldType === 'checkbox') {
           field.checked = compare(currentValue, field.value, type);
+        } else if (fieldType === 'plain-text') {
+          field.innerHTML = currentValue;
         } else if (field.type !== 'file') {
           field.value = currentValue;
         }
@@ -134,6 +140,11 @@ async function fieldChanged(payload, form, generateFormRendition) {
           field?.querySelector(`#${removeId}`)?.remove();
         } else {
           generateFormRendition({ items: [currentValue] }, field?.querySelector('.repeat-wrapper'));
+        }
+        break;
+      case 'valid':
+        if (currentValue === true) {
+          removeInvalidMsg(field);
         }
         break;
       default:
