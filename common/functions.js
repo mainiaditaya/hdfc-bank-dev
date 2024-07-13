@@ -7,6 +7,15 @@ import {
   resendOTP,
   formRuntime,
   customSetFocus,
+  validateLogin,
+  getAddressDetails,
+  pinCodeMaster,
+  validateEmailID,
+  currentAddressToggleHandler,
+  otpValHandler,
+  setNameOnCard,
+  prefillForm,
+  getThisCard,
 } from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
 
 import {
@@ -92,4 +101,13 @@ export {
   sendAnalytics,
   resendOTP,
   hideLoaderGif,
+  validateLogin,
+  getAddressDetails,
+  pinCodeMaster,
+  validateEmailID,
+  currentAddressToggleHandler,
+  otpValHandler,
+  setNameOnCard,
+  prefillForm,
+  getThisCard,
 };

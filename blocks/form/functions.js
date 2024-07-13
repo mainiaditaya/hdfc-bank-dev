@@ -9,6 +9,15 @@ import {
   sendAnalytics,
   resendOTP,
   hideLoaderGif,
+  validateLogin,
+  getAddressDetails,
+  pinCodeMaster,
+  validateEmailID,
+  currentAddressToggleHandler,
+  otpValHandler,
+  setNameOnCard,
+  prefillForm,
+  getThisCard,
 } from '../../common/functions.js';
 
 import {
@@ -108,4 +117,13 @@ export {
   invokeJourneyDropOffUpdate,
   sendAnalytics,
   resendOTP,
+  validateLogin,
+  getAddressDetails,
+  pinCodeMaster,
+  validateEmailID,
+  currentAddressToggleHandler,
+  otpValHandler,
+  setNameOnCard,
+  prefillForm,
+  getThisCard,
 };

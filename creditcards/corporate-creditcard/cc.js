@@ -1,6 +1,7 @@
 /* eslint-disable no-tabs */
 /* eslint no-console: ["error", { allow: ["warn", "error", "debug"] }] */
 import openModal from '../../blocks/modal/modal.js';
+import { createLabelInElement, decorateStepper } from '../domutils/domutils.js';
 import { DOM_ELEMENT } from './constant.js';
 
 const {
@@ -159,3 +160,14 @@ const removeIncorrectOtpText = () => {
   });
 };
 removeIncorrectOtpText();
+
+function onWizardInit() {
+  createLabelInElement('.field-permanentaddresstoggle', 'permanent-address-toggle__label');
+  createLabelInElement('.field-currentaddresstoggle', 'current-address-toggle__label');
+  createLabelInElement('.field-ckyctoggle', 'ckyctoggle__label');
+  decorateStepper();
+}
+
+export {
+  onWizardInit,
+};

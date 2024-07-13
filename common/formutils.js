@@ -382,6 +382,22 @@ const splitName = (fullName) => {
   return name;
 };
 
+/**
+ * Validates if a given date of birth falls within a specified age range.
+ * @param {Number} minAge - minAge The minimum age in years.
+ * @param {Number} maxAge - maxAge The maximum age in years.
+ * @param {String | Date} dobValue - obValue The date of birth value to validate. It can be either a string in ISO format (e.g., "YYYY-MM-DD") or a Date object.
+ * @returns {Boolean} - True if the date of birth falls within the specified age range; otherwise, false.
+ */
+const ageValidator = (minAge, maxAge, dobValue) => {
+  const ipDobValue = new Date(dobValue);
+  const diff = Date.now() - ipDobValue.getTime();
+  const ageDate = new Date(diff);
+  const age = Math.abs(ageDate.getUTCFullYear() - 1970); // Date.now() and the getTime() method, starts from January 1, 1970 hence 1970.
+  const ageBtwMinMax = (age >= minAge && age <= maxAge);
+  return ageBtwMinMax;
+};
+
 export {
   urlPath,
   maskNumber,
@@ -407,4 +423,5 @@ export {
   addDisableClass,
   createLabelInElement,
   decorateStepper,
+  ageValidator,
 };
