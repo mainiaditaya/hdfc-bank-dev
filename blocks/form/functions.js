@@ -18,6 +18,13 @@ import {
   setNameOnCard,
   prefillForm,
   getThisCard,
+  validatePan,
+  panAPISuccesHandler,
+  executeInterfaceApi,
+  executeInterfaceApiFinal,
+  ipaRequestApi,
+  ipaSuccessHandler,
+  executeInterfaceResponseHandler,
 } from '../../common/functions.js';
 
 import {
@@ -126,4 +133,11 @@ export {
   setNameOnCard,
   prefillForm,
   getThisCard,
+  validatePan,
+  panAPISuccesHandler,
+  executeInterfaceApi,
+  executeInterfaceApiFinal,
+  ipaRequestApi,
+  ipaSuccessHandler,
+  executeInterfaceResponseHandler,
 };

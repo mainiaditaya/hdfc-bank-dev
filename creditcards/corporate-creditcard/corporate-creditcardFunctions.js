@@ -326,11 +326,6 @@ const otpValHandler = (response, globals) => {
   createLabelInElement('.field-currentaddresstoggle', 'current-address-toggle__label');
   createLabelInElement('.field-ckyctoggle', 'ckyctoggle__label');
   decorateStepper();
-  (async () => {
-    const myImportedModule = await import('./cc.js');
-    myImportedModule.onWizardInit();
-    return true;
-  })();
 };
 
 /**

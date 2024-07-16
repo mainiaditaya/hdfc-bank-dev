@@ -19,6 +19,19 @@ import {
 } from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
 
 import {
+  validatePan,
+  panAPISuccesHandler,
+} from './panvalidation.js';
+
+import {
+  executeInterfaceApiFinal,
+  executeInterfaceApi,
+  ipaRequestApi,
+  ipaSuccessHandler,
+  executeInterfaceResponseHandler,
+} from './executeinterfaceutils.js';
+
+import {
   urlPath, getTimeStamp, clearString,
 } from './formutils.js';
 
@@ -110,4 +123,11 @@ export {
   setNameOnCard,
   prefillForm,
   getThisCard,
+  validatePan,
+  panAPISuccesHandler,
+  executeInterfaceApi,
+  executeInterfaceApiFinal,
+  ipaRequestApi,
+  ipaSuccessHandler,
+  executeInterfaceResponseHandler,
 };

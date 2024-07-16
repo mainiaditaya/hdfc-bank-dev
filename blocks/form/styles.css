@@ -1,7 +1,7 @@
 /* stylelint-disable selector-not-notation */
 /* stylelint-disable no-descending-specificity */
 /* stylelint-disable selector-class-pattern */
-@import url('../../creditcards/creditcards.css');
+@import url('../../creditcards/corporate-creditcard/creditcards.css');
 
 :root {
   --loader-image-url: url('loader.gif');
