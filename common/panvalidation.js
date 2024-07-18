@@ -4,8 +4,7 @@ import {
   convertDateToDdMmYyyy,
 } from './formutils.js';
 import { corpCreditCardContext, formRuntime } from './journey-utils.js';
-import { ENDPOINTS as endpoints } from './constants.js';
-import { DEAD_PAN_STATUS as deadPanStatus } from '../creditcards/corporate-creditcard/constant.js';
+import { ENDPOINTS as endpoints, DEAD_PAN_STATUS as deadPanStatus } from './constants.js';
 
 const { currentFormContext } = corpCreditCardContext;
 /**

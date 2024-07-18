@@ -19,8 +19,11 @@ const ENDPOINTS = {
   docUpload: '/content/hdfc_etb_wo_pacc/api/documentUpload.json',
 };
 
+const DEAD_PAN_STATUS = ['D', 'ED', 'X', 'F'];
+
 export {
   BASEURL,
   CHANNEL,
   ENDPOINTS,
+  DEAD_PAN_STATUS,
 };
