@@ -143,8 +143,8 @@ async function fieldChanged(payload, form, generateFormRendition) {
         }
         break;
       case 'valid':
-        if (currentValue === true) {
-          removeInvalidMsg(field);
+        if (currentValue === true && field?.validity?.customError) {
+          field?.setCustomValidity(''); // reset customError in validity
         }
         break;
       default:

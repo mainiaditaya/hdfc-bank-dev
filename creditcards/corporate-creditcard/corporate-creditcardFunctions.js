@@ -544,10 +544,8 @@ const pinCodeMaster = async (globals) => {
  * @param {object} globals - The global object containing necessary globals form data.
  */
 const validateEmailID = async (email, globals) => {
-  const emailField = globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress;
   const url = urlPath(ENDPOINTS.emailId);
-  const setEmailField = formUtil(globals, emailField);
-  const invalidMsg = 'Please enter valid email id.';
+  const invalidMsg = 'Please enter valid email id...';
   const payload = {
     email,
   };
@@ -556,9 +554,9 @@ const validateEmailID = async (email, globals) => {
   try {
     const emailValid = await getJsonResponse(url, payload, method);
     if (emailValid) {
-      setEmailField.markInvalid(true);
+      globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress, { valid: true });
     } else {
-      setEmailField.markInvalid(false, invalidMsg);
+      globals.functions.markFieldAsInvalid('$form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress', invalidMsg, { useQualifiedName: true });
     }
   } catch (error) {
     console.error(error, 'error in emailValid');
