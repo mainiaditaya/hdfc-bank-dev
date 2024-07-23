@@ -116,17 +116,6 @@ const formUtil = (globalObj, panelName) => ({
       }
     }
   },
-  /**
-  * Sets the fields as invalid.
-  * @param {boolean} val - A boolean value indicating whether the field is valid (true) or invalid (false).
-  * @param {string} [errorMsg] - An optional parameter representing the error message to be set if the field is invalid.
-   */
-  markInvalid: (val, errorMsg) => {
-    const dispatchLoad = {};
-    dispatchLoad.valid = val;
-    if (errorMsg) dispatchLoad.errorMessage = errorMsg;
-    globalObj.functions.setProperty(panelName, dispatchLoad);
-  },
 });
 
 /**

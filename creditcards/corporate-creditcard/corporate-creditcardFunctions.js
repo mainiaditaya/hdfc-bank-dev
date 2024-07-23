@@ -457,25 +457,24 @@ const pinmasterApi = async (globalObj, cityField, stateField, pincodeField) => {
   const method = 'GET';
   const setCityField = formUtil(globalObj, cityField);
   const setStateField = formUtil(globalObj, stateField);
-  const setPincodeField = formUtil(globalObj, pincodeField);
-
   const resetStateCityFields = () => {
     setCityField.resetField();
     setStateField.resetField();
     setCityField.enabled(false);
     setStateField.enabled(false);
   };
-  const errorMethod = (errStack) => {
+  const errorMethod = async (errStack) => {
     const { errorCode } = errStack;
     const defErrMessage = 'Please enter a valid pincode';
     if (errorCode === '500') {
-      setPincodeField.markInvalid(false, defErrMessage);
+      globalObj.functions.markFieldAsInvalid(pincodeField.$qualifiedName, defErrMessage, { useQualifiedName: true });
       resetStateCityFields();
     }
   };
-  const successMethod = (value) => {
+  const successMethod = async (value) => {
     const changeDataAttrObj = { attrChange: true, value: false };
-    setPincodeField.markInvalid(true, '');
+    globalObj.functions.markFieldAsInvalid(pincodeField.$qualifiedName, '', { useQualifiedName: true });
+    globalObj.functions.setProperty(pincodeField, { valid: true });
     setCityField.setValue(value?.CITY, changeDataAttrObj);
     setCityField.enabled(false);
     setStateField.setValue(value?.STATE, changeDataAttrObj);
@@ -484,6 +483,7 @@ const pinmasterApi = async (globalObj, cityField, stateField, pincodeField) => {
 
   try {
     const response = await getJsonResponse(url, null, method);
+    globalObj.functions.setProperty(pincodeField, { valid: true });
     const [{ CITY, STATE }] = response;
     const [{ errorCode, errorMessage }] = response;
     if (CITY && STATE) {
@@ -501,7 +501,7 @@ const pinmasterApi = async (globalObj, cityField, stateField, pincodeField) => {
  * pincode validation in your details for NTB and ETB
  * @param {object} globals - The global object containing necessary globals form data.
  */
-const pinCodeMaster = async (globals) => {
+const pinCodeMaster = (globals) => {
   const yourDetails = globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage;
   const { currentDetails } = yourDetails;
   const employeeDetails = yourDetails.employmentDetails;
@@ -534,9 +534,11 @@ const pinCodeMaster = async (globals) => {
       stateField: employeeDetails.officeAddressState,
     },
   ];
-  pinMasterConstants?.forEach(
-    (field) => field.pincodeField.$value && pinmasterApi(globals, field.cityField, field.stateField, field.pincodeField),
-  );
+  const filledPincode = pinMasterConstants?.filter((field) => field.pincodeField?.$value);
+  filledPincode?.forEach((field) => {
+    globals.functions.markFieldAsInvalid(field.pincodeField.$qualifiedName, '', { useQualifiedName: true });
+    pinmasterApi(globals, field.cityField, field.stateField, field.pincodeField);
+  });
 };
 
 /**
@@ -549,7 +551,6 @@ const validateEmailID = async (email, globals) => {
   const payload = {
     email,
   };
-
   const method = 'POST';
   try {
     const emailValid = await getJsonResponse(url, payload, method);
@@ -708,6 +709,10 @@ const validateLogin = (globals) => {
           globals.functions.setProperty(globals.form.getOTPbutton, { enabled: true });
           globals.functions.markFieldAsInvalid('$form.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
         }
+        if (ageValid) {
+          globals.functions.markFieldAsInvalid('$form.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
+          globals.functions.setProperty(globals.form.loginPanel.identifierPanel.dateOfBirth, { valid: true });
+        }
         if (!ageValid) {
           dobDefFieldDesc.style.display = 'block';
           globals.functions.markFieldAsInvalid('$form.loginPanel.identifierPanel.dateOfBirth', dobErrorText, { useQualifiedName: true });
@@ -726,6 +731,10 @@ const validateLogin = (globals) => {
         if (validPan && consentFirst) {
           globals.functions.markFieldAsInvalid('$form.loginPanel.identifierPanel.pan', '', { useQualifiedName: true });
           globals.functions.setProperty(globals.form.getOTPbutton, { enabled: true });
+        }
+        if (validPan) {
+          globals.functions.markFieldAsInvalid('$form.loginPanel.identifierPanel.pan', '', { useQualifiedName: true });
+          globals.functions.setProperty(globals.form.loginPanel.identifierPanel.pan, { valid: true });
         }
         if (!validPan) {
           globals.functions.markFieldAsInvalid('$form.loginPanel.identifierPanel.pan', panErrorText, { useQualifiedName: true });
