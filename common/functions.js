@@ -123,7 +123,6 @@ function otpValidation(mobileNumber, pan, dob, otpNumber) {
  * @return {PROMISE}
  */
 function checkMode(globals) {
-  debugger;
   const formData = globals.functions.exportData();
   const idcomVisit = formData?.queryParams?.authmode; // "DebitCard"
   const aadharVisit = formData?.queryParams?.visitType; // "EKYC_AUTH
