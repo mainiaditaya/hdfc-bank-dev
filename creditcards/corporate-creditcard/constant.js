@@ -43,6 +43,10 @@ const DOM_ELEMENT = {
     modalBtnWrapper: 'button-wrapper',
     defaultLanguage: 'English',
   },
+  ccWizard: {
+    wizardPanel: 'corporateCardWizardView',
+    confirmAndSubmitPanel: 'confirmAndSubmitPanel',
+  },
 };
 export {
   JOURNEY_NAME,

@@ -26,6 +26,15 @@ import {
   ipaSuccessHandler,
   executeInterfaceResponseHandler,
   aadharConsent123,
+  documentUpload,
+  fetchAuthCode,
+  checkMode,
+  aadharInit,
+  redirect,
+  reloadPage,
+  idcomUrlSet,
+  idcomRedirection,
+  executeInterfacePostRedirect,
 } from '../../common/functions.js';
 
 import {
@@ -142,4 +151,13 @@ export {
   ipaSuccessHandler,
   executeInterfaceResponseHandler,
   aadharConsent123,
+  documentUpload,
+  fetchAuthCode,
+  checkMode,
+  aadharInit,
+  redirect,
+  reloadPage,
+  idcomUrlSet,
+  idcomRedirection,
+  executeInterfacePostRedirect,
 };

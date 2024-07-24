@@ -19,6 +19,8 @@ import {
   aadharConsent123,
 } from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
 
+import { invokeJourneyDropOffUpdate } from './journey-utils.js';
+
 import {
   validatePan,
   panAPISuccesHandler,
@@ -30,10 +32,19 @@ import {
   ipaRequestApi,
   ipaSuccessHandler,
   executeInterfaceResponseHandler,
+  executeInterfacePostRedirect,
 } from './executeinterfaceutils.js';
 
+import documentUpload from './docuploadutils.js';
+
+import fetchAuthCode from './idcomutils.js';
+
 import {
-  urlPath, getTimeStamp, clearString,
+  urlPath,
+  getTimeStamp,
+  clearString,
+  santizedFormDataWithContext,
+  formUtil,
 } from './formutils.js';
 
 import {
@@ -61,6 +72,7 @@ const journeyNameConstant = JOURNEY_NAME;
 function getOTP(mobileNumber, pan, dob, globals) {
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value;
+  currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
   const jsonObj = {
     requestString: {
       mobileNumber: mobileNumber.$value,
@@ -105,6 +117,316 @@ function otpValidation(mobileNumber, pan, dob, otpNumber) {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
+/**
+ * @name checkMode - check the location
+ * @param {object} globals -
+ * @return {PROMISE}
+ */
+function checkMode(globals) {
+  debugger;
+  const formData = globals.functions.exportData();
+  const idcomVisit = formData?.queryParams?.authmode; // "DebitCard"
+  const aadharVisit = formData?.queryParams?.visitType; // "EKYC_AUTH
+  // temporarly added referenceNumber check for IDCOMM redirection to land on submit screen.
+  if (aadharVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message && formData?.aadhaar_otp_val_data?.message === 'Aadhaar OTP Validate success') {
+    try {
+      globals.functions.setProperty(globals.form.corporateCardWizardView, { visible: true });
+      globals.functions.setProperty(globals.form.otpPanel, { visible: false });
+      globals.functions.setProperty(globals.form.loginPanel, { visible: false });
+      globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
+      globals.functions.setProperty(globals.form.consentFragment, { visible: false });
+      globals.functions.setProperty(globals.form.welcomeText, { visible: false });
+      const {
+        result: {
+          Address1, Address2, Address3, City, State, Zipcode,
+        },
+      } = formData.aadhaar_otp_val_data;
+      const {
+        executeInterfaceReqObj: {
+          requestString: {
+            officeAddress1, officeAddress2, officeAddress3, officeCity, officeState, officeZipCode,
+            communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip,
+          },
+        },
+      } = formData.currentFormContext;
+      const aadharAddress = [Address1, Address2, Address3, City, State, Zipcode]?.filter(Boolean)?.join(', ');
+      const officeAddress = [officeAddress1, officeAddress2, officeAddress3, officeCity, officeState, officeZipCode]?.filter(Boolean)?.join(', ');
+      const communicationAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip]?.filter(Boolean)?.join(', ');
+      const { AddressDeclarationAadhar, addressDeclarationOffice, CurrentAddressDeclaration } = globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel;
+      globals.functions.setProperty(AddressDeclarationAadhar.aadharAddressSelectKYC, { value: aadharAddress });
+      globals.functions.setProperty(addressDeclarationOffice.officeAddressSelectKYC, { value: officeAddress });
+      globals.functions.setProperty(CurrentAddressDeclaration.currentResidenceAddress, { value: communicationAddress });
+      invokeJourneyDropOffUpdate(
+        'AADHAAR_REDIRECTION_SUCCESS',
+        formData.loginPanel.mobilePanel.registeredMobileNumber,
+        formData.runtime.leadProifileId,
+        formData.runtime.leadProifileId.journeyId,
+        globals,
+      );
+    } catch (e) {
+      invokeJourneyDropOffUpdate(
+        'AADHAAR_REDIRECTION_FAILURE',
+        formData.loginPanel.mobilePanel.registeredMobileNumber,
+        formData.runtime.leadProifileId,
+        formData.runtime.leadProifileId.journeyId,
+        globals,
+      );
+    }
+  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard')) { // debit card or credit card flow
+    const resultPanel = formUtil(globals, globals.form.resultPanel);
+    resultPanel.visible(false);
+    globals.functions.setProperty(globals.form.otpPanel, { visible: false });
+    globals.functions.setProperty(globals.form.loginPanel, { visible: false });
+    globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
+    globals.functions.setProperty(globals.form.consentFragment, { visible: false });
+    globals.functions.setProperty(globals.form.welcomeText, { visible: false });
+    globals.functions.setProperty(globals.form.resultPanel.successResultPanel, { visible: false });
+    globals.functions.setProperty(globals.form.resultPanel.errorResultPanel, { visible: false });
+    globals.functions.setProperty(globals.form.confirmResult, { visible: false });
+    const userRedirected = true;
+    executeInterfacePostRedirect('idCom', userRedirected, globals);
+  }
+}
+
+/**
+ * Detects the operating system of the user's device.
+ *
+ * @returns {string|null} The name of the operating system (e.g., 'Mac OS', 'iOS', 'Windows', 'Android', 'Linux') or null if the operating system cannot be determined.
+ */
+function getOS() {
+  const { userAgent } = window.navigator;
+  const { platform } = window.navigator;
+  const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+  const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+  const iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+  let os = null;
+
+  if (macosPlatforms.indexOf(platform) !== -1) {
+    os = 'Mac OS';
+  } else if (iosPlatforms.indexOf(platform) !== -1) {
+    os = 'iOS';
+  } else if (windowsPlatforms.indexOf(platform) !== -1) {
+    os = 'Windows';
+  } else if (/Android/.test(userAgent)) {
+    os = 'Android';
+  } else if (!os && /Linux/.test(platform)) {
+    os = 'Linux';
+  }
+  return os;
+}
+
+/**
+ * Detects the type of device the user is using (mobile or desktop).
+ *
+ * @returns {string} 'mobile' if the user is on a mobile device, 'desktop' otherwise.
+ */
+function getDevice() {
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    return 'mobile';
+  }
+  return 'desktop';
+}
+
+/**
+ * Detects the user's browser name and version.
+ *
+ * @returns {Object} An object containing the browser name and version.
+ * @returns {string} return.name The name of the browser (e.g., 'Chrome', 'Firefox', 'Safari', 'IE', 'Opera').
+ * @returns {string} return.version The version of the browser.
+ */
+function getBrowser() {
+  const ua = navigator.userAgent; let tem; let M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+  if (/trident/i.test(M[1])) {
+    tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+    return { name: 'IE', version: (tem[1] || '') };
+  }
+  if (M[1] === 'Chrome') {
+    tem = ua.match(/\bOPR|Edge\/(\d+)/);
+    if (tem != null) { return { name: 'Opera', version: tem[1] }; }
+  }
+  M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+  // eslint-disable-next-line no-cond-assign
+  if ((tem = ua.match(/version\/(\d+)/i)) != null) { M.splice(1, 1, tem[1]); }
+  return {
+    name: M[0],
+    version: M[1],
+    majver: '',
+  };
+}
+
+/**
+ * Adds a hidden input element with the specified name and value to the given form.
+ *
+ * @param {HTMLFormElement} form - The form element to which the hidden input will be added.
+ * @param {string} key - The name attribute for the hidden input element.
+ * @param {string} value - The value attribute for the hidden input element.
+ */
+function updateFormElement(form, key, value) {
+  const field = document.createElement('input');
+  field.setAttribute('type', 'hidden');
+  field.setAttribute('name', key);
+  field.setAttribute('value', value);
+  form.appendChild(field);
+}
+
+/**
+ * aadharInit
+ * @param {object} mobileNumber
+ * @param {object} pan
+ * @param {object} dob
+ * @param {object} globals - The global object containing necessary globals form data.
+ * @return {PROMISE}
+ */
+async function aadharInit(mobileNumber, pan, dob, globals) {
+  currentFormContext.VISIT_TYPE = 'AADHAR';
+  const jsonObj = {
+    requestString: {
+      initParameters: {
+        journeyId: currentFormContext.journeyID,
+        transactionId: currentFormContext.journeyID.replace(/-/g, '').replace(/_/g, ''),
+        journeyName: journeyNameConstant,
+        userAgent: window.navigator.userAgent,
+        mobileNumber: mobileNumber.$value,
+        leadProfileId: globals?.form.runtime.leadProifileId.$value,
+        additionalParam1: '',
+        additionalParam2: '',
+        identifierValue: pan.$value || dob.$value,
+        identifierName: pan.$value ? 'PAN' : 'DOB',
+      },
+      auth: {
+        journey_key: currentFormContext.journeyID,
+        service_code: 'XX2571ER',
+      },
+      existingCustomer: currentFormContext.journeyType === 'NTB' ? 'N' : 'Y',
+      data_otp_gen: {
+        UID_NO: '',
+      },
+      data_app: {
+        journey_id: currentFormContext.journeyID,
+        lead_profile_id: globals?.form.runtime.leadProifileId.$value,
+        callback: urlPath(ENDPOINTS.aadharCallback),
+        lead_profile: {
+          leadProfileId: globals?.form.runtime.leadProifileId.$value,
+          mobileNumber: mobileNumber.$value,
+          Addresses: '',
+        },
+        journeyStateInfo: {
+          state: 'CUSTOMER_AADHAR_VALIDATION',
+          stateInfo: journeyNameConstant,
+          formData: santizedFormDataWithContext(globals, currentFormContext),
+        },
+        auditData: {
+          action: 'CUSTOMER_AADHAR_VALIDATION',
+          auditType: 'Regulatory',
+        },
+        filler1: 'filler1',
+        filler2: 'filler2',
+        filler3: 'filler3',
+        filler4: 'filler4',
+        filler5: 'filler5',
+        filler6: 'filler6',
+        filler7: 'filler7',
+        filler8: 'filler8',
+        filler9: 'filler9',
+        filler10: 'filler10',
+      },
+      client_info: {
+        browser: getBrowser(),
+        cookie: {
+          source: 'AdobeForms',
+          name: 'NTBCC',
+          ProductShortname: 'IS',
+        },
+        client_ip: '',
+        device: {
+          type: getDevice(),
+          name: 'Samsung G5',
+          os: getOS(),
+          os_ver: '637.38383',
+        },
+        isp: {
+          ip: '839.893.89.89',
+          provider: 'AirTel',
+          city: 'Mumbai',
+          state: 'Maharashrta',
+          pincode: '400828',
+        },
+        geo: {
+          lat: '72.8777° E',
+          long: '19.0760° N',
+        },
+      },
+    },
+  };
+
+  const path = urlPath(ENDPOINTS.aadharInit);
+  const response = fetchJsonResponse(path, jsonObj, 'POST');
+  response
+    .then((res) => {
+      console.log(res);
+      // var aadharValidationForm = "<form action=" + res.RedirectUrl + " method='post'></form>";
+      const aadharValidationForm = document.createElement('form');
+      aadharValidationForm.setAttribute('action', res.RedirectUrl);
+      aadharValidationForm.setAttribute('method', 'POST');
+      // eslint-disable-next-line guard-for-in, no-restricted-syntax
+      for (const key in res) {
+        updateFormElement(aadharValidationForm, key, res[key]);
+      }
+      document.querySelector('body').append(aadharValidationForm);
+      // aadharValidationForm.appendTo('body');
+      aadharValidationForm.submit();
+    }).catch((err) => console.log(err));
+}
+
+/**
+ * Redirects the browser to the specified URL.
+ *
+ * @name redirect
+ * @param {string} redirectUrl - The URL to redirect the browser to.
+ */
+function redirect(redirectUrl) {
+  let urlLink = redirectUrl;
+  if (redirectUrl === 'VKYCURL' && currentFormContext.VKYC_URL) {
+    urlLink = currentFormContext.VKYC_URL;
+  }
+  window.location.href = urlLink;
+}
+
+/**
+ * Reloads the current page.
+ * lead idParam is been strored in current formContext after otpGen btn click
+ * @name reloadPage
+ * @param {object} globals
+ */
+function reloadPage(globals) {
+  const leadIdParam = globals.functions.exportData()?.currentFormContext?.leadIdParam || currentFormContext?.leadIdParam;
+  const { origin, pathname } = window.location;
+  const homeUrl = `${origin}${pathname}?leadId=${leadIdParam?.leadId}${(leadIdParam?.mode === 'dev') ? '&mode=dev' : ''} `;
+  if (leadIdParam?.leadId) {
+    window.location.href = homeUrl;
+  } else {
+    window.location.reload();
+  }
+}
+
+/**
+ * set the value of idcom url in current form context
+ * @name idcomUrlSet
+ * @param {string} IdComUrl - idcomurl url parameter in string format.
+ */
+
+function idcomUrlSet(IdComUrl) {
+  currentFormContext.ID_COM_URL = IdComUrl;
+}
+
+/**
+ * @name idcomRedirection
+ * redirect the idcomurl by taking the url got saved in current form context
+ */
+function idcomRedirection() {
+  window.location.href = currentFormContext.ID_COM_URL;
+}
+
 export {
   getOTP,
   otpValidation,
@@ -132,4 +454,13 @@ export {
   ipaSuccessHandler,
   executeInterfaceResponseHandler,
   aadharConsent123,
+  documentUpload,
+  fetchAuthCode,
+  checkMode,
+  aadharInit,
+  redirect,
+  reloadPage,
+  idcomUrlSet,
+  idcomRedirection,
+  executeInterfacePostRedirect,
 };

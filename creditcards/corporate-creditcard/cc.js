@@ -2,11 +2,15 @@
 /* eslint no-console: ["error", { allow: ["warn", "error", "debug"] }] */
 import openModal from '../../blocks/modal/modal.js';
 import { DOM_ELEMENT } from './constant.js';
+import * as DOM_API from '../domutils/domutils.js';
+
+const { displayLoader, hideLoaderGif, moveWizardView } = DOM_API;
 
 const {
   identifyYourself,
   otpValidate,
   confirmCard,
+  ccWizard,
 } = DOM_ELEMENT;
 /* startCode for creating Modal */
 /**
@@ -168,3 +172,199 @@ const removeIncorrectOtpText = () => {
   });
 };
 removeIncorrectOtpText();
+
+////////////
+const errorPannelMethod = (error) => {
+  const errorPannel = document.getElementsByName('errorResultPanel')?.[0];
+  const resultPanel = document.getElementsByName('resultPanel')?.[0];
+  resultPanel.setAttribute('data-visible', true);
+  errorPannel.setAttribute('data-visible', true);
+};
+
+const setArnNumberInResult = (arnNumRef) => {
+  const nameOfArnRefPanel = 'arnRefNumPanel';
+  const classNamefieldArnNo = '.field-newarnnumber';
+  const arnRefNumPanel = document.querySelector(`[name= ${nameOfArnRefPanel}]`);
+  const arnNumberElement = arnRefNumPanel.querySelector(classNamefieldArnNo);
+  if (arnNumberElement) {
+    // Manipulate the content of the <p> tag inside '.field-newarnnumber'
+    arnNumberElement.querySelector('p').textContent = arnNumRef;
+  }
+};
+
+const successPannelMethod = async (data) => {
+  const {
+    executeInterfaceReqObj, aadharOtpValData, finalDapRequest, finalDapResponse,
+  } = data;
+  const journeyName = executeInterfaceReqObj?.requestString?.journeyFlag;
+  const addressEditFlag = executeInterfaceReqObj?.requestString?.addressEditFlag;
+  const { applicationNumber, vkycUrl } = finalDapResponse;
+  const { currentFormContext } = (await import('../../common/journey-utils.js')).corpCreditCardContext;
+  currentFormContext.VKYC_URL = vkycUrl;
+  // const { result: { mobileValid } } = aadharOtpValData;
+  const mobileValid = aadharOtpValData?.result?.mobileValid;
+  const resultPanel = document.getElementsByName('resultPanel')?.[0];
+  const successPanel = document.getElementsByName('successResultPanel')?.[0];
+  resultPanel.setAttribute('data-visible', true);
+  successPanel.setAttribute('data-visible', true);
+  setArnNumberInResult(applicationNumber);
+
+  const vkycProceedButton = document.querySelector('.field-vkycproceedbutton ');
+  const offerLink = document.querySelector('.field-offerslink');
+  const vkycConfirmText = document.querySelector('.field-vkycconfirmationtext');
+  // const filler4Val = finalDapRequest?.requestString?.VKYCConsent?.split(/[0-9]/g)?.[0];
+  // const mobileMatch = !(filler4Val === 'NVKYC');
+  const mobileMatch = !(mobileValid === 'n'); // (mobileValid === 'n') - unMatched - this should be the condition which has to be finalDap - need to verify.
+  const kycStatus = (finalDapRequest.requestString.biometricStatus);
+  const vkycCameraConfirmation = document.querySelector(`[name= ${'vkycCameraConfirmation'}]`);
+  const vkycCameraPannelInstruction = document.querySelector('.field-cameraconfirmationpanelinstruction');
+
+  if (journeyName === 'ETB') {
+    if (addressEditFlag === 'N') {
+      vkycProceedButton.setAttribute('data-visible', false);
+      vkycConfirmText.setAttribute('data-visible', false);
+      offerLink.setAttribute('data-visible', true);
+    } else if (kycStatus === 'OVD') {
+      vkycProceedButton.setAttribute('data-visible', false);
+      vkycConfirmText.setAttribute('data-visible', true);
+      offerLink.setAttribute('data-visible', false); // Adjusted assumption for offerLink
+    } else if (mobileMatch && kycStatus === 'aadhaar' && addressEditFlag === 'Y') {
+      vkycProceedButton.setAttribute('data-visible', false);
+      vkycConfirmText.setAttribute('data-visible', false);
+      offerLink.setAttribute('data-visible', true);
+    } else {
+      vkycProceedButton.setAttribute('data-visible', true);
+      vkycConfirmText.setAttribute('data-visible', true);
+      offerLink.setAttribute('data-visible', false);
+    }
+  }
+  if (journeyName === 'NTB' && (kycStatus === 'aadhaar')) {
+    vkycCameraConfirmation.setAttribute('data-visible', true);
+    vkycCameraPannelInstruction.setAttribute('data-visible', true);
+    vkycProceedButton.setAttribute('data-visible', true);
+  }
+};
+
+// post-redirect-aadhar-or-idcom
+const searchParam = new URLSearchParams(window.location.search);
+const visitTypeParam = searchParam.get('visitType');
+const authModeParam = searchParam.get('authmode');
+const journeyId = searchParam.get('journeyId');
+const aadharRedirect = visitTypeParam && (visitTypeParam === 'EKYC_AUTH');
+const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'CreditCard')); // debit card or credit card flow
+
+/**
+ * @name invokeJourneyDropOffByParam
+ * @param {string} mobileNumber - mobileNumber-optional
+ * @param {string} leadProfileId - leadProfileId-optional
+ * @param {string} journeyID - JourneyId-required
+ * @returns {object} - response-data
+ */
+const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
+  const journeyJSONObj = {
+    RequestPayload: {
+      leadProfile: {
+      },
+      journeyInfo: {
+        journeyID,
+      },
+    },
+  };
+  const url = 'https://applyonlinedev.hdfcbank.com/content/hdfc_commonforms/api/journeydropoffparam.json';
+  const method = 'POST';
+  try {
+    const res = await fetch(url, {
+      method,
+      body: JSON.stringify(journeyJSONObj),
+      mode: 'cors',
+      headers: {
+        'Content-type': 'text/plain',
+        Accept: 'application/json',
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * @name finalDap - constant-variables store
+ */
+const finalDap = {
+  PROMOSE_COUNT: 0,
+  AFFORD_COUNT: 5,
+  journeyParamState: null,
+};
+
+/**
+ * @name finalDapFetchRes - recursive async action call maker untill it reaches the finaldap response.
+ * @returns {void} error method or succes method based on the criteria of finalDapResponse reach or max limit reach.
+ */
+const finalDapFetchRes = async () => {
+  const eventHandler = {
+    successMethod: (data) => {
+      const {
+        currentFormContext: {
+          executeInterfaceReqObj, finalDapRequest, finalDapResponse,
+        }, aadhaar_otp_val_data: aadharOtpValData,
+      } = JSON.parse(data.stateInfo);
+      hideLoaderGif();
+      successPannelMethod({
+        executeInterfaceReqObj, aadharOtpValData, finalDapRequest, finalDapResponse,
+      });
+    },
+    errorMethod: (err) => {
+      hideLoaderGif();
+      errorPannelMethod(err);
+      // eslint-disable-next-line no-console
+      console.log(err);
+    },
+  };
+  try {
+    const data = await invokeJourneyDropOffByParam('', '', journeyId);
+    const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
+    finalDap.journeyParamState = journeyDropOffParamLast.state;
+    const checkFinalDapSuccess = (journeyDropOffParamLast.state === 'CUSTOMER_FINAL_DAP_SUCCESS');
+    if (checkFinalDapSuccess) {
+      return eventHandler.successMethod(journeyDropOffParamLast);
+    }
+    const err = 'Bad response';
+    throw err;
+  } catch (error) {
+    // "FINAL_DAP_FAILURE"
+    finalDap.PROMOSE_COUNT += 1;
+    const errorCase = (finalDap.journeyParamState === 'CUSTOMER_FINAL_DAP_FAILURE' || finalDap.PROMOSE_COUNT >= finalDap.AFFORD_COUNT);
+    if (errorCase) {
+      return eventHandler.errorMethod(error);
+    }
+    return setTimeout(() => finalDapFetchRes(), 1000);
+  }
+};
+
+//
+
+/**
+ * Redirects the user to different panels based on conditions.
+ * If `aadhar` is true, navigates from 'corporateCardWizardView' to 'confirmAndSubmitPanel'
+ * If `idCom` is true, initiates a journey drop-off process and handles the response which handles after all the final dap api call.
+ * @param {boolean} aadhar - Indicates whether Aadhar redirection is triggered.
+ * @param {boolean} idCom - Indicates whether ID com redirection is triggered.
+ * @returns {void}
+ */
+const pageRedirected = (aadhar, idCom) => {
+  if (aadhar) {
+    moveWizardView(ccWizard.wizardPanel, ccWizard.confirmAndSubmitPanel);
+  }
+  if (idCom) {
+    /**
+     * finaldapResponse starts for ETB - address change scenario.
+     */
+    setTimeout(() => {
+      displayLoader();
+      finalDapFetchRes();
+    }, 2000);
+  }
+};
+pageRedirected(aadharRedirect, idComRedirect);

@@ -136,6 +136,7 @@ fieldset fieldset {
   .field-cardimage {
     position: relative;
     color: var(--color-interface-background-primary);
+    height: fit-content;
   }
 
   img { 

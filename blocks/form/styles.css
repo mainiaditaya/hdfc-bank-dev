@@ -61,13 +61,8 @@ main .form {
   }
 }
 
-.date-wrapper .field-description {
-  display: none;
-}
-
-.passwordField .field-description {
-  display: none;
-}
+.date-wrapper:not(.field-invalid) .field-description { display: none; }
+.passwordField .field-description { display: none; }
 
 /* Base style for labels */
 main .form :not(.checkbox-wrapper, .radio-wrapper, .field-joiningrenewalfee) > label{
@@ -448,7 +443,6 @@ main
   max-width: 506px;
   margin: 0 auto;
   text-align: center;
-  pointer-events: none;
 
   p > p:not(:first-child) {
     padding-top: 15px;
@@ -537,6 +531,21 @@ main .form .field-successresultpanel {
     .field-cameraaccess3 {
       padding: 10px 0 10px 10px;
       border-left: solid 1px #D2D5DB;
+    }
+  }
+
+  .field-ratingfragment {
+    .field-ratinglabel p { color: var(--color-interface-text-primary); }
+
+    .field-ratingpanel .field-rating .rating.hover{
+      justify-content: center;
+      margin-top: -20px;
+      .star { font-size: 36px; }
+      .emoji { display: none; }
+    }
+
+    .field-submitfeedback button {
+      width: 205px;
     }
   }
 }
@@ -633,7 +642,12 @@ main .form .field-resultpanel {
     .field-successresulttextlabel { margin-bottom: 12px; }
     .field-arnrefnumpanel::before { left: 24%; }
     .field-arnrefnumlabel, .field-newarnnumber { left: 36%; }
-    .field-vkycconfirmationtext { justify-content: center; }
+    .field-ratingpanel .field-rating .rating.hover {margin-top: 0 !important;}
+
+    .field-vkycconfirmationtext { 
+      justify-content: center; 
+      margin: 19px 0 !important; 
+    }
   }
 }
 

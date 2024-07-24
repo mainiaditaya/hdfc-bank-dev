@@ -194,6 +194,32 @@ function decorateStepper() {
   });
 }
 
+/**
+ * Displays a loading indicator by adding a 'preloader' class to the body container.
+ * Optionally sets a loading text as a custom attribute.
+ *
+ * @param {string} [loadingText] - The text to display as a loading message.
+ */
+const displayLoader = (loadingText) => {
+  const bodyContainer = document?.querySelector('.appear');
+  bodyContainer?.classList?.add('preloader');
+  if (loadingText) {
+    bodyContainer.setAttribute('loader-text', loadingText);
+  }
+};
+
+/**
+ * Hides the loading indicator by removing the 'preloader' class from the body container.
+ * Removes the loading text attribute if it exists.
+ */
+const hideLoaderGif = () => {
+  const bodyContainer = document?.querySelector('.appear');
+  bodyContainer?.classList?.remove('preloader');
+  if (bodyContainer.hasAttribute('loader-text')) {
+    bodyContainer.removeAttribute('loader-text');
+  }
+};
+
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -203,4 +229,6 @@ export {
   addDisableClass,
   createLabelInElement,
   decorateStepper,
+  displayLoader,
+  hideLoaderGif,
 };

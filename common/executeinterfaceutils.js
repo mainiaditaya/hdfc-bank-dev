@@ -13,6 +13,7 @@ import {
   fetchIPAResponse,
   hideLoaderGif,
 } from './makeRestAPI.js';
+import finalDap from './finaldaputils.js';
 import { ENDPOINTS as endpoints, BASEURL as baseUrl } from './constants.js';
 
 const { currentFormContext } = corpCreditCardContext;
@@ -42,10 +43,10 @@ const formatDate = (inputDate) => {
 };
 
 /**
-   * Creates an Execute Interface request object based on the provided global data.
-   * @param {Object} globals - The global object containing necessary data for ExecuteInterface request.
-   * @returns {Object} - The ExecuteInterface request object.
-   */
+ * Creates an Execute Interface request object based on the provided global data.
+ * @param {Object} globals - The global object containing necessary data for ExecuteInterface request.
+ * @returns {Object} - The ExecuteInterface request object.
+ */
 const createExecuteInterfaceRequestObj = (globals) => {
   const { breDemogResponse } = currentFormContext;
   const {
@@ -69,7 +70,8 @@ const createExecuteInterfaceRequestObj = (globals) => {
   };
 
   const formData = globals.functions.exportData().form;
-  const compNameRelNum = {
+  const compNameRelNum = { // companyName + companyRelationshipNumber
+    // '4THLINE': formData?.companyName,
     CCAD_Relationship_number: formData?.relationshipNumber,
   };
 
@@ -213,9 +215,9 @@ const createExecuteInterfaceRequestObj = (globals) => {
 };
 
 /**
-   * create a list of name to be dispayed on card dropdown in confirm card screen.
-   * @param {object} globals - globals variables object containing form configurations.
-   */
+ * create a list of name to be dispayed on card dropdown in confirm card screen.
+ * @param {object} globals - globals variables object containing form configurations.
+ */
 const listNameOnCard = (globals) => {
   const elementNameSelect = 'nameOnCardDropdown';
   const { personalDetails } = globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage;
@@ -239,35 +241,36 @@ const listNameOnCard = (globals) => {
 };
 
 /**
-   * @name executeInterfaceApiFinal
-   * @param {Object} globals - The global object containing necessary data for the request.
-   * @returns {PROMISE}
-   */
+ * @name executeInterfaceApiFinal
+ * @param {Object} globals - The global object containing necessary data for the request.
+ * @returns {PROMISE}
+ */
 const executeInterfaceApiFinal = (globals) => {
   const formCallBackContext = globals.functions.exportData()?.currentFormContext;
   const requestObj = currentFormContext.executeInterfaceReqObj || formCallBackContext?.executeInterfaceReqObj;
   requestObj.requestString.nameOnCard = globals.form.corporateCardWizardView.confirmCardPanel.cardBenefitsPanel.CorporatetImageAndNamePanel.nameOnCardDropdown.$value?.toUpperCase();
   requestObj.requestString.productCode = formRuntime.productCode || formCallBackContext?.formRuntime?.productCode;
   const apiEndPoint = urlPath(endpoints.executeInterface);
+  // restAPICall('', 'POST', requestObj, apiEndPoint, eventHandlers.successCallBack, eventHandlers.errorCallBack, 'Loading');
   formRuntime?.getOtpLoader();
   return fetchJsonResponse(apiEndPoint, requestObj, 'POST', true);
 };
 
 /**
-   * @name executeInterfaceResponseHandler
-   * @param {object} resPayload
-   */
+ * @name executeInterfaceResponseHandler
+ * @param {object} resPayload
+ */
 const executeInterfaceResponseHandler = (resPayload) => {
   currentFormContext.executeInterfaceResPayload = resPayload;
 };
 
 /**
-   * @name executeInterfaceApi
-   * @param {boolean} showLoader
-   * @param {boolean} hideLoader
-   * @param {object} globals
-   * @return {PROMISE}
-   */
+ * @name executeInterfaceApi
+ * @param {boolean} showLoader
+ * @param {boolean} hideLoader
+ * @param {object} globals
+ * @return {PROMISE}
+ */
 const executeInterfaceApi = (showLoader, hideLoader, globals) => {
   const executeInterfaceRequest = createExecuteInterfaceRequestObj(globals);
   currentFormContext.executeInterfaceReqObj = { ...executeInterfaceRequest };
@@ -277,17 +280,17 @@ const executeInterfaceApi = (showLoader, hideLoader, globals) => {
 };
 
 /**
-   * @name ipaRequestApi ipaRequestApi
-   * @param {string} eRefNumber
-   * @param {string} mobileNumber
-   * @param {string} applicationRefNumber
-   * @param {string} idTokenJwt
-   * @param {string} ipaDuration
-   * @param {string} ipaTimer
-   * @param {boolean} showLoader
-   * @param {boolean} hideLoader
-   * @return {PROMISE}
-   */
+ * @name ipaRequestApi ipaRequestApi
+ * @param {string} eRefNumber
+ * @param {string} mobileNumber
+ * @param {string} applicationRefNumber
+ * @param {string} idTokenJwt
+ * @param {string} ipaDuration
+ * @param {string} ipaTimer
+ * @param {boolean} showLoader
+ * @param {boolean} hideLoader
+ * @return {PROMISE}
+ */
 const ipaRequestApi = (eRefNumber, mobileNumber, applicationRefNumber, idTokenJwt, ipaDuration, ipaTimer, showLoader, hideLoader) => {
   currentFormContext.jwtToken = idTokenJwt;
   const ipaRequestObj = {
@@ -308,12 +311,12 @@ const ipaRequestApi = (eRefNumber, mobileNumber, applicationRefNumber, idTokenJw
 };
 
 /**
-   * Handles the successful response for IPA.
-   *
-   * @param {Object} ipa - The ipa prop in response object.
-   * @param {Object} productEligibility - The product eligibility prop in response object.
-   * @param {Object} globals - The global context object containing form and view configurations.
-   */
+ * Handles the successful response for IPA.
+ *
+ * @param {Object} ipa - The ipa prop in response object.
+ * @param {Object} productEligibility - The product eligibility prop in response object.
+ * @param {Object} globals - The global context object containing form and view configurations.
+ */
 const ipaSuccessHandler = (ipa, productEligibility, globals) => {
   const { productDetails } = productEligibility;
   const [firstProductDetail] = productDetails;
@@ -360,27 +363,46 @@ const ipaSuccessHandler = (ipa, productEligibility, globals) => {
 };
 
 /**
-   * comAddressType param for executeInterface
-   * Returns '1' for office address and '2' for current address.
-   * @param {Object} globals - The global context object containing form and view configurations.
-   * @returns {string} - '1' if the office address is selected, otherwise '2'.
-   */
-const comAddressType = (globals) => {
-  const formData = globals.functions.exportData().form;
-  const deliveryPanel = globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel;
+ * comAddressType param for executeInterface
+ * Returns '1' for office address and '2' for current address.
+ * @param {Object} globals - The global context object containing form and view configurations.
+ * @returns {string} - '1' if the office address is selected, otherwise '2'.
+ */
+const comAddressType = (globals, userRedirected) => {
+  const formData = globals?.functions?.exportData()?.form;
+  const radioBtnValues = globals?.functions?.exportData()?.currentFormContext?.radioBtnValues;
+
+  /* ovd (ETB + NTB) & ETB address no change cases the radioBtnValues.cardDeliveryAdress options expression otherwise deliveryPanelAddress */
+  const { selectKYCMethodOption1: { aadharEKYCVerification }, selectKYCMethodOption2: { aadharBiometricVerification }, selectKYCMethodOption3: { officiallyValidDocumentsMethod } } = globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel;
+  const cardDeliveryAddressCase1 = {
+    cardDeliveryAddressOption1: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.addressDeclarationOVD.currentAddressOVD.currentAddressOVDOption.$value,
+    cardDeliveryAddressOption2: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.addressDeclarationOVD.officeAddressOVD.officeAddressOVDOption.$value,
+  };
+
+  const cardDeliveryAddressCase2 = {
+    cardDeliveryAddressOption1: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel.cardDeliveryAddressOption1.$value,
+    cardDeliveryAddressOption2: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel.cardDeliveryAddressOption2.$value,
+  };
+  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || currentFormContext;
+  const journeyType = formContextCallbackData?.executeInterfaceReqObj?.requestString?.journeyFlag;
+  const biometricStatus = ((aadharBiometricVerification.$value || formData.aadharBiometricVerification) && 'bioKyc') || ((aadharEKYCVerification.$value || formData.aadharEKYCVerification) && 'aadhaar') || ((officiallyValidDocumentsMethod.$value || formData.officiallyValidDocumentsMethod) && 'OVD');
+  const etbAddressChange = formContextCallbackData?.executeInterfaceReqObj?.requestString?.addressEditFlag;
+  const ovdNtbEtbAddressNoChange = ((journeyType === 'ETB') && etbAddressChange === 'N') || ((journeyType === 'ETB') && biometricStatus === 'OVD') || ((journeyType === 'NTB' && biometricStatus === 'OVD'));
+  const deliveryPanelAddress = ovdNtbEtbAddressNoChange ? cardDeliveryAddressCase1 : cardDeliveryAddressCase2;
+
   const cardDelivery = {
-    current: formData?.cardDeliveryAddressOption1 || deliveryPanel.cardDeliveryAddressOption1.$value,
-    office: formData?.cardDeliveryAddressOption2 || deliveryPanel.cardDeliveryAddressOption2.$value,
+    current: userRedirected ? radioBtnValues?.deliveryAddress?.cardDeliveryAddressOption1 : deliveryPanelAddress?.cardDeliveryAddressOption1,
+    office: userRedirected ? radioBtnValues?.deliveryAddress?.cardDeliveryAddressOption2 : deliveryPanelAddress?.cardDeliveryAddressOption2,
   };
   return cardDelivery?.office ? '1' : '2';
 };
 
 /**
-   * Executes an interface post request with the appropriate authentication mode based on the response.
-   *
-   * @param {object} source - The source object (unused in the current implementation).
-   * @param {object} globals - An object containing global variables and functions.
-   */
+ * Executes an interface post request with the appropriate authentication mode based on the response.
+ *
+ * @param {object} source - The source object (unused in the current implementation).
+ * @param {object} globals - An object containing global variables and functions.
+ */
 const executeInterfacePostRedirect = async (source, userRedirected, globals) => {
   const formCallBackContext = globals.functions.exportData()?.currentFormContext;
   const requestObj = currentFormContext.executeInterfaceReqObj || formCallBackContext?.executeInterfaceReqObj;
@@ -392,12 +414,13 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
       requestObj.requestString.authMode = 'IDCOM';
     }
   }
-  requestObj.requestString.comAddressType = comAddressType(globals); // set com address type
+  requestObj.requestString.comAddressType = comAddressType(globals, userRedirected); // set com address type
   const apiEndPoint = urlPath(endpoints.executeInterface);
   const eventHandlers = {
     successCallBack: (response) => {
       if (response?.errorCode === '0000') {
         currentFormContext.jwtToken = response.Id_token_jwt;
+        finalDap(userRedirected, globals);
       } else {
         const formContextCallbackData = globals.functions.exportData()?.currentFormContext;
         const mobileNumber = globals.functions.exportData().form.login.registeredMobileNumber;
