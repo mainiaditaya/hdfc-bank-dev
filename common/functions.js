@@ -16,6 +16,7 @@ import {
   setNameOnCard,
   prefillForm,
   getThisCard,
+  aadharConsent123,
 } from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
 
 import {
@@ -130,4 +131,5 @@ export {
   ipaRequestApi,
   ipaSuccessHandler,
   executeInterfaceResponseHandler,
+  aadharConsent123,
 };

@@ -19,6 +19,7 @@ import {
   moveWizardView,
   createLabelInElement,
   decorateStepper,
+  aadharLangChange,
 } from '../../common/formutils.js';
 import {
   restAPICall,
@@ -30,7 +31,7 @@ import * as CONSTANT from '../../common/constants.js';
 import * as CC_CONSTANT from './constant.js';
 
 const { ENDPOINTS } = CONSTANT;
-const { JOURNEY_NAME } = CC_CONSTANT;
+const { JOURNEY_NAME, DOM_ELEMENT } = CC_CONSTANT;
 const journeyNameConstant = JOURNEY_NAME;
 const { currentFormContext } = corpCreditCardContext;
 // Initialize all Corporate Card Journey Context Variables.
@@ -762,6 +763,36 @@ const setNameOnCard = (name) => {
   cardImg.innerHTML += `<span class='cardNameText'>${name}</span>`;
 };
 
+/**
+ * @name aadharConsent123
+ * @param {Object} globals - The global object containing necessary data for DAP request.
+ */
+const aadharConsent123 = async (globals) => {
+  try {
+    if (typeof window !== 'undefined') {
+      const openModal = (await import('../../blocks/modal/modal.js')).default;
+      const config = {
+        content: document.querySelector(`[name = ${DOM_ELEMENT.selectKyc.aadharModalContent}]`),
+        actionWrapClass: DOM_ELEMENT.selectKyc.modalBtnWrapper,
+        reqConsentAgree: true,
+      };
+      if (typeof formRuntime.aadharConfig === 'undefined') {
+        formRuntime.aadharConfig = config;
+      }
+      await openModal(formRuntime.aadharConfig);
+      aadharLangChange(formRuntime.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage);
+      config?.content?.addEventListener('modalTriggerValue', (event) => {
+        const receivedData = event.detail;
+        if (receivedData?.aadharConsentAgree) {
+          globals.functions.setProperty(globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel.ckycDetailsContinueETBPanel.triggerAadharAPI, { value: 1 });
+        }
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export {
   corpCreditCardContext,
   formRuntime,
@@ -779,4 +810,5 @@ export {
   setNameOnCard,
   prefillForm,
   getThisCard,
+  aadharConsent123,
 };

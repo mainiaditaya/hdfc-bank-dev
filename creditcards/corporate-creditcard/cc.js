@@ -6,7 +6,7 @@ import { DOM_ELEMENT } from './constant.js';
 const {
   identifyYourself,
   otpValidate,
-
+  confirmCard,
 } = DOM_ELEMENT;
 /* startCode for creating Modal */
 /**
@@ -145,6 +145,15 @@ const consent2RequestProductTxtConfig = {
   },
 };
 linkModalFunction(consent2RequestProductTxtConfig);
+
+// 5.wizard screen getCard-viewAll button - modal
+const viewAllBtnPannelConfig = {
+  triggerElement: document.getElementsByName(confirmCard.viewAllLink)?.[0],
+  content: document.getElementsByName(confirmCard.viewAllContent)?.[0],
+  actionWrapClass: confirmCard.modalBtnWrapper,
+  reqConsentAgree: true,
+};
+linkModalFunction(viewAllBtnPannelConfig);
 
 /**
  * Hides the incorrect OTP text message when the user starts typing in the OTP input field.

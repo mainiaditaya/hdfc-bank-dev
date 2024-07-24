@@ -33,6 +33,16 @@ const DOM_ELEMENT = {
     otpNumberField: 'otpNumber',
     incorrectOtpField: '.field-incorrectotptext',
   },
+  confirmCard: {
+    viewAllLink: 'viewAllCardBenefits',
+    viewAllContent: 'viewAllCardBenefitsPanel',
+    modalBtnWrapper: 'button-wrapper',
+  },
+  selectKyc: {
+    aadharModalContent: 'aadharConsentPopup',
+    modalBtnWrapper: 'button-wrapper',
+    defaultLanguage: 'English',
+  },
 };
 export {
   JOURNEY_NAME,

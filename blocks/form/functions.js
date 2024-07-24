@@ -25,6 +25,7 @@ import {
   ipaRequestApi,
   ipaSuccessHandler,
   executeInterfaceResponseHandler,
+  aadharConsent123,
 } from '../../common/functions.js';
 
 import {
@@ -140,4 +141,5 @@ export {
   ipaRequestApi,
   ipaSuccessHandler,
   executeInterfaceResponseHandler,
+  aadharConsent123,
 };
