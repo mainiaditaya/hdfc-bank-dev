@@ -11,6 +11,7 @@ const {
   otpValidate,
   confirmCard,
   ccWizard,
+  yourDetails,
 } = DOM_ELEMENT;
 /* startCode for creating Modal */
 /**
@@ -173,8 +174,7 @@ const removeIncorrectOtpText = () => {
 };
 removeIncorrectOtpText();
 
-////////////
-const errorPannelMethod = (error) => {
+const errorPannelMethod = () => {
   const errorPannel = document.getElementsByName('errorResultPanel')?.[0];
   const resultPanel = document.getElementsByName('resultPanel')?.[0];
   resultPanel.setAttribute('data-visible', true);
@@ -368,3 +368,33 @@ const pageRedirected = (aadhar, idCom) => {
   }
 };
 pageRedirected(aadharRedirect, idComRedirect);
+
+/**
+ * Sets the maximum allowable date for an array of date input fields to today's date.
+ * @param {HTMLElement[]} dateFields - An array of input field elements to be validated.
+ */
+[yourDetails.employedDate, yourDetails.personalDetailDob, identifyYourself.dob].forEach((dateField) => DOM_API.setMaxDateToToday(dateField));
+
+/**
+ *  Validates and restricts input on the OTP number field to allow only numeric characters.
+ *  Hides the incorrect OTP text message when the user starts typing in the OTP input field.
+ */
+const otpFieldValidate = () => {
+  const otpNumber = document.querySelector(`[name= ${identifyYourself.otpNumber}]`);
+  const incorectOtp = document.querySelector(`.${identifyYourself.incorrectOtp}`);
+  otpNumber?.addEventListener('input', (e) => {
+    if (e.target.value) {
+      const input = e.target;
+      input.value = input.value.replace(/\D/g, ''); // Replace non-numeric characters with an empty string
+      incorectOtp.style.display = 'none';
+    }
+  });
+};
+otpFieldValidate();
+
+/**
+ * Applies the restrictToAlphabetsNoSpaces function to an array of input field names.
+ * The function restricts input to alphabetic characters only, excluding numbers, symbols, and spaces.
+ * @param {string[]} inputNames - An array of input field names to be restricted.
+ */
+[yourDetails.firstName, yourDetails.middleName, yourDetails.lastName].forEach((inputField) => DOM_API.restrictToAlphabetsNoSpaces(inputField));

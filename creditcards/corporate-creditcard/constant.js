@@ -28,6 +28,9 @@ const DOM_ELEMENT = {
     checkbox1ProductLabel: '.field-checkboxconsent1label',
     checkbox2ProductLabel: '.field-checkboxconsent2label',
     anchorTagClass: 'link',
+    dob: 'dateOfBirth',
+    otpNumber: 'otpNumber',
+    incorrectOtp: 'field-incorrectotptext',
   },
   otpValidate: {
     otpNumberField: 'otpNumber',
@@ -46,6 +49,13 @@ const DOM_ELEMENT = {
   ccWizard: {
     wizardPanel: 'corporateCardWizardView',
     confirmAndSubmitPanel: 'confirmAndSubmitPanel',
+  },
+  yourDetails: {
+    employedDate: 'employedFrom',
+    personalDetailDob: 'dobPersonalDetails',
+    firstName: 'firstName',
+    middleName: 'middleName',
+    lastName: 'lastName',
   },
 };
 export {

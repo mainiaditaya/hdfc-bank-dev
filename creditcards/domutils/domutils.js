@@ -220,6 +220,30 @@ const hideLoaderGif = () => {
   }
 };
 
+/**
+ * Sets the maximum allowable date for an input field to today's date.
+ * @param {string} inputName - The name attribute of the input field to be validated.
+ */
+const setMaxDateToToday = (inputName) => {
+  const calendarEl = document.querySelector(`[name= ${inputName}]`);
+  calendarEl?.setAttribute('max', new Date()?.toISOString()?.split('T')?.[0]);
+};
+
+/**
+ * Filters out non-numeric characters,spaces and special characters from the input value.
+ * This function binds an 'input' event listener to the input field identified by the given name attribute.
+ *
+ * @param {string} inputName - The name attribute value of the input field to be validated.
+ * @returns {void}
+ */
+const restrictToAlphabetsNoSpaces = (inputName) => {
+  const inputField = document.querySelector(`[name= ${inputName}]`);
+  inputField.addEventListener('input', (e) => {
+    const input = e.target;
+    input.value = input.value.replace(/(?![A-Z])[`!@#$%^&*_=[\]{};':"\\|,.<>/?~0-9()+-_ ]/g, ''); // Replace non-numeric characters with an empty string
+  });
+};
+
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -231,4 +255,6 @@ export {
   decorateStepper,
   displayLoader,
   hideLoaderGif,
+  setMaxDateToToday,
+  restrictToAlphabetsNoSpaces,
 };
