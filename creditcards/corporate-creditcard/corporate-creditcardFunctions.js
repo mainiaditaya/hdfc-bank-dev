@@ -554,7 +554,7 @@ const validateEmailID = async (email, globals) => {
   const method = 'POST';
   try {
     const emailValid = await getJsonResponse(url, payload, method);
-    if (emailValid) {
+    if (emailValid === true) {
       globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress, { valid: true });
     } else {
       globals.functions.markFieldAsInvalid('$form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress', invalidMsg, { useQualifiedName: true });
@@ -753,14 +753,9 @@ const validateLogin = (globals) => {
 /**
  * @name setNameOnCard
  * @param {string} name - name of the dropdow.
+ * @param globals - The global object containing necessary data for DAP request.
  */
-const setNameOnCard = (name) => {
-  const cardImg = document.querySelector('.field-cardimage');
-  document.querySelectorAll('span.cardNameText')?.forEach((span) => {
-    span.remove();
-  });
-  cardImg.innerHTML += `<span class='cardNameText'>${name}</span>`;
-};
+const setNameOnCard = (name, globals) => globals.functions.setProperty(globals.form.corporateCardWizardView.confirmCardPanel.cardBenefitsPanel.CorporatetImageAndNamePanel.name, { value: name });
 
 export {
   corpCreditCardContext,
