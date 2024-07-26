@@ -145,10 +145,11 @@ fieldset fieldset {
 
   .cardNameText {
     position: absolute;
-    bottom: 20px;
-    left: 30px;
+    bottom: 115px;
+    left: 45px;
     font-size: var(--body-x-sm-font-size);
     font-weight: var(--font-weight-medium);
+    color: var(--color-interface-background-primary)
   }
 
   .field-nameoncarddropdown {
@@ -542,6 +543,9 @@ fieldset fieldset {
     .field-cardbenefitsfeaturespanel {
       padding-left: 28px;
     }
+    .field-corporatetimageandnamepanel .cardNameText{
+      bottom: 125px;
+    }
   }
 }
 
@@ -609,6 +613,10 @@ main .form form .field-corporatecardwizardview.wizard {
       display: none !important;
     }
   }
+  .field-corporatetimageandnamepanel .cardNameText{
+    bottom: 90px;
+    left: 50px;
+  }
 }
 }
 
@@ -629,6 +637,9 @@ main .form form .field-corporatecardwizardview.wizard {
     div[class*='field-identityverificationtext']{
       margin: 7px 0 19px !important;
     }
+  }
+  .field-corporatetimageandnamepanel .cardNameText{
+    bottom: 90px;
   }
 }
 }
