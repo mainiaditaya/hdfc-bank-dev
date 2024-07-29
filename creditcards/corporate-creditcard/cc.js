@@ -199,7 +199,7 @@ const successPannelMethod = async (data) => {
   const journeyName = executeInterfaceReqObj?.requestString?.journeyFlag;
   const addressEditFlag = executeInterfaceReqObj?.requestString?.addressEditFlag;
   const { applicationNumber, vkycUrl } = finalDapResponse;
-  const { currentFormContext } = (await import('../../common/journey-utils.js')).corpCreditCardContext;
+  const { CURRENT_FORM_CONTEXT: currentFormContext } = (await import('../../common/constants.js'));
   currentFormContext.VKYC_URL = vkycUrl;
   // const { result: { mobileValid } } = aadharOtpValData;
   const mobileValid = aadharOtpValData?.result?.mobileValid;

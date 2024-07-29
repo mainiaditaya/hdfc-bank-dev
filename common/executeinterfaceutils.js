@@ -6,7 +6,7 @@ import {
   composeNameOption,
   setSelectOptions,
 } from './formutils.js';
-import { corpCreditCardContext, formRuntime, invokeJourneyDropOffUpdate } from './journey-utils.js';
+import { formRuntime, invokeJourneyDropOffUpdate } from './journey-utils.js';
 import {
   restAPICall,
   fetchJsonResponse,
@@ -14,9 +14,7 @@ import {
   hideLoaderGif,
 } from './makeRestAPI.js';
 import finalDap from './finaldaputils.js';
-import { ENDPOINTS as endpoints, BASEURL as baseUrl } from './constants.js';
-
-const { currentFormContext } = corpCreditCardContext;
+import { ENDPOINTS as endpoints, BASEURL as baseUrl, CURRENT_FORM_CONTEXT as currentFormContext } from './constants.js';
 
 const GENDER_MAP = {
   M: '1',

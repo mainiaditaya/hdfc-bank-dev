@@ -4,7 +4,6 @@ import {
   otpValidation,
   customSetFocus,
   journeyResponseHandler,
-  corpCreditCardContext,
   createJourneyId,
   sendAnalytics,
   resendOTP,
@@ -47,8 +46,7 @@ import {
   sendGenericClickEvent,
 } from '../../common/analytics.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
-
-const { currentFormContext } = corpCreditCardContext;
+import { CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constants.js';
 
 /**
  * Get Full Name

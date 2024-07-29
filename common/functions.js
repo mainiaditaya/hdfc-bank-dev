@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import {
-  corpCreditCardContext,
   journeyResponseHandler,
   createJourneyId,
   sendAnalytics,
@@ -54,9 +53,8 @@ import {
 import * as CONSTANT from './constants.js';
 import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
 
-const { ENDPOINTS } = CONSTANT;
+const { ENDPOINTS, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME } = CC_CONSTANT;
-const { currentFormContext } = corpCreditCardContext;
 
 // dynamically we can change according to journey
 const journeyNameConstant = JOURNEY_NAME;
@@ -431,7 +429,6 @@ export {
   otpValidation,
   customSetFocus,
   journeyResponseHandler,
-  corpCreditCardContext,
   createJourneyId,
   sendAnalytics,
   resendOTP,

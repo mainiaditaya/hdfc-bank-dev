@@ -10,7 +10,7 @@ import { fetchJsonResponse } from './makeRestAPI.js';
 import * as CONSTANT from './constants.js';
 import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
 
-const { ENDPOINTS, CHANNEL } = CONSTANT;
+const { ENDPOINTS, CHANNEL, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME } = CC_CONSTANT;
 const journeyNameConstant = JOURNEY_NAME;
 const channelConstant = CHANNEL;
@@ -29,19 +29,9 @@ function createJourneyId(visitMode, journeyAbbreviation, channel, globals) {
   globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
 }
 
-const corpCreditCardContext = {
-  currentFormContext: {},
-};
 const formRuntime = {};
 
-const getCurrentContext = () => corpCreditCardContext.currentFormContext;
-
-const setCurrentContext = (formContext) => {
-  this.corpCreditCardContext.currentFormContext = formContext;
-  if (!this.corpCreditCardContext.currentFormContext.isSet) {
-    this.corpCreditCardContext.currentFormContext.isSet = true;
-  }
-};
+const getCurrentContext = () => currentFormContext;
 
 /**
  * @name invokeJourneyDropOff to log on success and error call backs of api calls
@@ -86,7 +76,6 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
  * @return {PROMISE}
  */
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
-  const { currentFormContext } = corpCreditCardContext;
   // temporary_hotfix_radioBtnValues_undefined_issue
   /* storing the radio btn values in current form context */
   if ((state === 'IDCOM_REDIRECTION_INITIATED') || (state === 'CUSTOMER_AADHAAR_PRE_AADHAR_INIT')) {
@@ -191,9 +180,7 @@ export {
   invokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
   journeyResponseHandlerUtil,
-  corpCreditCardContext,
   getCurrentContext,
-  setCurrentContext,
   createJourneyId,
   formRuntime,
 };

@@ -2,7 +2,6 @@
 import {
   invokeJourneyDropOffUpdate,
   journeyResponseHandlerUtil,
-  corpCreditCardContext,
   createJourneyId,
   formRuntime,
   invokeJourneyDropOff,
@@ -30,10 +29,9 @@ import { sendAnalyticsEvent } from '../../common/analytics.js';
 import * as CONSTANT from '../../common/constants.js';
 import * as CC_CONSTANT from './constant.js';
 
-const { ENDPOINTS } = CONSTANT;
+const { ENDPOINTS, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME, DOM_ELEMENT } = CC_CONSTANT;
 const journeyNameConstant = JOURNEY_NAME;
-const { currentFormContext } = corpCreditCardContext;
 // Initialize all Corporate Card Journey Context Variables.
 currentFormContext.journeyName = journeyNameConstant;
 currentFormContext.journeyType = 'NTB';
@@ -783,7 +781,6 @@ const aadharConsent123 = async (globals) => {
 };
 
 export {
-  corpCreditCardContext,
   formRuntime,
   journeyResponseHandler,
   createJourneyId,
