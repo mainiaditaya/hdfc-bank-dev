@@ -7,6 +7,11 @@
   --loader-image-url: url('loader.gif');
 }
 
+a:any-link, b.link, a:any-link:hover, b.link:hover {
+  font-weight: var(--font-weight-bold) !important;
+  font-size: var(--body-sm-font-size) !important;
+}
+
 body,
 .section.form-container {
   background-color: var(--color-interface-background-secondary);
