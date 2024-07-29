@@ -681,7 +681,7 @@ function customSetFocus(errorMessage, numRetries, globals) {
  * @param {Object} globals - The global object containing necessary data for DAP request.
 */
 const validateLogin = (globals) => {
-  const { $value, $name } = globals.form.loginPanel.identifierPanel.dateOfBirth;
+  const { $value } = globals.form.loginPanel.identifierPanel.dateOfBirth;
   const dobValue = globals.form.loginPanel.identifierPanel.dateOfBirth.$value;
   const panValue = globals.form.loginPanel.identifierPanel.pan.$value;
   const panDobSelection = globals.form.loginPanel.identifierPanel.panDobSelection.$value;
@@ -696,14 +696,9 @@ const validateLogin = (globals) => {
   switch (radioSelect) {
     case 'DOB':
       if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
-        const calendarEl = document.querySelector(`[name= ${$name}]`);
-        const calendarElParent = calendarEl?.parentElement;
-        const dobDefFieldDesc = calendarElParent.querySelector('.field-description');
-        calendarElParent.setAttribute('data-empty', true);
         const minAge = 18;
         const maxAge = 70;
         const dobErrorText = `Age should be between ${minAge} to ${maxAge}`;
-        dobDefFieldDesc.style.display = 'none';
         const ageValid = ageValidator(minAge, maxAge, $value);
         if (ageValid && consentFirst) {
           globals.functions.setProperty(globals.form.getOTPbutton, { enabled: true });
@@ -714,7 +709,6 @@ const validateLogin = (globals) => {
           globals.functions.setProperty(globals.form.loginPanel.identifierPanel.dateOfBirth, { valid: true });
         }
         if (!ageValid) {
-          dobDefFieldDesc.style.display = 'block';
           globals.functions.markFieldAsInvalid('$form.loginPanel.identifierPanel.dateOfBirth', dobErrorText, { useQualifiedName: true });
           globals.functions.setProperty(globals.form.getOTPbutton, { enabled: false });
         }
