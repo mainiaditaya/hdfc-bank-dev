@@ -1,9 +1,10 @@
-import {
-  formRuntime,
-} from './journey-utils.js';
 import { urlPath } from './formutils.js';
 import { fetchJsonResponse } from './makeRestAPI.js';
-import { ENDPOINTS as endpoints, CURRENT_FORM_CONTEXT as currentFormContext } from './constants.js';
+import {
+  ENDPOINTS as endpoints,
+  CURRENT_FORM_CONTEXT as currentFormContext,
+  FORM_RUNTIME as formRuntime,
+} from './constants.js';
 import { ID_COM as idCom } from '../creditcards/corporate-creditcard/constant.js';
 
 /**

@@ -3,8 +3,12 @@ import {
   urlPath,
   convertDateToDdMmYyyy,
 } from './formutils.js';
-import { formRuntime } from './journey-utils.js';
-import { ENDPOINTS as endpoints, DEAD_PAN_STATUS as deadPanStatus, CURRENT_FORM_CONTEXT as currentFormContext } from './constants.js';
+import {
+  ENDPOINTS as endpoints,
+  DEAD_PAN_STATUS as deadPanStatus,
+  CURRENT_FORM_CONTEXT as currentFormContext,
+  FORM_RUNTIME as formRuntime,
+} from './constants.js';
 
 /**
  * validatePan - creates PAN validation request and executes API.

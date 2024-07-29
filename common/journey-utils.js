@@ -29,8 +29,6 @@ function createJourneyId(visitMode, journeyAbbreviation, channel, globals) {
   globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
 }
 
-const formRuntime = {};
-
 const getCurrentContext = () => currentFormContext;
 
 /**
@@ -78,7 +76,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
   // temporary_hotfix_radioBtnValues_undefined_issue
   /* storing the radio btn values in current form context */
-  if ((state === 'IDCOM_REDIRECTION_INITIATED') || (state === 'CUSTOMER_AADHAAR_PRE_AADHAR_INIT')) {
+  if ((state === 'IDCOM_REDIRECTION_INITIATED') || (state === 'CUSTOMER_AADHAR_INIT')) {
     // CUSTOMER_AADHAAR_PRE_AADHAR_INIT
     // CUSTOMER_AADHAR_INIT
     const { form } = globals.functions.exportData();
@@ -182,5 +180,4 @@ export {
   journeyResponseHandlerUtil,
   getCurrentContext,
   createJourneyId,
-  formRuntime,
 };

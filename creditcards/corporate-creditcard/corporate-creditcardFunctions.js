@@ -3,7 +3,6 @@ import {
   invokeJourneyDropOffUpdate,
   journeyResponseHandlerUtil,
   createJourneyId,
-  formRuntime,
   invokeJourneyDropOff,
 } from '../../common/journey-utils.js';
 import {
@@ -29,7 +28,11 @@ import { sendAnalyticsEvent } from '../../common/analytics.js';
 import * as CONSTANT from '../../common/constants.js';
 import * as CC_CONSTANT from './constant.js';
 
-const { ENDPOINTS, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
+const {
+  ENDPOINTS,
+  CURRENT_FORM_CONTEXT: currentFormContext,
+  FORM_RUNTIME: formRuntime,
+} = CONSTANT;
 const { JOURNEY_NAME, DOM_ELEMENT } = CC_CONSTANT;
 const journeyNameConstant = JOURNEY_NAME;
 // Initialize all Corporate Card Journey Context Variables.

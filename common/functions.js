@@ -4,7 +4,6 @@ import {
   createJourneyId,
   sendAnalytics,
   resendOTP,
-  formRuntime,
   customSetFocus,
   validateLogin,
   getAddressDetails,
@@ -53,7 +52,11 @@ import {
 import * as CONSTANT from './constants.js';
 import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
 
-const { ENDPOINTS, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
+const {
+  ENDPOINTS,
+  CURRENT_FORM_CONTEXT: currentFormContext,
+  FORM_RUNTIME: formRuntime,
+} = CONSTANT;
 const { JOURNEY_NAME } = CC_CONSTANT;
 
 // dynamically we can change according to journey
