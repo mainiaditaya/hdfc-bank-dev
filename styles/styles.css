@@ -14,8 +14,8 @@
  @import url('./login-page.css');
  @import url('./accordion-pages.css');
  @import url('./header-banner.css');
- 
- 
+
+
  :root {
    /* colors */
    --link-color: #1C3FCA;
@@ -24,17 +24,17 @@
    --light-color: #eee;
    --dark-color: #ccc;
    --text-color: black;
- 
+
    /* fonts */
    --body-font-family: var(--font-family-default), roboto;
    --heading-font-family: var(--font-family-default), roboto;
    --fixed-font-family: var(--font-family-default), roboto;
- 
+
    /* body sizes */
    --body-font-size-m: 22px;
    --body-font-size-s: 18px;
    --body-font-size-xs: 16px;
- 
+
    /* heading sizes */
    --heading-font-size-xxl: 48px;
    --heading-font-size-xl: 40px;
@@ -42,18 +42,24 @@
    --heading-font-size-m: 24px;
    --heading-font-size-s: 20px;
    --heading-font-size-xs: 18px;
- 
+
    /* nav height */
    --nav-height: 0;
  }
- 
+
  @font-face {
    font-family: roboto-fallback;
    size-adjust: 100.06%;
    ascent-override: 95%;
    src: local('Arial');
  }
- 
+
+@font-face {
+    font-family: inter-fallback;
+    src: local('Arial');
+    size-adjust: 105.97%;
+}
+
  @media (width >= 900px) {
    :root {
      --heading-font-size-xxl: 60px;
@@ -64,7 +70,7 @@
      --heading-font-size-xs: 22px;
    }
  }
- 
+
  body {
    font-size: var(--body-font-size-m);
    margin: 0;
@@ -74,15 +80,15 @@
    background-color: var(--background-color);
    display: none;
  }
- 
+
  body.appear {
    display: block;
  }
- 
+
  header {
    height: var(--nav-height);
  }
- 
+
  h1,
  h2,
  h3,
@@ -96,31 +102,31 @@
    margin-bottom: 0.5em;
    scroll-margin: calc(var(--nav-height) + 1em);
  }
- 
+
  h1 {
    font-size: var(--heading-font-size-xxl);
  }
- 
+
  h2 {
    font-size: var(--heading-font-size-xl);
  }
- 
+
  h3 {
    font-size: var(--heading-font-size-l);
  }
- 
+
  h4 {
    font-size: var(--heading-font-size-m);
  }
- 
+
  h5 {
    font-size: var(--heading-font-size-s);
  }
- 
+
  h6 {
    font-size: var(--heading-font-size-xs);
  }
- 
+
  p,
  dl,
  ol,
@@ -130,21 +136,21 @@
    margin-top: 1em;
    margin-bottom: 1em;
  }
- 
+
  code,
  pre {
    font-family: var(--fixed-font-family);
    font-size: var(--body-font-size-s);
  }
- 
+
  code {
    padding: 0.125em;
  }
- 
+
  pre {
    overflow: scroll;
  }
- 
+
  main pre {
    background-color: var(--light-color);
    padding: 1em;
@@ -152,18 +158,18 @@
    overflow-x: auto;
    white-space: pre;
  }
- 
+
  /* links */
  a:any-link {
    color: var(--link-color);
    text-decoration: none;
  }
- 
+
  a:hover {
    text-decoration: underline;
    color: var(--link-hover-color);
  }
- 
+
  /* buttons */
  a.button:any-link,
  button {
@@ -185,7 +191,7 @@
    text-overflow: ellipsis;
    border-radius: 30px;
  }
- 
+
  a.button:hover,
  a.button:focus,
  button:hover,
@@ -193,58 +199,57 @@
    background-color: var(--link-hover-color);
    cursor: pointer;
  }
- 
+
  button:disabled,
  button:disabled:hover {
    background-color: var(--light-color);
    cursor: unset;
  }
- 
+
  a.button.secondary,
  button.secondary {
    background-color: unset;
    border: 2px solid currentcolor;
    color: var(--text-color);
  }
- 
+
  main img {
    max-width: 100%;
    width: auto;
    height: auto;
  }
- 
+
  .icon {
    display: inline-block;
    height: 24px;
    width: 24px;
  }
- 
+
  .icon img {
    height: 100%;
    width: 100%;
  }
- 
+
  /* sections */
  main .section {
    padding: 64px 16px;
  }
- 
+
  @media (width >= 600px) {
    main .section {
      padding: 64px 32px;
    }
  }
- 
+
  @media (width >= 900px) {
    .section > div {
      max-width: 1200px;
      margin: auto;
    }
  }
- 
+
  /* section metadata */
  main .section.light,
  main .section.highlight {
    background-color: var(--light-color);
  }
- 

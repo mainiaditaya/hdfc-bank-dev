@@ -4348,9 +4348,6 @@ class DateField extends Field {
         if (!this._jsonModel.placeholder) {
             this._jsonModel.placeholder = parseDateSkeleton(this._jsonModel.editFormat, this.locale);
         }
-        if (!this._jsonModel.description) {
-            this._jsonModel.description = `To enter today's date use ${formatDate(new Date(), this.locale, this._jsonModel.editFormat)}`;
-        }
     }
     get value() {
         return super.value;

@@ -555,7 +555,7 @@ const validateEmailID = async (email, globals) => {
   const method = 'POST';
   try {
     const emailValid = await getJsonResponse(url, payload, method);
-    if (emailValid) {
+    if (emailValid === true) {
       globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress, { valid: true });
     } else {
       globals.functions.markFieldAsInvalid('$form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress', invalidMsg, { useQualifiedName: true });
@@ -682,7 +682,7 @@ function customSetFocus(errorMessage, numRetries, globals) {
  * @param {Object} globals - The global object containing necessary data for DAP request.
 */
 const validateLogin = (globals) => {
-  const { $value, $name } = globals.form.loginPanel.identifierPanel.dateOfBirth;
+  const { $value } = globals.form.loginPanel.identifierPanel.dateOfBirth;
   const dobValue = globals.form.loginPanel.identifierPanel.dateOfBirth.$value;
   const panValue = globals.form.loginPanel.identifierPanel.pan.$value;
   const panDobSelection = globals.form.loginPanel.identifierPanel.panDobSelection.$value;
@@ -697,14 +697,9 @@ const validateLogin = (globals) => {
   switch (radioSelect) {
     case 'DOB':
       if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
-        const calendarEl = document.querySelector(`[name= ${$name}]`);
-        const calendarElParent = calendarEl?.parentElement;
-        const dobDefFieldDesc = calendarElParent.querySelector('.field-description');
-        calendarElParent.setAttribute('data-empty', true);
         const minAge = 18;
         const maxAge = 70;
         const dobErrorText = `Age should be between ${minAge} to ${maxAge}`;
-        dobDefFieldDesc.style.display = 'none';
         const ageValid = ageValidator(minAge, maxAge, $value);
         if (ageValid && consentFirst) {
           globals.functions.setProperty(globals.form.getOTPbutton, { enabled: true });
@@ -715,7 +710,6 @@ const validateLogin = (globals) => {
           globals.functions.setProperty(globals.form.loginPanel.identifierPanel.dateOfBirth, { valid: true });
         }
         if (!ageValid) {
-          dobDefFieldDesc.style.display = 'block';
           globals.functions.markFieldAsInvalid('$form.loginPanel.identifierPanel.dateOfBirth', dobErrorText, { useQualifiedName: true });
           globals.functions.setProperty(globals.form.getOTPbutton, { enabled: false });
         }
@@ -754,14 +748,9 @@ const validateLogin = (globals) => {
 /**
  * @name setNameOnCard
  * @param {string} name - name of the dropdow.
+ * @param globals - The global object containing necessary data for DAP request.
  */
-const setNameOnCard = (name) => {
-  const cardImg = document.querySelector('.field-cardimage');
-  document.querySelectorAll('span.cardNameText')?.forEach((span) => {
-    span.remove();
-  });
-  cardImg.innerHTML += `<span class='cardNameText'>${name}</span>`;
-};
+const setNameOnCard = (name, globals) => globals.functions.setProperty(globals.form.corporateCardWizardView.confirmCardPanel.cardBenefitsPanel.CorporatetImageAndNamePanel.name, { value: name });
 
 /**
  * @name aadharConsent123
