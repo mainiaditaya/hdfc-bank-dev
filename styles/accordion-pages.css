@@ -543,6 +543,7 @@ fieldset fieldset {
     .field-cardbenefitsfeaturespanel {
       padding-left: 28px;
     }
+    
     .field-corporatetimageandnamepanel .cardNameText{
       bottom: 125px;
     }
@@ -613,6 +614,7 @@ main .form form .field-corporatecardwizardview.wizard {
       display: none !important;
     }
   }
+
   .field-corporatetimageandnamepanel .cardNameText{
     bottom: 90px;
     left: 50px;
@@ -638,6 +640,7 @@ main .form form .field-corporatecardwizardview.wizard {
       margin: 7px 0 19px !important;
     }
   }
+  
   .field-corporatetimageandnamepanel .cardNameText{
     bottom: 90px;
   }
