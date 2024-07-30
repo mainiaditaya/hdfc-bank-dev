@@ -1,68 +1,36 @@
 /* eslint-disable no-console */
-// import {
-//   journeyResponseHandler,
-//   createJourneyId,
-//   sendAnalytics,
-//   resendOTP,
-//   customSetFocus,
-//   validateLogin,
-//   getAddressDetails,
-//   pinCodeMaster,
-//   validateEmailID,
-//   currentAddressToggleHandler,
-//   otpValHandler,
-//   setNameOnCard,
-//   prefillForm,
-//   getThisCard,
-//   aadharConsent123,
-// } from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
-
-// import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
-
-// import { invokeJourneyDropOffUpdate, invokeJourneyDropOff, invokeJourneyDropOffByParam } from '../creditcards/corporate-creditcard/journey-utils.js';
-
 import {
   validatePan,
   panAPISuccesHandler,
 } from './panvalidation.js';
 
-// import {
-//   executeInterfaceApiFinal,
-//   executeInterfaceApi,
-//   ipaRequestApi,
-//   ipaSuccessHandler,
-//   executeInterfaceResponseHandler,
-//   executeInterfacePostRedirect,
-// } from '../creditcards/corporate-creditcard/executeinterfaceutils.js';
-
-// import documentUpload from '../creditcards/corporate-creditcard/docuploadutils.js';
-
 import {
-  executeInterfaceApiFinal,
-  executeInterfaceApi,
-  ipaRequestApi,
-  ipaSuccessHandler,
-  executeInterfacePostRedirect,
-  executeInterfaceResponseHandler,
-  journeyResponseHandler,
-  createJourneyId,
-  sendAnalytics,
-  resendOTP,
-  customSetFocus,
-  validateLogin,
-  getAddressDetails,
-  pinCodeMaster,
-  validateEmailID,
-  currentAddressToggleHandler,
-  otpValHandler,
-  setNameOnCard,
-  prefillForm,
-  getThisCard,
-  aadharConsent123,
-  invokeJourneyDropOff,
-  invokeJourneyDropOffByParam,
-  invokeJourneyDropOffUpdate,
-  documentUpload,
+// executeInterfaceApiFinal,
+// executeInterfaceApi,
+// ipaRequestApi,
+// ipaSuccessHandler,
+// executeInterfacePostRedirect,
+// executeInterfaceResponseHandler,
+// journeyResponseHandler,
+// createJourneyId,
+// sendAnalytics,
+// resendOTP,
+// customSetFocus,
+// validateLogin,
+// getAddressDetails,
+// pinCodeMaster,
+// validateEmailID,
+// currentAddressToggleHandler,
+// otpValHandler,
+// setNameOnCard,
+// prefillForm,
+// getThisCard,
+// aadharConsent123,
+// invokeJourneyDropOff,
+// invokeJourneyDropOffByParam,
+// invokeJourneyDropOffUpdate,
+// documentUpload,
+// checkMode
 } from '../creditcards/corporate-creditcard/cc-functions.js';
 
 import fetchAuthCode from './idcomutils.js';
@@ -72,7 +40,7 @@ import {
   getTimeStamp,
   clearString,
   santizedFormDataWithContext,
-  formUtil,
+  // formUtil,
 } from './formutils.js';
 
 import {
@@ -146,76 +114,6 @@ function otpValidation(mobileNumber, pan, dob, otpNumber) {
   const path = urlPath(ENDPOINTS.otpValFetchAssetDemog);
   formRuntime?.otpValLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
-}
-
-/**
- * @name checkMode - check the location
- * @param {object} globals -
- * @return {PROMISE}
- */
-function checkMode(globals) {
-  const formData = globals.functions.exportData();
-  const idcomVisit = formData?.queryParams?.authmode; // "DebitCard"
-  const aadharVisit = formData?.queryParams?.visitType; // "EKYC_AUTH
-  // temporarly added referenceNumber check for IDCOMM redirection to land on submit screen.
-  if (aadharVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message && formData?.aadhaar_otp_val_data?.message === 'Aadhaar OTP Validate success') {
-    try {
-      globals.functions.setProperty(globals.form.corporateCardWizardView, { visible: true });
-      globals.functions.setProperty(globals.form.otpPanel, { visible: false });
-      globals.functions.setProperty(globals.form.loginPanel, { visible: false });
-      globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
-      globals.functions.setProperty(globals.form.consentFragment, { visible: false });
-      globals.functions.setProperty(globals.form.welcomeText, { visible: false });
-      const {
-        result: {
-          Address1, Address2, Address3, City, State, Zipcode,
-        },
-      } = formData.aadhaar_otp_val_data;
-      const {
-        executeInterfaceReqObj: {
-          requestString: {
-            officeAddress1, officeAddress2, officeAddress3, officeCity, officeState, officeZipCode,
-            communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip,
-          },
-        },
-      } = formData.currentFormContext;
-      const aadharAddress = [Address1, Address2, Address3, City, State, Zipcode]?.filter(Boolean)?.join(', ');
-      const officeAddress = [officeAddress1, officeAddress2, officeAddress3, officeCity, officeState, officeZipCode]?.filter(Boolean)?.join(', ');
-      const communicationAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip]?.filter(Boolean)?.join(', ');
-      const { AddressDeclarationAadhar, addressDeclarationOffice, CurrentAddressDeclaration } = globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel;
-      globals.functions.setProperty(AddressDeclarationAadhar.aadharAddressSelectKYC, { value: aadharAddress });
-      globals.functions.setProperty(addressDeclarationOffice.officeAddressSelectKYC, { value: officeAddress });
-      globals.functions.setProperty(CurrentAddressDeclaration.currentResidenceAddress, { value: communicationAddress });
-      invokeJourneyDropOffUpdate(
-        'AADHAAR_REDIRECTION_SUCCESS',
-        formData.loginPanel.mobilePanel.registeredMobileNumber,
-        formData.runtime.leadProifileId,
-        formData.runtime.leadProifileId.journeyId,
-        globals,
-      );
-    } catch (e) {
-      invokeJourneyDropOffUpdate(
-        'AADHAAR_REDIRECTION_FAILURE',
-        formData.loginPanel.mobilePanel.registeredMobileNumber,
-        formData.runtime.leadProifileId,
-        formData.runtime.leadProifileId.journeyId,
-        globals,
-      );
-    }
-  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard')) { // debit card or credit card flow
-    const resultPanel = formUtil(globals, globals.form.resultPanel);
-    resultPanel.visible(false);
-    globals.functions.setProperty(globals.form.otpPanel, { visible: false });
-    globals.functions.setProperty(globals.form.loginPanel, { visible: false });
-    globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
-    globals.functions.setProperty(globals.form.consentFragment, { visible: false });
-    globals.functions.setProperty(globals.form.welcomeText, { visible: false });
-    globals.functions.setProperty(globals.form.resultPanel.successResultPanel, { visible: false });
-    globals.functions.setProperty(globals.form.resultPanel.errorResultPanel, { visible: false });
-    globals.functions.setProperty(globals.form.confirmResult, { visible: false });
-    const userRedirected = true;
-    executeInterfacePostRedirect('idCom', userRedirected, globals);
-  }
 }
 
 /**
@@ -460,37 +358,37 @@ function idcomRedirection() {
 export {
   getOTP,
   otpValidation,
-  customSetFocus,
-  journeyResponseHandler,
-  createJourneyId,
-  sendAnalytics,
-  resendOTP,
+  // customSetFocus,
+  // journeyResponseHandler,
+  // createJourneyId,
+  // sendAnalytics,
+  // resendOTP,
   hideLoaderGif,
-  validateLogin,
-  getAddressDetails,
-  pinCodeMaster,
-  validateEmailID,
-  currentAddressToggleHandler,
-  otpValHandler,
-  setNameOnCard,
-  prefillForm,
-  getThisCard,
+  // validateLogin,
+  // getAddressDetails,
+  // pinCodeMaster,
+  // validateEmailID,
+  // currentAddressToggleHandler,
+  // otpValHandler,
+  // setNameOnCard,
+  // prefillForm,
+  // getThisCard,
   validatePan,
   panAPISuccesHandler,
-  executeInterfaceApi,
-  executeInterfaceApiFinal,
-  ipaRequestApi,
-  ipaSuccessHandler,
-  executeInterfaceResponseHandler,
-  aadharConsent123,
-  documentUpload,
+  // executeInterfaceApi,
+  // executeInterfaceApiFinal,
+  // ipaRequestApi,
+  // ipaSuccessHandler,
+  // executeInterfaceResponseHandler,
+  // aadharConsent123,
+  // documentUpload,
   fetchAuthCode,
-  checkMode,
+  // checkMode,
   aadharInit,
   redirect,
   reloadPage,
   idcomUrlSet,
   idcomRedirection,
-  executeInterfacePostRedirect,
-  invokeJourneyDropOffUpdate, invokeJourneyDropOff, invokeJourneyDropOffByParam,
+  // executeInterfacePostRedirect,
+  // invokeJourneyDropOffUpdate, invokeJourneyDropOff, invokeJourneyDropOffByParam,
 };

@@ -14,6 +14,7 @@ import {
   prefillForm,
   getThisCard,
   aadharConsent123,
+  checkMode,
 } from './corporate-creditcardFunctions.js';
 
 import {
@@ -68,4 +69,5 @@ export {
   journeyResponseHandlerUtil,
   getCurrentContext,
   documentUpload,
+  checkMode,
 };
