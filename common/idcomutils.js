@@ -4,8 +4,8 @@ import {
   ENDPOINTS as endpoints,
   CURRENT_FORM_CONTEXT as currentFormContext,
   FORM_RUNTIME as formRuntime,
+  ID_COM as idCom,
 } from './constants.js';
-import { ID_COM as idCom } from '../creditcards/corporate-creditcard/constant.js';
 
 /**
    * Creates an IdCom request object based on the provided global data.

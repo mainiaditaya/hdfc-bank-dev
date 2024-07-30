@@ -25,6 +25,22 @@ const CURRENT_FORM_CONTEXT = {};
 
 const FORM_RUNTIME = {};
 
+const ID_COM = {
+  productCode: 'CORPCC',
+  scopeMap: {
+    only_casa: {
+      no: 'AACC',
+      yes: 'ADOBE_PACC',
+    },
+    casa_asset: {
+      no: 'AACC',
+      yes: 'ADOBE_PACC',
+    },
+    casa_cc: 'PADC',
+    only_cc: 'OYCC',
+  },
+};
+
 export {
   BASEURL,
   CHANNEL,
@@ -32,4 +48,5 @@ export {
   DEAD_PAN_STATUS,
   CURRENT_FORM_CONTEXT,
   FORM_RUNTIME,
+  ID_COM,
 };

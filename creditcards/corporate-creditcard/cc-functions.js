@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   formRuntime,
   journeyResponseHandler,
@@ -39,6 +40,25 @@ import {
 
 import finalDap from './finaldaputils.js';
 
+import {
+  getOTP,
+  otpValidation,
+  hideLoaderGif,
+  validatePan,
+  panAPISuccesHandler,
+  aadharInit,
+  redirect,
+  reloadPage,
+  idcomUrlSet,
+  idcomRedirection,
+  fetchAuthCode,
+  days,
+  getFormContext,
+  getFullName,
+  getWrappedFormContext,
+  onWizardInit,
+} from '../../common/functions.js';
+
 export {
   finalDap,
   executeInterfaceApiFinal,
@@ -70,4 +90,20 @@ export {
   getCurrentContext,
   documentUpload,
   checkMode,
+  getOTP,
+  otpValidation,
+  hideLoaderGif,
+  validatePan,
+  panAPISuccesHandler,
+  fetchAuthCode,
+  aadharInit,
+  redirect,
+  reloadPage,
+  idcomUrlSet,
+  idcomRedirection,
+  days,
+  getFormContext,
+  getFullName,
+  getWrappedFormContext,
+  onWizardInit,
 };

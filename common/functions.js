@@ -4,35 +4,6 @@ import {
   panAPISuccesHandler,
 } from './panvalidation.js';
 
-import {
-// executeInterfaceApiFinal,
-// executeInterfaceApi,
-// ipaRequestApi,
-// ipaSuccessHandler,
-// executeInterfacePostRedirect,
-// executeInterfaceResponseHandler,
-// journeyResponseHandler,
-// createJourneyId,
-// sendAnalytics,
-// resendOTP,
-// customSetFocus,
-// validateLogin,
-// getAddressDetails,
-// pinCodeMaster,
-// validateEmailID,
-// currentAddressToggleHandler,
-// otpValHandler,
-// setNameOnCard,
-// prefillForm,
-// getThisCard,
-// aadharConsent123,
-// invokeJourneyDropOff,
-// invokeJourneyDropOffByParam,
-// invokeJourneyDropOffUpdate,
-// documentUpload,
-// checkMode
-} from '../creditcards/corporate-creditcard/cc-functions.js';
-
 import fetchAuthCode from './idcomutils.js';
 
 import {
@@ -40,7 +11,8 @@ import {
   getTimeStamp,
   clearString,
   santizedFormDataWithContext,
-  // formUtil,
+  createLabelInElement,
+  decorateStepper,
 } from './formutils.js';
 
 import {
@@ -355,40 +327,84 @@ function idcomRedirection() {
   window.location.href = currentFormContext.ID_COM_URL;
 }
 
+/**
+ * Get Full Name
+ * @name getFullName Concats first name and last name
+ * @param {string} firstname in Stringformat
+ * @param {string} lastname in Stringformat
+ * @return {string}
+ */
+
+function getFullName(firstname, lastname) {
+  // eslint-disable-next-line no-param-reassign
+  firstname = firstname == null ? '' : firstname;
+  // eslint-disable-next-line no-param-reassign
+  lastname = lastname == null ? '' : lastname;
+  return firstname.concat(' ').concat(lastname);
+}
+
+/**
+ * On Wizard Init.
+ * @name onWizardInit Runs on initialization of wizard
+ */
+function onWizardInit() {
+  createLabelInElement('.field-permanentaddresstoggle', 'permanent-address-toggle__label');
+  decorateStepper();
+}
+
+/**
+ * Calculate the number of days between two dates.
+ * @param {*} endDate
+ * @param {*} startDate
+ * @returns returns the number of days between two dates
+ */
+function days(endDate, startDate) {
+  const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
+  const end = typeof endDate === 'string' ? new Date(endDate) : endDate;
+
+  // return zero if dates are valid
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return 0;
+  }
+
+  const diffInMs = Math.abs(end.getTime() - start.getTime());
+  return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * getFormContext - returns form context.
+ * @returns {Promise} currentFormContext
+ */
+function getFormContext() {
+  return currentFormContext;
+}
+
+/**
+ * getWrappedFormContext - returns form context.
+ * @returns {Promise} currentFormContext
+ */
+function getWrappedFormContext() {
+  const formContext = {
+    formContext: currentFormContext,
+  };
+  return formContext;
+}
+
 export {
   getOTP,
   otpValidation,
-  // customSetFocus,
-  // journeyResponseHandler,
-  // createJourneyId,
-  // sendAnalytics,
-  // resendOTP,
   hideLoaderGif,
-  // validateLogin,
-  // getAddressDetails,
-  // pinCodeMaster,
-  // validateEmailID,
-  // currentAddressToggleHandler,
-  // otpValHandler,
-  // setNameOnCard,
-  // prefillForm,
-  // getThisCard,
   validatePan,
   panAPISuccesHandler,
-  // executeInterfaceApi,
-  // executeInterfaceApiFinal,
-  // ipaRequestApi,
-  // ipaSuccessHandler,
-  // executeInterfaceResponseHandler,
-  // aadharConsent123,
-  // documentUpload,
   fetchAuthCode,
-  // checkMode,
   aadharInit,
   redirect,
   reloadPage,
   idcomUrlSet,
   idcomRedirection,
-  // executeInterfacePostRedirect,
-  // invokeJourneyDropOffUpdate, invokeJourneyDropOff, invokeJourneyDropOffByParam,
+  getFullName,
+  onWizardInit,
+  days,
+  getFormContext,
+  getWrappedFormContext,
 };
