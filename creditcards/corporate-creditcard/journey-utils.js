@@ -12,8 +12,6 @@ import * as CC_CONSTANT from './constant.js';
 
 const { ENDPOINTS, CHANNEL, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME } = CC_CONSTANT;
-const journeyNameConstant = JOURNEY_NAME;
-const channelConstant = CHANNEL;
 
 /**
    * generates the journeyId
@@ -39,16 +37,17 @@ const getCurrentContext = () => currentFormContext;
    * @return {PROMISE}
    */
 const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
+  const DEFAULT_MOBILENO = '9999999999';
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
       leadProfile: {
-        mobileNumber,
+        mobileNumber: mobileNumber || DEFAULT_MOBILENO,
       },
       formData: {
-        channel: channelConstant,
-        journeyName: journeyNameConstant,
-        journeyID: globals.form.runtime.journeyId.$value,
+        channel: CHANNEL,
+        journeyName: JOURNEY_NAME,
+        journeyID: globals.form.runtime.journeyId.$value || createJourneyId('online', JOURNEY_NAME, CHANNEL, globals),
         journeyStateInfo: [
           {
             state,
@@ -61,7 +60,8 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
   };
   const url = urlPath(ENDPOINTS.journeyDropOff);
   const method = 'POST';
-  return globals.functions.exportData().queryParams.leadId ? fetchJsonResponse(url, journeyJSONObj, method) : null;
+  // return globals.functions.exportData().queryParams.leadId ? fetchJsonResponse(url, journeyJSONObj, method) : null;
+  return journeyJSONObj.RequestPayload.formData.journeyID ? fetchJsonResponse(url, journeyJSONObj, method) : null;
 };
 
 /**
@@ -77,8 +77,6 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   // temporary_hotfix_radioBtnValues_undefined_issue
   /* storing the radio btn values in current form context */
   if ((state === 'IDCOM_REDIRECTION_INITIATED') || (state === 'CUSTOMER_AADHAR_INIT')) {
-    // CUSTOMER_AADHAAR_PRE_AADHAR_INIT
-    // CUSTOMER_AADHAR_INIT
     const { form } = globals.functions.exportData();
     const { selectKYCMethodOption1: { aadharEKYCVerification }, selectKYCMethodOption2: { aadharBiometricVerification }, selectKYCMethodOption3: { officiallyValidDocumentsMethod } } = globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel;
     // ETB OVD
@@ -119,8 +117,8 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
         leadProfileId: leadProfileId?.toString(),
       },
       formData: {
-        channel: channelConstant,
-        journeyName: journeyNameConstant,
+        channel: CHANNEL,
+        journeyName: JOURNEY_NAME,
         journeyID: journeyId,
         journeyStateInfo: [
           {
@@ -132,7 +130,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
       },
     },
   };
-    // sendSubmitClickEvent(mobileNumber, linkName, sanitizedFormData);
+  // sendSubmitClickEvent(mobileNumber, linkName, sanitizedFormData);
   const url = urlPath(ENDPOINTS.journeyDropOffUpdate);
   const method = 'POST';
   return fetchJsonResponse(url, journeyJSONObj, method);
