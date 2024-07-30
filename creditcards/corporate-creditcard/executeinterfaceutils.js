@@ -5,18 +5,21 @@ import {
   formUtil,
   composeNameOption,
   setSelectOptions,
-} from './formutils.js';
-import { corpCreditCardContext, formRuntime, invokeJourneyDropOffUpdate } from './journey-utils.js';
+} from '../../common/formutils.js';
+import { invokeJourneyDropOffUpdate } from './journey-utils.js';
 import {
   restAPICall,
   fetchJsonResponse,
   fetchIPAResponse,
   hideLoaderGif,
-} from './makeRestAPI.js';
+} from '../../common/makeRestAPI.js';
 import finalDap from './finaldaputils.js';
-import { ENDPOINTS as endpoints, BASEURL as baseUrl } from './constants.js';
-
-const { currentFormContext } = corpCreditCardContext;
+import {
+  ENDPOINTS as endpoints,
+  BASEURL as baseUrl,
+  CURRENT_FORM_CONTEXT as currentFormContext,
+  FORM_RUNTIME as formRuntime,
+} from '../../common/constants.js';
 
 const GENDER_MAP = {
   M: '1',
@@ -430,7 +433,7 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
       }
     },
     errorCallBack: (response) => {
-      console.log(response);
+      console.error(response);
     },
   };
   restAPICall('', 'POST', requestObj, apiEndPoint, eventHandlers.successCallBack, eventHandlers.errorCallBack);

@@ -1,41 +1,8 @@
 /* eslint-disable no-console */
 import {
-  corpCreditCardContext,
-  journeyResponseHandler,
-  createJourneyId,
-  sendAnalytics,
-  resendOTP,
-  formRuntime,
-  customSetFocus,
-  validateLogin,
-  getAddressDetails,
-  pinCodeMaster,
-  validateEmailID,
-  currentAddressToggleHandler,
-  otpValHandler,
-  setNameOnCard,
-  prefillForm,
-  getThisCard,
-  aadharConsent123,
-} from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
-
-import { invokeJourneyDropOffUpdate } from './journey-utils.js';
-
-import {
   validatePan,
   panAPISuccesHandler,
 } from './panvalidation.js';
-
-import {
-  executeInterfaceApiFinal,
-  executeInterfaceApi,
-  ipaRequestApi,
-  ipaSuccessHandler,
-  executeInterfaceResponseHandler,
-  executeInterfacePostRedirect,
-} from './executeinterfaceutils.js';
-
-import documentUpload from './docuploadutils.js';
 
 import fetchAuthCode from './idcomutils.js';
 
@@ -44,7 +11,8 @@ import {
   getTimeStamp,
   clearString,
   santizedFormDataWithContext,
-  formUtil,
+  createLabelInElement,
+  decorateStepper,
 } from './formutils.js';
 
 import {
@@ -54,9 +22,12 @@ import {
 import * as CONSTANT from './constants.js';
 import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
 
-const { ENDPOINTS } = CONSTANT;
+const {
+  ENDPOINTS,
+  CURRENT_FORM_CONTEXT: currentFormContext,
+  FORM_RUNTIME: formRuntime,
+} = CONSTANT;
 const { JOURNEY_NAME } = CC_CONSTANT;
-const { currentFormContext } = corpCreditCardContext;
 
 // dynamically we can change according to journey
 const journeyNameConstant = JOURNEY_NAME;
@@ -115,76 +86,6 @@ function otpValidation(mobileNumber, pan, dob, otpNumber) {
   const path = urlPath(ENDPOINTS.otpValFetchAssetDemog);
   formRuntime?.otpValLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
-}
-
-/**
- * @name checkMode - check the location
- * @param {object} globals -
- * @return {PROMISE}
- */
-function checkMode(globals) {
-  const formData = globals.functions.exportData();
-  const idcomVisit = formData?.queryParams?.authmode; // "DebitCard"
-  const aadharVisit = formData?.queryParams?.visitType; // "EKYC_AUTH
-  // temporarly added referenceNumber check for IDCOMM redirection to land on submit screen.
-  if (aadharVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message && formData?.aadhaar_otp_val_data?.message === 'Aadhaar OTP Validate success') {
-    try {
-      globals.functions.setProperty(globals.form.corporateCardWizardView, { visible: true });
-      globals.functions.setProperty(globals.form.otpPanel, { visible: false });
-      globals.functions.setProperty(globals.form.loginPanel, { visible: false });
-      globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
-      globals.functions.setProperty(globals.form.consentFragment, { visible: false });
-      globals.functions.setProperty(globals.form.welcomeText, { visible: false });
-      const {
-        result: {
-          Address1, Address2, Address3, City, State, Zipcode,
-        },
-      } = formData.aadhaar_otp_val_data;
-      const {
-        executeInterfaceReqObj: {
-          requestString: {
-            officeAddress1, officeAddress2, officeAddress3, officeCity, officeState, officeZipCode,
-            communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip,
-          },
-        },
-      } = formData.currentFormContext;
-      const aadharAddress = [Address1, Address2, Address3, City, State, Zipcode]?.filter(Boolean)?.join(', ');
-      const officeAddress = [officeAddress1, officeAddress2, officeAddress3, officeCity, officeState, officeZipCode]?.filter(Boolean)?.join(', ');
-      const communicationAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip]?.filter(Boolean)?.join(', ');
-      const { AddressDeclarationAadhar, addressDeclarationOffice, CurrentAddressDeclaration } = globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel;
-      globals.functions.setProperty(AddressDeclarationAadhar.aadharAddressSelectKYC, { value: aadharAddress });
-      globals.functions.setProperty(addressDeclarationOffice.officeAddressSelectKYC, { value: officeAddress });
-      globals.functions.setProperty(CurrentAddressDeclaration.currentResidenceAddress, { value: communicationAddress });
-      invokeJourneyDropOffUpdate(
-        'AADHAAR_REDIRECTION_SUCCESS',
-        formData.loginPanel.mobilePanel.registeredMobileNumber,
-        formData.runtime.leadProifileId,
-        formData.runtime.leadProifileId.journeyId,
-        globals,
-      );
-    } catch (e) {
-      invokeJourneyDropOffUpdate(
-        'AADHAAR_REDIRECTION_FAILURE',
-        formData.loginPanel.mobilePanel.registeredMobileNumber,
-        formData.runtime.leadProifileId,
-        formData.runtime.leadProifileId.journeyId,
-        globals,
-      );
-    }
-  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard')) { // debit card or credit card flow
-    const resultPanel = formUtil(globals, globals.form.resultPanel);
-    resultPanel.visible(false);
-    globals.functions.setProperty(globals.form.otpPanel, { visible: false });
-    globals.functions.setProperty(globals.form.loginPanel, { visible: false });
-    globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
-    globals.functions.setProperty(globals.form.consentFragment, { visible: false });
-    globals.functions.setProperty(globals.form.welcomeText, { visible: false });
-    globals.functions.setProperty(globals.form.resultPanel.successResultPanel, { visible: false });
-    globals.functions.setProperty(globals.form.resultPanel.errorResultPanel, { visible: false });
-    globals.functions.setProperty(globals.form.confirmResult, { visible: false });
-    const userRedirected = true;
-    executeInterfacePostRedirect('idCom', userRedirected, globals);
-  }
 }
 
 /**
@@ -362,7 +263,6 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
   const response = fetchJsonResponse(path, jsonObj, 'POST');
   response
     .then((res) => {
-      console.log(res);
       // var aadharValidationForm = "<form action=" + res.RedirectUrl + " method='post'></form>";
       const aadharValidationForm = document.createElement('form');
       aadharValidationForm.setAttribute('action', res.RedirectUrl);
@@ -374,7 +274,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
       document.querySelector('body').append(aadharValidationForm);
       // aadharValidationForm.appendTo('body');
       aadharValidationForm.submit();
-    }).catch((err) => console.log(err));
+    }).catch((err) => console.error(err));
 }
 
 /**
@@ -426,40 +326,84 @@ function idcomRedirection() {
   window.location.href = currentFormContext.ID_COM_URL;
 }
 
+/**
+ * Get Full Name
+ * @name getFullName Concats first name and last name
+ * @param {string} firstname in Stringformat
+ * @param {string} lastname in Stringformat
+ * @return {string}
+ */
+
+function getFullName(firstname, lastname) {
+  // eslint-disable-next-line no-param-reassign
+  firstname = firstname == null ? '' : firstname;
+  // eslint-disable-next-line no-param-reassign
+  lastname = lastname == null ? '' : lastname;
+  return firstname.concat(' ').concat(lastname);
+}
+
+/**
+ * On Wizard Init.
+ * @name onWizardInit Runs on initialization of wizard
+ */
+function onWizardInit() {
+  createLabelInElement('.field-permanentaddresstoggle', 'permanent-address-toggle__label');
+  decorateStepper();
+}
+
+/**
+ * Calculate the number of days between two dates.
+ * @param {*} endDate
+ * @param {*} startDate
+ * @returns returns the number of days between two dates
+ */
+function days(endDate, startDate) {
+  const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
+  const end = typeof endDate === 'string' ? new Date(endDate) : endDate;
+
+  // return zero if dates are valid
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return 0;
+  }
+
+  const diffInMs = Math.abs(end.getTime() - start.getTime());
+  return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * getFormContext - returns form context.
+ * @returns {Promise} currentFormContext
+ */
+function getFormContext() {
+  return currentFormContext;
+}
+
+/**
+ * getWrappedFormContext - returns form context.
+ * @returns {Promise} currentFormContext
+ */
+function getWrappedFormContext() {
+  const formContext = {
+    formContext: currentFormContext,
+  };
+  return formContext;
+}
+
 export {
   getOTP,
   otpValidation,
-  customSetFocus,
-  journeyResponseHandler,
-  corpCreditCardContext,
-  createJourneyId,
-  sendAnalytics,
-  resendOTP,
   hideLoaderGif,
-  validateLogin,
-  getAddressDetails,
-  pinCodeMaster,
-  validateEmailID,
-  currentAddressToggleHandler,
-  otpValHandler,
-  setNameOnCard,
-  prefillForm,
-  getThisCard,
   validatePan,
   panAPISuccesHandler,
-  executeInterfaceApi,
-  executeInterfaceApiFinal,
-  ipaRequestApi,
-  ipaSuccessHandler,
-  executeInterfaceResponseHandler,
-  aadharConsent123,
-  documentUpload,
   fetchAuthCode,
-  checkMode,
   aadharInit,
   redirect,
   reloadPage,
   idcomUrlSet,
   idcomRedirection,
-  executeInterfacePostRedirect,
+  getFullName,
+  onWizardInit,
+  days,
+  getFormContext,
+  getWrappedFormContext,
 };

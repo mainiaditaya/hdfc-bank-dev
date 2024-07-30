@@ -41,14 +41,14 @@ async function fieldChanged(payload, form, generateFormRendition) {
         }
         break;
       case 'validationMessage':
-      {
-        const { validity } = payload.field;
-        if (field.setCustomValidity
+        {
+          const { validity } = payload.field;
+          if (field.setCustomValidity
             && (validity?.expressionMismatch || validity?.customConstraint)) {
-          field.setCustomValidity(currentValue);
-          updateOrCreateInvalidMsg(field, currentValue);
+            field.setCustomValidity(currentValue);
+            updateOrCreateInvalidMsg(field, currentValue);
+          }
         }
-      }
         break;
       case 'value':
         if (['number', 'date'].includes(field.type) && (displayFormat || displayValueExpression)) {
@@ -240,7 +240,7 @@ async function fetchData({ id }) {
 
 export async function initAdaptiveForm(formDef, createForm) {
   const data = await fetchData(formDef);
-  await registerCustomFunctions();
+  await registerCustomFunctions(formDef?.id);
   const form = await initializeRuleEngineWorker({
     ...formDef,
     data,

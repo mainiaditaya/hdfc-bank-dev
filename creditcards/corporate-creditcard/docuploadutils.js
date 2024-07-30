@@ -1,13 +1,12 @@
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
-import { corpCreditCardContext, invokeJourneyDropOffUpdate } from './journey-utils.js';
+import { invokeJourneyDropOffUpdate } from './journey-utils.js';
 import {
   displayLoader,
   hideLoaderGif,
   chainedFetchAsyncCall,
-} from './makeRestAPI.js';
-import { urlPath, generateUUID, moveWizardView } from './formutils.js';
-import { ENDPOINTS } from './constants.js';
-
+} from '../../common/makeRestAPI.js';
+import { urlPath, generateUUID, moveWizardView } from '../../common/formutils.js';
+import { ENDPOINTS, CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constants.js';
 /**
  * Creates a FormData payload for document upload.
  *
@@ -21,14 +20,12 @@ import { ENDPOINTS } from './constants.js';
 const createDocPayload = async ({ docValue, docType, fileId }) => {
   try {
     const {
-      currentFormContext: {
-        journeyName,
-        journeyID,
-        eRefNumber,
-        breDemogResponse: { MOBILE },
-        executeInterfaceResPayload: { applicationRefNumber },
-      },
-    } = corpCreditCardContext;
+      journeyName,
+      journeyID,
+      eRefNumber,
+      breDemogResponse: { MOBILE },
+      executeInterfaceResPayload: { applicationRefNumber },
+    } = currentFormContext;
     const file = docValue?.$value?.data;
     const fileBinary = file;
     const documentName = file.name;
@@ -82,7 +79,6 @@ const documentUpload = async (globals) => {
   };
   const apiEndPoint = urlPath(ENDPOINTS.docUpload);
   const method = 'POST';
-  const { currentFormContext } = corpCreditCardContext;
   const formContextCallbackData = globals.functions.exportData()?.currentFormContext || currentFormContext;
   const mobileNumber = globals.functions.exportData().form.login.registeredMobileNumber || globals.form.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = globals.functions.exportData().leadProifileId || globals.form.runtime.leadProifileId.$value;
@@ -120,7 +116,6 @@ const documentUpload = async (globals) => {
     throw new Error('Error in File');
   } catch (error) {
     hideLoaderGif();
-    console.log('errorInFilePayload');
   }
 };
 

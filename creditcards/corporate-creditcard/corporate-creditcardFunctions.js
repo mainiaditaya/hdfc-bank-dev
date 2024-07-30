@@ -2,11 +2,9 @@
 import {
   invokeJourneyDropOffUpdate,
   journeyResponseHandlerUtil,
-  corpCreditCardContext,
   createJourneyId,
-  formRuntime,
   invokeJourneyDropOff,
-} from '../../common/journey-utils.js';
+} from './journey-utils.js';
 import {
   formUtil,
   urlPath,
@@ -29,11 +27,15 @@ import {
 import { sendAnalyticsEvent } from '../../common/analytics.js';
 import * as CONSTANT from '../../common/constants.js';
 import * as CC_CONSTANT from './constant.js';
+import { executeInterfacePostRedirect } from './executeinterfaceutils.js';
 
-const { ENDPOINTS } = CONSTANT;
+const {
+  ENDPOINTS,
+  CURRENT_FORM_CONTEXT: currentFormContext,
+  FORM_RUNTIME: formRuntime,
+} = CONSTANT;
 const { JOURNEY_NAME, DOM_ELEMENT } = CC_CONSTANT;
 const journeyNameConstant = JOURNEY_NAME;
-const { currentFormContext } = corpCreditCardContext;
 // Initialize all Corporate Card Journey Context Variables.
 currentFormContext.journeyName = journeyNameConstant;
 currentFormContext.journeyType = 'NTB';
@@ -782,8 +784,77 @@ const aadharConsent123 = async (globals) => {
   }
 };
 
+/**
+ * @name checkMode - check the location
+ * @param {object} globals -
+ * @return {PROMISE}
+ */
+function checkMode(globals) {
+  const formData = globals.functions.exportData();
+  const idcomVisit = formData?.queryParams?.authmode; // "DebitCard"
+  const aadharVisit = formData?.queryParams?.visitType; // "EKYC_AUTH
+  // temporarly added referenceNumber check for IDCOMM redirection to land on submit screen.
+  if (aadharVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message && formData?.aadhaar_otp_val_data?.message === 'Aadhaar OTP Validate success') {
+    try {
+      globals.functions.setProperty(globals.form.corporateCardWizardView, { visible: true });
+      globals.functions.setProperty(globals.form.otpPanel, { visible: false });
+      globals.functions.setProperty(globals.form.loginPanel, { visible: false });
+      globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
+      globals.functions.setProperty(globals.form.consentFragment, { visible: false });
+      globals.functions.setProperty(globals.form.welcomeText, { visible: false });
+      const {
+        result: {
+          Address1, Address2, Address3, City, State, Zipcode,
+        },
+      } = formData.aadhaar_otp_val_data;
+      const {
+        executeInterfaceReqObj: {
+          requestString: {
+            officeAddress1, officeAddress2, officeAddress3, officeCity, officeState, officeZipCode,
+            communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip,
+          },
+        },
+      } = formData.currentFormContext;
+      const aadharAddress = [Address1, Address2, Address3, City, State, Zipcode]?.filter(Boolean)?.join(', ');
+      const officeAddress = [officeAddress1, officeAddress2, officeAddress3, officeCity, officeState, officeZipCode]?.filter(Boolean)?.join(', ');
+      const communicationAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip]?.filter(Boolean)?.join(', ');
+      const { AddressDeclarationAadhar, addressDeclarationOffice, CurrentAddressDeclaration } = globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel;
+      globals.functions.setProperty(AddressDeclarationAadhar.aadharAddressSelectKYC, { value: aadharAddress });
+      globals.functions.setProperty(addressDeclarationOffice.officeAddressSelectKYC, { value: officeAddress });
+      globals.functions.setProperty(CurrentAddressDeclaration.currentResidenceAddress, { value: communicationAddress });
+      invokeJourneyDropOffUpdate(
+        'AADHAAR_REDIRECTION_SUCCESS',
+        formData.loginPanel.mobilePanel.registeredMobileNumber,
+        formData.runtime.leadProifileId,
+        formData.runtime.leadProifileId.journeyId,
+        globals,
+      );
+    } catch (e) {
+      invokeJourneyDropOffUpdate(
+        'AADHAAR_REDIRECTION_FAILURE',
+        formData.loginPanel.mobilePanel.registeredMobileNumber,
+        formData.runtime.leadProifileId,
+        formData.runtime.leadProifileId.journeyId,
+        globals,
+      );
+    }
+  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard')) { // debit card or credit card flow
+    const resultPanel = formUtil(globals, globals.form.resultPanel);
+    resultPanel.visible(false);
+    globals.functions.setProperty(globals.form.otpPanel, { visible: false });
+    globals.functions.setProperty(globals.form.loginPanel, { visible: false });
+    globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
+    globals.functions.setProperty(globals.form.consentFragment, { visible: false });
+    globals.functions.setProperty(globals.form.welcomeText, { visible: false });
+    globals.functions.setProperty(globals.form.resultPanel.successResultPanel, { visible: false });
+    globals.functions.setProperty(globals.form.resultPanel.errorResultPanel, { visible: false });
+    globals.functions.setProperty(globals.form.confirmResult, { visible: false });
+    const userRedirected = true;
+    executeInterfacePostRedirect('idCom', userRedirected, globals);
+  }
+}
+
 export {
-  corpCreditCardContext,
   formRuntime,
   journeyResponseHandler,
   createJourneyId,
@@ -800,4 +871,5 @@ export {
   prefillForm,
   getThisCard,
   aadharConsent123,
+  checkMode,
 };
