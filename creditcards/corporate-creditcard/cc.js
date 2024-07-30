@@ -3,12 +3,14 @@
 import openModal from '../../blocks/modal/modal.js';
 import { DOM_ELEMENT } from './constant.js';
 import * as DOM_API from '../domutils/domutils.js';
+import { invokeJourneyDropOffUpdate } from './journey-utils.js';
+import { urlPath } from '../../common/formutils.js';
+import { ENDPOINTS } from '../../common/constants.js';
 
 const { displayLoader, hideLoaderGif, moveWizardView } = DOM_API;
 
 const {
   identifyYourself,
-  otpValidate,
   confirmCard,
   ccWizard,
   yourDetails,
@@ -160,25 +162,15 @@ const viewAllBtnPannelConfig = {
 };
 linkModalFunction(viewAllBtnPannelConfig);
 
-/**
- * Hides the incorrect OTP text message when the user starts typing in the OTP input field.
- */
-const removeIncorrectOtpText = () => {
-  const otpNumbrQry = document.getElementsByName(otpValidate.otpNumberField)?.[0];
-  const incorectOtp = document.querySelector(otpValidate.incorrectOtpField);
-  otpNumbrQry?.addEventListener('input', (e) => {
-    if (e.target.value) {
-      incorectOtp.style.display = 'none';
-    }
-  });
-};
-removeIncorrectOtpText();
-
-const errorPannelMethod = () => {
+const errorPannelMethod = (error, stateInfoData) => {
   const errorPannel = document.getElementsByName('errorResultPanel')?.[0];
   const resultPanel = document.getElementsByName('resultPanel')?.[0];
   resultPanel.setAttribute('data-visible', true);
   errorPannel.setAttribute('data-visible', true);
+  const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
+  const leadProfileId = stateInfoData.leadProifileId;
+  const journeyId = stateInfoData.currentFormContext.journeyID;
+  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_FAILURE', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 
 const setArnNumberInResult = (arnNumRef) => {
@@ -192,7 +184,7 @@ const setArnNumberInResult = (arnNumRef) => {
   }
 };
 
-const successPannelMethod = async (data) => {
+const successPannelMethod = async (data, stateInfoData) => {
   const {
     executeInterfaceReqObj, aadharOtpValData, finalDapRequest, finalDapResponse,
   } = data;
@@ -234,6 +226,7 @@ const successPannelMethod = async (data) => {
       offerLink.setAttribute('data-visible', true);
     } else {
       vkycProceedButton.setAttribute('data-visible', true);
+      currentFormContext.isVideoKyc = true;
       vkycConfirmText.setAttribute('data-visible', true);
       offerLink.setAttribute('data-visible', false);
     }
@@ -242,7 +235,16 @@ const successPannelMethod = async (data) => {
     vkycCameraConfirmation.setAttribute('data-visible', true);
     vkycCameraPannelInstruction.setAttribute('data-visible', true);
     vkycProceedButton.setAttribute('data-visible', true);
+    currentFormContext.isVideoKyc = true;
   }
+  currentFormContext.action = 'confirmation';
+  currentFormContext.pageGotRedirected = true;
+  // temporarly commented and it will be enabled after analytics merge.
+  // Promise.resolve(sendPageloadEvent('CONFIRMATION_JOURNEY_STATE', stateInfoData));
+  const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
+  const leadProfileId = stateInfoData.leadProifileId;
+  const journeyId = stateInfoData.currentFormContext.journeyID;
+  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 
 // post-redirect-aadhar-or-idcom
@@ -270,7 +272,7 @@ const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyI
       },
     },
   };
-  const url = 'https://applyonlinedev.hdfcbank.com/content/hdfc_commonforms/api/journeydropoffparam.json';
+  const url = urlPath(ENDPOINTS.journeyDropOffParam);
   const method = 'POST';
   try {
     const res = await fetch(url, {
@@ -294,8 +296,9 @@ const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyI
  */
 const finalDap = {
   PROMOSE_COUNT: 0,
-  AFFORD_COUNT: 5,
+  AFFORD_COUNT: 10,
   journeyParamState: null,
+  journeyParamStateInfo: null,
 };
 
 /**
@@ -313,17 +316,20 @@ const finalDapFetchRes = async () => {
       hideLoaderGif();
       successPannelMethod({
         executeInterfaceReqObj, aadharOtpValData, finalDapRequest, finalDapResponse,
-      });
+      }, JSON.parse(data.stateInfo));
     },
-    errorMethod: (err) => {
+    errorMethod: (err, lastStateData) => {
       hideLoaderGif();
-      errorPannelMethod(err);
+      errorPannelMethod(err, lastStateData);
+      // eslint-disable-next-line no-console
+      console.log(err);
     },
   };
   try {
     const data = await invokeJourneyDropOffByParam('', '', journeyId);
     const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
     finalDap.journeyParamState = journeyDropOffParamLast.state;
+    finalDap.journeyParamStateInfo = journeyDropOffParamLast.stateInfo;
     const checkFinalDapSuccess = (journeyDropOffParamLast.state === 'CUSTOMER_FINAL_DAP_SUCCESS');
     if (checkFinalDapSuccess) {
       return eventHandler.successMethod(journeyDropOffParamLast);
@@ -334,10 +340,11 @@ const finalDapFetchRes = async () => {
     // "FINAL_DAP_FAILURE"
     finalDap.PROMOSE_COUNT += 1;
     const errorCase = (finalDap.journeyParamState === 'CUSTOMER_FINAL_DAP_FAILURE' || finalDap.PROMOSE_COUNT >= finalDap.AFFORD_COUNT);
+    const stateInfoData = finalDap.journeyParamStateInfo;
     if (errorCase) {
-      return eventHandler.errorMethod(error);
+      return eventHandler.errorMethod(error, JSON.parse(stateInfoData));
     }
-    return setTimeout(() => finalDapFetchRes(), 1000);
+    return setTimeout(() => finalDapFetchRes(), 5000);
   }
 };
 
@@ -372,23 +379,6 @@ pageRedirected(aadharRedirect, idComRedirect);
  * @param {HTMLElement[]} dateFields - An array of input field elements to be validated.
  */
 [yourDetails.employedDate, yourDetails.personalDetailDob, identifyYourself.dob].forEach((dateField) => DOM_API.setMaxDateToToday(dateField));
-
-/**
- *  Validates and restricts input on the OTP number field to allow only numeric characters.
- *  Hides the incorrect OTP text message when the user starts typing in the OTP input field.
- */
-const otpFieldValidate = () => {
-  const otpNumber = document.querySelector(`[name= ${identifyYourself.otpNumber}]`);
-  const incorectOtp = document.querySelector(`.${identifyYourself.incorrectOtp}`);
-  otpNumber?.addEventListener('input', (e) => {
-    if (e.target.value) {
-      const input = e.target;
-      input.value = input.value.replace(/\D/g, ''); // Replace non-numeric characters with an empty string
-      incorectOtp.style.display = 'none';
-    }
-  });
-};
-otpFieldValidate();
 
 /**
  * Applies the restrictToAlphabetsNoSpaces function to an array of input field names.
