@@ -1,5 +1,49 @@
 /* eslint-disable no-console */
+// import {
+//   journeyResponseHandler,
+//   createJourneyId,
+//   sendAnalytics,
+//   resendOTP,
+//   customSetFocus,
+//   validateLogin,
+//   getAddressDetails,
+//   pinCodeMaster,
+//   validateEmailID,
+//   currentAddressToggleHandler,
+//   otpValHandler,
+//   setNameOnCard,
+//   prefillForm,
+//   getThisCard,
+//   aadharConsent123,
+// } from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
+
+// import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
+
+// import { invokeJourneyDropOffUpdate, invokeJourneyDropOff, invokeJourneyDropOffByParam } from '../creditcards/corporate-creditcard/journey-utils.js';
+
 import {
+  validatePan,
+  panAPISuccesHandler,
+} from './panvalidation.js';
+
+// import {
+//   executeInterfaceApiFinal,
+//   executeInterfaceApi,
+//   ipaRequestApi,
+//   ipaSuccessHandler,
+//   executeInterfaceResponseHandler,
+//   executeInterfacePostRedirect,
+// } from '../creditcards/corporate-creditcard/executeinterfaceutils.js';
+
+// import documentUpload from '../creditcards/corporate-creditcard/docuploadutils.js';
+
+import {
+  executeInterfaceApiFinal,
+  executeInterfaceApi,
+  ipaRequestApi,
+  ipaSuccessHandler,
+  executeInterfacePostRedirect,
+  executeInterfaceResponseHandler,
   journeyResponseHandler,
   createJourneyId,
   sendAnalytics,
@@ -15,25 +59,11 @@ import {
   prefillForm,
   getThisCard,
   aadharConsent123,
-} from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
-
-import { invokeJourneyDropOffUpdate } from './journey-utils.js';
-
-import {
-  validatePan,
-  panAPISuccesHandler,
-} from './panvalidation.js';
-
-import {
-  executeInterfaceApiFinal,
-  executeInterfaceApi,
-  ipaRequestApi,
-  ipaSuccessHandler,
-  executeInterfaceResponseHandler,
-  executeInterfacePostRedirect,
-} from './executeinterfaceutils.js';
-
-import documentUpload from './docuploadutils.js';
+  invokeJourneyDropOff,
+  invokeJourneyDropOffByParam,
+  invokeJourneyDropOffUpdate,
+  documentUpload,
+} from '../creditcards/corporate-creditcard/cc-functions.js';
 
 import fetchAuthCode from './idcomutils.js';
 
@@ -462,4 +492,5 @@ export {
   idcomUrlSet,
   idcomRedirection,
   executeInterfacePostRedirect,
+  invokeJourneyDropOffUpdate, invokeJourneyDropOff, invokeJourneyDropOffByParam,
 };

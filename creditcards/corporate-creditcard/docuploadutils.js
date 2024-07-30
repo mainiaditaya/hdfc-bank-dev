@@ -4,9 +4,9 @@ import {
   displayLoader,
   hideLoaderGif,
   chainedFetchAsyncCall,
-} from './makeRestAPI.js';
-import { urlPath, generateUUID, moveWizardView } from './formutils.js';
-import { ENDPOINTS, CURRENT_FORM_CONTEXT as currentFormContext } from './constants.js';
+} from '../../common/makeRestAPI.js';
+import { urlPath, generateUUID, moveWizardView } from '../../common/formutils.js';
+import { ENDPOINTS, CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constants.js';
 /**
  * Creates a FormData payload for document upload.
  *

@@ -34,6 +34,7 @@ import {
   idcomUrlSet,
   idcomRedirection,
   executeInterfacePostRedirect,
+  invokeJourneyDropOffUpdate, invokeJourneyDropOff, invokeJourneyDropOffByParam,
 } from '../../common/functions.js';
 
 import {
@@ -45,7 +46,7 @@ import {
   sendSubmitClickEvent,
   sendGenericClickEvent,
 } from '../../common/analytics.js';
-import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
+
 import { CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constants.js';
 
 /**

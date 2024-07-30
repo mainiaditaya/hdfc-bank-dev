@@ -1,7 +1,7 @@
-import { ENDPOINTS, CURRENT_FORM_CONTEXT as currentFormContext } from './constants.js';
-import { urlPath } from './formutils.js';
+import { ENDPOINTS, CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constants.js';
+import { urlPath } from '../../common/formutils.js';
 import { invokeJourneyDropOffUpdate } from './journey-utils.js';
-import { restAPICall } from './makeRestAPI.js';
+import { restAPICall } from '../../common/makeRestAPI.js';
 
 const getCurrentDateAndTime = (dobFormatNo) => {
   /*

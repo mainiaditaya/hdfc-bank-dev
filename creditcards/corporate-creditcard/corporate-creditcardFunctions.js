@@ -4,7 +4,7 @@ import {
   journeyResponseHandlerUtil,
   createJourneyId,
   invokeJourneyDropOff,
-} from '../../common/journey-utils.js';
+} from './journey-utils.js';
 import {
   formUtil,
   urlPath,
