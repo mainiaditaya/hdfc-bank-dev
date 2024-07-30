@@ -116,7 +116,6 @@ const documentUpload = async (globals) => {
     throw new Error('Error in File');
   } catch (error) {
     hideLoaderGif();
-    console.log('errorInFilePayload');
   }
 };
 

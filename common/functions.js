@@ -263,7 +263,6 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
   const response = fetchJsonResponse(path, jsonObj, 'POST');
   response
     .then((res) => {
-      console.log(res);
       // var aadharValidationForm = "<form action=" + res.RedirectUrl + " method='post'></form>";
       const aadharValidationForm = document.createElement('form');
       aadharValidationForm.setAttribute('action', res.RedirectUrl);
@@ -275,7 +274,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
       document.querySelector('body').append(aadharValidationForm);
       // aadharValidationForm.appendTo('body');
       aadharValidationForm.submit();
-    }).catch((err) => console.log(err));
+    }).catch((err) => console.error(err));
 }
 
 /**

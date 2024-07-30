@@ -433,7 +433,7 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
       }
     },
     errorCallBack: (response) => {
-      console.log(response);
+      console.error(response);
     },
   };
   restAPICall('', 'POST', requestObj, apiEndPoint, eventHandlers.successCallBack, eventHandlers.errorCallBack);

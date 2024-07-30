@@ -318,8 +318,6 @@ const finalDapFetchRes = async () => {
     errorMethod: (err) => {
       hideLoaderGif();
       errorPannelMethod(err);
-      // eslint-disable-next-line no-console
-      console.log(err);
     },
   };
   try {
