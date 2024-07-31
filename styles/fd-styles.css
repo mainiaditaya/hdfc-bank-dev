@@ -3,11 +3,16 @@
 /* add all fd realted styles */
 main {
     padding: 0 !important;
+    background-color: var(--color-action-background-secondary-default);
 }
 
 .section>div {
     max-width: max-content;
     margin: 0 !important;
+}
+
+body.fdlien .form-wrapper {
+    max-width: 100%;
 }
 
 main .section.form-container {
@@ -67,7 +72,7 @@ main .section.form-container {
         }
 
         .field-loginmainpanel {
-            padding: 40px 40px 40px 20px !important;
+            padding: 40px 40px 7px 20px;
     
             .field-loginpanel {
                 width: 100%;
@@ -97,7 +102,7 @@ main .section.form-container {
                 }
     
                 .field-countrycode {
-                    grid-column: span 3;
+                    grid-column: span 4;
                     margin-top: -19px;
                     align-self: flex-end;
     
@@ -124,20 +129,23 @@ main .section.form-container {
                         border-radius: 0 var(--form-input-border-radius) var(--form-input-border-radius) 0;
                         margin-top: 5px;
                     }
-    
+
                     label { margin: 18px 0 0 10px; }
     
                     .field-description {
                         margin: -12px -10px -11px 0;
                         position: absolute;
-                        left: 0;
+                        left: -38%;
                     }
+                }
+
+                .field-registeredmobilenumber:is([data-active='true'], [data-empty='false']) > label {
+                    left: -32%;
                 }
             }
     
             .field-stepstofollow {
-                display: flex;
-                flex-direction: row;
+                display: grid;
                 background: var(--color-interface-background-quinary);
                 padding: 10px;
                 border-radius: 20px;
@@ -146,6 +154,8 @@ main .section.form-container {
     
                 legend {
                     padding: 60px 0 0 20px;
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    color: var(--color-interface-text-primary);
                 }
     
                 fieldset {
@@ -164,7 +174,7 @@ main .section.form-container {
                     }
     
                     .plain-text-wrapper {
-                        white-space: nowrap;
+                        white-space: normal !important;
                     }
                 }
             }
@@ -179,11 +189,11 @@ main .section.form-container {
                 legend {
                     font-size: var(--body-md-font-size) !important;
                     font-weight: var(--font-weight-medium);
-                    margin-right: 6px;
+                    margin-right: 24px;
                 }
     
                 .field-pandobselection {
-                    margin-right: 6px;
+                    margin-right: 15px;
     
                     label {
                         font-size: var(--body-sm-font-size) !important;
@@ -338,52 +348,7 @@ main .section.form-container {
                 font-size: var(--body-md-font-size);
             }
         }
-    }
-
-    /* .field-custidproceedlabel {
-        p p {
-            font-size: var(--body-xx-lg-font-size);
-            font-weight: var(--font-weight-bold);
-            color: var(--color-interface-background-quaternary);
-        }
-    } */
-
-    /* .field-multiplecustidrepeatable {
-        grid-column: span 6 !important;
-
-        .repeat-wrapper {
-            display: grid;
-
-            fieldset.field-wrapper {                
-                border-radius: 16px;
-                border: 1px solid #ccc;
-                padding: 20px;
-            }
-        }
-        
-
-        /* .field-custidlabel p {
-            margin: 0;
-        }
-
-        .field-multiplecustidselect {
-            input[type='checkbox'] {
-                position: relative;
-            }
-        }
-
-        .field-maskedaccno input[type='text'] {
-            border: none;
-            font-size: var(--body-x-lg-font-size);
-            font-weight: var(--font-weight-extra-bold);
-            margin: 0;
-            padding: 0;
-        }
-
-        .field-eligiblefdlabel {
-            background: var(--color-interface-background-quinary);
-        } */
-    
+    }    
 }
 
 /* Footer */
@@ -411,23 +376,24 @@ main .section.form-container {
         .field-loginmainpanel {
             .field-loginpanel {
                 display: grid;
-                padding-bottom: 10px;
+                margin-bottom: 25px;
             }
         }
     }
 }
 
-@media (width >=1200px) {
-    .field-loginmainpanel {
-        .field-stepstofollow {
-            fieldset.panel-wrapper {
-                flex: 0;
-            }
+@media (width < 1120px) {
+    .fdlien .field-loginmainpanel {
+        .field-mobilepanel {
+            .field-countrycode { grid-column: span 5 !important;}
+            .field-registeredmobilenumber { grid-column: span 7 !important; }
+        }
+
+        .field-registeredmobilenumber {
+            .field-description {left: -55% !important;}
         }
     }
-}
-
-@media (width < 1020px) {
+    
     .field-pandobselection {
         display: grid;
 
@@ -443,7 +409,7 @@ main .section.form-container {
 
 /* For tablets */
 @media (width <=800px) {
-    main .form form {
+    .fdlien .form form {
         display: block;
     }
 
@@ -456,9 +422,9 @@ main .section.form-container {
             margin-top: 20px !important;
             padding: 20px !important;
 
-                .field-registeredmobilenumber {
-                   margin: -15px 0 0;
-                }
+            .field-registeredmobilenumber {
+                margin: -15px 0 0;
+            }
 
             .field-stepstofollow {
                 fieldset {
