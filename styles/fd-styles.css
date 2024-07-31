@@ -147,7 +147,7 @@ main .section.form-container {
             .field-stepstofollow {
                 display: grid;
                 background: var(--color-interface-background-quinary);
-                padding: 10px;
+                padding: 10px 0 10px 10px;
                 border-radius: 20px;
                 width: 98%;
                 justify-content: center;
@@ -176,6 +176,10 @@ main .section.form-container {
                     .plain-text-wrapper {
                         white-space: normal !important;
                     }
+                }
+
+                .field-step4panel {
+                    padding-right: 20px;
                 }
             }
         }
@@ -206,8 +210,38 @@ main .section.form-container {
         /* OTP Panel Styling */
 
         .field-otppanel {
-            legend { padding-top: 40px; }
+            max-width: 100%;
+            grid-template-rows: auto 1fr;
+            padding: 40px 40px 40px 25px;
 
+            .field-otppanel { 
+                text-align: left;
+            }
+
+            legend {
+                b {
+                    color: var(--color-interface-background-quaternary);
+                    font-size: var(--body-fd-xx-lg-font-size);
+                }
+            }
+
+            .field-otphelptext { margin-top: -60px;
+
+                p {
+                    color: var(--color-input-text-primary);
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-regular);
+                }
+            }
+
+            .field-otpnumber {
+                margin: -17px 0 -18px;
+                width: 80%;
+
+                input { height: 54px; }
+            }
+
+/* 
             p > b {
                 color: var(--color-interface-background-quaternary);
                 font-size: var(--body-fd-xx-lg-font-size);
@@ -218,23 +252,26 @@ main .section.form-container {
                     color: var(--color-interface-background-quaternary);
                     font-size: var(--body-fd-sm-font-size);
                 }
-            }
+            } */
 
             .field-secondspanel {
-                display: grid;
+                display: flex;
+                flex-direction: row;
             }
             
             .field-resendotplabel { 
                 margin-top: 12px;
+                width: fit-content;
 
                 p {
                     font-size: var(--body-fd-sm-font-size);
-                    padding: 0 0 0 5px;
+                    padding: 0;
                 }
             }
 
             .field-seconds { 
-                margin: -1px 0 0 -20px;
+                margin: 0 0 0 -12px;
+                width: fit-content;
 
                 input[type="number"] {
                     border: none;
@@ -247,27 +284,28 @@ main .section.form-container {
             }
 
             .field-sectext { 
-                margin: 12px 0 0 -79px; 
+                width: fit-content;
+                margin: 12px 0 0 -51px;
                 p { font-size: var(--body-fd-sm-font-size); }
             }
 
-            .field-otpsubpanel {
+            /* .field-otpsubpanel {
                 .field-maximum, field-attempts {
                     font-size: var(--body-fd-md-font-size);
                 }
-            } 
+            }  */
         }
 
         .field-otppanel:has(.field-secondspanel:not([data-visible='false'])) {
             .field-otpsubpanel {
-                grid-column: span 4;
+                grid-column: span 3;
             }
         }
 
-        .field-submitotp {
+        /* .field-submitotp {
             padding-bottom: 40px;
             button { max-width: none !important; }
-        }
+        } */
 
         /* Button Styling */
         .button-wrapper {
@@ -417,11 +455,18 @@ main .section.form-container {
         text-align: center;
     }
 
+    main .form .field-otppanel {
+        .field-otphelptext { margin-top: -32px !important; }
+        .field-otpnumber { margin: 2px 0 -18px !important; }
+    }
+
+    .fdlien .field-loginmainpanel, main .form .field-otppanel {
+        margin-top: 20px !important;
+        padding: 20px !important;
+    }
+
     .fdlien:has(.section.form-container) .section.form-container {
         .field-loginmainpanel {
-            margin-top: 20px !important;
-            padding: 20px !important;
-
             .field-registeredmobilenumber {
                 margin: -15px 0 0;
             }
@@ -447,5 +492,15 @@ main .section.form-container {
         .field-mobilepanel, .field-identifierpanel { grid-column: span 12 !important; }
     }
 
-    .field-otppanel { padding: 0 6px 0 2px; }
+    .field-otppanel { padding: 0 6px 0 2px; 
+
+        .field-otpnumber { 
+            width: 100% !important; 
+            grid-column: span 12 !important;
+        }
+
+        .field-secondspanel, .field-otpresend, .field-otpsubpanel {
+            grid-column: span 6 !important;
+        }
+    }
 }
