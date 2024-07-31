@@ -7,7 +7,7 @@ main {
 
 .section>div {
     max-width: max-content;
-    margin: 0 auto;
+    margin: 0 !important;
 }
 
 main .section.form-container {
@@ -37,7 +37,7 @@ main .section.form-container {
 }
 
 .fdlien:has(.section.cmp-container-container) .section.cmp-container-container {
-    display: none;
+    display: none !important;
 }
 
 .fdlien:has(.section.form-container) .section.form-container {
@@ -130,7 +130,7 @@ main .section.form-container {
                     .field-description {
                         margin: -12px -10px -11px 0;
                         position: absolute;
-                        left: -50%;
+                        left: 0;
                     }
                 }
             }

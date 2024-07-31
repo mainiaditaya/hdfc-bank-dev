@@ -1,4 +1,5 @@
 import { ageValidator } from '../../common/formutils.js';
+import * as FD_CONSTANT from './constant.js';
 
 /**
  * Validates the date of birth field to ensure the age is between 18 and 70.
@@ -12,7 +13,7 @@ const validateLogin = (globals) => {
   const radioSelect = (panDobSelection === '0') ? 'DOB' : 'PAN';
   const regexPan = /^[a-zA-Z]{3}[Pp][a-zA-Z][0-9]{4}[a-zA-Z]{1}/g;
   // const consentFirst = globals.form.consentFragment.checkboxConsent1Label.$value;
-  const panErrorText = 'Please enter a valid PAN Number';
+  const panErrorText = FD_CONSTANT.ERROR_MSG.panError;
   globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
 
   const panInput = document.querySelector(`[name=${'pan'} ]`);
@@ -20,10 +21,8 @@ const validateLogin = (globals) => {
   switch (radioSelect) {
     case 'DOB':
       if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
-        const minAge = 18;
-        const maxAge = 70;
-        const dobErrorText = `Age should be between ${minAge} to ${maxAge}`;
-        const ageValid = ageValidator(minAge, maxAge, dobValue);
+        const dobErrorText = FD_CONSTANT.ERROR_MSG.ageLimit;
+        const ageValid = ageValidator(FD_CONSTANT.MIN_AGE, FD_CONSTANT.MAX_AGE, dobValue);
         if (ageValid && (mobileNo?.length === 10)) {
           globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: true });
           globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
@@ -71,24 +70,24 @@ const validateLogin = (globals) => {
 async function loadFDStyles() {
   if (document.querySelector('.fd-form-wrapper')) {
     document.body.classList.add('fdlien');
-    const elements = document.querySelectorAll('.section.cmp-container-container');
-    elements.forEach((element) => {
-      if (element.dataset.sectionStatus === 'loaded') {
-        element.style.setProperty('display', 'none', 'important');
-      } else {
-        const observer = new MutationObserver((mutations) => {
-          mutations.forEach((mutation) => {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'data-section-status') {
-              if (element.dataset.sectionStatus === 'loaded') {
-                element.style.setProperty('display', 'none', 'important');
-                observer.disconnect();
-              }
-            }
-          });
-        });
-        observer.observe(element, { attributes: true });
-      }
-    });
+    // const elements = document.querySelectorAll('.section.cmp-container-container');
+    // elements.forEach((element) => {
+    //   if (element.dataset.sectionStatus === 'loaded') {
+    //     element.style.setProperty('display', 'none', 'important');
+    //   } else {
+    //     const observer = new MutationObserver((mutations) => {
+    //       mutations.forEach((mutation) => {
+    //         if (mutation.type === 'attributes' && mutation.attributeName === 'data-section-status') {
+    //           if (element.dataset.sectionStatus === 'loaded') {
+    //             element.style.setProperty('display', 'none', 'important');
+    //             observer.disconnect();
+    //           }
+    //         }
+    //       });
+    //     });
+    //     observer.observe(element, { attributes: true });
+    //   }
+    // });
   }
 }
 window.setTimeout(() => loadFDStyles(), 1000);
