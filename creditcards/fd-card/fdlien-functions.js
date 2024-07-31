@@ -68,6 +68,31 @@ const validateLogin = (globals) => {
   }
 };
 
+async function loadFDStyles() {
+  if (document.querySelector('.fd-form-wrapper')) {
+    document.body.classList.add('fdlien');
+    const elements = document.querySelectorAll('.section.cmp-container-container');
+    elements.forEach((element) => {
+      if (element.dataset.sectionStatus === 'loaded') {
+        element.style.setProperty('display', 'none', 'important');
+      } else {
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-section-status') {
+              if (element.dataset.sectionStatus === 'loaded') {
+                element.style.setProperty('display', 'none', 'important');
+                observer.disconnect();
+              }
+            }
+          });
+        });
+        observer.observe(element, { attributes: true });
+      }
+    });
+  }
+}
+window.setTimeout(() => loadFDStyles(), 1000);
+
 export {
   // eslint-disable-next-line import/prefer-default-export
   validateLogin,
