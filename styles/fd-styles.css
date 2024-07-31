@@ -210,24 +210,35 @@ main .section.form-container {
                 }
             }
 
-            .field-secondspanel{
-                display: flex;
+            .field-secondspanel {
+                display: grid;
             }
             
-            .field-resendotplabel {
+            .field-resendotplabel { 
+                margin-top: 12px;
+
                 p {
-                    font-size: var(--body-fd-md-font-size);
+                    font-size: var(--body-fd-sm-font-size);
                     padding: 0 0 0 5px;
                 }
             }
 
-            .field-seconds{
+            .field-seconds { 
+                margin: -1px 0 0 -20px;
+
                 input[type="number"] {
                     border: none;
                     width: 50px;
                     margin: 0;
-                    padding-top: 0;
+                    padding: 0;
+                    font-size: var(--body-fd-sm-font-size);
+                    pointer-events: none;
                 }
+            }
+
+            .field-sectext { 
+                margin: 12px 0 0 -79px; 
+                p { font-size: var(--body-fd-sm-font-size); }
             }
 
             .field-otpsubpanel {
@@ -235,6 +246,12 @@ main .section.form-container {
                     font-size: var(--body-fd-md-font-size);
                 }
             } 
+        }
+
+        .field-otppanel:has(.field-secondspanel:not([data-visible='false'])) {
+            .field-otpsubpanel {
+                grid-column: span 4;
+            }
         }
 
         .field-submitotp {
@@ -257,22 +274,85 @@ main .section.form-container {
 }
 
 /* Multiple Customer Id  */
-.field-multiplecustidselectionpanel {
+.fdlien .field-multiplecustidselectionpanel {
     display: grid !important;
+    padding: 40px 20px 0 15px;
 
-    .field-custidproceedlabel {
+    .field-custidproceedlabel p {
+        font-weight: var(--font-weight-extra-bold);
+        color: var(--color-interface-text-primary);
+        font-size: var(--body-fd-xx-lg-font-size);
+        margin-bottom: 10px;
+    }
+
+    .field-multiplecustidrepeatable > div > fieldset.panel-wrapper.field-wrapper.col-6{
+        border-radius: 16px;
+        border: 1px solid #ccc;
+        padding: 24px;
+
+        .field-custidlabel p {
+            color: var(--color-interface-text-primary);
+            font-size: var(--body-fd-md-font-size);
+            font-weight: var(--font-weight-regular);
+        }
+
+        .field-multiplecustidselect { 
+            margin-top: 2px; 
+            justify-content: end;
+        }
+
+        .field-maskedaccno {
+            margin-top: -41px;
+
+            input { 
+                border: none;
+                font-size: var(--body-x-lg-font-size);
+                font-weight: var(--font-weight-extra-bold);
+                margin: 0;
+                padding: 0;
+                color: var(--color-interface-text-primary);
+            }
+        }
+
+        .field-nooffds {
+            display: grid;
+            grid-template-columns: 85% 15%;
+            align-items: center;
+            background: var(--color-interface-background-quinary);
+            border-radius: 8px;
+
+            label { 
+                padding-left: 16px; 
+                color: var(--color-interface-text-secondary);
+                font-size: var(--body-md-font-size);
+            }
+
+            input {
+                margin: 0;
+                padding: 0;
+                pointer-events: none;
+                text-align: right;
+                border: none;
+                background: var(--color-interface-background-quinary);
+                color: var(--color-interface-text-secondary);
+                font-size: var(--body-md-font-size);
+            }
+        }
+    }
+
+    /* .field-custidproceedlabel {
         p p {
             font-size: var(--body-xx-lg-font-size);
             font-weight: var(--font-weight-bold);
             color: var(--color-interface-background-quaternary);
         }
-    }
+    } */
 
-    .field-multiplecustidrepeatable {
+    /* .field-multiplecustidrepeatable {
         grid-column: span 6 !important;
 
         .repeat-wrapper {
-            display: flex;
+            display: grid;
 
             fieldset.field-wrapper {                
                 border-radius: 16px;
@@ -282,7 +362,7 @@ main .section.form-container {
         }
         
 
-        .field-custidlabel p {
+        /* .field-custidlabel p {
             margin: 0;
         }
 
@@ -302,8 +382,8 @@ main .section.form-container {
 
         .field-eligiblefdlabel {
             background: var(--color-interface-background-quinary);
-        }
-    }
+        } */
+    
 }
 
 /* Footer */
@@ -400,4 +480,6 @@ main .section.form-container {
     .field-loginpanel {
         .field-mobilepanel, .field-identifierpanel { grid-column: span 12 !important; }
     }
+
+    .field-otppanel { padding: 0 6px 0 2px; }
 }
