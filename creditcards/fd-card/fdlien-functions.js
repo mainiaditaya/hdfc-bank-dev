@@ -22,7 +22,7 @@ const validateLogin = (globals) => {
     case 'DOB':
       if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
         const dobErrorText = FD_CONSTANT.ERROR_MSG.ageLimit;
-        const ageValid = ageValidator(FD_CONSTANT.MIN_AGE, FD_CONSTANT.MAX_AGE, dobValue);
+        const ageValid = ageValidator(FD_CONSTANT.AGE_LIMIT.min, FD_CONSTANT.AGE_LIMIT.max, dobValue);
         if (ageValid && (mobileNo?.length === 10)) {
           globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: true });
           globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
@@ -67,27 +67,10 @@ const validateLogin = (globals) => {
   }
 };
 
+/* loadFDStyles - for loading fd - styles - temporary fix */
 async function loadFDStyles() {
   if (document.querySelector('.fd-form-wrapper')) {
     document.body.classList.add('fdlien');
-    // const elements = document.querySelectorAll('.section.cmp-container-container');
-    // elements.forEach((element) => {
-    //   if (element.dataset.sectionStatus === 'loaded') {
-    //     element.style.setProperty('display', 'none', 'important');
-    //   } else {
-    //     const observer = new MutationObserver((mutations) => {
-    //       mutations.forEach((mutation) => {
-    //         if (mutation.type === 'attributes' && mutation.attributeName === 'data-section-status') {
-    //           if (element.dataset.sectionStatus === 'loaded') {
-    //             element.style.setProperty('display', 'none', 'important');
-    //             observer.disconnect();
-    //           }
-    //         }
-    //       });
-    //     });
-    //     observer.observe(element, { attributes: true });
-    //   }
-    // });
   }
 }
 window.setTimeout(() => loadFDStyles(), 1000);
