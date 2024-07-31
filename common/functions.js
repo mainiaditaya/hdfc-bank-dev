@@ -20,17 +20,14 @@ import {
 } from './makeRestAPI.js';
 
 import * as CONSTANT from './constants.js';
-import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
 
 const {
   ENDPOINTS,
   CURRENT_FORM_CONTEXT: currentFormContext,
   FORM_RUNTIME: formRuntime,
 } = CONSTANT;
-const { JOURNEY_NAME } = CC_CONSTANT;
 
 // dynamically we can change according to journey
-const journeyNameConstant = JOURNEY_NAME;
 
 /**
  * generates the otp
@@ -50,7 +47,7 @@ function getOTP(mobileNumber, pan, dob, globals) {
       dateOfBith: dob.$value || '',
       panNumber: pan.$value || '',
       journeyID: globals.form.runtime.journeyId.$value,
-      journeyName: journeyNameConstant,
+      journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
       identifierValue: pan.$value || dob.$value,
       identifierName: pan.$value ? 'PAN' : 'DOB',
     },
@@ -67,7 +64,7 @@ function getOTP(mobileNumber, pan, dob, globals) {
  * @param {object} dob
  * @return {PROMISE}
  */
-function otpValidation(mobileNumber, pan, dob, otpNumber) {
+function otpValidation(mobileNumber, pan, dob, otpNumber, globals) {
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   const jsonObj = {
@@ -78,7 +75,7 @@ function otpValidation(mobileNumber, pan, dob, otpNumber) {
       panNumber: pan.$value || '',
       channelSource: '',
       journeyID: currentFormContext.journeyID,
-      journeyName: journeyNameConstant,
+      journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
       dedupeFlag: 'N',
       referenceNumber: referenceNumber ?? '',
     },
@@ -184,7 +181,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
       initParameters: {
         journeyId: currentFormContext.journeyID,
         transactionId: currentFormContext.journeyID.replace(/-/g, '').replace(/_/g, ''),
-        journeyName: journeyNameConstant,
+        journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
         userAgent: window.navigator.userAgent,
         mobileNumber: mobileNumber.$value,
         leadProfileId: globals?.form.runtime.leadProifileId.$value,
@@ -212,7 +209,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
         },
         journeyStateInfo: {
           state: 'CUSTOMER_AADHAR_VALIDATION',
-          stateInfo: journeyNameConstant,
+          stateInfo: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
           formData: santizedFormDataWithContext(globals, currentFormContext),
         },
         auditData: {

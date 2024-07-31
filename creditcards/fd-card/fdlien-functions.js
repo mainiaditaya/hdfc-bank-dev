@@ -1,5 +1,13 @@
 import { ageValidator } from '../../common/formutils.js';
 import * as FD_CONSTANT from './constant.js';
+import * as CONSTANT from '../../common/constants.js';
+import { displayLoader } from '../../common/makeRestAPI.js';
+
+const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
+const { JOURNEY_NAME } = FD_CONSTANT;
+// Initialize all Fd Card Journey Context Variables & formRuntime variables.
+currentFormContext.journeyName = JOURNEY_NAME;
+formRuntime.getOtpLoader = displayLoader;
 
 /**
  * Validates the date of birth field to ensure the age is between 18 and 70.
@@ -11,8 +19,7 @@ const validateLogin = (globals) => {
   const panDobSelection = globals.form.loginMainPanel.loginPanel.identifierPanel.panDobSelection.$value;
   const mobileNo = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const radioSelect = (panDobSelection === '0') ? 'DOB' : 'PAN';
-  const regexPan = /^[a-zA-Z]{3}[Pp][a-zA-Z][0-9]{4}[a-zA-Z]{1}/g;
-  // const consentFirst = globals.form.consentFragment.checkboxConsent1Label.$value;
+  const regexPan = FD_CONSTANT.REGEX_PAN;
   const panErrorText = FD_CONSTANT.ERROR_MSG.panError;
   globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
 
