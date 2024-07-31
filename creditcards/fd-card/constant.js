@@ -1,11 +1,13 @@
 // declare CONSTANTS for (fd) fd only.
 
-const JOURNEY_NAME = 'CORPORATE_CARD_JOURNEY';
+const JOURNEY_NAME = 'FDLIEN_CARD_JOURNEY';
 
 const AGE_LIMIT = {
   min: 18,
   max: 70,
 };
+
+const REGEX_PAN = /^[a-zA-Z]{3}[Pp][a-zA-Z][0-9]{4}[a-zA-Z]{1}/g;
 
 const ERROR_MSG = {
   panLabel: 'PAN',
@@ -18,4 +20,5 @@ export {
   JOURNEY_NAME,
   ERROR_MSG,
   AGE_LIMIT,
+  REGEX_PAN,
 };
