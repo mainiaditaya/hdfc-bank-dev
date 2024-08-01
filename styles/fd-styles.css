@@ -1,3 +1,4 @@
+/* stylelint-disable selector-id-pattern */
 /* stylelint-disable no-descending-specificity */
 
 /* add all fd realted styles */
@@ -239,21 +240,17 @@ main .section.form-container {
                 margin: -17px 0 -18px;
                 width: 80%;
 
-                input { height: 54px; }
-            }
-
-/* 
-            p > b {
-                color: var(--color-interface-background-quaternary);
-                font-size: var(--body-fd-xx-lg-font-size);
-            }
-
-            .field-otphelptext{
-                p > b {
-                    color: var(--color-interface-background-quaternary);
-                    font-size: var(--body-fd-sm-font-size);
+                input { 
+                    height: 54px; 
+                    padding: 15px 25px;
+                    letter-spacing: 4vw;
+                    color: var(--color-input-text-placeholder-default);
                 }
-            } */
+
+                #togglePassword {
+                    display: none;
+                }
+            }
 
             .field-secondspanel {
                 display: flex;
@@ -369,6 +366,7 @@ main .section.form-container {
             align-items: center;
             background: var(--color-interface-background-quinary);
             border-radius: 8px;
+            pointer-events: none;
 
             label { 
                 padding-left: 16px; 
@@ -379,7 +377,6 @@ main .section.form-container {
             input {
                 margin: 0;
                 padding: 0;
-                pointer-events: none;
                 text-align: right;
                 border: none;
                 background: var(--color-interface-background-quinary);
