@@ -1,4 +1,4 @@
-import { validateLogin, otpTimer } from './fdlien-functions.js';
+import { validateLogin, otpTimer, maskedMobNum } from './fdlien-functions.js';
 import { getOTP, otpValidation } from '../../common/functions.js';
 import {
   createJourneyId,
@@ -20,4 +20,5 @@ export {
   invokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
   journeyResponseHandlerUtil,
+  maskedMobNum,
 };

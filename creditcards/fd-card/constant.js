@@ -18,9 +18,12 @@ const ERROR_MSG = {
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
 };
 
+const OTP_TIMER = 30;
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,
   AGE_LIMIT,
   REGEX_PAN,
+  OTP_TIMER,
 };

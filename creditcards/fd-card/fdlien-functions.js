@@ -1,4 +1,4 @@
-import { ageValidator } from '../../common/formutils.js';
+import { ageValidator, maskNumber } from '../../common/formutils.js';
 import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
 import { displayLoader } from '../../common/makeRestAPI.js';
@@ -86,15 +86,25 @@ const validateLogin = (globals) => {
  * @param {Object} globals - The global object containing necessary data for DAP request.
 */
 function otpTimer(globals) {
-  let sec = 30;
+  let sec = FD_CONSTANT.OTP_TIMER;
   const timer = setInterval(() => {
     globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
-    sec--;
+    sec -= 1;
     if (sec < 0) {
       clearInterval(timer);
     }
   }, 1000);
 }
+
+/**
+ * Starts the timer for resending OTP.
+ * @param {Object} globals - The global object containing necessary data for DAP request.
+ * @param {string} mobileNo - Registered mobile number
+*/
+const maskedMobNum = (mobileNo, globals) => {
+  if (!(mobileNo?.length === 10)) return;
+  globals.functions.setProperty(globals.form.loginMainPanel.maskedMobileNumber, { value: `${maskNumber(mobileNo, 6)}.` });
+};
 
 /* loadFDStyles - for loading fd - styles - temporary fix */
 async function loadFDStyles() {
@@ -108,4 +118,5 @@ export {
   // eslint-disable-next-line import/prefer-default-export
   validateLogin,
   otpTimer,
+  maskedMobNum,
 };
