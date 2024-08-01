@@ -91,7 +91,7 @@ function otpTimer(globals) {
     globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
     sec--;
     if (sec < 0) {
-      // enable resend button
+      clearInterval(timer);
     }
   }, 1000);
 }
