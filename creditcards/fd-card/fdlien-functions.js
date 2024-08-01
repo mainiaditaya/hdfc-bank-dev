@@ -86,15 +86,13 @@ const validateLogin = (globals) => {
  * @param {Object} globals - The global object containing necessary data for DAP request.
 */
 function otpTimer(globals) {
-  debugger;
-  document.querySelector('.field-loginmainpanel').setAttribute('data-visible', 'false');
   let sec = 30;
-  let timer = setInterval(function(){
+  const timer = setInterval(() => {
     globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
-      sec--;
-      if (sec < 0) {
-        // enable resend button
-      }
+    sec--;
+    if (sec < 0) {
+      // enable resend button
+    }
   }, 1000);
 }
 
