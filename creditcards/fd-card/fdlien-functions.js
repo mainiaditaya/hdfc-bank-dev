@@ -92,6 +92,8 @@ function otpTimer(globals) {
     sec -= 1;
     if (sec < 0) {
       clearInterval(timer);
+      document.querySelector('.field-secondspanel').setAttribute('data-visible', 'false');
+      document.querySelector('.field-otpresend').setAttribute('data-visible', 'true');
     }
   }, 1000);
 }
