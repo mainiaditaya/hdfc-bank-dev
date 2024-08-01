@@ -1,5 +1,5 @@
 import { validateLogin } from './fdlien-functions.js';
-import { getOTP } from '../../common/functions.js';
+import { getOTP, otpValidation } from '../../common/functions.js';
 import {
   createJourneyId,
   getCurrentContext,
@@ -11,6 +11,7 @@ import {
 
 export {
   getOTP,
+  otpValidation,
   validateLogin,
   createJourneyId,
   getCurrentContext,

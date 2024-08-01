@@ -25,6 +25,7 @@ function createJourneyId(visitMode, journeyAbbreviation, channel, globals) {
   // var dispInstance = getDispatcherInstance();
   const journeyId = globals.functions.exportData().journeyId || `${dynamicUUID}_01_${journeyAbbreviation}_${visitMode}_${channel}`;
   globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
+  return journeyId;
 }
 
 const getCurrentContext = () => currentFormContext;

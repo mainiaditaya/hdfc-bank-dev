@@ -20,11 +20,13 @@ import {
 } from './makeRestAPI.js';
 
 import * as CONSTANT from './constants.js';
+import { createJourneyId } from './journey-utils.js';
 
 const {
   ENDPOINTS,
   CURRENT_FORM_CONTEXT: currentFormContext,
   FORM_RUNTIME: formRuntime,
+  CHANNEL,
 } = CONSTANT;
 
 // dynamically we can change according to journey
@@ -38,6 +40,8 @@ const {
  * @return {PROMISE}
  */
 function getOTP(mobileNumber, pan, dob, globals) {
+  /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
+  const jidTemporary = createJourneyId('online', globals.form.runtime.journeyName.$value, CHANNEL, globals);
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
@@ -46,7 +50,7 @@ function getOTP(mobileNumber, pan, dob, globals) {
       mobileNumber: mobileNumber.$value,
       dateOfBith: dob.$value || '',
       panNumber: pan.$value || '',
-      journeyID: globals.form.runtime.journeyId.$value,
+      journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
       identifierValue: pan.$value || dob.$value,
       identifierName: pan.$value ? 'PAN' : 'DOB',
