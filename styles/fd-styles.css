@@ -60,6 +60,7 @@ main .section.form-container {
             background: var(--color-interface-fd-background-secondary);
     
             .field-bannerimagefdlien {
+                background: url('../icons/side_bar_banner.png');
                 display: flex;
                 align-items: flex-end;
             }
@@ -447,6 +448,10 @@ main .section.form-container {
 
 /* For tablets */
 @media (width <=800px) {
+    .fdlien:has(.section.cmp-container-container) .section.cmp-container-container {
+        display: block !important;
+    }
+
     .fdlien .form form {
         display: block;
     }
@@ -484,6 +489,14 @@ main .section.form-container {
 
 /* For mobiles */
 @media (width <=500px) {
+    .fdlien:has(.section.cmp-container-container) .section.cmp-container-container {
+        display: block !important;
+    }
+
+    .field-bannerimagefdlien{
+        display: none;
+    }
+
     .fdlien .button-wrapper button {
         max-width: none !important;
     }
