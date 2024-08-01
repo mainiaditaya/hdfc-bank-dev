@@ -58,7 +58,8 @@ main .section.form-container {
 
     .fd-form-wrapper {
         .field-bannerimagepanel {
-            background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner.png');
+            background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner.png') no-repeat center center / cover;
+            min-height: 648px;
     
             /* .field-bannerimagefdlien {
                 background: url('../icons/side_bar_banner.png');
@@ -394,8 +395,8 @@ main .section.form-container {
 }
 
 /* Footer */
-.section .form-container .form-wrapper .form.block .fd-form-wrapper ~ footer {
-  background-color: var(--color-interface-fd-background-primary)
+header:has(~ .fd-form-wrapper) {
+    background-color: var(--color-interface-fd-background-primary)
 }
 
 .fdlien footer {
@@ -418,7 +419,6 @@ main .section.form-container {
         .field-loginmainpanel {
             .field-loginpanel {
                 display: grid;
-                margin-bottom: 25px;
             }
         }
     }
