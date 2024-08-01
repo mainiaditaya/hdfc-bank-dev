@@ -445,10 +445,6 @@ main .section.form-container {
 
 /* For tablets */
 @media (width <=800px) {
-    .fdlien:has(.section.cmp-container-container) .section.cmp-container-container {
-        display: block !important;
-    }
-
     .fdlien .form form {
         display: block;
     }
@@ -468,6 +464,13 @@ main .section.form-container {
     }
 
     .fdlien:has(.section.form-container) .section.form-container {
+        .fd-form-wrapper{
+            .field-bannerimagepanel {
+                background: var(--color-interface-fd-background-secondary) url('../icons/banner_tablet.png');
+                min-height: 225px;
+            }
+        }    
+
         .field-loginmainpanel {
             .field-registeredmobilenumber {
                 margin: -15px 0 0;
@@ -486,12 +489,13 @@ main .section.form-container {
 
 /* For mobiles */
 @media (width <=500px) {
-    .fdlien:has(.section.cmp-container-container) .section.cmp-container-container {
-        display: block !important;
-    }
-
-    .field-bannerimagefdlien{
-        display: none;
+    .fdlien:has(.section.form-container) .section.form-container {
+        .fd-form-wrapper{
+            .field-bannerimagepanel {
+                background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png');
+                min-height: 225px;
+            }
+        }    
     }
 
     .fdlien .button-wrapper button {
