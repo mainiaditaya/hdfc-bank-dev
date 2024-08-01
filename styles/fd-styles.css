@@ -57,6 +57,13 @@ main .section.form-container {
     }
 
     .fd-form-wrapper {
+        margin-bottom: 40px;
+
+        .field-multiplecustidbanner {
+            background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner_multiple_customerid.png') no-repeat center center / cover;
+            min-height: 648px; 
+        }
+
         .field-bannerimagepanel {
             background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner.png') no-repeat center center / cover;
             min-height: 648px;
