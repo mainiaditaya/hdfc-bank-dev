@@ -43,7 +43,7 @@ function getOTP(mobileNumber, pan, dob, globals) {
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId('online', globals.form.runtime.journeyName.$value, CHANNEL, globals);
   currentFormContext.action = 'getOTP';
-  currentFormContext.journeyID = globals.form.runtime.journeyId.$value;
+  currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
   const jsonObj = {
     requestString: {

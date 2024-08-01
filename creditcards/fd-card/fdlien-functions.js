@@ -8,6 +8,7 @@ const { JOURNEY_NAME } = FD_CONSTANT;
 // Initialize all Fd Card Journey Context Variables & formRuntime variables.
 currentFormContext.journeyName = JOURNEY_NAME;
 formRuntime.getOtpLoader = displayLoader;
+formRuntime.otpValLoader = displayLoader;
 
 /**
  * Validates the date of birth field to ensure the age is between 18 and 70.
