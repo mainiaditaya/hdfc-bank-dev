@@ -2,7 +2,6 @@
 // impoted as CC_CONSTANT key name in all files.
 
 const JOURNEY_NAME = 'CORPORATE_CARD_JOURNEY';
-const DEAD_PAN_STATUS = ['D', 'ED', 'X', 'F'];
 const ID_COM = {
   productCode: 'CORPCC',
   scopeMap: {
@@ -37,7 +36,6 @@ const DOM_ELEMENT = {
 };
 export {
   JOURNEY_NAME,
-  DEAD_PAN_STATUS,
   ID_COM,
   DOM_ELEMENT,
 };

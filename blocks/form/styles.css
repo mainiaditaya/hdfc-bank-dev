@@ -1,10 +1,15 @@
 /* stylelint-disable selector-not-notation */
 /* stylelint-disable no-descending-specificity */
 /* stylelint-disable selector-class-pattern */
-@import url('../../creditcards/creditcards.css');
+@import url('../../creditcards/corporate-creditcard/creditcards.css');
 
 :root {
   --loader-image-url: url('loader.gif');
+}
+
+a:any-link, b.link, a:any-link:hover, b.link:hover {
+  font-weight: var(--font-weight-bold) !important;
+  font-size: var(--body-sm-font-size) !important;
 }
 
 body,
@@ -59,10 +64,6 @@ main .form {
   input[type='number'] {
     appearance: textfield;
   }
-}
-
-.date-wrapper .field-description {
-  display: none;
 }
 
 .passwordField .field-description {
@@ -458,7 +459,7 @@ main
 main .form .field-resultpanel > .bulleted-paragraph::before,
 main .form .field-successresultpanel > .field-arnrefnumpanel::before {
   background-image: url('../../icons/result-list-icon.svg');
-  padding-right: 15px; 
+  padding-right: 15px;
 }
 
 main .form .field-successresultpanel {
@@ -478,7 +479,7 @@ main .form .field-successresultpanel {
     position: relative;
     padding-bottom: 45px;
 
-    p { 
+    p {
       margin: 0;
       padding: 0;
     }
@@ -627,9 +628,9 @@ main .form .field-resultpanel {
 }
 
 @media (width <= 767px) {
-  main .form .field-successresultpanel { 
-    display: grid; 
-  
+  main .form .field-successresultpanel {
+    display: grid;
+
     .field-successresulttextlabel { margin-bottom: 12px; }
     .field-arnrefnumpanel::before { left: 24%; }
     .field-arnrefnumlabel, .field-newarnnumber { left: 36%; }
@@ -700,7 +701,7 @@ main .form .field-resultpanel {
       margin: 0 !important;
     }
   }
-  
+
   main .form form .field-successresultpanel {
     margin-left: -17px;
     display: grid;
@@ -709,7 +710,7 @@ main .form .field-resultpanel {
     .field-arnrefnumlabel { left: 32%; }
 
     .field-newarnnumber {
-      left: 32%; 
+      left: 32%;
       top: 43px;
     }
 

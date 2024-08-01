@@ -7,7 +7,29 @@ import {
   resendOTP,
   formRuntime,
   customSetFocus,
+  validateLogin,
+  getAddressDetails,
+  pinCodeMaster,
+  validateEmailID,
+  currentAddressToggleHandler,
+  otpValHandler,
+  setNameOnCard,
+  prefillForm,
+  getThisCard,
 } from '../creditcards/corporate-creditcard/corporate-creditcardFunctions.js';
+
+import {
+  validatePan,
+  panAPISuccesHandler,
+} from './panvalidation.js';
+
+import {
+  executeInterfaceApiFinal,
+  executeInterfaceApi,
+  ipaRequestApi,
+  ipaSuccessHandler,
+  executeInterfaceResponseHandler,
+} from './executeinterfaceutils.js';
 
 import {
   urlPath, getTimeStamp, clearString,
@@ -92,4 +114,20 @@ export {
   sendAnalytics,
   resendOTP,
   hideLoaderGif,
+  validateLogin,
+  getAddressDetails,
+  pinCodeMaster,
+  validateEmailID,
+  currentAddressToggleHandler,
+  otpValHandler,
+  setNameOnCard,
+  prefillForm,
+  getThisCard,
+  validatePan,
+  panAPISuccesHandler,
+  executeInterfaceApi,
+  executeInterfaceApiFinal,
+  ipaRequestApi,
+  ipaSuccessHandler,
+  executeInterfaceResponseHandler,
 };

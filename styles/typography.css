@@ -1,5 +1,5 @@
 :root {
-  --font-family-default: inter;
+  --font-family-default: inter, inter-fallback;
 
   /* form--btn */
   --form-button-font-size: 16px;
@@ -15,6 +15,7 @@
   --form-input-border-radius: 8px;
 
   /* body text font styles */
+  --body-x-sm-font-size: 12px;
   --body-sm-font-size: 14px;
   --body-md-font-size: 16px;
   --body-lg-font-size: 18px;
