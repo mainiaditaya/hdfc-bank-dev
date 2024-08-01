@@ -81,6 +81,23 @@ const validateLogin = (globals) => {
   }
 };
 
+/**
+ * Starts the timer for resending OTP.
+ * @param {Object} globals - The global object containing necessary data for DAP request.
+*/
+function otpTimer(globals) {
+  debugger;
+  document.querySelector('.field-loginmainpanel').setAttribute('data-visible', 'false');
+  let sec = 30;
+  let timer = setInterval(function(){
+    globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
+      sec--;
+      if (sec < 0) {
+        // enable resend button
+      }
+  }, 1000);
+}
+
 /* loadFDStyles - for loading fd - styles - temporary fix */
 async function loadFDStyles() {
   if (document.querySelector('.fd-form-wrapper')) {
@@ -92,4 +109,5 @@ window.setTimeout(() => loadFDStyles(), 1000);
 export {
   // eslint-disable-next-line import/prefer-default-export
   validateLogin,
+  otpTimer,
 };

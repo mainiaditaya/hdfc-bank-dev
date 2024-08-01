@@ -210,89 +210,96 @@ main .section.form-container {
         }
 
         /* OTP Panel Styling */
+        .field-otppanelwrapper {
+            grid-template-rows: auto 270px;
 
-        .field-otppanel {
-            max-width: 100%;
-            grid-template-rows: auto 1fr;
-            padding: 40px 40px 40px 25px;
-
-            .field-otppanel { 
-                text-align: left;
-            }
-
-            legend {
-                b {
-                    color: var(--color-interface-background-quaternary);
-                    font-size: var(--body-fd-xx-lg-font-size);
+            .field-otppanel {
+                max-width: 100%;
+                grid-template-rows: auto;
+                padding: 40px 40px 0 10px;
+    
+                .field-otppanel { 
+                    text-align: left;
                 }
-            }
-
-            .field-otphelptext { margin-top: -60px;
-
-                p {
-                    color: var(--color-input-text-primary);
+    
+                legend {
+                    b {
+                        color: var(--color-interface-background-quaternary);
+                        font-size: var(--body-fd-xx-lg-font-size);
+                    }
+                }
+    
+                .field-otphelptext { 
+                    margin-top: -60px;
                     font-size: var(--body-fd-md-font-size);
-                    font-weight: var(--font-weight-regular);
+                    font-weight: var(--font-weight-bold);
+    
+                    p {
+                        color: var(--color-input-text-primary);
+                        font-size: var(--body-fd-md-font-size);
+                        font-weight: var(--font-weight-regular);
+                    }
                 }
-            }
-
-            .field-otpnumber {
-                margin: -17px 0 -18px;
-                width: 80%;
-
-                input { 
-                    height: 54px; 
-                    padding: 15px 25px;
-                    letter-spacing: 4vw;
-                    color: var(--color-input-text-placeholder-default);
+    
+                .field-otpnumber {
+                    margin: -17px 0 -18px;
+                    width: 80%;
+    
+                    input { 
+                        height: 54px; 
+                        padding: 15px 25px;
+                        letter-spacing: 4vw;
+                        color: var(--color-input-text-placeholder-default);
+                    }
+    
+                    #togglePassword {
+                        display: none;
+                    }
                 }
-
-                #togglePassword {
-                    display: none;
+    
+                .field-secondspanel {
+                    display: flex;
+                    flex-direction: row;
                 }
-            }
-
-            .field-secondspanel {
-                display: flex;
-                flex-direction: row;
-            }
-            
-            .field-resendotplabel { 
-                margin-top: 12px;
-                width: fit-content;
-
-                p {
-                    font-size: var(--body-fd-sm-font-size);
-                    padding: 0;
+                
+                .field-resendotplabel { 
+                    margin-top: 12px;
+                    width: fit-content;
+    
+                    p {
+                        font-size: var(--body-fd-sm-font-size);
+                        padding: 0;
+                    }
                 }
-            }
-
-            .field-seconds { 
-                margin: 0 0 0 -12px;
-                width: fit-content;
-
-                input[type="number"] {
-                    border: none;
-                    width: 50px;
-                    margin: 0;
-                    padding: 0;
-                    font-size: var(--body-fd-sm-font-size);
-                    pointer-events: none;
+    
+                .field-seconds { 
+                    margin: 0 0 0 -12px;
+                    width: fit-content;
+    
+                    input[type="number"] {
+                        border: none;
+                        width: 50px;
+                        margin: 0;
+                        padding: 0;
+                        font-size: var(--body-fd-sm-font-size);
+                        pointer-events: none;
+                    }
                 }
-            }
-
-            .field-sectext { 
-                width: fit-content;
-                margin: 12px 0 0 -51px;
-                p { font-size: var(--body-fd-sm-font-size); }
-            }
-
-            /* .field-otpsubpanel {
-                .field-maximum, field-attempts {
-                    font-size: var(--body-fd-md-font-size);
+    
+                .field-sectext { 
+                    width: fit-content;
+                    margin: 12px 0 0 -51px;
+                    p { font-size: var(--body-fd-sm-font-size); }
                 }
-            }  */
+    
+                /* .field-otpsubpanel {
+                    .field-maximum, field-attempts {
+                        font-size: var(--body-fd-md-font-size);
+                    }
+                }  */
+            }
         }
+        
 
         .field-otppanel:has(.field-secondspanel:not([data-visible='false'])) {
             .field-otpsubpanel {
@@ -300,10 +307,9 @@ main .section.form-container {
             }
         }
 
-        /* .field-submitotp {
-            padding-bottom: 40px;
-            button { max-width: none !important; }
-        } */
+        .field-submitotp {
+            padding-left: 20px;
+        }
 
         /* Button Styling */
         .button-wrapper {
