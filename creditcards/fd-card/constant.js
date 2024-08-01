@@ -14,7 +14,7 @@ const ERROR_MSG = {
   panLabel: 'PAN',
   dobLabel: 'DOB',
   panError: 'Please enter a valid PAN Number',
-  mobileError: 'Enter valida mobile number',
+  mobileError: 'Enter valid mobile number',
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
 };
 

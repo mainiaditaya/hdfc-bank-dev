@@ -25,7 +25,7 @@ const validateLogin = (globals) => {
   const panInput = document.querySelector(`[name=${'pan'} ]`);
   const panWrapper = panInput.parentElement;
   if (mobileNo?.length < 10) {
-    globals.functions.markFieldAsInvalid(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$qualifiedName, 'Enter', { useQualifiedName: true });
+    globals.functions.markFieldAsInvalid(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$qualifiedName, FD_CONSTANT.ERROR_MSG.mobileError, { useQualifiedName: true });
     globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
   } else {
     globals.functions.markFieldAsInvalid(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$qualifiedName, '', { useQualifiedName: true });
