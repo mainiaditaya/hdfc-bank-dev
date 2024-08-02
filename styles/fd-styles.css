@@ -60,7 +60,7 @@ main .section.form-container {
         margin-bottom: 40px;
 
         .field-multiplecustidbanner {
-            background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner_multiple_customerid.png') no-repeat center center / cover;
+            background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner_multiple_customerid.png') no-repeat bottom center / 440px 649px;
             min-height: 648px; 
         }
 
