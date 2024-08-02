@@ -5,7 +5,7 @@ import {
 
 const addGaps = () => {
   const inputField = document.querySelector('.char-gap-4 input');
-  inputField.addEventListener('input', () => groupCharacters(inputField, 4));
+  inputField.addEventListener('input', () => groupCharacters(inputField, [4, 5]));
 };
 
 const addMobileValidation = () => {

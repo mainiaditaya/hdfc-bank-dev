@@ -247,22 +247,28 @@ const restrictToAlphabetsNoSpaces = (inputName) => {
 /**
  * Groups characters in an input field, adding a space after every specified number of characters.
  *
- * @param {HTMLInputElement} inputField - The input field element to format.
- * @param {number} charGroupSize - The number of characters to group before adding a space.
+ * @param {HTMLInputElement} inputField - The input field element whose value is to be formatted.
+ * @param {number[]} gapLengths - An array of integers representing the lengths of groups between gaps.
  */
-const groupCharacters = (inputField, charGroupSize) => {
-  const value = inputField.value.replace(/\s+/g, ''); // Remove existing spaces
-  const regex = new RegExp(`.{1,${charGroupSize}}`, 'g'); // Create a dynamic regex using the variable
-  const formattedValue = value.match(regex)?.join(' ') || value; // Add space after every charGroupSize characters
+const groupCharacters = (inputField, gapLengths) => {
+  const value = inputField.value.replace(/\s+/g, '');
+  let formattedValue = '';
+  let position = 0;
+  let gapsIndex = 0;
+  let gapPosition = gapLengths[gapsIndex] || Infinity;
+
+  for (let i = 0; i < value.length; i += 1) {
+    if (position === gapPosition) {
+      formattedValue += ' ';
+      gapsIndex += 1;
+      gapPosition = gapLengths[gapsIndex] || Infinity;
+      position = 0;
+    }
+    formattedValue += value[i];
+    position += 1;
+  }
 
   inputField.value = formattedValue;
-
-  // Adjust the letter-spacing dynamically after formatting
-  if (formattedValue.length % (charGroupSize + 1) === 0) {
-    inputField.classList.add('formatted');
-  } else {
-    inputField.classList.remove('formatted');
-  }
 };
 
 /**
