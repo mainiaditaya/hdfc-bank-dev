@@ -130,7 +130,7 @@ function otpTimer(globals) {
     sec -= 1;
     dispSec = sec;
     if (sec < 10) {
-        dispSec = '0' + dispSec;
+      dispSec = `0${dispSec}`;
     }
     if (sec < 0) {
       clearInterval(timer);

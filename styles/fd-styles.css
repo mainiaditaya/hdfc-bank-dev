@@ -1,3 +1,4 @@
+/* stylelint-disable declaration-block-no-redundant-longhand-properties */
 /* stylelint-disable selector-id-pattern */
 /* stylelint-disable no-descending-specificity */
 
@@ -13,7 +14,7 @@ main {
 }
 
 /* Input box styling */
-.fdlien input[type='text']:not([placeholder]), input[type='number'], input[type='email'], input[type='date'], select {
+.fdlien .field-registeredmobilenumber input, .field-pan input, .field-dateofbirth input:not([placeholder]), .field-countrycode select {
     font-size: var(--body-lg-font-size) !important;
     font-weight: var(--font-weight-medium) !important;
     line-height: 24px !important;
@@ -134,7 +135,7 @@ main .section.form-container {
                     select {
                         background: url('../icons/india-flag.png') no-repeat 20px center;
                         border-radius: var(--form-input-border-radius) 0 0 var(--form-input-border-radius) !important;
-                        padding: 0 8px !important;
+                        padding: 0 5px !important;
                         text-align: right;
                         margin-top: 0;
                         letter-spacing: 0 !important;
@@ -307,13 +308,10 @@ main .section.form-container {
     
                     input[type="number"] {
                         border: none;
-                        letter-spacing: normal !important;
                         width: 50px;
                         margin: 0;
                         padding: 0;
-                        font-size: var(--body-fd-sm-font-size) !important;
                         pointer-events: none;
-                        color: var(--color-interface-text-secondary) !important;
                     }
                 }
     
@@ -387,12 +385,8 @@ main .section.form-container {
 
             input { 
                 border: none;
-                font-size: var(--body-x-lg-font-size) !important;
-                font-weight: var(--font-weight-extra-bold) !important;
                 margin: 0;
                 padding: 0;
-                color: var(--color-interface-text-primary) !important;
-                letter-spacing: normal !important;
             }
         }
 
@@ -440,10 +434,167 @@ main .section.form-container {
 .fdlien .field-fdbasedcreditcardwizard {
     border-radius: 24px 24px 0 0;
     
-    .wizard-menu-items{
+    /* .wizard-menu-items{
         position: absolute;
         top: 0;
         background: var(--color-interface-background-primary);
+    } */
+    
+    .field-selectfd {
+        .field-backlinkmultiplecust button {
+            color: var(--color-action-text-secondary-default);
+            background: var(--color-interface-background-primary);
+            font-weight: var(--font-weight-regular);
+            max-width: fit-content !important;
+        }
+
+        div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p {
+            font-weight: var(--font-weight-regular);
+            font-size: var(--body-md-font-size);
+            color: var(--color-interface-text-secondary);
+            margin: 0;
+        }
+
+        .field-fdselectioninfo {
+            margin-top: -21px;
+
+            .field-customername { 
+                display: flex; 
+                
+                label {
+                    width: max-content;
+                    align-self: center;
+                }
+
+                input {
+                    padding: 0;
+                    margin: 0.5rem 0.4rem;
+                    border: none;
+                }
+
+                label, input {
+                    font: var(--font-family-default);
+                    font-weight: var(--font-weight-bold) !important;
+                    font-size: var(--body-fd-xx-lg-font-size) !important;
+                    color: var(--color-interface-text-primary);
+                }
+            }
+
+            .field-creditlimit {
+                display: grid;
+                grid-template-columns: 204px auto;
+                border: solid 1px var(--color-interface-border-secondary);
+                border-radius: 12px;
+                height: 52px;
+
+                label {
+                    text-align: right;
+                    align-self: center;
+                    justify-self: center;
+                }
+
+                input {
+                    padding: 0;
+                    text-align: center;
+                    margin: 0;
+                    height: 50px;
+                    border-radius: 0 12px 12px 0;
+                    border: none;
+                    background: var(--color-interface-background-quinary);
+                    font-size: var(--body-fd-x-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-text-primary);
+                }
+            }
+
+            .field-select-fd-subtext1 { margin-top: -31px; }
+
+            .field-fdnumberselection {
+                padding: 20px 16px;
+                border: solid 1px var(--color-action-border-primary-default);
+                border-radius: 16px;
+                max-height: 196px;
+                min-width: 263px;
+
+                label {
+                    padding: 0 0 0 12px;
+                    font-size: var(--body-fd-sm-font-size);
+                    font-weight: var(--font-weight-regular);
+                }
+
+                input {
+                    border: none;
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-text-quaternary);
+                    text-align: right;
+                    padding: 0;
+                    margin: 0 12px 0 0;
+                    background: var(--color-interface-background-quinary);
+                }
+
+                .field-fdnumber {
+                    margin-top: -7px;
+
+                    label {
+                        padding: 0;
+                        margin-top: -10px;
+                        font-weight: var(--font-weight-bold);
+                        font-size: var(--body-fd-x-lg-font-size);
+                        color: var(--color-interface-text-primary);
+                    }
+
+                    input {
+                        text-align: left;
+                        margin-top: -16px;
+                        font-weight: var(--font-weight-medium);
+                        background-color: var(--color-interface-background-primary);
+                    }
+                }
+
+                .field-fdaccselect { margin-top: 6px; }
+                
+                .field-selectedfdamount {
+                    display: flex;
+                    margin-top: -23px;
+                    border-radius: 8px;
+                    background: var(--color-interface-background-quinary);
+
+                    label { align-self: center; }
+                }
+
+                .field-maturingdate {
+                    display: flex;
+                    margin-top: -33px;
+                    border-radius: 8px;
+                    background: var(--color-interface-background-quinary);
+
+                    label {
+                        width: 90%;
+                        align-self: center;
+                    }
+                }
+            }
+        }
+
+        .field-selectfdtncpanel {
+            padding: 16px;
+            border: solid 1px var(--color-action-border-primary-disabled);
+            border-radius: 12px;
+            background: var(--color-interface-background-quinary);
+
+            .field-selectfdtncpanel-title p {
+                font-size: var(--body-fd-lg-font-size);
+                font-weight: var(--font-weight-medium);
+                line-height: 18px;
+                margin-bottom: -14px;
+                color: var(--color-interface-text-quaternary);
+            }
+
+            .field-pleasenotetext1, .field-pleasenotetext2 {
+                margin-bottom: -20px;
+            }
+        }
     }
 }
 
@@ -545,14 +696,20 @@ header:has(~ .fd-form-wrapper) {
         .field-loginmainpanel, .field-otppanelwrapper, .field-multiplecustidselectionpanel {
             margin: 0 auto;
             max-width: 768px;
+            padding: 0 40px !important;
         }
 
-        .field-multiplecustidpanel { display: block !important; }
+        .field-multiplecustidpanel:not([data-visible='false']) { display: block !important; }
 
         .field-loginmainpanel {
             .field-registeredmobilenumber {
                 margin: -15px 0 0;
                 max-width: 225px;
+            }
+
+            .field-countrycode select {
+                padding: 0 !important;
+                background-position: 14px center !important;
             }
 
             .field-stepstofollow {
@@ -563,11 +720,33 @@ header:has(~ .fd-form-wrapper) {
                 }
             }
         }
+
+        .field-fdbasedcreditcardwizard {
+            .field-selectfd {
+                .field-customername { grid-column: span 9; }
+
+                .field-creditlimit { 
+                    grid-column: span 3; 
+                    display: block;
+                    text-align: center;
+                    max-height: 52px;
+
+                    input {
+                        border-width: 0 1px 1px;
+                        border-style: none solid solid;
+                        border-color: transparent var(--color-interface-border-secondary) var(--color-interface-border-secondary);
+                        border-radius: 0 0 12px 12px;
+                        width: 101%;
+                        margin-left: -1px;
+                    }
+                }
+            }
+        }
     }
 }
 
 /* For mobiles */
-@media (480px <=width <=767px) {
+@media (350px <=width <=767px) {
     .fdlien:has(.section.form-container) .section.form-container {
         .fd-form-wrapper{
             .field-bannerimagepanel {
@@ -593,6 +772,7 @@ header:has(~ .fd-form-wrapper) {
     .fdlien .field-loginmainpanel, .fdlien .field-otppanelwrapper {
         max-width: 480px;
         margin: 0 auto !important;
+        padding: 20px !important;
     }
 
     .fdlien .field-loginmainpanel {
