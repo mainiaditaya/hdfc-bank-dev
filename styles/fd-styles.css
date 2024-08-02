@@ -355,6 +355,7 @@ main .section.form-container {
 .fdlien .field-multiplecustidselectionpanel {
     display: grid !important;
     padding: 40px 20px 0 15px;
+    grid-template-rows: auto auto 1fr;
 
     .field-custidproceedlabel p {
         font-weight: var(--font-weight-extra-bold);
@@ -363,10 +364,12 @@ main .section.form-container {
         margin-bottom: 10px;
     }
 
-    .field-multiplecustidrepeatable > div > fieldset.panel-wrapper.field-wrapper.col-6{
+    .field-multiplecustidrepeatable{
         border-radius: 16px;
         border: 1px solid #ccc;
         padding: 24px;
+        max-height: 160px;
+        max-width: 368px;
 
         .field-custidlabel p {
             color: var(--color-interface-text-primary);
@@ -384,11 +387,12 @@ main .section.form-container {
 
             input { 
                 border: none;
-                font-size: var(--body-x-lg-font-size);
-                font-weight: var(--font-weight-extra-bold);
+                font-size: var(--body-x-lg-font-size) !important;
+                font-weight: var(--font-weight-extra-bold) !important;
                 margin: 0;
                 padding: 0;
-                color: var(--color-interface-text-primary);
+                color: var(--color-interface-text-primary) !important;
+                letter-spacing: normal !important;
             }
         }
 
@@ -399,6 +403,7 @@ main .section.form-container {
             background: var(--color-interface-background-quinary);
             border-radius: 8px;
             pointer-events: none;
+            margin-top: -14px;
 
             label { 
                 padding-left: 16px; 
@@ -409,11 +414,12 @@ main .section.form-container {
             input {
                 margin: 0;
                 padding: 0;
-                text-align: right;
+                text-align: center;
                 border: none;
                 background: var(--color-interface-background-quinary);
-                color: var(--color-interface-text-secondary);
-                font-size: var(--body-md-font-size);
+                color: var(--color-interface-text-secondary) !important;
+                font-size: var(--body-md-font-size) !important;
+                letter-spacing: normal !important;
             }
         }
     }    
@@ -485,13 +491,7 @@ header:has(~ .fd-form-wrapper) {
     }
 }
 
-@media (width < 1120px) {
-    /* .fdlien .field-loginmainpanel {
-        .field-registeredmobilenumber {
-            .field-description {left: -55% !important;}
-        }
-    } */
-    
+@media (width < 1120px) {    
     .field-pandobselection {
         display: grid;
 
@@ -542,10 +542,12 @@ header:has(~ .fd-form-wrapper) {
             }
         }    
 
-        .field-loginmainpanel, .field-otppanelwrapper {
+        .field-loginmainpanel, .field-otppanelwrapper, .field-multiplecustidselectionpanel {
             margin: 0 auto;
             max-width: 768px;
         }
+
+        .field-multiplecustidpanel { display: block !important; }
 
         .field-loginmainpanel {
             .field-registeredmobilenumber {
@@ -607,5 +609,9 @@ header:has(~ .fd-form-wrapper) {
         .field-secondspanel, .field-otpresend, .field-otpsubpanel {
             grid-column: span 6 !important;
         }
+    }
+
+    .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
+        display: grid;
     }
 }
