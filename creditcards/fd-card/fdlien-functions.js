@@ -13,108 +13,85 @@ currentFormContext.journeyName = JOURNEY_NAME;
 formRuntime.getOtpLoader = displayLoader;
 formRuntime.otpValLoader = displayLoader;
 
+const validFDPan = (val) => {
+  // FD_CONSTANT.REGEX_PAN?.test(val?.toLocaleUpperCase()); // this one did'nt work properly as expected ,
+  // Check if the input length is exactly 10 characters
+  if (val?.length !== 10) return false;
+
+  // Check the first 5 characters for alphabets
+  if (![...val.slice(0, 5)]?.every((c) => /[a-zA-Z]/.test(c))) return false;
+
+  // Check the next 4 characters for digits
+  if (![...val.slice(5, 9)]?.every((c) => /\d/.test(c))) return false;
+
+  // Check the last character for an alphabet
+  if (!/[a-zA-Z]/.test(val[9])) return false;
+
+  return true;
+};
 /**
  * Validates the date of birth field to ensure the age is between 18 and 70.
  * @param {Object} globals - The global object containing necessary data for DAP request.
 */
 const validateLogin = (globals) => {
   const dobValue = globals.form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth.$value;
-  const panValue = globals.form.loginMainPanel.loginPanel.identifierPanel.pan.$value;
+  const panValue = (globals.form.loginMainPanel.loginPanel.identifierPanel.pan.$value)?.replace(/\s+/g, ''); // remove white space
   const panDobSelection = globals.form.loginMainPanel.loginPanel.identifierPanel.panDobSelection.$value;
   const mobileNo = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const radioSelect = (panDobSelection === '0') ? 'DOB' : 'PAN';
-  const regexPan = FD_CONSTANT.REGEX_PAN;
   const panErrorText = FD_CONSTANT.ERROR_MSG.panError;
 
   const panInput = document.querySelector(`[name=${'pan'} ]`);
   const panWrapper = panInput.parentElement;
 
-  // const panIsValid = regexPan.test(panValue);
-  // const dobIsValid = ageValidator(FD_CONSTANT.AGE_LIMIT.min, FD_CONSTANT.AGE_LIMIT.max, dobValue);
-  // const mobIsValid = (mobileNo?.length === 10);
+  const panIsValid = validFDPan(panValue);
+  const dobIsValid = ageValidator(FD_CONSTANT.AGE_LIMIT.min, FD_CONSTANT.AGE_LIMIT.max, dobValue);
+  const mobIsValid = (mobileNo && mobileNo?.length === 10);
 
-  // if (mobileNo || dobValue || panValue) {
-  //   if (panIsValid) {
-  //     globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.pan', '', { useQualifiedName: true });
-  //     globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.identifierPanel.pan, { valid: true });
-  //   }
-  //   if (dobIsValid) {
-  //     globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
-  //     globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth, { valid: true });
-  //   }
-  //   if (mobIsValid) {
-  //     globals.functions.markFieldAsInvalid(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$qualifiedName, '', { useQualifiedName: true });
-  //     globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber, { valid: true });
-  //   }
-  //   if()
-  // }
-
-  // if (panIsValid) {
-  //   globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.pan', '', { useQualifiedName: true });
-  //   globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.identifierPanel.pan, { valid: true });
-  // }
-  // if (dobIsValid) {
-  //   globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
-  //   globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth, { valid: true });
-  // }
-  // if (mobIsValid) {
-  //   globals.functions.markFieldAsInvalid(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$qualifiedName, '', { useQualifiedName: true });
-  //   globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber, { valid: true });
-  // }
-
-  if (mobileNo?.length < 10) {
-    globals.functions.markFieldAsInvalid(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$qualifiedName, FD_CONSTANT.ERROR_MSG.mobileError, { useQualifiedName: true });
-    globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
-  } else {
-    globals.functions.markFieldAsInvalid(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$qualifiedName, '', { useQualifiedName: true });
-    globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber, { valid: true });
-    switch (radioSelect) {
-      case 'DOB':
-        if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
-          const dobErrorText = FD_CONSTANT.ERROR_MSG.ageLimit;
-          const ageValid = ageValidator(FD_CONSTANT.AGE_LIMIT.min, FD_CONSTANT.AGE_LIMIT.max, dobValue);
-          if (ageValid && (mobileNo?.length === 10)) {
-            globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: true });
-            globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
-          }
-          if (ageValid) {
-            globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
-            globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth, { valid: true });
-          }
-          if (!ageValid) {
-            globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', dobErrorText, { useQualifiedName: true });
-            globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
-          }
-          if (!(mobileNo?.length === 10)) {
-            globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
-          }
+  switch (radioSelect) {
+    case 'DOB':
+      if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
+        const dobErrorText = FD_CONSTANT.ERROR_MSG.ageLimit;
+        if (dobIsValid && (mobIsValid)) {
+          globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: true });
+          globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
         }
-        break;
-      case 'PAN':
-        panWrapper.setAttribute('data-empty', true);
-        if (panValue) {
-          panWrapper.setAttribute('data-empty', false);
-          const validPan = regexPan.test(panValue);
-          if (validPan && (mobileNo?.length === 10)) {
-            globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.pan', '', { useQualifiedName: true });
-            globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: true });
-          }
-          if (validPan) {
-            globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.pan', '', { useQualifiedName: true });
-            globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.identifierPanel.pan, { valid: true });
-          }
-          if (!validPan) {
-            globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.pan', panErrorText, { useQualifiedName: true });
-            globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
-          }
-          if (!(mobileNo?.length === 10)) {
-            globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
-          }
+        if (dobIsValid) {
+          globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', '', { useQualifiedName: true });
+          globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth, { valid: true });
         }
-        break;
-      default:
-        globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
-    }
+        if (!dobIsValid) {
+          globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', dobErrorText, { useQualifiedName: true });
+          globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
+        }
+        if (!(mobIsValid)) {
+          globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
+        }
+      }
+      break;
+    case 'PAN':
+      panWrapper.setAttribute('data-empty', true);
+      if (panValue) {
+        panWrapper.setAttribute('data-empty', false);
+        if (panIsValid && (mobIsValid)) {
+          globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.pan', '', { useQualifiedName: true });
+          globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: true });
+        }
+        if (panIsValid) {
+          globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.pan', '', { useQualifiedName: true });
+          globals.functions.setProperty(globals.form.loginMainPanel.loginPanel.identifierPanel.pan, { valid: true });
+        }
+        if (!panIsValid) {
+          globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.pan', panErrorText, { useQualifiedName: true });
+          globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
+        }
+        if (!(mobIsValid)) {
+          globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
+        }
+      }
+      break;
+    default:
+      globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
   }
 };
 
@@ -166,15 +143,16 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
+  const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
   const jsonObj = {
     requestString: {
       dateOfBirth: clearString(dob.$value) || '',
       mobileNumber: mobileNumber.$value,
-      panNumber: pan.$value || '',
+      panNumber: panValue || '',
       journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
-      identifierValue: pan.$value || dob.$value,
-      identifierName: pan.$value ? 'PAN' : 'DOB',
+      identifierValue: panValue || dob.$value,
+      identifierName: panValue ? 'PAN' : 'DOB',
     },
   };
   const path = urlPath(FD_ENDPOINTS.otpGen);
@@ -192,12 +170,13 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
 const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
+  const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
   const jsonObj = {
     requestString: {
       mobileNumber: mobileNumber.$value,
       passwordValue: otpNumber.$value,
       dateOfBirth: clearString(dob.$value) || '',
-      panNumber: pan.$value || '',
+      panNumber: panValue || '',
       channelSource: '',
       journeyID: currentFormContext.journeyID,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
