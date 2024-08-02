@@ -1,0 +1,528 @@
+/* stylelint-disable selector-id-pattern */
+/* stylelint-disable no-descending-specificity */
+
+/* add all fd realted styles */
+main {
+    padding: 0 !important;
+    background-color: var(--color-action-background-secondary-default);
+}
+
+.section>div {
+    max-width: max-content;
+    margin: 0 !important;
+}
+
+body.fdlien .form-wrapper {
+    max-width: 100%;
+}
+
+main .section.form-container {
+    max-width: var(--form-fd-max-width) !important;
+}
+
+.fdlien header {
+    background: var(--color-interface-fd-background-primary);
+}
+
+.fdlien header>.cmp-container,
+.fdlien header>.cmp-container div:nth-child(1) {
+    max-width: 1160px;
+}
+
+.fdlien header .cmp-container>div:nth-child(n+3) {
+    display: none;
+}
+
+.fdlien header .cmp-container>div:nth-child(2) {
+    position: absolute;
+    width: 140px;
+    right: 0;
+    top: 0.2em;
+    height: 32px;
+    content: url('../icons/safe-secure.svg');
+}
+
+.fdlien:has(.section.cmp-container-container) .section.cmp-container-container {
+    display: none !important;
+}
+
+.fdlien:has(.section.form-container) .section.form-container {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0 auto !important;
+
+    form {
+        padding: 0 !important;
+        gap: 20px;
+    }
+
+    .fd-form-wrapper {
+        margin-bottom: 40px;
+
+        .field-multiplecustidbanner {
+            background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner_multiple_customerid.png') no-repeat center center / cover;
+            min-height: 648px; 
+        }
+
+        .field-bannerimagepanel {
+            background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner.png') no-repeat center center / cover;
+            min-height: 648px;
+    
+            /* .field-bannerimagefdlien {
+                background: url('../icons/side_bar_banner.png');
+                display: flex;
+                align-items: flex-end;
+            }
+    
+            .field-bannerimagefdlien picture,
+            .field-bannerimagefdlien img {
+                max-width: 100%;
+                height: 100%;
+            } */
+        }
+
+        .field-loginmainpanel {
+            padding: 40px 40px 7px 20px;
+    
+            .field-loginpanel {
+                width: 100%;
+            }
+    
+            .field-consenttext {
+                border-top: 1px dotted var(--color-interface-border-secondary);
+                padding-top: 15px;
+    
+                p p {
+                    font-size: var(--body-fd-sm-font-size);
+                }
+            }
+    
+            .field-mobilepanel {
+                display: grid;
+    
+                .field-wrapper {
+                    p {
+                        margin: 0;
+                    }
+    
+                    p p {
+                        font-size: var(--body-md-font-size) !important;
+                        font-weight: var(--font-weight-medium);
+                    }
+                }
+    
+                .field-countrycode {
+                    grid-column: span 4;
+                    margin-top: -19px;
+                    align-self: flex-end;
+    
+                    select {
+                        background: url('../icons/india-flag.png') no-repeat 10px center;
+                        border-radius: var(--form-input-border-radius) 0 0 var(--form-input-border-radius) !important;
+                        padding: 0 !important;
+                        text-align: right;
+                        margin-top: 0;
+                        pointer-events: none;
+    
+                        &:focus{
+                            outline: none;
+                        }
+                    }
+                }
+    
+                .field-registeredmobilenumber {
+                    grid-column: span 8;
+                    margin-left: -22px;
+                    align-self: flex-end;
+    
+                    input {
+                        border-radius: 0 var(--form-input-border-radius) var(--form-input-border-radius) 0;
+                        margin-top: 5px;
+                    }
+
+                    label { margin: 18px 0 0 10px; }
+    
+                    .field-description {
+                        margin: -12px -10px -11px 0;
+                        position: absolute;
+                        left: -38%;
+                    }
+                }
+
+                .field-registeredmobilenumber:is([data-active='true'], [data-empty='false']) > label {
+                    left: -32%;
+                }
+            }
+    
+            .field-stepstofollow {
+                display: grid;
+                background: var(--color-interface-background-quinary);
+                padding: 10px 0 10px 10px;
+                border-radius: 20px;
+                width: 98%;
+                justify-content: center;
+    
+                legend {
+                    padding: 60px 0 0 20px;
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    color: var(--color-interface-text-primary);
+                }
+    
+                fieldset {
+                    padding: 10px;
+                    text-align: center;
+                    display: inline-block;
+    
+                    img {
+                        width: 20px;
+                        height: 20px;
+                        font-size: var(--body-fd-sm-font-size);
+                    }
+    
+                    p:nth-child(1) {
+                        font-size: var(--body-fd-sm-font-size);
+                    }
+    
+                    .plain-text-wrapper {
+                        white-space: normal !important;
+                    }
+                }
+
+                .field-step4panel {
+                    padding-right: 20px;
+                }
+            }
+        }
+
+        .field-identifierpanel {
+            margin: 0 !important;
+    
+            .field-pandobselection {
+                gap: 4px;
+    
+                legend {
+                    font-size: var(--body-md-font-size) !important;
+                    font-weight: var(--font-weight-medium);
+                    margin-right: 24px;
+                }
+    
+                .field-pandobselection {
+                    margin-right: 15px;
+    
+                    label {
+                        font-size: var(--body-sm-font-size) !important;
+                        font-weight: var(--font-weight-medium);
+                    }
+                }
+            }
+        }
+
+        /* OTP Panel Styling */
+        .field-otppanelwrapper {
+            grid-template-rows: auto auto 270px;
+
+            .field-otppanel {
+                max-width: 100%;
+                grid-template-rows: auto;
+                padding: 40px 40px 0 10px;
+    
+                .field-otppanel { 
+                    text-align: left;
+                }
+    
+                legend {
+                    b {
+                        color: var(--color-interface-background-quaternary);
+                        font-size: var(--body-fd-xx-lg-font-size);
+                    }
+                }
+    
+                .field-otphelptext { 
+                    margin-top: -60px;
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-bold);
+    
+                    p {
+                        color: var(--color-input-text-primary);
+                        font-size: var(--body-fd-md-font-size);
+                        font-weight: var(--font-weight-regular);
+                    }
+                }
+    
+                .field-otpnumber {
+                    margin: -28px 0 -18px;
+                    width: 80%;
+    
+                    input { 
+                        height: 54px; 
+                        padding: 15px 25px;
+                        letter-spacing: 4vw;
+                        color: var(--color-input-text-placeholder-default);
+                    }
+    
+                    #togglePassword {
+                        display: none;
+                    }
+                }
+    
+                .field-secondspanel {
+                    display: flex;
+                    flex-direction: row;
+                }
+                
+                .field-resendotplabel { 
+                    margin-top: 12px;
+                    width: fit-content;
+    
+                    p {
+                        font-size: var(--body-fd-sm-font-size);
+                        padding: 0;
+                    }
+                }
+    
+                .field-seconds { 
+                    margin: 0 0 0 -13px;
+                    width: fit-content;
+    
+                    input[type="number"] {
+                        border: none;
+                        width: 50px;
+                        margin: 0;
+                        padding: 0;
+                        font-size: var(--body-fd-sm-font-size);
+                        pointer-events: none;
+                    }
+                }
+    
+                .field-sectext { 
+                    width: fit-content;
+                    margin: 12px 0 0 -54px;
+                    p { font-size: var(--body-fd-sm-font-size); }
+                }
+            }
+        }
+        
+
+        .field-otppanel:has(.field-secondspanel:not([data-visible='false'])) {
+            .field-otpsubpanel {
+                grid-column: span 3;
+            }
+        }
+
+        .field-submitotp {
+            padding: 0 20px 40px;
+            margin-top: 0 !important;
+        }
+
+        /* Button Styling */
+        .button-wrapper {
+            text-align: left;
+        
+            .button {
+                font-size: var(--form-font-size-xs);
+                max-width: 272px;
+                width: 100%;
+            }
+        }
+
+    }    
+}
+
+/* Multiple Customer Id  */
+.fdlien .field-multiplecustidselectionpanel {
+    display: grid !important;
+    padding: 40px 20px 0 15px;
+
+    .field-custidproceedlabel p {
+        font-weight: var(--font-weight-extra-bold);
+        color: var(--color-interface-text-primary);
+        font-size: var(--body-fd-xx-lg-font-size);
+        margin-bottom: 10px;
+    }
+
+    .field-multiplecustidrepeatable > div > fieldset.panel-wrapper.field-wrapper.col-6{
+        border-radius: 16px;
+        border: 1px solid #ccc;
+        padding: 24px;
+
+        .field-custidlabel p {
+            color: var(--color-interface-text-primary);
+            font-size: var(--body-fd-md-font-size);
+            font-weight: var(--font-weight-regular);
+        }
+
+        .field-multiplecustidselect { 
+            margin-top: 2px; 
+            justify-content: end;
+        }
+
+        .field-maskedaccno {
+            margin-top: -41px;
+
+            input { 
+                border: none;
+                font-size: var(--body-x-lg-font-size);
+                font-weight: var(--font-weight-extra-bold);
+                margin: 0;
+                padding: 0;
+                color: var(--color-interface-text-primary);
+            }
+        }
+
+        .field-nooffds {
+            display: grid;
+            grid-template-columns: 85% 15%;
+            align-items: center;
+            background: var(--color-interface-background-quinary);
+            border-radius: 8px;
+            pointer-events: none;
+
+            label { 
+                padding-left: 16px; 
+                color: var(--color-interface-text-secondary);
+                font-size: var(--body-md-font-size);
+            }
+
+            input {
+                margin: 0;
+                padding: 0;
+                text-align: right;
+                border: none;
+                background: var(--color-interface-background-quinary);
+                color: var(--color-interface-text-secondary);
+                font-size: var(--body-md-font-size);
+            }
+        }
+    }    
+}
+
+/* Footer */
+header:has(~ .fd-form-wrapper) {
+    background-color: var(--color-interface-fd-background-primary)
+}
+
+.fdlien footer {
+    background: var(--color-interface-fd-background-primary);
+    text-align: center;
+
+    .cmp-container {
+        div:nth-child(1) {
+            text-align: center;
+        }
+    }
+}
+
+/* For screens more than form width */
+@media (width <=1280px) {
+    .fdlien:has(.section.form-container) .section.form-container {
+        margin: 0 !important;
+        width: 100%;
+
+        .field-loginmainpanel {
+            .field-loginpanel {
+                display: grid;
+            }
+        }
+    }
+}
+
+@media (width < 1120px) {
+    .fdlien .field-loginmainpanel {
+        .field-mobilepanel {
+            .field-countrycode { grid-column: span 5 !important;}
+            .field-registeredmobilenumber { grid-column: span 7 !important; }
+        }
+
+        .field-registeredmobilenumber {
+            .field-description {left: -55% !important;}
+        }
+    }
+    
+    .field-pandobselection {
+        display: grid;
+
+        legend {
+            grid-column: span 12;
+        }
+
+        .field-pandobselection {
+            width: max-content;
+        }
+    }
+}
+
+/* For tablets */
+@media (width <=800px) {
+    .fdlien .form form {
+        display: block;
+    }
+
+    .fdlien .button-wrapper {
+        text-align: center;
+    }
+
+    main .form .field-otppanel {
+        .field-otphelptext { margin-top: -32px !important; }
+        .field-otpnumber { margin: 2px 0 -18px !important; }
+    }
+
+    .fdlien .field-loginmainpanel, main .form .field-otppanel {
+        margin-top: 20px !important;
+        padding: 10px !important;
+    }
+
+    .fdlien:has(.section.form-container) .section.form-container {
+        .fd-form-wrapper{
+            .field-bannerimagepanel {
+                background: var(--color-interface-fd-background-secondary) url('../icons/banner_tablet.png');
+                min-height: 225px;
+            }
+        }    
+
+        .field-loginmainpanel {
+            .field-registeredmobilenumber {
+                margin: -15px 0 0;
+            }
+
+            .field-stepstofollow {
+                fieldset {
+                    .plain-text-wrapper {
+                        white-space: normal !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* For mobiles */
+@media (width <=500px) {
+    .fdlien:has(.section.form-container) .section.form-container {
+        .fd-form-wrapper{
+            .field-bannerimagepanel {
+                background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png');
+                min-height: 225px;
+            }
+        }    
+    }
+
+    .fdlien .button-wrapper button {
+        max-width: none !important;
+    }
+
+    .field-loginpanel {
+        .field-mobilepanel, .field-identifierpanel { grid-column: span 12 !important; }
+    }
+
+    .field-otppanel { padding: 0 6px 0 2px; 
+
+        .field-otpnumber { 
+            width: 100% !important; 
+            grid-column: span 12 !important;
+        }
+
+        .field-secondspanel, .field-otpresend, .field-otpsubpanel {
+            grid-column: span 6 !important;
+        }
+    }
+}

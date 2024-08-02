@@ -238,7 +238,7 @@ const setMaxDateToToday = (inputName) => {
  */
 const restrictToAlphabetsNoSpaces = (inputName) => {
   const inputField = document.querySelector(`[name= ${inputName}]`);
-  inputField.addEventListener('input', (e) => {
+  inputField?.addEventListener('input', (e) => {
     const input = e.target;
     input.value = input.value.replace(/(?![A-Z])[`!@#$%^&*_=[\]{};':"\\|,.<>/?~0-9()+-_ ]/g, ''); // Replace non-numeric characters with an empty string
   });
