@@ -433,12 +433,18 @@ main .section.form-container {
 /* Select FD */
 .fdlien .field-fdbasedcreditcardwizard {
     border-radius: 24px 24px 0 0;
+    
+    .wizard-menu-items{
+        position: absolute;
+        top: 0;
+        background: var(--color-interface-background-primary);
+    }
 }
 
 
 /* Error Screens */
 
-.field-errorresultpanel{
+.field-errorresultpanel {
     .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
         text-align: center !important;
     }
@@ -509,6 +515,15 @@ header:has(~ .fd-form-wrapper) {
         text-align: center;
     }
 
+    .fdlien header>.cmp-container div:nth-child(2) {
+        display: block;
+    }
+
+    .fdlien header>.cmp-container div:nth-child(1) {
+        margin: 0 0 0 10px;
+        text-align: left !important;
+    }
+
     main .form .field-otppanel {
         .field-otphelptext { margin-top: -32px !important; }
         .field-otpnumber { margin: 2px 0 -18px !important; }
@@ -558,6 +573,15 @@ header:has(~ .fd-form-wrapper) {
                 min-height: 225px;
             }
         }    
+    }
+
+    .fdlien header>.cmp-container div:nth-child(2) {
+        display: block;
+    }
+
+    .fdlien header>.cmp-container div:nth-child(1) {
+        margin: 0 0 0 10px;
+        text-align: left !important;
     }
 
     .fdlien .button-wrapper button {
