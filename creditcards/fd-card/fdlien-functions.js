@@ -124,13 +124,18 @@ const validateLogin = (globals) => {
 */
 function otpTimer(globals) {
   let sec = FD_CONSTANT.OTP_TIMER;
+  let dispSec = 0;
   const timer = setInterval(() => {
     globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
     sec -= 1;
+    dispSec = sec;
+    if(sec < 10) {
+        dispSec = '0'+dispSec
+    }
     if (sec < 0) {
       clearInterval(timer);
-      document.querySelector('.field-secondspanel').setAttribute('data-visible', 'false');
-      document.querySelector('.field-otpresend').setAttribute('data-visible', 'true');
+      globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel, { visible: false });
+      globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.otpResend, { visible: true });
     }
   }, 1000);
 }

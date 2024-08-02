@@ -12,6 +12,15 @@ main {
     margin: 0 !important;
 }
 
+/* Input box styling */
+.fdlien input[type='text']:not([placeholder]), input[type='number'], input[type='email'], input[type='date'], select {
+    font-size: var(--body-lg-font-size) !important;
+    font-weight: var(--font-weight-medium) !important;
+    line-height: 24px !important;
+    letter-spacing: 8px !important;
+    color: var(--color-interface-text-primary) !important;
+}
+
 body.fdlien .form-wrapper {
     max-width: 100%;
 }
@@ -91,6 +100,8 @@ main .section.form-container {
             .field-consenttext {
                 border-top: 1px dotted var(--color-interface-border-secondary);
                 padding-top: 15px;
+
+                a { text-decoration: underline; }
     
                 p p {
                     font-size: var(--body-fd-sm-font-size);
@@ -99,6 +110,9 @@ main .section.form-container {
     
             .field-mobilepanel {
                 display: grid;
+                max-width: 368px;
+
+                .field-landinglabel { padding-bottom: 10px; }
     
                 .field-wrapper {
                     p {
@@ -115,13 +129,15 @@ main .section.form-container {
                     grid-column: span 4;
                     margin-top: -19px;
                     align-self: flex-end;
+                    max-width: 108px;
     
                     select {
-                        background: url('../icons/india-flag.png') no-repeat 10px center;
+                        background: url('../icons/india-flag.png') no-repeat 20px center;
                         border-radius: var(--form-input-border-radius) 0 0 var(--form-input-border-radius) !important;
-                        padding: 0 !important;
+                        padding: 0 8px !important;
                         text-align: right;
                         margin-top: 0;
+                        letter-spacing: 0 !important;
                         pointer-events: none;
     
                         &:focus{
@@ -174,8 +190,8 @@ main .section.form-container {
                     display: inline-block;
     
                     img {
-                        width: 20px;
-                        height: 20px;
+                        width: 40px;
+                        height: 40px;
                         font-size: var(--body-fd-sm-font-size);
                     }
     
@@ -196,6 +212,8 @@ main .section.form-container {
 
         .field-identifierpanel {
             margin: 0 !important;
+            max-width: 368px;
+            .field-pan input { letter-spacing: 9px; }
     
             .field-pandobselection {
                 gap: 4px;
@@ -215,6 +233,8 @@ main .section.form-container {
                     }
                 }
             }
+
+            .field-dateofbirth, .field-pan { align-self: end; }
         }
 
         /* OTP Panel Styling */
@@ -228,6 +248,12 @@ main .section.form-container {
     
                 .field-otppanel { 
                     text-align: left;
+
+                    .field-otpsubpanel .field-numretries input {
+                        font-size: var(--body-fd-sm-font-size) !important;
+                        letter-spacing: normal !important;
+                        color: var(--color-interface-text-secondary) !important;
+                    }
                 }
     
                 legend {
@@ -255,13 +281,8 @@ main .section.form-container {
     
                     input { 
                         height: 54px; 
-                        padding: 15px 25px;
-                        letter-spacing: 4vw;
-                        color: var(--color-input-text-placeholder-default);
-                    }
-    
-                    #togglePassword {
-                        display: none;
+                        padding: 15px 0;
+                        letter-spacing: 3vw;
                     }
                 }
     
@@ -281,16 +302,18 @@ main .section.form-container {
                 }
     
                 .field-seconds { 
-                    margin: 0 0 0 -13px;
+                    margin: -1px 0 0 -15px;
                     width: fit-content;
     
                     input[type="number"] {
                         border: none;
+                        letter-spacing: normal !important;
                         width: 50px;
                         margin: 0;
                         padding: 0;
-                        font-size: var(--body-fd-sm-font-size);
+                        font-size: var(--body-fd-sm-font-size) !important;
                         pointer-events: none;
+                        color: var(--color-interface-text-secondary) !important;
                     }
                 }
     
@@ -396,6 +419,23 @@ main .section.form-container {
     }    
 }
 
+/* Wizard Screens */
+.fdlien .section.form-container:has(.field-fdbasedcreditcardwizard:not([data-visible='false'])) {
+    width: 95%;
+    margin: 40px auto 0 !important;
+    border-radius: 24px 24px 0 0;
+
+    .wizard-button-wrapper {
+        display: none;
+    }
+}
+
+/* Select FD */
+.fdlien .field-fdbasedcreditcardwizard {
+    border-radius: 24px 24px 0 0;
+}
+
+
 /* Error Screens */
 
 .field-errorresultpanel{
@@ -420,8 +460,13 @@ header:has(~ .fd-form-wrapper) {
     }
 }
 
+/* Error Screen */
+.fdlien .field-resultpanel .field-errorresultpanel .field-errormessagetext {
+    margin: -40px 0 0;
+}
+
 /* For screens more than form width */
-@media (width <=1280px) {
+@media (width <1280px) {
     .fdlien:has(.section.form-container) .section.form-container {
         margin: 0 !important;
         width: 100%;
@@ -435,16 +480,11 @@ header:has(~ .fd-form-wrapper) {
 }
 
 @media (width < 1120px) {
-    .fdlien .field-loginmainpanel {
-        .field-mobilepanel {
-            .field-countrycode { grid-column: span 5 !important;}
-            .field-registeredmobilenumber { grid-column: span 7 !important; }
-        }
-
+    /* .fdlien .field-loginmainpanel {
         .field-registeredmobilenumber {
             .field-description {left: -55% !important;}
         }
-    }
+    } */
     
     .field-pandobselection {
         display: grid;
@@ -460,7 +500,7 @@ header:has(~ .fd-form-wrapper) {
 }
 
 /* For tablets */
-@media (width <=800px) {
+@media (768px <=width <=1280px) {
     .fdlien .form form {
         display: block;
     }
@@ -487,9 +527,15 @@ header:has(~ .fd-form-wrapper) {
             }
         }    
 
+        .field-loginmainpanel, .field-otppanelwrapper {
+            margin: 0 auto;
+            max-width: 768px;
+        }
+
         .field-loginmainpanel {
             .field-registeredmobilenumber {
                 margin: -15px 0 0;
+                max-width: 225px;
             }
 
             .field-stepstofollow {
@@ -504,7 +550,7 @@ header:has(~ .fd-form-wrapper) {
 }
 
 /* For mobiles */
-@media (width <=500px) {
+@media (480px <=width <=767px) {
     .fdlien:has(.section.form-container) .section.form-container {
         .fd-form-wrapper{
             .field-bannerimagepanel {
@@ -518,7 +564,12 @@ header:has(~ .fd-form-wrapper) {
         max-width: none !important;
     }
 
-    .field-loginpanel {
+    .fdlien .field-loginmainpanel, .fdlien .field-otppanelwrapper {
+        max-width: 480px;
+        margin: 0 auto !important;
+    }
+
+    .fdlien .field-loginmainpanel {
         .field-mobilepanel, .field-identifierpanel { grid-column: span 12 !important; }
     }
 
