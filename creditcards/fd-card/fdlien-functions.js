@@ -106,8 +106,8 @@ function otpTimer(globals) {
     sec -= 1;
     if (sec < 0) {
       clearInterval(timer);
-      document.querySelector('.field-secondspanel').setAttribute('data-visible', 'false');
-      document.querySelector('.field-otpresend').setAttribute('data-visible', 'true');
+      globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel, { visible: false });
+      globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.otpResend, { visible: true });
     }
   }, 1000);
 }
@@ -161,6 +161,18 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
 };
 
 /**
+ * @name resendOTP
+ * @param {Object} globals - The global object containing necessary data for DAP request.
+ * @return {PROMISE}
+ */
+const resendOTP = async (globals) => {
+  const mobileNo = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber;
+  const panValue = (globals.form.loginMainPanel.loginPanel.identifierPanel.pan);
+  const dobValue = globals.form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth;
+  return getOTP(mobileNo, panValue, dobValue, globals);
+};
+
+/**
  * validates the otp
  * @param {object} mobileNumber
  * @param {object} pan
@@ -196,4 +208,5 @@ export {
   maskedMobNum,
   getOTP,
   otpValidation,
+  resendOTP,
 };
