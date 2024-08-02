@@ -396,6 +396,14 @@ main .section.form-container {
     }    
 }
 
+/* Error Screens */
+
+.field-errorresultpanel{
+    .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
+        text-align: center !important;
+    }
+}
+
 /* Footer */
 header:has(~ .fd-form-wrapper) {
     background-color: var(--color-interface-fd-background-primary)
