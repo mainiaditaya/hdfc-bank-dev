@@ -1,5 +1,11 @@
-import { validateLogin, otpTimer, maskedMobNum } from './fdlien-functions.js';
-import { getOTP, otpValidation } from '../../common/functions.js';
+import {
+  validateLogin,
+  otpTimer,
+  maskedMobNum,
+  getOTP,
+  otpValidation,
+} from './fdlien-functions.js';
+// import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
 import {
   createJourneyId,
   getCurrentContext,

@@ -7,8 +7,8 @@ const AGE_LIMIT = {
   max: 70,
 };
 
-const REGEX_PAN = /^[a-zA-Z]{3}[Pp][a-zA-Z][0-9]{4}[a-zA-Z]{1}/g;
-// const REGEX_PAN = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/g;
+// const REGEX_PAN = /^[a-zA-Z]{3}[Pp][a-zA-Z][0-9]{4}[a-zA-Z]{1}/g;
+const REGEX_PAN = /^[a-zA-Z]{4}[a-zA-Z][0-9]{4}[a-zA-Z]{1}/g; // matches Pan regex without considering the 'p' char in P
 
 const ERROR_MSG = {
   panLabel: 'PAN',
@@ -16,6 +16,11 @@ const ERROR_MSG = {
   panError: 'Please enter a valid PAN Number',
   mobileError: 'Enter valid mobile number',
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
+};
+
+const FD_ENDPOINTS = {
+  otpGen: '/content/hdfc_hafcards/api/customeridentificationotpgen.json',
+  otpVal: '/content/hdfc_hafcards/api/otpvalidation.json',
 };
 
 const OTP_TIMER = 30;
@@ -26,4 +31,5 @@ export {
   AGE_LIMIT,
   REGEX_PAN,
   OTP_TIMER,
+  FD_ENDPOINTS,
 };
