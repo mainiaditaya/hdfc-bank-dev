@@ -250,7 +250,7 @@ const restrictToAlphabetsNoSpaces = (inputName) => {
  * @param {HTMLInputElement} inputField - The input field element to format.
  * @param {number} charGroupSize - The number of characters to group before adding a space.
  */
-function groupCharacters(inputField, charGroupSize) {
+const groupCharacters = (inputField, charGroupSize) => {
   const value = inputField.value.replace(/\s+/g, ''); // Remove existing spaces
   const regex = new RegExp(`.{1,${charGroupSize}}`, 'g'); // Create a dynamic regex using the variable
   const formattedValue = value.match(regex)?.join(' ') || value; // Add space after every charGroupSize characters
@@ -263,7 +263,41 @@ function groupCharacters(inputField, charGroupSize) {
   } else {
     inputField.classList.remove('formatted');
   }
-}
+};
+
+/**
+ * Validates and formats a phone number input field.
+ *
+ * @param {HTMLInputElement} inputField - The input field element containing the phone number.
+ * @param {number[]} validStartingDigits - An array of valid starting digits for the phone number.
+ */
+const validatePhoneNumber = (inputField, validStartingDigits) => {
+  let { value } = inputField;
+
+  // Ensure the input starts with a valid digit
+  if (value.length > 0 && !validStartingDigits.includes(value[0])) {
+    inputField.value = '';
+    return;
+  }
+
+  // Remove invalid characters (non-digits) from the entire input
+  value = value.replace(/\D/g, '');
+
+  // Check if all 10 characters would be the same
+  if (value.length === 10) {
+    const isAllSame = value.split('').every((digit) => digit === value[0]);
+    if (isAllSame) {
+      value = value.slice(0, 9); // Remove the last character to avoid all being the same
+    } else {
+      const firstNine = value.slice(0, 9);
+      const lastDigit = value[9];
+      if (firstNine.split('').every((digit) => digit === lastDigit)) {
+        value = value.slice(0, 9); // Remove the last character if it's the same as the previous 9
+      }
+    }
+  }
+  inputField.value = value;
+};
 
 export {
   setDataAttributeOnClosestAncestor,
@@ -279,4 +313,5 @@ export {
   setMaxDateToToday,
   restrictToAlphabetsNoSpaces,
   groupCharacters,
+  validatePhoneNumber,
 };
