@@ -129,8 +129,8 @@ function otpTimer(globals) {
     globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
     sec -= 1;
     dispSec = sec;
-    if(sec < 10) {
-        dispSec = '0'+dispSec
+    if (sec < 10) {
+        dispSec = '0' + dispSec;
     }
     if (sec < 0) {
       clearInterval(timer);
