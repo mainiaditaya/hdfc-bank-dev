@@ -4,11 +4,11 @@ const JOURNEY_NAME = 'FDLIEN_CARD_JOURNEY';
 
 const AGE_LIMIT = {
   min: 18,
-  max: 70,
+  max: 80,
 };
 
 // const REGEX_PAN = /^[a-zA-Z]{3}[Pp][a-zA-Z][0-9]{4}[a-zA-Z]{1}/g;
-const REGEX_PAN = /^[a-zA-Z]{4}[a-zA-Z][0-9]{4}[a-zA-Z]{1}/g; // matches Pan regex without considering the 'p' char in P
+const REGEX_PAN = /^[A-Za-z]{5}\d{4}[A-Za-z]$/g; // matches Pan regex without considering the 'p' char in P
 
 const ERROR_MSG = {
   panLabel: 'PAN',
