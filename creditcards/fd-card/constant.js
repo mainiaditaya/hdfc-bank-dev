@@ -25,6 +25,8 @@ const FD_ENDPOINTS = {
 
 const OTP_TIMER = 30;
 
+const MAX_OTP_RESEND_COUNT = 3;
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,
@@ -32,4 +34,5 @@ export {
   REGEX_PAN,
   OTP_TIMER,
   FD_ENDPOINTS,
+  MAX_OTP_RESEND_COUNT,
 };

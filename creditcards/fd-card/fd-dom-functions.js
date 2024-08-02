@@ -14,9 +14,19 @@ const addMobileValidation = () => {
   inputField.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
 };
 
+const readUrlParam = () => {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+  const paramValue = params.get('dob');
+  if (paramValue) {
+    console.log(paramValue);
+  }
+};
+
 setTimeout(() => {
   addGaps();
   addMobileValidation();
+  readUrlParam();
 }, 500);
 
 export {

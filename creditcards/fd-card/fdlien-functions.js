@@ -8,6 +8,8 @@ import { createJourneyId } from '../../common/journey-utils.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext, CHANNEL } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
+
+let resendOtpCount = 0;
 // Initialize all Fd Card Journey Context Variables & formRuntime variables.
 currentFormContext.journeyName = JOURNEY_NAME;
 formRuntime.getOtpLoader = displayLoader;
@@ -101,13 +103,14 @@ const validateLogin = (globals) => {
 */
 function otpTimer(globals) {
   let sec = FD_CONSTANT.OTP_TIMER;
+  const { otpPanel } = globals.form.otpPanelWrapper;
   const timer = setInterval(() => {
-    globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
+    globals.functions.setProperty(otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
     sec -= 1;
     if (sec < 0) {
       clearInterval(timer);
-      globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.secondsPanel, { visible: false });
-      globals.functions.setProperty(globals.form.otpPanelWrapper.otpPanel.otpPanel.otpResend, { visible: true });
+      globals.functions.setProperty(otpPanel.otpPanel.secondsPanel, { visible: false });
+      if (resendOtpCount < FD_CONSTANT.MAX_OTP_RESEND_COUNT) globals.functions.setProperty(otpPanel.otpPanel.otpResend, { visible: true });
     }
   }, 1000);
 }
@@ -139,6 +142,13 @@ window.setTimeout(() => loadFDStyles(), 600);
  * @return {PROMISE}
  */
 const getOTP = (mobileNumber, pan, dob, globals) => {
+  const { otpPanel } = globals.form.otpPanelWrapper.otpPanel;
+  if (resendOtpCount < FD_CONSTANT.MAX_OTP_RESEND_COUNT) {
+    globals.functions.setProperty(otpPanel.secondsPanel, { visible: true });
+    globals.functions.setProperty(otpPanel.otpResend, { visible: false });
+  } else {
+    globals.functions.setProperty(otpPanel.secondsPanel, { visible: false });
+  }
   const jidTemporary = createJourneyId('online', globals.form.runtime.journeyName.$value, CHANNEL, globals);
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
@@ -166,10 +176,21 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
  * @return {PROMISE}
  */
 const resendOTP = async (globals) => {
+  const { otpPanel } = globals.form.otpPanelWrapper.otpPanel;
   const mobileNo = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber;
   const panValue = (globals.form.loginMainPanel.loginPanel.identifierPanel.pan);
   const dobValue = globals.form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth;
-  return getOTP(mobileNo, panValue, dobValue, globals);
+  if (resendOtpCount < FD_CONSTANT.MAX_OTP_RESEND_COUNT) {
+    resendOtpCount += 1;
+    if (resendOtpCount === FD_CONSTANT.MAX_OTP_RESEND_COUNT) {
+      globals.functions.setProperty(otpPanel.secondsPanel, { visible: false });
+      globals.functions.setProperty(otpPanel.otpResend, { visible: false });
+      globals.functions.setProperty(otpPanel.maxAttemptMessage, { visible: true });
+    }
+    return getOTP(mobileNo, panValue, dobValue, globals);
+  }
+
+  return null;
 };
 
 /**
