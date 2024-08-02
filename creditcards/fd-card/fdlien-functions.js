@@ -151,7 +151,7 @@ async function loadFDStyles() {
     document.body.classList.add('fdlien');
   }
 }
-window.setTimeout(() => loadFDStyles(), 1000);
+window.setTimeout(() => loadFDStyles(), 600);
 
 /**
  * generates the otp
