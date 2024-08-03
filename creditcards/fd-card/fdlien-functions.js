@@ -227,6 +227,31 @@ const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
 
+/**
+ * does the custom show hide of panel or screens in resend otp.
+ * @param {string} errorMessage
+ * @param {number} numRetries
+ * @param {object} globals
+ */
+function customSetFocus(errorMessage, numRetries, globals) {
+  if (typeof numRetries === 'number' && numRetries < 1) {
+    globals.functions.setProperty(globals.form.otpPanelWrapper, { visible: false });
+    globals.functions.setProperty(globals.form.bannerImagePanel, { visible: false });
+    globals.functions.setProperty(globals.form.resultPanel, { visible: true });
+    globals.functions.setProperty(globals.form.resultPanel.errorResultPanel, { visible: true });
+    globals.functions.setProperty(globals.form.resultPanel.errorResultPanel.errorMessageText, { value: errorMessage });
+  }
+}
+
+/**
+ * Reloads the current page.
+ * lead idParam is been strored in current formContext after otpGen btn click
+ * @name reloadPage
+ */
+function reloadPage() {
+  window.location.reload();
+}
+
 export {
   // eslint-disable-next-line import/prefer-default-export
   validateLogin,
@@ -235,4 +260,6 @@ export {
   getOTP,
   otpValidation,
   resendOTP,
+  customSetFocus,
+  reloadPage,
 };
