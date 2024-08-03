@@ -103,10 +103,15 @@ const validateLogin = (globals) => {
 */
 function otpTimer(globals) {
   let sec = FD_CONSTANT.OTP_TIMER;
+  let dispSec = 0;
   const { otpPanel } = globals.form.otpPanelWrapper;
   const timer = setInterval(() => {
     globals.functions.setProperty(otpPanel.otpPanel.secondsPanel.seconds, { value: sec });
     sec -= 1;
+    dispSec = sec;
+    if (sec < 10) {
+      dispSec = `0${dispSec}`;
+    }
     if (sec < 0) {
       clearInterval(timer);
       globals.functions.setProperty(otpPanel.otpPanel.secondsPanel, { visible: false });

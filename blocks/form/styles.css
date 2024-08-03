@@ -70,7 +70,7 @@ main .form {
 .passwordField .field-description { display: none; }
 
 /* Base style for labels */
-main .form :not(.checkbox-wrapper, .radio-wrapper, .field-joiningrenewalfee, .field-nooffds) > label {
+main .form :not(.checkbox-wrapper, .radio-wrapper, .field-joiningrenewalfee, .field-nooffds, .field-customername, .field-creditlimit, .field-fdnumber, .field-selectedfdamount, .field-maturingdate) > label {
   margin: 20px;
   position: absolute;
   transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -79,7 +79,7 @@ main .form :not(.checkbox-wrapper, .radio-wrapper, .field-joiningrenewalfee, .fi
   width: max-content;
 }
 
-main .form :not(.checkbox-wrapper, .radio-wrapper, .field-joiningrenewalfee, .field-nooffds) > label:has(p) p {
+main .form :not(.checkbox-wrapper, .radio-wrapper, .field-joiningrenewalfee, .field-nooffds, .field-customername, .field-creditlimit, .field-fdnumber, .field-selectedfdamount, .field-maturingdate) > label:has(p) p {
   margin: 1px 0;
   font-weight: var(--font-weight-regular);
   font-size: var(--body-sm-font-size);
@@ -271,7 +271,7 @@ main .form .bi-eye-slash {
 }
 
 /* Style for labels when input is active or not empty */
-main .form :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee, .field-nooffds) > label{
+main .form :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee, .field-nooffds, .field-customername, .field-creditlimit, .field-fdnumber, .field-selectedfdamount, .field-maturingdate) > label{
   color: var(--label-color);
   transform: translateY(-22px);
   z-index: 1;
@@ -287,7 +287,7 @@ main .form :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.f
   text-overflow: ellipsis;
 }
 
-main .form :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee, .field-nooffds) > label:has(p) p {
+main .form :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee, .field-nooffds, .field-customername, .field-creditlimit, .field-fdnumber, .field-selectedfdamount, .field-maturingdate) > label:has(p) p {
   font-weight: var(--font-weight-bold);
 }
 
