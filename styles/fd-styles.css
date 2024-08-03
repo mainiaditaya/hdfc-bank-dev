@@ -312,6 +312,7 @@ main .section.form-container {
                       margin: 0;
                       padding: 0;
                       pointer-events: none;
+                      appearance: none;
                   }
               }
   
@@ -420,6 +421,7 @@ main .section.form-container {
 }
 
 /* Wizard Screens */
+
 .fdlien .section.form-container:has(.field-fdbasedcreditcardwizard:not([data-visible='false'])) {
   width: 95%;
   margin: 40px auto 0 !important;
@@ -434,11 +436,37 @@ main .section.form-container {
 .fdlien .field-fdbasedcreditcardwizard {
   border-radius: 24px 24px 0 0;
   
-  /* .wizard-menu-items{
-      position: absolute;
-      top: 0;
-      background: var(--color-interface-background-primary);
-  } */
+  .wizard-menu-items {
+    justify-content: center;
+
+    li:first-child::before {
+      background: url('../icons/Indicator.png') no-repeat center center / 40px 40px;
+      content: '';
+      border: none;
+      vertical-align: bottom;
+    }
+
+    li.wizard-menu-active-item:first-child::before {
+      background: url('../icons/Indicator1-active.png') no-repeat center center / 40px 40px;
+      content: '';
+      border: none;
+      vertical-align: bottom;
+    }
+
+    li.wizard-menu-item:nth-child(2)::before {
+      background: url('../icons/Indicator2.png') no-repeat center center / 40px 40px;
+      content: '';
+      border: none;
+      vertical-align: bottom;
+    }
+
+    li.wizard-menu-item:last-child::before {
+      background: url('../icons/Indicator3.png') no-repeat center center / 40px 40px;
+      content: '';
+      border: none;
+      vertical-align: bottom;
+    }
+  }
   
   .field-selectfd {
       .field-backlinkmultiplecust button {
