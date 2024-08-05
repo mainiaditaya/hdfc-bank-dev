@@ -135,6 +135,10 @@ async function loadFDStyles() {
   if (document.querySelector('.fd-form-wrapper')) {
     document.body.classList.add('fdlien');
   }
+
+  if (document.querySelector('.field-fdbasedcreditcardwizard').getAttribute('data-visible') === 'true') {
+    document.querySelector('header').classList.add('header-height');
+  }
 }
 window.setTimeout(() => loadFDStyles(), 600);
 
