@@ -51,7 +51,7 @@ main .section.form-container {
   position: absolute;
   width: 140px;
   right: 0;
-  top: 0.2em;
+  top: 0.4em;
   height: 32px;
   content: url('../icons/safe-secure.svg');
 }
@@ -748,7 +748,7 @@ header:has(~ .fd-form-wrapper) {
   .fdlien:has(.section.form-container) .section.form-container {
       .fd-form-wrapper{
           .field-bannerimagepanel {
-              background: var(--color-interface-fd-background-secondary) url('../icons/banner_tablet.png');
+              background: var(--color-interface-fd-background-secondary) url('../icons/banner_tablet.png') no-repeat center center / 100% 100%;
               min-height: 225px;
           }
       }    
@@ -810,7 +810,7 @@ header:has(~ .fd-form-wrapper) {
   .fdlien:has(.section.form-container) .section.form-container {
       .fd-form-wrapper{
           .field-bannerimagepanel {
-              background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png');
+              background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
               min-height: 225px;
           }
       }    
