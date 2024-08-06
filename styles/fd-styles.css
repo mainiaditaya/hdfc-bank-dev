@@ -819,11 +819,10 @@ header:has(~ .fd-form-wrapper) {
             top: 10%;
 
           .field-selectfd {
-              .field-customername { grid-column: span 9; }
+              .field-customername { grid-column: span 6; }
 
               .field-creditlimit { 
-                  grid-column: span 3; 
-                  display: block;
+                  grid-column: span 6;
                   text-align: center;
                   max-height: 52px;
 
@@ -911,8 +910,36 @@ header:has(~ .fd-form-wrapper) {
     top: 11%;
     left: 2%;
 
+    .field-selectfd {
+        .field-selectfddetailspanel {
+            display: grid;
+            .field-customername { grid-column: span 6; }
+
+            .field-creditlimit { 
+                grid-column: span 6;
+                text-align: center;
+                max-height: 52px;
+            }
+        }        
+    }
+
     .wizard-menu-items {
         flex-wrap: nowrap;
+        text-align: center;
+        gap: 10px;
+
+        .wizard-menu-item {
+            font-size: var(--body-x-sm-font-size);
+            margin: 0 10px;
+            
+            &::before {
+                margin-right: 25px;
+            }
+
+            &::after {
+                margin: 0 0 0 -40px;
+            }
+        }
     }
   }
 
