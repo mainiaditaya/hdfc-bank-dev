@@ -660,8 +660,30 @@ main .section.form-container {
 
 
 /* Error Screens */
+.field-resultpanel:has(.field-errorresultpanel) {
+    position: absolute;
+    left: 0;
+    top: 16%;
+}
 
 .field-errorresultpanel {
+    .field-errormessagetext {
+        border-radius: 0 !important;
+        background: var(--color-interface-fd-background-primary) !important;
+
+        &:not(:has(p))::before {
+            width: 0 !important;
+            height: 0 !important;
+            background: none !important;
+        }        
+    }
+
+    .field-errormessagetext:not(:has(p)){
+        display: inline-block !important;
+        padding: 80px 250px 80px 0 !important;
+        background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 95% 0 !important ;
+    }
+
   .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
       text-align: center !important;
   }
@@ -803,6 +825,17 @@ header:has(~ .fd-form-wrapper) {
           }
       }
   }
+
+  .field-resultpanel:has(.field-errorresultpanel) {
+    top: 8%;
+  }
+
+  .field-errorresultpanel {
+    .field-errormessagetext:not(:has(p)){
+        padding: 30px 250px 80px 20px !important;
+            text-align: left !important;
+    }
+  }
 }
 
 /* For mobiles */
@@ -853,5 +886,16 @@ header:has(~ .fd-form-wrapper) {
 
   .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
       display: grid;
+  }
+
+  .field-resultpanel:has(.field-errorresultpanel) {
+    top: 9%;
+  }
+
+  .field-errorresultpanel {
+    .field-errormessagetext:not(:has(p)){
+        padding: 30px 250px 80px 20px !important;
+        text-align: left !important;
+    }
   }
 }
