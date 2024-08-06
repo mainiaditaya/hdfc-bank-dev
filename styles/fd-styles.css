@@ -34,8 +34,10 @@ main .section.form-container {
   background: var(--color-interface-fd-background-primary);
 }
 
-.header-height{
-  height: 100px !important;
+body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visible='false'])) {
+    header {
+        height: 100px !important;
+    }
 }
 
 .fdlien header>.cmp-container,
@@ -826,6 +828,10 @@ header:has(~ .fd-form-wrapper) {
       }
   }
 
+  .fdlien .field-fdbasedcreditcardwizard {
+    left: 2%;
+  }
+
   .field-resultpanel:has(.field-errorresultpanel) {
     top: 8%;
   }
@@ -886,6 +892,10 @@ header:has(~ .fd-form-wrapper) {
 
   .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
       display: grid;
+  }
+  
+  .fdlien .field-fdbasedcreditcardwizard {
+    left: 2%;
   }
 
   .field-resultpanel:has(.field-errorresultpanel) {
