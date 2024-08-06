@@ -439,13 +439,17 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 
 /* Select FD */
 .fdlien .field-fdbasedcreditcardwizard {
-  border-radius: 24px 24px 0 0;
   position: absolute;
   width: 95%;
-  top: 12%;
+  top: 18.4%;
   
   .wizard-menu-items {
     justify-content: center;
+    margin-top: -50px;
+    background: var(--color-interface-background-primary);
+    border-radius: 24px;
+    padding: 10px;
+    border: 1px solid var(--color-interface-border-primary);
     
     .wizard-menu-item{
       margin: 0 25px 0 0;
@@ -464,7 +468,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       background-color: var(--color-interface-border-primary);
       margin: 0 0 0 -60px;
       position: absolute;
-      top: 5%;
+      top: 0;
       transform: translateY(-50%);
     }
 
@@ -760,8 +764,14 @@ header:has(~ .fd-form-wrapper) {
   }
 
   main .form .field-otppanel {
-      .field-otphelptext { margin-top: -32px !important; }
-      .field-otpnumber { margin: 2px 0 -18px !important; }
+      .field-otphelptext { 
+        margin-top: -32px !important; 
+    }
+
+      .field-otpnumber { 
+        margin: 2px 0 -18px !important; 
+        width: 100% !important;
+    }
   }
 
   .fdlien .field-loginmainpanel, main .form .field-otppanel {
@@ -806,6 +816,8 @@ header:has(~ .fd-form-wrapper) {
       }
 
       .field-fdbasedcreditcardwizard {
+            top: 10%;
+
           .field-selectfd {
               .field-customername { grid-column: span 9; }
 
@@ -878,9 +890,10 @@ header:has(~ .fd-form-wrapper) {
       .field-mobilepanel, .field-identifierpanel { grid-column: span 12 !important; }
   }
 
-  .field-otppanel { padding: 0 6px 0 2px; 
+  .field-otppanel { padding: 40px 10px 0 !important; 
 
       .field-otpnumber { 
+          margin: 5px 0 !important;
           width: 100% !important; 
           grid-column: span 12 !important;
       }
@@ -893,9 +906,14 @@ header:has(~ .fd-form-wrapper) {
   .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
       display: grid;
   }
-  
+
   .fdlien .field-fdbasedcreditcardwizard {
+    top: 11%;
     left: 2%;
+
+    .wizard-menu-items {
+        flex-wrap: nowrap;
+    }
   }
 
   .field-resultpanel:has(.field-errorresultpanel) {
