@@ -34,6 +34,12 @@ main .section.form-container {
   background: var(--color-interface-fd-background-primary);
 }
 
+body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visible='false'])) {
+    header {
+        height: 100px !important;
+    }
+}
+
 .fdlien header>.cmp-container,
 .fdlien header>.cmp-container div:nth-child(1) {
   max-width: 1160px;
@@ -47,7 +53,7 @@ main .section.form-container {
   position: absolute;
   width: 140px;
   right: 0;
-  top: 0.2em;
+  top: 0.4em;
   height: 32px;
   content: url('../icons/safe-secure.svg');
 }
@@ -365,7 +371,7 @@ main .section.form-container {
 
   .field-multiplecustidrepeatable{
       border-radius: 16px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--color-interface-border-primary);
       padding: 24px;
       max-height: 160px;
       max-width: 368px;
@@ -434,36 +440,61 @@ main .section.form-container {
 /* Select FD */
 .fdlien .field-fdbasedcreditcardwizard {
   border-radius: 24px 24px 0 0;
+  position: absolute;
+  width: 95%;
+  top: 12%;
   
   .wizard-menu-items {
     justify-content: center;
+    
+    .wizard-menu-item{
+      margin: 0 25px 0 0;
+    }
+
+    .wizard-menu-item:first-child::after {
+      content: '';
+      width: 0;
+    }
+
+    .wizard-menu-item::after {
+      content: '';
+      display: block;
+      height: 3px;
+      width: 40px;
+      background-color: var(--color-interface-border-primary);
+      margin: 0 0 0 -60px;
+      position: absolute;
+      top: 5%;
+      transform: translateY(-50%);
+    }
+
+    li.wizard-menu-item::before{
+      border: 1px solid #ccc;
+      vertical-align: bottom;
+    }
+
+    li.wizard-menu-active-item::before{
+      border: none;
+    }
 
     li:first-child::before {
       background: url('../icons/Indicator.png') no-repeat center center / 40px 40px;
       content: '';
-      border: none;
-      vertical-align: bottom;
     }
-
+    
     li.wizard-menu-active-item:first-child::before {
       background: url('../icons/Indicator1-active.png') no-repeat center center / 40px 40px;
       content: '';
-      border: none;
-      vertical-align: bottom;
     }
 
     li.wizard-menu-item:nth-child(2)::before {
       background: url('../icons/Indicator2.png') no-repeat center center / 40px 40px;
       content: '';
-      border: none;
-      vertical-align: bottom;
     }
 
     li.wizard-menu-item:last-child::before {
       background: url('../icons/Indicator3.png') no-repeat center center / 40px 40px;
       content: '';
-      border: none;
-      vertical-align: bottom;
     }
   }
   
@@ -473,6 +504,10 @@ main .section.form-container {
           background: var(--color-interface-background-primary);
           font-weight: var(--font-weight-regular);
           max-width: fit-content !important;
+      }
+
+      .field-backlinkmultiplecust button:hover {
+        background: none !important;
       }
 
       div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p {
@@ -586,7 +621,6 @@ main .section.form-container {
                   margin-top: -23px;
                   border-radius: 8px;
                   background: var(--color-interface-background-quinary);
-
                   label { align-self: center; }
               }
 
@@ -594,7 +628,8 @@ main .section.form-container {
                   display: flex;
                   margin-top: -33px;
                   border-radius: 8px;
-                  background: var(--color-interface-background-quinary);
+                  background: var(--color-interface-background-quinary);                  
+                  border-top: 1px dashed var(--color-interface-border-primary);
 
                   label {
                       width: 90%;
@@ -627,8 +662,30 @@ main .section.form-container {
 
 
 /* Error Screens */
+.field-resultpanel:has(.field-errorresultpanel) {
+    position: absolute;
+    left: 0;
+    top: 16%;
+}
 
 .field-errorresultpanel {
+    .field-errormessagetext {
+        border-radius: 0 !important;
+        background: var(--color-interface-fd-background-primary) !important;
+
+        &:not(:has(p))::before {
+            width: 0 !important;
+            height: 0 !important;
+            background: none !important;
+        }        
+    }
+
+    .field-errormessagetext:not(:has(p)){
+        display: inline-block !important;
+        padding: 80px 250px 80px 0 !important;
+        background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 95% 0 !important ;
+    }
+
   .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
       text-align: center !important;
   }
@@ -715,7 +772,7 @@ header:has(~ .fd-form-wrapper) {
   .fdlien:has(.section.form-container) .section.form-container {
       .fd-form-wrapper{
           .field-bannerimagepanel {
-              background: var(--color-interface-fd-background-secondary) url('../icons/banner_tablet.png');
+              background: var(--color-interface-fd-background-secondary) url('../icons/banner_tablet.png') no-repeat center center / 100% 100%;
               min-height: 225px;
           }
       }    
@@ -770,6 +827,21 @@ header:has(~ .fd-form-wrapper) {
           }
       }
   }
+
+  .fdlien .field-fdbasedcreditcardwizard {
+    left: 2%;
+  }
+
+  .field-resultpanel:has(.field-errorresultpanel) {
+    top: 8%;
+  }
+
+  .field-errorresultpanel {
+    .field-errormessagetext:not(:has(p)){
+        padding: 30px 250px 80px 20px !important;
+            text-align: left !important;
+    }
+  }
 }
 
 /* For mobiles */
@@ -777,7 +849,7 @@ header:has(~ .fd-form-wrapper) {
   .fdlien:has(.section.form-container) .section.form-container {
       .fd-form-wrapper{
           .field-bannerimagepanel {
-              background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png');
+              background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
               min-height: 225px;
           }
       }    
@@ -820,5 +892,20 @@ header:has(~ .fd-form-wrapper) {
 
   .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
       display: grid;
+  }
+  
+  .fdlien .field-fdbasedcreditcardwizard {
+    left: 2%;
+  }
+
+  .field-resultpanel:has(.field-errorresultpanel) {
+    top: 9%;
+  }
+
+  .field-errorresultpanel {
+    .field-errormessagetext:not(:has(p)){
+        padding: 30px 250px 80px 20px !important;
+        text-align: left !important;
+    }
   }
 }
