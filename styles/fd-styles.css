@@ -43,8 +43,9 @@ body.fdlien .form-wrapper {
   max-width: 100%;
 }
 
-main .section.form-container {
+body.fdlien main .section.form-container {
   max-width: var(--form-fd-max-width) !important;
+  width: var(--form-fd-max-width);
 }
 
 .fdlien header {
@@ -301,6 +302,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                       color: var(--color-input-text-primary);
                       font-size: var(--body-fd-md-font-size);
                       font-weight: var(--font-weight-regular);
+                      display: inline-block;
                   }
               }
   
