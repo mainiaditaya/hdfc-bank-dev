@@ -626,7 +626,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   font-weight: var(--font-weight-regular);
               }
 
-              input {
+              input:not([type="checkbox"]) {
                   border: none;
                   font-size: var(--body-fd-md-font-size);
                   font-weight: var(--font-weight-bold);
