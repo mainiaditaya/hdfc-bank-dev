@@ -587,6 +587,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
             display: flex; 
             overflow: auto;
             padding-bottom: 20px;
+            scrollbar-width: thin;
           }
 
           .field-fdnumberselection:not(:has(.repeat-wrapper)), .field-fdnumberselection:has(.repeat-wrapper) fieldset {
