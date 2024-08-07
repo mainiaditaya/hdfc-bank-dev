@@ -17,6 +17,19 @@ main {
     display: none;
 }
 
+.repeat-wrapper::-webkit-scrollbar {
+    height: 7px !important;
+}
+  
+.repeat-wrapper::-webkit-scrollbar-track {
+    background: var(--color-input-text-placeholder-default) !important;
+}
+
+.repeat-wrapper::-webkit-scrollbar-thumb {
+    background: var(--color-interface-text-quaternary) !important;
+    border-radius:10px !important;
+}
+
 /* Input box styling */
 .fdlien .field-registeredmobilenumber input, .field-pan input, .field-dateofbirth input:not([placeholder]), .field-countrycode select {
   font-size: var(--body-lg-font-size) !important;
@@ -587,7 +600,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
             display: flex; 
             overflow: auto;
             padding-bottom: 20px;
-            scrollbar-width: thin;
+            gap: 23px;
           }
 
           .field-fdnumberselection:not(:has(.repeat-wrapper)), .field-fdnumberselection:has(.repeat-wrapper) fieldset {
