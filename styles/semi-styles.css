@@ -1,0 +1,106 @@
+/* stylelint-disable no-descending-specificity */
+main .section.form-container {
+    max-width: var(--form-max-width) !important;
+}
+
+.semi-form {
+    a {
+        text-decoration: underline !important;
+        color: var(--color-interface-background-tertiary) !important;
+    }
+
+    .field-aem-semiwizard {
+        padding: 0 !important;
+
+        .wizard-button-wrapper { display: none !important; }
+
+        .wizard-menu-items {
+            max-width: 100%;
+            gap: 0;
+            font: normal normal var(--font-weight-bold) var(--body-sm-font-size) / var(--body-lg-font-size) var(--font-family-secondary);
+            
+            .wizard-menu-item:not(:last-child) {
+                max-width: 256px;
+                width: 100%;
+            }
+
+            .wizard-menu-item:last-child {
+                width: 110px;
+            }
+
+            .wizard-menu-item::before {
+                display: block;
+                height: 28px;
+                width: 28px;
+                margin-bottom: 10px;
+            }
+
+            .wizard-menu-item:not(:last-child)::after {
+              content: '';
+              display: block;
+              height: 3px;
+              width: 224px;
+              background-color: var(--color-interface-border-primary);
+              position: absolute;
+              margin: -43px 0 0 32px;
+              transform: translateY(-50%);
+            }
+
+            .wizard-menu-active-item.wizard-menu-item:not(:last-child)::after {
+                background-color: var(--color-interface-background-tertiary);
+            }
+        }
+
+        .field-aem-identifierpanel {
+            .field-aem-welcometext p {
+                color: var(--color-interface-background-tertiary);
+                font: normal normal var(--font-weight-bold) var(--body-lg-font-size) / var(--body-xx-lg-font-size) var(--font-family-secondary);
+            }
+    
+            .field-aem-loginpanel {
+                .panel-wrapper { width: 100%; }
+    
+                .text-wrapper {
+                    input, input:hover, input:focus-visible {
+                        border-color: transparent transparent var(--color-input-border-default) transparent;
+                        border-radius: 0;
+                        outline: transparent transparent var(--color-input-border-default) transparent;
+                    }
+                }
+                
+                .field-aem-countrycode input { 
+                    margin-left: 21px; 
+                    text-align: right;
+                    padding-right: 7px;
+                }
+
+                .field-aem-mobilenum:is([data-active='true'], [data-empty='false']) > label {
+                    margin-left: -35px;
+                }
+
+                .field-aem-cardno input, .field-aem-cardno input:hover, .field-aem-cardno input:focus-visible {
+                    padding-left: 22px;
+                }
+            }
+
+            .field-getotpbutton { padding-top: 32px; }
+        }
+
+        .field-aem-mobilenum label { margin-left: -35px; }
+
+        .field-mobilepanel:has(.field-aem-mobilenum:is([data-active='true'])) {
+            .field-aem-countrycode input::placeholder { color: var(--label-color) !important; }
+        }
+
+        .field-mobilepanel:has(.field-aem-mobilenum:is([data-empty='true'])) {
+            .field-aem-countrycode input::placeholder { color: transparent !important; }
+        }
+
+        .field-consentpanel {
+            p {
+                margin: 0;
+                font: normal normal normal var(--body-sm-font-size) / var(--body-xx-lg-font-size) var(--font-family-secondary);
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 :root {
   --font-family-default: inter, inter-fallback;
-
+  --font-family-secondary: open sans;
+  
   /* form--btn */
   --form-button-font-size: 16px;
   --form-button-font-weight: 700;
@@ -28,12 +29,4 @@
   --font-linehight-regular: 20px;
   --font-linehight-medium: 24px;
   --font-linehight-large: 28px;
-  
-  /* FD lien typography */
-  --form-fd-max-width: 1280px;
-  --body-fd-sm-font-size: 14px;
-  --body-fd-md-font-size: 16px;
-  --body-fd-lg-font-size: 18px;
-  --body-fd-x-lg-font-size: 20px;
-  --body-fd-xx-lg-font-size: 24px;
 }
