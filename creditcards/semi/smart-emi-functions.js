@@ -14,16 +14,18 @@ const { CURRENT_FORM_CONTEXT: currentFormContext, JOURNEY_NAME: journeyName, CHA
  */
 // eslint-disable-next-line no-unused-vars
 function getOTPV1(mobileNumber, cardDigits, globals) {
-  const jidTemporary = createJourneyId('online', journeyName, channelSource, globals);
-  currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
+  const journeyID = createJourneyId('online', journeyName, channelSource, globals);
+  currentFormContext.journeyID = globals.form.runtime.journeyId.$value || journeyID;
+  currentFormContext.journeyName = SEMI_CONSTANT.JOURNEY_NAME;
   const jsonObj = {
     requestString: {
-      mobileNumber: mobileNumber.$value,
-      cardDigits: cardDigits.$value || '',
+      mobileNumber,
+      cardDigits,
       journeyID: currentFormContext.journeyID,
       journeyName: currentFormContext.journeyName,
       userAgent: window.navigator.userAgent,
     },
+    userAgent: window.navigator.userAgent,
   };
   const path = SEMI_CONSTANT.SEMI_ENDPOINTS.otpGen;
   return fetchJsonResponse(path, jsonObj, 'POST', true);
