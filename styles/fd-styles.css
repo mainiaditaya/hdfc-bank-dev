@@ -13,6 +13,10 @@ main {
   margin: 0 !important;
 }
 
+.fdlien .repeat-wrapper .item-add {
+    display: none;
+}
+
 /* Input box styling */
 .fdlien .field-registeredmobilenumber input, .field-pan input, .field-dateofbirth input:not([placeholder]), .field-countrycode select {
   font-size: var(--body-lg-font-size) !important;
@@ -364,7 +368,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 /* Multiple Customer Id  */
 .fdlien .field-multiplecustidselectionpanel {
   display: grid !important;
-  padding: 40px 20px 0 15px;
+  padding: 40px 40px 0 15px;
   grid-template-rows: auto auto 1fr;
 
   .field-custidproceedlabel p {
@@ -374,7 +378,9 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       margin-bottom: 10px;
   }
 
-  .field-multiplecustidrepeatable{
+  .repeat-wrapper { gap: 20px; }
+
+  .field-multiplecustidrepeatable:not(:has(.repeat-wrapper)), .field-multiplecustidrepeatable:has(.repeat-wrapper) fieldset {
       border-radius: 16px;
       border: 1px solid var(--color-interface-border-primary);
       padding: 24px;
@@ -428,7 +434,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               letter-spacing: normal !important;
           }
       }
-  }    
+  }
 }
 
 /* Wizard Screens */
@@ -553,6 +559,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   font-weight: var(--font-weight-bold) !important;
                   font-size: var(--body-fd-xx-lg-font-size) !important;
                   color: var(--color-interface-text-primary);
+                  pointer-events: none;
               }
           }
 
@@ -580,17 +587,25 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   font-size: var(--body-fd-x-lg-font-size);
                   font-weight: var(--font-weight-bold);
                   color: var(--color-interface-text-primary);
+                  pointer-events: none;
               }
           }
 
           .field-select-fd-subtext1 { margin-top: -31px; }
 
-          .field-fdnumberselection {
+          .field-fdnumberselection .repeat-wrapper { 
+            display: flex; 
+            overflow: auto;
+            padding-bottom: 20px;
+            scrollbar-width: thin;
+          }
+
+          .field-fdnumberselection:not(:has(.repeat-wrapper)), .field-fdnumberselection:has(.repeat-wrapper) fieldset {
               padding: 20px 16px;
               border: solid 1px var(--color-action-border-primary-default);
               border-radius: 16px;
               max-height: 196px;
-              min-width: 263px;
+              max-width: 263px;
 
               label {
                   padding: 0 0 0 12px;
@@ -607,6 +622,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   padding: 0;
                   margin: 0 12px 0 0;
                   background: var(--color-interface-background-quinary);
+                  pointer-events: none;
               }
 
               .field-fdnumber {
