@@ -1,11 +1,18 @@
 import {
   groupCharacters,
   validatePhoneNumber,
+  validatePanInput,
 } from '../domutils/domutils.js';
 
 const addGaps = () => {
   const inputField = document.querySelector('.char-gap-4 input');
-  inputField.addEventListener('input', () => groupCharacters(inputField, [5, 4]));
+  inputField.addEventListener('input', () => {
+    const validInput = validatePanInput(inputField.value);
+    if (!validInput) {
+      inputField.value = inputField.value.slice(0, 3);
+    }
+    groupCharacters(inputField, [5, 4]);
+  });
 };
 
 const addMobileValidation = () => {
@@ -14,19 +21,9 @@ const addMobileValidation = () => {
   inputField.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
 };
 
-const readUrlParam = () => {
-  const url = new URL(window.location.href);
-  const params = new URLSearchParams(url.search);
-  const paramValue = params.get('dob');
-  if (paramValue) {
-    console.log(paramValue);
-  }
-};
-
 setTimeout(() => {
   addGaps();
   addMobileValidation();
-  readUrlParam();
 }, 500);
 
 export {
