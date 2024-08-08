@@ -20,7 +20,7 @@ const ERROR_MSG = {
 
 const FD_ENDPOINTS = {
   otpGen: '/content/hdfc_hafcards/api/customeridentificationotpgen.json',
-  otpVal: '/content/hdfc_hafcards/api/otpvalidationandcardsinquiry',
+  otpVal: '/content/hdfc_hafcards/api/otpvalidationandcardsinquiry.json',
 };
 
 const OTP_TIMER = 30;
