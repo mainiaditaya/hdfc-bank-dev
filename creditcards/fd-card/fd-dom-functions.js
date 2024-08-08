@@ -7,9 +7,12 @@ import {
 const addGaps = () => {
   const panInputField = document.querySelector('.char-gap-4 input');
   panInputField.addEventListener('input', () => {
-    const validInput = validatePanInput(panInputField.value);
-    if (!validInput) {
-      panInputField.value = panInputField.value.slice(0, 3);
+    const vaildInput = validatePanInput(panInputField.value.replace(/\s+/g, ''));
+    if (!vaildInput) {
+      panInputField.value = panInputField.value.slice(0, -1);
+      if (panInputField.value.length > 10) {
+        panInputField.value = panInputField.value.slice(0, 9);
+      }
     }
     groupCharacters(panInputField, [5, 4]);
   });
