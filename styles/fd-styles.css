@@ -68,17 +68,25 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   max-width: 1160px;
 }
 
-.fdlien header .cmp-container>div:nth-child(n+3) {
-  display: none;
+.fdlien header .cmp-container>div:nth-child(2) {
+    content: unset;
+    position: absolute;
+    color: var(--color-interface-background-primary);
+    width: 600px;
+    font-size: var(--body-fd-x-lg-font-size);
+    font-weight: var(--font-weight-bold);
+    left: 15%;
+    top: 8px;
 }
 
-.fdlien header .cmp-container>div:nth-child(2) {
+.fdlien header .cmp-container>div:nth-child(3) {
   position: absolute;
-  width: 140px;
+  width: 110px;
   right: 0;
-  top: 0.4em;
+  top: 0.5em;
   height: 32px;
   content: url('../icons/safe-secure.svg');
+  padding: 0;
 }
 
 .fdlien:has(.section.cmp-container-container) .section.cmp-container-container {
@@ -801,7 +809,12 @@ header:has(~ .fd-form-wrapper) {
   }
 
   .fdlien header>.cmp-container div:nth-child(2) {
-      display: block;
+    display: none;
+  }
+
+  .fdlien header>.cmp-container div:nth-child(3) {
+  display: block;
+  right: 10px;
   }
 
   .fdlien header>.cmp-container div:nth-child(1) {
@@ -918,7 +931,12 @@ header:has(~ .fd-form-wrapper) {
   }
 
   .fdlien header>.cmp-container div:nth-child(2) {
-      display: block;
+      display: none;
+  }
+
+  .fdlien header>.cmp-container div:nth-child(3) {
+    display: block;
+    right: 10px;
   }
 
   .fdlien header>.cmp-container div:nth-child(1) {
@@ -984,7 +1002,7 @@ header:has(~ .fd-form-wrapper) {
             margin: 0 10px;
             
             &::before {
-                margin-right: 25px;
+                margin: 0 25px;
             }
 
             &::after {
