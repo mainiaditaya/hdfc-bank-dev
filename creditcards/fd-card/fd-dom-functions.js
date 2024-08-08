@@ -24,7 +24,7 @@ const addMobileValidation = () => {
 setTimeout(() => {
   addGaps();
   addMobileValidation();
-}, 500);
+}, 800);
 
 export {
   addGaps,
