@@ -305,6 +305,8 @@ const validatePhoneNumber = (inputField, validStartingDigits) => {
   inputField.value = value;
 };
 
+const validatePanInput = (panNumber) => panNumber.length < 4 || panNumber[3].toLowerCase() === 'p';
+
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -320,4 +322,5 @@ export {
   restrictToAlphabetsNoSpaces,
   groupCharacters,
   validatePhoneNumber,
+  validatePanInput,
 };
