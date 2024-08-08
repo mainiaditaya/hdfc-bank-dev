@@ -39,6 +39,24 @@ main {
     border-radius: 24px 24px 4px 4px;
     background-color: var(--color-interface-background-quinary);
     color: var(--color-interface-background-quaternary);
+    position: relative;
+}
+
+.hdfc-accordion-legend::after {
+    content: '\221F';
+    color: #1C3FCA;
+    font-size: 19px;
+    display: inline;
+    position: absolute;
+    transition: transform 0s;
+    transform: rotate(-45deg);
+    margin-top: -5px;
+    right: 22px;
+}
+
+.accordion-collapse::after {
+    transform: rotate(-225deg);
+    margin-top: 0;
 }
 
 /* Input box styling */
@@ -125,18 +143,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       .field-bannerimagepanel {
           background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner.png') no-repeat center center / cover;
           min-height: 648px;
-  
-          /* .field-bannerimagefdlien {
-              background: url('../icons/side_bar_banner.png');
-              display: flex;
-              align-items: flex-end;
-          }
-  
-          .field-bannerimagefdlien picture,
-          .field-bannerimagefdlien img {
-              max-width: 100%;
-              height: 100%;
-          } */
       }
 
       .field-loginmainpanel {
@@ -731,13 +737,17 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               line-height: 7px;
           }
       }
-  }
-
-  .field-basicdetails {
-    .field-detailssectionlabel2 p {
-        line-height: inherit;
     }
-  }
+
+    .field-basicdetails {
+        .field-detailssectionlabel2 p {
+            line-height: inherit;
+        }
+
+        .field-nameoncard .field-description p {
+            font-size: var(--body-x-sm-font-size);
+        }
+    }
 }
 
 
