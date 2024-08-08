@@ -13,6 +13,8 @@ main {
   margin: 0 !important;
 }
 
+/* Repeat wrapper */
+
 .fdlien .repeat-wrapper .item-add {
     display: none;
 }
@@ -28,6 +30,15 @@ main {
 .repeat-wrapper::-webkit-scrollbar-thumb {
     background: var(--color-interface-text-quaternary) !important;
     border-radius:10px !important;
+}
+
+/* Accordion styling */
+.fdlien legend.hdfc-accordion-legend {
+    height: 70px;
+    padding: 24px 32px 10px;
+    border-radius: 24px 24px 4px 4px;
+    background-color: var(--color-interface-background-quinary);
+    color: var(--color-interface-background-quaternary);
 }
 
 /* Input box styling */
@@ -539,24 +550,37 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       content: '';
     }
   }
+
+    .field-backlinkmultiplecust button, .field-backlinkbasicdetails button {
+        color: var(--color-action-text-secondary-default);
+        background: var(--color-interface-background-primary);
+        font-weight: var(--font-weight-regular);
+        max-width: fit-content !important;
+    }
+
+    .field-fdselectioninfo .field-customername label, .field-fdselectioninfo .field-customername input,
+    .field-basicdetails .field-detailssectionlabel1 p {
+        font: var(--font-family-default);
+        font-weight: var(--font-weight-bold) !important;
+        font-size: var(--body-fd-xx-lg-font-size) !important;
+        color: var(--color-interface-text-primary);
+        pointer-events: none;
+        line-height: 1px;
+        padding-top: 10px;
+    }
+
+    div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p, .field-detailssectionlabel2 p {
+        font-weight: var(--font-weight-regular);
+        font-size: var(--body-md-font-size);
+        color: var(--color-interface-text-secondary);
+        margin: 0;
+        line-height: 1px;
+        padding-bottom: 5px;
+    }
   
-  .field-selectfd {
-      .field-backlinkmultiplecust button {
-          color: var(--color-action-text-secondary-default);
-          background: var(--color-interface-background-primary);
-          font-weight: var(--font-weight-regular);
-          max-width: fit-content !important;
-      }
-
+    .field-selectfd {
       .field-backlinkmultiplecust button:hover {
-        background: none !important;
-      }
-
-      div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p {
-          font-weight: var(--font-weight-regular);
-          font-size: var(--body-md-font-size);
-          color: var(--color-interface-text-secondary);
-          margin: 0;
+        background-color: none !important;
       }
 
       .field-fdselectioninfo {
@@ -569,25 +593,19 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   width: max-content;
                   align-self: center;
                   pointer-events: none;
+                  margin: -4px 0 0;
+                  padding: 0;
               }
 
               input {
                   padding: 0;
-                  margin: 0.5rem 0.4rem;
+                  margin: 0 0 0 8px;
                   border: none;
                   pointer-events: none;
 
                   &:focus{
                     outline: none;
                   }
-              }
-
-              label, input {
-                  font: var(--font-family-default);
-                  font-weight: var(--font-weight-bold) !important;
-                  font-size: var(--body-fd-xx-lg-font-size) !important;
-                  color: var(--color-interface-text-primary);
-                  pointer-events: none;
               }
           }
 
@@ -619,8 +637,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               }
           }
 
-          .field-select-fd-subtext1 { margin-top: -31px; }
-
           .field-fdnumberselection .repeat-wrapper { 
             display: flex; 
             overflow: auto;
@@ -634,6 +650,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               border-radius: 16px;
               max-height: 196px;
               max-width: 263px;
+              min-width: 263px;
 
               label {
                   padding: 0 0 0 12px;
@@ -698,7 +715,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       }
 
       .field-selectfdtncpanel {
-          padding: 16px;
+          padding: 16px 16px 23px;
           border: solid 1px var(--color-action-border-primary-disabled);
           border-radius: 12px;
           background: var(--color-interface-background-quinary);
@@ -707,14 +724,19 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               font-size: var(--body-fd-lg-font-size);
               font-weight: var(--font-weight-medium);
               line-height: 18px;
-              margin-bottom: -14px;
               color: var(--color-interface-text-quaternary);
           }
 
           .field-pleasenotetext1, .field-pleasenotetext2 {
-              margin-bottom: -20px;
+              line-height: 7px;
           }
       }
+  }
+
+  .field-basicdetails {
+    .field-detailssectionlabel2 p {
+        line-height: inherit;
+    }
   }
 }
 
