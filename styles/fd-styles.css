@@ -164,11 +164,12 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   select {
                       background: url('../icons/india-flag.png') no-repeat 20px center;
                       border-radius: var(--form-input-border-radius) 0 0 var(--form-input-border-radius) !important;
-                      padding: 0 5px !important;
+                      padding: 0 20px 0 0 !important;
                       text-align: right;
                       margin-top: 0;
                       letter-spacing: 0 !important;
                       pointer-events: none;
+                      appearance: none;
   
                       &:focus{
                           outline: none;
@@ -476,7 +477,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     padding: 10px;
     border: 1px solid var(--color-interface-border-primary);
     
-    .wizard-menu-item{
+    .wizard-menu-item {
       margin: 0 25px 0 0;
     }
 
@@ -495,6 +496,10 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       position: absolute;
       top: 30px;
       transform: translateY(-50%);
+    }
+
+    li.wizard-menu-active-item {
+        color: var(--color-interface-button-background);
     }
 
     li.wizard-menu-item::before{
