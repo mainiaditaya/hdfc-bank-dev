@@ -5,13 +5,13 @@ import {
 } from '../domutils/domutils.js';
 
 const addGaps = () => {
-  const inputField = document.querySelector('.char-gap-4 input');
-  inputField.addEventListener('input', () => {
-    const validInput = validatePanInput(inputField.value);
+  const panInputField = document.querySelector('.char-gap-4 input');
+  panInputField.addEventListener('input', () => {
+    const validInput = validatePanInput(panInputField.value);
     if (!validInput) {
-      inputField.value = inputField.value.slice(0, 3);
+      panInputField.value = panInputField.value.slice(0, 3);
     }
-    groupCharacters(inputField, [5, 4]);
+    groupCharacters(panInputField, [5, 4]);
   });
 };
 
