@@ -72,6 +72,7 @@ header {
                 picture {
                     img {
                         margin-top: 10px;
+                        cursor: pointer;
                     }
                 }
             }
