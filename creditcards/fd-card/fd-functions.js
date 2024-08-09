@@ -22,6 +22,7 @@ import {
 import {
   addGaps,
   addMobileValidation,
+  validateOtpInput,
 } from './fd-dom-functions.js';
 
 export {
@@ -42,4 +43,5 @@ export {
   resendOTP,
   customSetFocus,
   reloadPage,
+  validateOtpInput,
 };
