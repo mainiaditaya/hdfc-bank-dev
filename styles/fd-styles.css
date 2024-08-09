@@ -52,6 +52,7 @@ main {
     transform: rotate(-45deg);
     margin-top: -5px;
     right: 22px;
+    cursor: pointer;
 }
 
 .accordion-collapse::after {
@@ -106,6 +107,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     font-weight: var(--font-weight-bold);
     left: 15%;
     top: 8px;
+    border-left: 1px solid var(--color-interface-fd-title-border);
+    padding: 0 0 0 24px;
 }
 
 .fdlien header .cmp-container>div:nth-child(3) {
@@ -551,9 +554,19 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       content: '';
     }
 
+    li.wizard-menu-active-item:nth-child(2)::before {
+        background: url('../icons/Indicator2-active.png') no-repeat center center / 40px 40px;
+        content: '';
+    }
+
     li.wizard-menu-item:last-child::before {
       background: url('../icons/Indicator3.png') no-repeat center center / 40px 40px;
       content: '';
+    }
+
+    li.wizard-menu-active-item:nth-child(3)::before {
+        background: url('../icons/Indicator3-active.png') no-repeat center center / 40px 40px;
+        content: '';
     }
   }
 
@@ -771,8 +784,9 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     }
 
     .field-errormessagetext:not(:has(p)){
+        text-align: left !important;
         display: inline-block !important;
-        padding: 80px 250px 80px 0 !important;
+        padding: 80px 450px 80px 60px !important;
         background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 95% 0 !important ;
     }
 
