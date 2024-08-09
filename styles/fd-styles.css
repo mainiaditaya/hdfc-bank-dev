@@ -19,15 +19,16 @@ main {
     display: none;
 }
 
-.repeat-wrapper::-webkit-scrollbar {
+.repeat-wrapper::-webkit-scrollbar, .field-multiplecustidrepeatable::-webkit-scrollbar {
     height: 7px !important;
+    width: 8px !important;
 }
   
-.repeat-wrapper::-webkit-scrollbar-track {
+.repeat-wrapper::-webkit-scrollbar-track, .field-multiplecustidrepeatable::-webkit-scrollbar-track {
     background: var(--color-input-text-placeholder-default) !important;
 }
 
-.repeat-wrapper::-webkit-scrollbar-thumb {
+.repeat-wrapper::-webkit-scrollbar-thumb, .field-multiplecustidrepeatable::-webkit-scrollbar-thumb {
     background: var(--color-interface-text-quaternary) !important;
     border-radius:10px !important;
 }
@@ -423,6 +424,12 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   }
 
   .repeat-wrapper { gap: 20px; }
+  
+  .field-multiplecustidrepeatable {
+    max-height: 383px;
+    overflow-y: auto;
+  }
+  
 
   .field-multiplecustidrepeatable:not(:has(.repeat-wrapper)), .field-multiplecustidrepeatable:has(.repeat-wrapper) fieldset {
       border-radius: 16px;
@@ -814,6 +821,18 @@ header:has(~ .fd-form-wrapper) {
 /* Error Screen */
 .fdlien .field-resultpanel .field-errorresultpanel .field-errormessagetext {
   margin: -40px 0 0;
+}
+
+.fdlien {
+    .field-registeredmobilenumber, .field-pan {
+        > label { color: transparent; }
+
+        input {
+            letter-spacing: normal !important;
+            text-transform: none !important;
+            font-size: var(--body-md-font-size) !important;
+        }
+    }
 }
 
 /* For screens more than form width */
