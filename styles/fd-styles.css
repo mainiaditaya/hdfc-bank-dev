@@ -69,6 +69,12 @@ main {
   color: var(--color-interface-text-primary) !important;
 }
 
+.fdlien .field-registeredmobilenumber input[type="text"]::placeholder, .fdlien .field-pan input[type="text"]::placeholder {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+
 body.fdlien .form-wrapper {
   max-width: 100%;
 }
@@ -787,13 +793,33 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         text-align: left !important;
         display: inline-block !important;
         padding: 80px 450px 80px 60px !important;
-        background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 95% 0 !important ;
+        background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
     }
 
   .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
       text-align: center !important;
   }
 }
+
+.field-successresultpanel {
+    .field-successresulttextlabel {
+        text-align: left !important;
+        display: inline-block !important;
+        padding: 70px 450px 70px 85px !important;
+        background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 92% 0 !important ;
+    }
+
+    .field-successresulttextlabel p {
+        text-align: left !important;
+
+        &::before {
+            background: none !important;
+            content: unset !important;
+        }        
+    }
+}
+
+
 
 /* Footer */
 header:has(~ .fd-form-wrapper) {
