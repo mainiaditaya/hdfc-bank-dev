@@ -201,16 +201,6 @@ function updateRequiredCheckboxGroup(name, htmlForm) {
   });
 }
 
-export function imageClickable(selector, url, target) {
-  const element = document.querySelector(selector);
-  if (element) {
-    element.addEventListener('click', (event) => {
-      event.preventDefault();
-      window.open(url, target);
-    });
-  }
-}
-
 export function checkValidation(fieldElement) {
   const wrapper = fieldElement.closest('.field-wrapper');
   const isCheckboxGroup = fieldElement.dataset.fieldType === 'checkbox-group';
