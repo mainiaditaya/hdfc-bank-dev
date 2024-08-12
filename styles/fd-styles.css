@@ -34,7 +34,8 @@ main {
 }
 
 /* Accordion styling */
-.fdlien legend.hdfc-accordion-legend {
+.fdlien legend.hdfc-accordion-legend {    
+    margin-bottom: 29px;
     height: 70px;
     padding: 24px 32px 10px;
     border-radius: 24px 24px 4px 4px;
@@ -450,11 +451,13 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 
       .field-multiplecustidselect { 
           margin-top: 2px; 
-          grid-column: span 2;
+          flex-direction: row-reverse;
+          input { margin-top: -7px; }
+          label { margin-top: -12px; }
       }
 
       .field-maskedaccno {
-        margin-top: -39px;
+        margin-top: -22px;
 
           input { 
               border: none;
@@ -773,6 +776,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     }
 
     .field-basicdetails {
+        padding: 0 30px;
+
         .field-detailssectionlabel2 p {
             line-height: inherit;
         }
@@ -884,10 +889,8 @@ header:has(~ .fd-form-wrapper) {
         outline: none;
     }
 
-    .field-loginpanel {
-        .text-wrapper:not(:focus) {
-            > label { color: transparent; }
-        }
+    .text-wrapper:not(:focus), .drop-down-wrapper:not(:focus) {
+        > label { color: transparent; }
     }
 }
 
