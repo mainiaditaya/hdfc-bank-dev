@@ -412,10 +412,52 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
           }
       }
 
-      .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel {
-        text-align: center;
-      }
+    /* Error Screens */
+    .field-resultpanel:has(.field-errorresultpanel) {
+        position: absolute;
+        left: 0;
+        top: 16%;
+    }
 
+    .field-errorresultpanel {
+        .field-errormessagetext {
+            border-radius: 0 !important;
+            background: var(--color-interface-fd-background-primary) !important;
+
+            &:not(:has(p))::before {
+                width: 0;
+                height: 0;
+                background: none;
+            }        
+        }
+
+        .field-errormessagetext:not(:has(p)) {
+            text-align: left;
+            padding: 80px 450px 80px 60px;
+            background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
+        }  
+    }
+
+        .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
+            text-align: center;
+        }
+
+    .field-successresultpanel {
+        .field-successresulttextlabel {
+            text-align: left;
+            padding: 70px 450px 70px 85px;
+            background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 92% 0 !important ;
+        }
+
+        .field-successresulttextlabel p {
+            text-align: left;
+            
+            &::before {
+                background: none;
+                content: unset;
+            }        
+        }
+    }
   }    
 }
 
@@ -772,54 +814,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         }
     }
 }
-
-
-/* Error Screens */
-.field-resultpanel:has(.field-errorresultpanel) {
-    position: absolute;
-    left: 0;
-    top: 16%;
-}
-
-.field-errorresultpanel {
-    .field-errormessagetext {
-        border-radius: 0 !important;
-        background: var(--color-interface-fd-background-primary) !important;
-
-        &:not(:has(p))::before {
-            width: 0 !important;
-            height: 0 !important;
-            background: none !important;
-        }        
-    }
-
-    .field-errormessagetext:not(:has(p)){
-        text-align: left !important;
-        display: inline-block !important;
-        padding: 80px 450px 80px 60px !important;
-        background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
-    }  
-}    
-
-.field-successresultpanel {
-    .field-successresulttextlabel {
-        text-align: left !important;
-        display: inline-block !important;
-        padding: 70px 450px 70px 85px !important;
-        background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 92% 0 !important ;
-    }
-
-    .field-successresulttextlabel p {
-        text-align: left !important;
-
-        &::before {
-            background: none !important;
-            content: unset !important;
-        }        
-    }
-}
-
-
 
 /* Footer */
 header:has(~ .fd-form-wrapper) {
