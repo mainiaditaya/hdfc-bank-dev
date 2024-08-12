@@ -466,16 +466,25 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
             }        
         }
 
+        .field-errormessagetextplaceholder p p{
+            color: var(--color-interface-background-primary);
+            margin: -135px 0 0 45px;
+            font-size: var(--body-fd-x-lg-font-size);
+            font-weight: var(--font-weight-regular);
+        }
+
         .field-errormessagetext:has(p) {
             text-align: left;
-            padding: 80px 450px 80px 60px;
+            padding: 60px 275px 120px 50px;
             background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
         } 
 
         .field-errormessagetext:not(:has(p)) {
             text-align: left;
-            padding: 80px 450px 80px 60px;
+            padding: 60px 275px 120px 50px;
             background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
+            font-size: var(--body-fd-xx-lg-font-size);
+            font-weight: var(--font-weight-bold);
         }
 
         .field-errresdealerpanel {
