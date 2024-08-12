@@ -7,6 +7,7 @@ import {
   resendOTP,
   customSetFocus,
   reloadPage,
+  onPageLoad,
 } from './fdlien-functions.js';
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
 import { redirect } from '../../common/functions.js';
@@ -42,4 +43,5 @@ export {
   resendOTP,
   customSetFocus,
   reloadPage,
+  onPageLoad,
 };

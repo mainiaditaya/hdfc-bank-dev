@@ -252,6 +252,14 @@ function reloadPage() {
   window.location.reload();
 }
 
+/**
+ * called on form initialization.
+ * @param {string} pageUrl
+ */
+function onPageLoad(pageUrl) {
+  console.log(pageUrl);
+}
+
 export {
   // eslint-disable-next-line import/prefer-default-export
   validateLogin,
@@ -262,4 +270,5 @@ export {
   resendOTP,
   customSetFocus,
   reloadPage,
+  onPageLoad,
 };
