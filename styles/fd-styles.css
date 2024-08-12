@@ -51,14 +51,14 @@ main {
     position: absolute;
     transition: transform 0s;
     transform: rotate(-45deg);
-    margin-top: -5px;
+    top: 18px;
     right: 22px;
     cursor: pointer;
 }
 
 .accordion-collapse::after {
     transform: rotate(-225deg);
-    margin-top: 0;
+    top: 23px;
 }
 
 /* Input box styling */
@@ -154,6 +154,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   
           .field-loginpanel {
               width: 100%;
+              padding-bottom: 10px;
           }
   
           .field-consenttext {
@@ -309,10 +310,14 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               .field-otppanel { 
                   text-align: left;
 
-                  .field-otpsubpanel .field-numretries input {
+                  .field-otpsubpanel .field-numretries {
+                    margin: -6px -14px 0 -30px;
+
+                    input {
                       font-size: var(--body-fd-sm-font-size) !important;
                       letter-spacing: normal !important;
                       color: var(--color-interface-text-secondary) !important;
+                    }
                   }
               }
   
@@ -338,12 +343,10 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   
               .field-otpnumber {
                   margin: -28px 0 -18px;
-                  width: 80%;
   
                   input { 
-                      height: 54px; 
-                      padding: 15px 0;
-                      letter-spacing: 3vw;
+                    max-width: 422px;
+                    letter-spacing: 51px;
                   }
               }
   
@@ -352,8 +355,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   flex-direction: row;
               }
               
-              .field-resendotplabel { 
-                  margin-top: 12px;
+              .field-resendotplabel {
+                  margin: 17px 0 0;
                   width: fit-content;
   
                   p {
@@ -378,7 +381,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   
               .field-sectext { 
                   width: fit-content;
-                  margin: 12px 0 0 -54px;
+                  margin: 17px 0 0 -54px;
                   p { font-size: var(--body-fd-sm-font-size); }
               }
           }
@@ -388,6 +391,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       .field-otppanel:has(.field-secondspanel:not([data-visible='false'])) {
           .field-otpsubpanel {
               grid-column: span 3;
+              margin: 5px 0 0;
           }
       }
 
@@ -446,27 +450,34 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 
       .field-multiplecustidselect { 
           margin-top: 2px; 
-          justify-content: end;
+          grid-column: span 2;
       }
 
       .field-maskedaccno {
-          margin-top: -41px;
+        margin-top: -39px;
 
           input { 
               border: none;
               margin: 0;
               padding: 0;
+              height: 19px !important;
+              font-size: var(--body-fd-x-lg-font-size);
+              font-weight: var(--font-weight-extra-bold);
+              letter-spacing: -0.01em;
+              text-align: left;
+              color: var(--color-interface-text-primary);
           }
       }
 
       .field-nooffds {
-          display: grid;
-          grid-template-columns: 85% 15%;
-          align-items: center;
-          background: var(--color-interface-background-quinary);
-          border-radius: 8px;
-          pointer-events: none;
-          margin-top: -14px;
+        display: grid;
+        grid-template-columns: 85% 15%;
+        height: 52px;
+        align-items: center;
+        background: var(--color-interface-background-quinary);
+        border-radius: 8px;
+        pointer-events: none;
+        margin-top: -12px;
 
           label { 
               padding-left: 16px; 
@@ -476,12 +487,14 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 
           input {
               margin: 0;
+              height: 42px !important;
               padding: 0;
               text-align: center;
               border: none;
               background: var(--color-interface-background-quinary);
-              color: var(--color-interface-text-secondary) !important;
+              color: var(--color-interface-text-quaternary) !important;
               font-size: var(--body-md-font-size) !important;
+              font-weight: var(--font-weight-bold);
               letter-spacing: normal !important;
           }
       }
@@ -824,13 +837,56 @@ header:has(~ .fd-form-wrapper) {
 }
 
 .fdlien {
-    .field-registeredmobilenumber, .field-pan {
-        > label { color: transparent; }
+    input, .drop-down-wrapper select { 
+        /* padding: 18px 20px !important; */
+        height: 60px !important;
+    }
 
+    .text-wrapper:is([data-active='true'], [data-empty='false']), .drop-down-wrapper:is([data-active='true'], [data-empty='false']) {
+        > label {
+            color: var(--color-input-text-placeholder-disabled) !important;
+            font-size: var(--body-fd-sm-font-size) !important;
+            font-weight: var(--font-weight-regular) !important;
+        }
+    }
+
+    .field-invalid:is([data-active='true'], [data-empty="false"]):has(.field-description):not(.field-otpnumber), .date-wrapper.field-invalid:is([data-active='true'], [data-empty="true"]):has(.field-description) {
+        label {
+            color: var(--color-input-text-msg-error) !important;
+            font-size: var(--body-fd-sm-font-size) !important;
+            font-weight: var(--font-weight-regular) !important;
+        }
+    }
+    
+    .field-invalid:has(.field-description) {
         input {
-            letter-spacing: normal !important;
-            text-transform: none !important;
-            font-size: var(--body-md-font-size) !important;
+            border-color: var(--color-input-border-error) !important;
+            box-shadow: 0 0 0 2px var(--color-input-box-shadow-error-default);
+            outline: none;
+        }
+        
+        .field-description {
+            color: var(--color-input-text-msg-error) !important;
+            font-size: var(--body-fd-sm-font-size) !important;
+            font-weight: var(--font-weight-regular) !important;
+        }
+    }
+
+    input::placeholder {
+        text-transform: none !important;
+        font-size: var(--body-md-font-size) !important;
+        letter-spacing: normal !important;
+    }
+
+    input:focus, input:hover, select:focus, select:hover {
+        border-color: var(--color-action-border-primary-default) !important;
+        box-shadow: 0 0 0 2px var(--color-interface-background-box-shadow-secondary);
+        outline: none;
+    }
+
+    .field-loginpanel {
+        .text-wrapper:not(:focus) {
+            > label { color: transparent; }
         }
     }
 }

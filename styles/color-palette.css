@@ -5,6 +5,7 @@
   --color-interface-background-quaternary: #111827;
   --color-interface-background-quinary: #F3F6FD;
   --color-interface-background-box-shadow-primary: #ccc;
+  --color-interface-background-box-shadow-secondary: #1C3FCA24;
   --color-interface-error-box-primary: #fdefed;
   --color-interface-text-primary: #111827;
   --color-interface-text-secondary: #6b7280;
@@ -47,7 +48,8 @@
   --color-input-border-focus: #1c3fca;
   --color-input-border-active: #9ca3af;
   --color-input-border-disabled: #9ca3af;
-  --color-input-border-error-default: #e30613;
+  --color-input-border-error: #e22853;
+  --color-input-box-shadow-error-default: #E2285324;
   --color-action-stepper-style: linear-gradient(90deg, rgb(211 214 220) 50%, rgba(255 255 255 / 0%) 100%);
   --color-interface-fd-background-primary: #08173A;
   --color-interface-fd-background-secondary: #DDF2F8;
