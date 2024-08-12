@@ -412,6 +412,10 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
           }
       }
 
+      .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel {
+        text-align: center;
+      }
+
   }    
 }
 
@@ -794,12 +798,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         display: inline-block !important;
         padding: 80px 450px 80px 60px !important;
         background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
-    }
-
-  .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
-      text-align: center !important;
-  }
-}
+    }  
+}    
 
 .field-successresultpanel {
     .field-successresulttextlabel {
