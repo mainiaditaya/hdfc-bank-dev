@@ -74,6 +74,9 @@ main {
   letter-spacing: 1px;
 }
 
+body.fdlien {
+    background: var(--color-interface-background-primary);
+}
 
 body.fdlien .form-wrapper {
   max-width: 100%;
@@ -473,12 +476,52 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
             text-align: left;
             padding: 80px 450px 80px 60px;
             background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
-        }  
+        }
+
+        .field-errresdealerpanel {
+            background: var(--color-interface-background-primary);
+            border-radius: 24px;
+            width: 90%;
+            margin: -90px auto 0;
+
+            .field-errresdealertext1 {
+                padding: 20px 20px 0;
+
+                p {
+                font-size: var(--body-fd-md-font-size);
+                font-weight: var(--font-weight-regular);
+                
+                }
+            }
+
+            .field-errresdealertext2 {
+                padding: 0 20px;
+                
+                p {
+                color: var(--color-interface-background-quaternary);
+                font-size: var(--body-fd-lg-font-size);
+                font-weight: var(--font-weight-bold);
+                }
+            }
+
+            .field-errresdealertext3 {
+                background: var(--color-interface-background-quinary);
+                border-bottom-left-radius: 24px;
+                border-bottom-right-radius: 24px;
+                padding: 20px;
+                border-top: 1px solid var(--color-interface-border-secondary);
+            }
+        }        
+            
+        .field-errserviceslink {
+            width: 90%;
+            margin: 0 auto 20px;
+        }
     }
 
-        .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
-            text-align: center;
-        }
+    .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
+        text-align: center;
+    }
 
     .field-successresultpanel {
         .field-successresulttextlabel {
@@ -496,6 +539,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
             }        
         }
     }
+
   }    
 }
 
@@ -625,8 +669,10 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     }
 
     li.wizard-menu-item::before{
-      border: 1px solid var(--color-interface-border-primary);
-      vertical-align: bottom;
+      border: none;
+      width: 48px;
+      height: 48px;
+      vertical-align: middle;
     }
 
     li.wizard-menu-active-item::before{
@@ -641,9 +687,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     li.wizard-menu-active-item:first-child::before {
       background: url('../icons/Indicator1-active.png') no-repeat center center / 48px 48px;
       content: '';
-      width: 48px;
-      height: 48px;
-      vertical-align: middle;
     }
 
     li.wizard-menu-item:nth-child(2)::before {
