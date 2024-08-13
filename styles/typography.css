@@ -28,6 +28,7 @@
   --font-linehight-regular: 20px;
   --font-linehight-medium: 24px;
   --font-linehight-large: 28px;
+  --font-linehight-x-large: 44px;
   
   /* FD lien typography */
   --form-fd-max-width: 1280px;
@@ -36,4 +37,5 @@
   --body-fd-lg-font-size: 18px;
   --body-fd-x-lg-font-size: 20px;
   --body-fd-xx-lg-font-size: 24px;
+  --body-fd-xxx-lg-font-size: 36px;
 }
