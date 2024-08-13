@@ -1,4 +1,13 @@
-import { getOTPV1 } from './smart-emi-functions.js';
+import { getOTPV1, otpValidation, checkELigibilityHandler } from './smart-emi-functions.js';
+
+import {
+  createJourneyId,
+  getCurrentContext,
+  invokeJourneyDropOff,
+  invokeJourneyDropOffByParam,
+  invokeJourneyDropOffUpdate,
+  journeyResponseHandlerUtil,
+} from '../../common/journey-utils.js';
 
 /* load SEMI Styles- for loading semi - styles - temporary fix */
 async function loadSEMIStyles() {
@@ -9,6 +18,13 @@ async function loadSEMIStyles() {
 window.setTimeout(() => loadSEMIStyles(), 600);
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getOTPV1,
+  otpValidation,
+  checkELigibilityHandler,
+  createJourneyId,
+  getCurrentContext,
+  invokeJourneyDropOff,
+  invokeJourneyDropOffByParam,
+  invokeJourneyDropOffUpdate,
+  journeyResponseHandlerUtil,
 };
