@@ -74,9 +74,10 @@ main {
   letter-spacing: 1px;
 }
 
-body.fdlien {
+body.fdlien,  body.fdlien main{
     background: var(--color-interface-background-primary);
 }
+
 
 body.fdlien .form-wrapper {
   max-width: 100%;
@@ -114,6 +115,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     width: 600px;
     font-size: var(--body-fd-x-lg-font-size);
     font-weight: var(--font-weight-bold);
+    line-height: var(--font-linehight-large);
     left: 15%;
     top: 8px;
     border-left: 1px solid var(--color-interface-fd-title-border);
@@ -163,6 +165,9 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
           .field-welcometext{
                 p {
                     margin: 0;
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    line-height: var(--body-fd-x-lg-font-size);
                 }
           }
 
@@ -180,6 +185,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   
               p p {
                   font-size: var(--body-fd-sm-font-size);
+                  font-weight: var(--font-weight-regular);
+                  line-height: var(--font-linehight-regular);
                   margin: 0;
               }
           }
@@ -258,6 +265,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               legend {
                   padding: 0 0 15px;
                   font-size: var(--body-fd-xx-lg-font-size);
+                  font-weight: var(--font-weight-bold);
+                  line-height: var(--font-linehight-m-large);
                   color: var(--color-interface-text-primary);
                   position: relative;
                   top: 25%;
@@ -277,6 +286,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   
                   p:nth-child(1) {
                       font-size: var(--body-fd-sm-font-size);
+                      font-weight: var(--font-weight-regular);
+                      line-height: var(--font-linehight-regular);
                   }
   
                   .plain-text-wrapper {
@@ -330,9 +341,18 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   text-align: left;
 
                   .field-otpsubpanel .field-numretries input {
-                      font-size: var(--body-fd-sm-font-size) !important;
+                      font-size: var(--body-fd-md-font-size) !important;
                       letter-spacing: normal !important;
                       color: var(--color-interface-text-secondary) !important;
+                  }
+
+                  .field-otpsubpanel {
+                    margin: 0 0 0 55px;
+
+                    .field-attempts p {
+                        font-size: var(--body-fd-md-font-size);
+                        margin-top: 10px;
+                    }
                   }
               }
   
@@ -340,6 +360,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   b {
                       color: var(--color-interface-background-quaternary);
                       font-size: var(--body-fd-xx-lg-font-size);
+                      font-weight: var(--font-weight-bold);
+                      line-height: var(--font-linehight-regular);
                   }
               }
   
@@ -352,7 +374,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                       color: var(--color-input-text-primary);
                       font-size: var(--body-fd-md-font-size);
                       font-weight: var(--font-weight-regular);
-                      display: inline-block;
+                      line-height: var(--font-linehight-medium);
+                      display: inline;
                   }
               }
   
@@ -422,6 +445,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       
           .button {
               font-size: var(--form-font-size-xs);
+              font-weight: var(--font-weight-medium);
               max-width: 272px;
               width: 100%;
 
@@ -490,9 +514,10 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 
         .field-errresdealerpanel {
             background: var(--color-interface-background-primary);
+            color: var(--color-interface-background-quaternary);
             border-radius: 24px;
             width: 90%;
-            margin: -150px auto 0;
+            margin: -100px auto 0;
 
             .field-errresdealertext1 {
                 padding: 20px 20px 0;
@@ -519,12 +544,18 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                 border-bottom-right-radius: 24px;
                 padding: 20px;
                 border-top: 1px solid var(--color-interface-border-secondary);
+                
+                p p {
+                    font-size: var(--body-fd-md-font-size);
+                }
             }
         }        
             
         .field-errserviceslink {
             width: 90%;
-            margin: 0 auto 20px;
+            margin: 0 auto 140px;
+            color: var(--color-interface-background-quaternary);
+            font-size: var(--body-fd-md-font-size);
         }
     }
 
@@ -1100,7 +1131,21 @@ header:has(~ .fd-form-wrapper) {
                     top: 45px;
                 }
             }
-          }          
+          }  
+
+          .field-otppanel { 
+            padding: 40px 10px 0 !important; 
+
+            .field-otpnumber { 
+                margin: 5px 0 !important;
+                width: 100% !important; 
+                grid-column: span 12 !important;
+            }
+      
+            .field-secondspanel, .field-otpresend, .field-otpsubpanel {
+                grid-column: span 5 !important;
+            }
+        }        
       }    
   }
 
@@ -1132,18 +1177,7 @@ header:has(~ .fd-form-wrapper) {
       .field-mobilepanel, .field-identifierpanel { grid-column: span 12 !important; }
   }  
 
-  .field-otppanel { padding: 40px 10px 0 !important; 
-
-      .field-otpnumber { 
-          margin: 5px 0 !important;
-          width: 100% !important; 
-          grid-column: span 12 !important;
-      }
-
-      .field-secondspanel, .field-otpresend, .field-otpsubpanel {
-          grid-column: span 6 !important;
-      }
-  }
+  
 
   .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
       display: grid;
