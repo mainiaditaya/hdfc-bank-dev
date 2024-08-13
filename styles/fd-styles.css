@@ -483,23 +483,23 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
             text-align: left;
             padding: 60px 275px 120px 50px;
             background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
-            font-size: var(--body-fd-xx-lg-font-size);
+            font-size: var(--body-fd-xxx-lg-font-size);
             font-weight: var(--font-weight-bold);
+            line-height: var(--font-linehight-x-large);
         }
 
         .field-errresdealerpanel {
             background: var(--color-interface-background-primary);
             border-radius: 24px;
             width: 90%;
-            margin: -90px auto 0;
+            margin: -150px auto 0;
 
             .field-errresdealertext1 {
                 padding: 20px 20px 0;
 
                 p {
                 font-size: var(--body-fd-md-font-size);
-                font-weight: var(--font-weight-regular);
-                
+                font-weight: var(--font-weight-regular);                
                 }
             }
 
@@ -541,6 +541,9 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 
         .field-successresulttextlabel p {
             text-align: left;
+            font-size: var(--body-fd-xxx-lg-font-size);
+            font-weight: var(--font-weight-bold);
+            line-height: var(--font-linehight-x-large);
             
             &::before {
                 background: none !important;
