@@ -1,6 +1,6 @@
 import {
   imageClickable,
-} from '../form/util.js';
+} from '../../creditcards/domutils/domutils.js';
 
 export default function decorate(block) {
   // Logo Clickable

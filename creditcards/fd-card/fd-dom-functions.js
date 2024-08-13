@@ -4,6 +4,21 @@ import {
   validatePanInput,
 } from '../domutils/domutils.js';
 
+/**
+ * Validates the OTP input field to ensure it contains only digits.
+ *
+ * @function validateOtpInput
+ * @returns {void}
+ */
+const validateOtpInput = () => {
+  const otpInputField = document.querySelector('.field-otpnumber input');
+  otpInputField.addEventListener('input', () => {
+    if (!/^\d+$/.test(otpInputField.value)) {
+      otpInputField.value = otpInputField.value.slice(0, -1);
+    }
+  });
+};
+
 const addGaps = () => {
   const panInputField = document.querySelector('.char-gap-4 input');
   panInputField.addEventListener('input', () => {
@@ -32,4 +47,5 @@ setTimeout(() => {
 export {
   addGaps,
   addMobileValidation,
+  validateOtpInput,
 };
