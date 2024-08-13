@@ -8,7 +8,7 @@ main {
   background-color: var(--color-action-background-secondary-default);
 }
 
-.section>div {
+.fdlien .section>div {
   max-width: max-content;
   margin: 0 !important;
 }

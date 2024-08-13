@@ -13,7 +13,7 @@ module.exports = {
   rules: {
     // allow reassigning param
     'no-param-reassign': [2, { props: false }],
-    'linebreak-style': ['error', 'windows'],
+    'linebreak-style': 'off',
     'import/extensions': ['error', {
       js: 'always',
     }],

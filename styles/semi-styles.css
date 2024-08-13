@@ -18,32 +18,34 @@ main .section.form-container {
             max-width: 100%;
             gap: 0;
             font: normal normal var(--font-weight-bold) var(--body-sm-font-size) / var(--body-lg-font-size) var(--font-family-secondary);
-            
-            .wizard-menu-item:not(:last-child) {
-                max-width: 256px;
-                width: 100%;
-            }
+            position: relative;
 
-            .wizard-menu-item:last-child {
-                width: 110px;
-            }
+            .wizard-menu-item:not(:last-child) { width: 30%; }
+            .wizard-menu-item:last-child { width: 10%; }
 
             .wizard-menu-item::before {
                 display: block;
                 height: 28px;
                 width: 28px;
                 margin-bottom: 10px;
+                background: var(--color-interface-background-primary);
+                position: relative;
+                z-index: 100;
+            }
+
+            .wizard-menu-active-item::before {
+                background: var(--form-wizard-number-color);
             }
 
             .wizard-menu-item:not(:last-child)::after {
               content: '';
               display: block;
               height: 3px;
-              width: 224px;
+              width: 26%;
               background-color: var(--color-interface-border-primary);
               position: absolute;
-              margin: -43px 0 0 32px;
-              transform: translateY(-50%);
+              margin: 0 0 0 34px;
+              top: 16px;
             }
 
             .wizard-menu-active-item.wizard-menu-item:not(:last-child)::after {
@@ -51,44 +53,44 @@ main .section.form-container {
             }
         }
 
-        .field-aem-identifierpanel {
-            .field-aem-welcometext p {
-                color: var(--color-interface-background-tertiary);
-                font: normal normal var(--font-weight-bold) var(--body-lg-font-size) / var(--body-xx-lg-font-size) var(--font-family-secondary);
-            }
-    
-            .field-aem-loginpanel {
-                .panel-wrapper { width: 100%; }
-    
-                .text-wrapper {
-                    input, input:hover, input:focus-visible {
-                        border-color: transparent transparent var(--color-input-border-default) transparent;
-                        border-radius: 0;
-                        outline: transparent transparent var(--color-input-border-default) transparent;
-                    }
-                }
-                
-                .field-aem-countrycode input { 
-                    margin-left: 21px; 
-                    text-align: right;
-                    padding-right: 7px;
-                }
+        /* Step 1 - Wizard - Login Screen */
 
-                .field-aem-mobilenum:is([data-active='true'], [data-empty='false']) > label {
-                    margin-left: -35px;
-                }
-
-                .field-aem-cardno input, .field-aem-cardno input:hover, .field-aem-cardno input:focus-visible {
-                    padding-left: 22px;
-                }
-            }
-
-            .field-getotpbutton { padding-top: 32px; }
+        .field-aem-welcometext p {
+            color: var(--color-interface-background-tertiary);
+            font: normal normal var(--font-weight-bold) var(--body-lg-font-size) / var(--body-xx-lg-font-size) var(--font-family-secondary);
         }
+
+        .field-aem-loginpanel {
+            .panel-wrapper { width: 100%; }
+
+            .text-wrapper {
+                input, input:hover, input:focus-visible {
+                    border-color: transparent transparent var(--color-input-border-default) transparent;
+                    border-radius: 0;
+                    outline: transparent transparent var(--color-input-border-default) transparent;
+                }
+            }
+            
+            .field-aem-countrycode input { 
+                margin-left: 21px; 
+                text-align: right;
+                padding-right: 7px;
+            }
+
+            .field-aem-mobilenum:is([data-active='true'], [data-empty='false']) > label {
+                margin-left: -35px;
+            }
+
+            .field-aem-cardno input, .field-aem-cardno input:hover, .field-aem-cardno input:focus-visible {
+                padding-left: 22px;
+            }
+        }
+
+        .field-getotpbutton { padding-top: 32px; }
 
         .field-aem-mobilenum label { margin-left: -35px; }
 
-        .field-mobilepanel:has(.field-aem-mobilenum:is([data-active='true'])) {
+        .field-mobilepanel:has(.field-aem-mobilenum:is([data-active='true'])), .field-mobilepanel .field-aem-mobilenum input:focus {
             .field-aem-countrycode input::placeholder { color: var(--label-color) !important; }
         }
 
@@ -101,6 +103,113 @@ main .section.form-container {
                 margin: 0;
                 font: normal normal normal var(--body-sm-font-size) / var(--body-xx-lg-font-size) var(--font-family-secondary);
             }
+
+            .field-aem-disclaimerflag {
+                justify-self: end;
+            }
         }
+
+        /* Step 1 - Wizard - OTP Screen */
+        .field-aem-otppanel {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+            .field-aem-otpicon { margin: 0 auto -19px; }
+
+            .field-otppanel {
+                margin-left: 38px;
+
+                .field-otphelptext {
+                    display: -webkit-box;
+                    padding-top: 20px;
+                    font: normal normal var(--font-weight-bold) var(--body-md-font-size) / var(--body-x-lg-font-size) var(--font-family-secondary);
+                    color: var(--color-interface-text-primary);
+    
+                    p { 
+                        font: normal normal var(--font-weight-bold) var(--body-md-font-size) / var(--body-x-lg-font-size) var(--font-family-secondary);
+                        margin-right: 5px;
+                    }
+                }
+    
+                > legend b {
+                    font: normal normal var(--font-weight-bold) var(--body-xx-lg-font-size) / 33px var(--font-family-secondary);
+                    color: var(--color-interface-background-quaternary);                
+                }
+
+                .field-aem-otpnumber {
+                    margin: -14px 0 0 -7px;
+
+                    input { 
+                        border-color: transparent transparent var(--color-input-border-default) transparent; 
+                        outline: transparent transparent var(--color-input-border-default) transparent;
+                    }
+
+                    input::placeholder {
+                        font-size: medium;
+                    }
+                }
+
+                .field-secondspanel {
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: -20px;
+
+                    .field-wrapper {
+                        width: fit-content;
+                        p, input { font-size: var(--body-sm-font-size); }
+                    }
+
+                    .field-seconds { 
+                        margin: -13px 0 0 -14px;
+                        
+                        input {
+                            width: 50px;
+                            padding: 0;
+                            margin: 0;
+                            border: none;
+                            pointer-events: none;
+                        }
+                    }
+
+                    .field-sectext { margin: -1px 0 0 -53px; }
+                }
+            }
+        }
+    }
+}
+
+/* Tablet view */
+@media (width < 767px) {
+    .semi-form {
+        .field-aem-identifierpanel {
+            .field-mobilepanel { display: grid; 
+                
+                .field-aem-countrycode { 
+                    grid-column: span 1; 
+                    
+                    input {
+                        margin-left: 0;
+                        padding: 0;
+                        width: 242%;
+                        text-align: center;
+                    }
+                }
+
+                .field-aem-mobilenum {
+                    grid-column: span 11;
+                }
+            }
+        }
+
+        .field-aem-otppanel {
+            .field-aem-otpicon { margin: 0 auto 0 90px !important; }
+        }
+    }
+}
+
+/* Small mobile view */
+@media (width < 350px) {
+    .semi-form .field-aem-otppanel {
+        .field-aem-otpicon { margin: 0 auto 0 90px !important; }
     }
 }

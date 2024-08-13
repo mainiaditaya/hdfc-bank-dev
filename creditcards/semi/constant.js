@@ -9,8 +9,8 @@ const ERROR_MSG = {
 };
 
 const SEMI_ENDPOINTS = {
-  otpGen: 'https://applyonlineuat01.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
-  otpVal: 'https://applyonlineuat01.hdfcbank.com/content/hdfc_ccforms/api/eligibilitycheck.json',
+  otpGen: 'https://applyonlinestage.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
+  otpVal: 'https://applyonlinestage.hdfcbank.com/content/hdfc_ccforms/api/eligibilitycheck.json',
 };
 
 const OTP_TIMER = 30;
