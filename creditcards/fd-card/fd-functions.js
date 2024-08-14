@@ -18,6 +18,7 @@ import createJourneyId from '../../common/journey-utils.js';
 import {
   addGaps,
   addMobileValidation,
+  validateOtpInput,
 } from './fd-dom-functions.js';
 
 export {
@@ -33,5 +34,6 @@ export {
   resendOTP,
   customSetFocus,
   reloadPage,
+  validateOtpInput,
   invokeJourneyDropOff,
 };
