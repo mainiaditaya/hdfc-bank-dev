@@ -2,6 +2,7 @@ import {
   groupCharacters,
   validatePhoneNumber,
   validatePanInput,
+  createLabelInElement,
 } from '../domutils/domutils.js';
 
 /**
@@ -40,16 +41,27 @@ const addMobileValidation = () => {
 };
 
 /**
- * Validates the OTP input field to ensure it contains only digits.
+ * Updates name attribute of customer id radio buttons
  *
  * @function updateElementAttr
- * @param {object} globals
  * @returns {void}
  */
-const updateElementAttr = (globals) => {
-  console.log(globals);
-  const item = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable[0].multipleCustIDSelect;
-  globals.functions.setProperty(item, { name: 'test-name-kunal' });
+const updateElementAttr = () => {
+  const custIdRadioButtons = Array.from(document.querySelectorAll('.field-multiplecustidselect input'));
+  custIdRadioButtons.forEach((radioButton) => {
+    radioButton.setAttribute('name', 'cust-id-radio');
+  });
+};
+
+/**
+ * calls function to update checkbox to label
+ *
+ * @function changeCheckboxToToggle
+ * @returns {void}
+ */
+const changeCheckboxToToggle = () => {
+  createLabelInElement('.field-employeeassistancetoggle', 'employee-assistance-toggle__label');
+  createLabelInElement('.field-mailingaddresstoggle', 'mailing-address-toggle__label');
 };
 
 setTimeout(() => {
@@ -62,4 +74,5 @@ export {
   addMobileValidation,
   validateOtpInput,
   updateElementAttr,
+  changeCheckboxToToggle,
 };
