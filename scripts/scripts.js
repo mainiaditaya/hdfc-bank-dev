@@ -13,6 +13,8 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
+const FORM_MAIN_CLASS = ['fdlien'];
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -86,6 +88,14 @@ async function loadEager(doc) {
     if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
       loadFonts();
     }
+    const currentUrl = window.location.href;
+    FORM_MAIN_CLASS.some((item) => {
+      if (currentUrl.includes(item)) {
+        document.body.classList.add(item);
+        return true;
+      }
+      return false;
+    });
   } catch (e) {
     // do nothing
   }
