@@ -19,6 +19,7 @@ import {
   addGaps,
   addMobileValidation,
   validateOtpInput,
+  updateElementAttr,
 } from './fd-dom-functions.js';
 
 export {
@@ -36,4 +37,5 @@ export {
   reloadPage,
   validateOtpInput,
   invokeJourneyDropOff,
+  updateElementAttr,
 };

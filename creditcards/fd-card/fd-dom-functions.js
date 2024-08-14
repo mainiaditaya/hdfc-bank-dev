@@ -39,6 +39,19 @@ const addMobileValidation = () => {
   inputField.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
 };
 
+/**
+ * Validates the OTP input field to ensure it contains only digits.
+ *
+ * @function updateElementAttr
+ * @param {object} globals
+ * @returns {void}
+ */
+const updateElementAttr = (globals) => {
+  console.log(globals);
+  const item = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable[0].multipleCustIDSelect;
+  globals.functions.setProperty(item, { name: 'test-name-kunal' });
+};
+
 setTimeout(() => {
   addGaps();
   addMobileValidation();
@@ -48,4 +61,5 @@ export {
   addGaps,
   addMobileValidation,
   validateOtpInput,
+  updateElementAttr,
 };
