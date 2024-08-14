@@ -1,10 +1,14 @@
 import {
-  ageValidator, clearString, getTimeStamp, maskNumber, urlPath,
+  ageValidator,
+  clearString,
+  getTimeStamp,
+  maskNumber,
+  urlPath,
 } from '../../common/formutils.js';
 import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
 import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
-import { createJourneyId } from '../../common/journey-utils.js';
+import createJourneyId from '../../common/journey-utils.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext, CHANNEL } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
@@ -130,14 +134,6 @@ const maskedMobNum = (mobileNo, globals) => {
   globals.functions.setProperty(globals.form.loginMainPanel.maskedMobileNumber, { value: `${maskNumber(mobileNo, 6)}.` });
 };
 
-/* loadFDStyles - for loading fd - styles - temporary fix */
-async function loadFDStyles() {
-  if (document.querySelector('.fd-form-wrapper')) {
-    document.body.classList.add('fdlien');
-  }
-}
-window.setTimeout(() => loadFDStyles(), 600);
-
 /**
  * generates the otp
  * @param {object} mobileNumber
@@ -262,4 +258,5 @@ export {
   resendOTP,
   customSetFocus,
   reloadPage,
+  createJourneyId,
 };
