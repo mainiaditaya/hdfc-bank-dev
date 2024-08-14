@@ -649,7 +649,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   width: max-content;
                   align-self: center;
                   pointer-events: none;
-                  margin: -5px 0 0;
+                  margin: -1px 0 0;
                   padding: 0;
               }
 
@@ -670,7 +670,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               grid-template-columns: 204px auto;
               border: solid 1px var(--color-interface-border-secondary);
               border-radius: 12px;
-              height: 52px;
+              height: 62px;
 
               label {
                   text-align: right;
@@ -901,7 +901,7 @@ header:has(~ .fd-form-wrapper) {
 
 .fdlien {
     input, .drop-down-wrapper select { 
-        height: 60px;
+        height: 60px !important;
     }
 
     .text-wrapper:is([data-active='true'], [data-empty='false']), .drop-down-wrapper:is([data-active='true'], [data-empty='false']) {
