@@ -8,7 +8,10 @@ import {
   customSetFocus,
   reloadPage,
 } from './fdlien-functions.js';
-import invokeJourneyDropOff from './fd-journey-util.js';
+import {
+  invokeJourneyDropOff,
+  fdWizardSwitch,
+} from './fd-journey-util.js';
 
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
 import { redirect } from '../../common/functions.js';
@@ -19,6 +22,8 @@ import {
   addGaps,
   addMobileValidation,
   validateOtpInput,
+  updateElementAttr,
+  changeCheckboxToToggle,
 } from './fd-dom-functions.js';
 
 export {
@@ -36,4 +41,7 @@ export {
   reloadPage,
   validateOtpInput,
   invokeJourneyDropOff,
+  updateElementAttr,
+  fdWizardSwitch,
+  changeCheckboxToToggle,
 };
