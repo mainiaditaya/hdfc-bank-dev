@@ -49,7 +49,7 @@ function getOTPV1(mobileNumber, cardDigits, globals) {
  * @param {object} globals
  * @return {PROMISE}
  */
-function otpValidation(mobileNumber, cardDigits, otpNumber) {
+function otpValV1(mobileNumber, cardDigits, otpNumber) {
   const jsonObj = {
     requestString: {
       mobileNo: mobileNumber,
@@ -76,6 +76,6 @@ function checkELigibilityHandler(resPayload) {
 
 export {
   getOTPV1,
-  otpValidation,
+  otpValV1,
   checkELigibilityHandler,
 };

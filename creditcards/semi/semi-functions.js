@@ -1,4 +1,4 @@
-import { getOTPV1, otpValidation, checkELigibilityHandler } from './smart-emi-functions.js';
+import { getOTPV1, otpValV1, checkELigibilityHandler } from './smart-emi-functions.js';
 
 import {
   createJourneyId,
@@ -19,7 +19,7 @@ window.setTimeout(() => loadSEMIStyles(), 600);
 
 export {
   getOTPV1,
-  otpValidation,
+  otpValV1,
   checkELigibilityHandler,
   createJourneyId,
   getCurrentContext,
