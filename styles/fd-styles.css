@@ -617,13 +617,13 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         font: var(--font-family-default);
         font-weight: var(--font-weight-bold) !important;
         font-size: var(--body-fd-xx-lg-font-size) !important;
-        color: var(--color-interface-text-primary);
+        color: var(--color-interface-text-primary) !important;
         pointer-events: none;
         line-height: 1px;
         padding-top: 10px;
     }
 
-    div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p, .field-detailssectionlabel2 p {
+    div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p, .field-detailssectionlabel2 p, .field-creditlimitmax p {
         font-weight: var(--font-weight-regular);
         font-size: var(--body-md-font-size);
         color: var(--color-interface-text-secondary);
@@ -631,6 +631,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         line-height: 1px;
         padding-bottom: 5px;
     }
+
+    .field-creditlimitmax { text-align: end; }
   
     .field-selectfd {
       .field-backlinkmultiplecust button:hover {
@@ -647,7 +649,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   width: max-content;
                   align-self: center;
                   pointer-events: none;
-                  margin: -4px 0 0;
+                  margin: -1px 0 0;
                   padding: 0;
               }
 
@@ -668,7 +670,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               grid-template-columns: 204px auto;
               border: solid 1px var(--color-interface-border-secondary);
               border-radius: 12px;
-              height: 52px;
+              height: 62px;
 
               label {
                   text-align: right;
@@ -689,6 +691,15 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   color: var(--color-interface-text-primary);
                   pointer-events: none;
               }
+          }
+
+          .field-selectallfdbutton { text-align: right !important; 
+
+                button {
+                    text-align: end;
+                    background: var(--color-interface-background-primary);
+                    color: var(--color-action-text-secondary-default);
+                }
           }
 
           .field-fdnumberselection .repeat-wrapper { 
@@ -850,7 +861,7 @@ header:has(~ .fd-form-wrapper) {
 
 /* Error Screen */
 .fdlien .field-resultpanel .field-errorresultpanel .field-errormessagetext {
-  margin: -40px 0 0;
+    margin: -13px 0 0;
 }
 
 .fdlien {
@@ -1019,7 +1030,7 @@ header:has(~ .fd-form-wrapper) {
               .field-creditlimit { 
                   grid-column: span 6;
                   text-align: center;
-                  max-height: 52px;
+                  max-height: 62px;
 
                   input {
                       border-width: 0 1px 1px;
@@ -1131,7 +1142,7 @@ header:has(~ .fd-form-wrapper) {
                 text-align: center;
                 max-height: 52px;
             }
-        }        
+        }
     }
 
     .wizard-menu-items {
