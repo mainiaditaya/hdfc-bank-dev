@@ -886,12 +886,52 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     .field-basicdetails {
         padding: 0 30px;
 
+        input, select, option, textarea {
+            font-size: var(--body-fd-md-font-size);
+            color: var(--color-interface-text-primary);
+            font-weight: var(--font-weight-medium);
+        }
+
         .field-detailssectionlabel2 p {
             line-height: inherit;
         }
 
         .field-nameoncard .field-description p {
             font-size: var(--body-x-sm-font-size);
+        }
+
+        .field-addressdetails {
+            .field-mailingaddresslabel p, .field-currentmailingaddresslabel p {
+                margin: 0 0 -6px 5px;
+                font-size: var(--body-x-sm-font-size);
+                font-weight: var(--font-weight-regular);
+            }
+
+            textarea { margin: 0; }
+
+            .field-addressdetailshelptag {
+                width: fit-content;
+
+                p {
+                    margin: 0;
+                    padding: 4px 8px;
+                    background-color: var(--color-interface-background-quinary);
+                    border-radius: 12px;
+                    font-size: var(--body-x-sm-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-text-primary);
+                }
+            }
+        }
+
+        .wrapper-disabled {
+            label { margin-left: 5px; }
+
+            input {
+                font-size: var(--body-fd-lg-font-size) !important;
+                border: none;
+                pointer-events: none;
+            }
         }
     }
 }
@@ -954,8 +994,15 @@ header:has(~ .fd-form-wrapper) {
         height: 60px !important;
     }
 
-    .text-wrapper:is([data-active='true'], [data-empty='false']), .drop-down-wrapper:is([data-active='true'], [data-empty='false']) {
-        > label {
+    textarea {
+        /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+        font-family: Inter;
+        min-height: 65px !important;
+        resize: none;
+    }
+
+    .text-wrapper:is([data-active='true'], [data-empty='false']), .drop-down-wrapper:is([data-active='true'], [data-empty='false']), .multiline-wrapper.field-invalid:is([data-active='true'], [data-empty='false']) {
+        > label, label p {
             color: var(--color-input-text-placeholder-disabled) !important;
             font-size: var(--body-fd-sm-font-size) !important;
             font-weight: var(--font-weight-regular) !important;
@@ -990,14 +1037,14 @@ header:has(~ .fd-form-wrapper) {
         letter-spacing: normal !important;
     }
 
-    input:not([type="radio"]):focus, input:not([type="radio"]):hover, select:focus, select:hover {
+    input:not([type="radio"]):focus, input:not([type="radio"]):hover, select:focus, select:hover, textarea:focus, textarea:hover {
         border-color: var(--color-action-border-primary-default) !important;
         box-shadow: 0 0 0 2px var(--color-interface-background-box-shadow-secondary);
         outline: none;
     }
 
-    .text-wrapper:not(:focus), .drop-down-wrapper:not(:focus) {
-        > label { color: transparent; }
+    .text-wrapper:not(:focus), .drop-down-wrapper:not(:focus), .multiline-wrapper:not(:focus) {
+        > label, label p { color: transparent; }
     }
 }
 

@@ -26,11 +26,12 @@ main .form {
   input[type='text'],
   input[type='number'],
   input[type='email'],
-  input[type='date'] {
+  input[type='date'],
+  textarea {
     height: var(--form-input-height);
     padding: var(--form-input-padding);
     border: 1px solid var(--color-input-border-default);
-    border-radius: var(--form-input-border-radius);
+    border-radius: var(--form-input-border-radius) !important;
     font-weight: 400;
     font-size: 14px;
   }
