@@ -542,6 +542,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     
     .wizard-menu-item {
       margin: 0 25px 0 0;
+      display: flex;
+      align-items: center;
     }
 
     .wizard-menu-item:first-child::after {
@@ -566,8 +568,10 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     }
 
     li.wizard-menu-item::before{
-      border: 1px solid #ccc;
+      border: none !important;
       vertical-align: bottom;
+      height: 42px;
+      width: 42px;
     }
 
     li.wizard-menu-active-item::before{
