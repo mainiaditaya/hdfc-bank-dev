@@ -642,6 +642,54 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       .field-fdselectioninfo {
           margin-top: -21px;
 
+          .field-selectedfdpanel {
+            display: flex;
+            justify-content: end;
+
+            .field-selectallfdbutton {
+                button {
+                    &:hover {
+                        background: none !important;
+                    }
+                }
+            }
+
+            .field-selectedfdnum, .field-selectedfdnummax {
+                width: 30px;
+
+                input[type="number"] {
+                    border: none;
+                    pointer-events: none;
+                    margin-top: 2px;
+                    padding: 0;
+                    width: 30px;
+
+                    &:hover {
+                        box-shadow: none;
+                    }
+                }
+
+                input[type="number"]:hover::-webkit-inner-spin-button,
+                input[type="number"]:hover::-webkit-outer-spin-button {
+                          display: none;
+                }
+            }
+
+            .field-selectedfdbreak {
+                margin-top: 10px;
+                width: 10px;
+            }
+
+            .field-selectedfdselected {
+                p { 
+                    margin: 12px 0 0 !important; 
+                    color: var(--color-input-text-primary);
+                    font-size: var(--body-fd-md-font-size);
+                }
+            }
+            
+          }
+
           .field-customername { 
               display: flex; 
               
@@ -901,7 +949,7 @@ header:has(~ .fd-form-wrapper) {
 
 .fdlien {
     input, .drop-down-wrapper select { 
-        height: 60px !important;
+        height: 60px;
     }
 
     .text-wrapper:is([data-active='true'], [data-empty='false']), .drop-down-wrapper:is([data-active='true'], [data-empty='false']) {
@@ -1075,6 +1123,14 @@ header:has(~ .fd-form-wrapper) {
                       margin-left: -1px;
                   }
               }
+
+              .field-selectedfdpanel {
+                flex-direction: row;
+    
+                .field-selectallfdbutton {
+                    margin-top: 0 !important;
+                }
+            }
           }
 
           .wizard-menu-items {
@@ -1175,6 +1231,14 @@ header:has(~ .fd-form-wrapper) {
                 grid-column: span 6;
                 text-align: center;
                 max-height: 52px;
+            }
+
+            .field-selectedfdpanel {
+                flex-direction: row;
+    
+                .field-selectallfdbutton {
+                    margin-top: 0 !important;
+                }
             }
         }
     }
