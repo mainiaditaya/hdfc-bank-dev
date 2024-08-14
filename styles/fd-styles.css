@@ -172,8 +172,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
           .field-mobilepanel {
               display: grid;
               max-width: 368px;
-
-              .field-landinglabel { padding-bottom: 10px; }
   
               .field-wrapper {
                   p {
@@ -247,7 +245,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               }
   
               fieldset {
-                  padding: 10px;
+                  padding: 30px 10px 10px;
                   text-align: center;
                   display: inline-block;
   
@@ -1094,7 +1092,13 @@ header:has(~ .fd-form-wrapper) {
 
   .fdlien .field-loginmainpanel {
       .field-mobilepanel, .field-identifierpanel { grid-column: span 12 !important; }
-  }
+
+      .field-mobilepanel {
+        .field-landinglabel {
+            margin-top: 30px;
+        }
+      }
+  }  
 
   .field-otppanel { padding: 40px 10px 0 !important; 
 
