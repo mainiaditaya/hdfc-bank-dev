@@ -212,7 +212,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   align-self: flex-end;
   
                   input {
-                      border-radius: 0 var(--form-input-border-radius) var(--form-input-border-radius) 0;
+                      border-radius: 0 var(--form-input-border-radius) var(--form-input-border-radius) 0 !important;
                       margin-top: 5px;
                   }
 
@@ -1003,9 +1003,9 @@ header:has(~ .fd-form-wrapper) {
 
     .text-wrapper:is([data-active='true'], [data-empty='false']), .drop-down-wrapper:is([data-active='true'], [data-empty='false']), .multiline-wrapper.field-invalid:is([data-active='true'], [data-empty='false']) {
         > label, label p {
-            color: var(--color-input-text-placeholder-disabled) !important;
-            font-size: var(--body-fd-sm-font-size) !important;
-            font-weight: var(--font-weight-regular) !important;
+            color: var(--color-input-text-placeholder-disabled);
+            font-size: var(--body-fd-sm-font-size);
+            font-weight: var(--font-weight-regular);
         }
     }
 
