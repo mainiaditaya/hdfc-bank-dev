@@ -663,6 +663,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                     margin-top: 2px;
                     padding: 0;
                     width: 30px;
+                    height: 50px !important;
 
                     &:hover {
                         box-shadow: none;
@@ -781,6 +782,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   margin: 0 12px 0 0;
                   background: var(--color-interface-background-quinary);
                   pointer-events: none;
+                  height: 50px !important;
 
                   &:hover {
                     box-shadow: none;
