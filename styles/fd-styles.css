@@ -649,7 +649,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                   width: max-content;
                   align-self: center;
                   pointer-events: none;
-                  margin: -1px 0 0;
+                  margin: -5px 0 0;
                   padding: 0;
               }
 
@@ -670,7 +670,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
               grid-template-columns: 204px auto;
               border: solid 1px var(--color-interface-border-secondary);
               border-radius: 12px;
-              height: 62px;
+              height: 52px;
 
               label {
                   text-align: right;
