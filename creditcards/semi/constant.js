@@ -12,10 +12,8 @@ const ERROR_MSG = {
 const FORM_RUNTIME = {};
 
 const SEMI_ENDPOINTS = {
-  otpGen: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
-  otpVal: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/eligibilitycheck.json',
-  ccBilled: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/ccbilledtransaction.json',
-  ccUnbilled: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/ccunbilled.json',
+  otpGen: 'https://applyonlinestage.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
+  otpVal: 'https://applyonlinestage.hdfcbank.com/content/hdfc_ccforms/api/eligibilitycheck.json',
 };
 
 const OTP_TIMER = 30;
