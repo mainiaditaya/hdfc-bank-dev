@@ -2677,7 +2677,6 @@ class FunctionRuntimeImpl {
                                     }
                                 },
                                  dispatchEvent: (target, eventName, payload) => {
-                                    debugger;
                                     const args = [target, eventName, payload];
                                     return FunctionRuntimeImpl.getInstance().getFunctions().dispatchEvent._func.call(undefined, args, data, interpreter);
                                 }

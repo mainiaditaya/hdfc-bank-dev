@@ -68,7 +68,7 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
       proCode: PRO_CODE,
       journeyID: currentFormContext.journeyID,
       journeyName: currentFormContext.journeyName,
-      // channel: 'ADOBE_WHATSAPP',
+      //channel: 'ADOBE_WHATSAPP',
     },
   };
   const path = semiEndpoints.otpVal;
@@ -100,16 +100,27 @@ const cardDisplay = (globals, response) => {
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload, globals) {
   const ccBilledData = resPayload.ccBilledTxnResponse.responseString;
-
+  const ccUnBilledData = resPayload.ccUnBilledTxnResponse.responseString;
   // AUTH_CODE, LOGICMOD, PLANNO, STS, amount, date, id, lasttxnseqno, name
   moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
   cardDisplay(globals, resPayload);
   // didn't works if try to make dynamic.
-  const billedTxnPannel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
-  const txnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const billedTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const billed_txnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const unbilled_txnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   if (ccBilledData?.length) {
     ccBilledData?.forEach((txn, i) => {
-      globals.functions.dispatchEvent(billedTxnPannel, 'addItem');
+      if (i > 1) {
+        globals.functions.dispatchEvent(billedTxnPanel, 'addItem');
+      }
+    });
+  }
+  if (ccUnBilledData?.length) {
+    ccUnBilledData?.forEach((txn, i) => {
+      if (i > 1) {
+        globals.functions.dispatchEvent(unBilledTxnPanel, 'addItem');
+      }
     });
   }
 }
