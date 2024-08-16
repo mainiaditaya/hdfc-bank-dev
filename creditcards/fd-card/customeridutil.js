@@ -17,7 +17,7 @@ const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
 };
 
 /**
- * Fetches the customer ID based on the provided global variables.
+ * Fetches the customer ID
  *
  * @param {string} mobileNumber
  * @param {string} pan
@@ -30,11 +30,27 @@ const fetchCustomerId = (mobileNumber, pan, dob, globals) => {
   return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
 };
 
-const customerIdSuccessHandler = (globals) => {
+/**
+ * Handles the success of a customer ID fetch call.
+ * @name customerIdSuccessHandler
+ * @param {Object} payload
+ * @param {Object} globals
+ */
+const customerIdSuccessHandler = (payload, globals) => {
+  console.log(payload, globals);
+};
+
+/**
+ * Handles on select of customer ID radio button.
+ * @name customerIdClickHandler
+ * @param {Object} globals
+ */
+const customerIdClickHandler = (globals) => {
   console.log(globals);
 };
 
 export {
   fetchCustomerId,
   customerIdSuccessHandler,
+  customerIdClickHandler,
 };

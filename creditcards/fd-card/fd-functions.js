@@ -26,7 +26,11 @@ import {
   changeCheckboxToToggle,
 } from './fd-dom-functions.js';
 
-import { fetchCustomerId } from './customeridutil.js';
+import {
+  fetchCustomerId,
+  customerIdSuccessHandler,
+  customerIdClickHandler,
+} from './customeridutil.js';
 
 export {
   getOTP,
@@ -47,4 +51,6 @@ export {
   fdWizardSwitch,
   changeCheckboxToToggle,
   fetchCustomerId,
+  customerIdSuccessHandler,
+  customerIdClickHandler,
 };
