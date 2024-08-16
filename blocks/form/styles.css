@@ -4,7 +4,7 @@
 @import url('../../creditcards/corporate-creditcard/creditcards.css');
 
 :root {
-  --loader-image-url: url('loader.gif');
+  --loader-image-url: url('../../common/loader.gif');
 }
 
 a:any-link, b.link, a:any-link:hover, b.link:hover {

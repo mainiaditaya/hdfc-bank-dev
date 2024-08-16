@@ -1,4 +1,4 @@
-import { fetchJsonResponse } from '../../common/makeRestAPI.js';
+import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
 import * as SEMI_CONSTANT from './constant.js';
 import {
   generateUUID, moveWizardView, urlPath,
@@ -49,6 +49,7 @@ function getOTPV1(mobileNumber, cardDigits, globals) {
     },
   };
   const path = semiEndpoints.otpGen;
+  displayLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
@@ -71,6 +72,7 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
     },
   };
   const path = semiEndpoints.otpVal;
+  displayLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
