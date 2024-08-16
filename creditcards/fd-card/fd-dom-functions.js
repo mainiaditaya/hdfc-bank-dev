@@ -12,6 +12,7 @@ import {
  */
 const validateOtpInput = () => {
   const otpInputField = document.querySelector('.field-otpnumber input');
+  otpInputField.placeholder = '••••••';
   otpInputField.addEventListener('input', () => {
     if (!/^\d+$/.test(otpInputField.value)) {
       otpInputField.value = otpInputField.value.slice(0, -1);
