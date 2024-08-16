@@ -1027,8 +1027,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     .field-basicdetails {
         padding: 0 30px;
 
-<<<<<<< Updated upstream
-=======
         input, select, option, textarea {
             font-size: var(--body-fd-md-font-size);
             color: var(--color-interface-text-primary);
@@ -1042,7 +1040,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
             }
         }
 
->>>>>>> Stashed changes
         .field-detailssectionlabel2 p {
             line-height: inherit;
         }
@@ -1050,8 +1047,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         .field-nameoncard .field-description p {
             font-size: var(--body-x-sm-font-size);
         }
-<<<<<<< Updated upstream
-=======
 
         .field-addressdetails {
             .field-mailingaddresslabel p, .field-currentmailingaddresslabel p {
@@ -1095,7 +1090,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
                 pointer-events: none;
             }
         }
->>>>>>> Stashed changes
     }
 }
 
