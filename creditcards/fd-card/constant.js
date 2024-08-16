@@ -22,6 +22,7 @@ const FD_ENDPOINTS = {
   otpGen: '/content/hdfc_hafcards/api/customeridentificationotpgen.json',
   otpVal: '/content/hdfc_hafcards/api/otpvalidationandcardsinquiry.json',
   journeyDropOff: '/content/hdfc_commonforms/api/journeydropoff.json',
+  customeraccountdetailsdto: '/content/hdfc_hafcards/api/hdfccardscustomeraccountdetailsdto.json',
 };
 
 const OTP_TIMER = 30;

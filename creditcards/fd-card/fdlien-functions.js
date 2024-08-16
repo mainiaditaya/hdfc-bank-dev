@@ -10,7 +10,7 @@ import * as CONSTANT from '../../common/constants.js';
 import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
 import createJourneyId from '../../common/journey-utils.js';
 
-const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext, CHANNEL } = CONSTANT;
+const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
 
 let resendOtpCount = 0;
@@ -150,9 +150,8 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   } else {
     globals.functions.setProperty(otpPanel.secondsPanel, { visible: false });
   }
-  const jidTemporary = createJourneyId('online', globals.form.runtime.journeyName.$value, CHANNEL, globals);
   currentFormContext.action = 'getOTP';
-  currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
+  currentFormContext.journeyID = globals.form.runtime.journeyId.$value;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
   const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
   const jsonObj = {
@@ -160,7 +159,7 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
       dateOfBirth: clearString(dob.$value) || '',
       mobileNumber: mobileNumber.$value,
       panNumber: panValue || '',
-      journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
+      journeyID: globals.form.runtime.journeyId.$value,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
       identifierValue: panValue || dob.$value,
       identifierName: panValue ? 'PAN' : 'DOB',
