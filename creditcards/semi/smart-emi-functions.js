@@ -99,26 +99,19 @@ const cardDisplay = (globals, response) => {
 */
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload, globals) {
-  debugger;
   const ccBilledData = resPayload.ccBilledTxnResponse.responseString;
+
   // AUTH_CODE, LOGICMOD, PLANNO, STS, amount, date, id, lasttxnseqno, name
   moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
   cardDisplay(globals, resPayload);
-
   // didn't works if try to make dynamic.
   const billedTxnPannel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const txnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
-  // works for single and existing one.
-  globals.functions.setProperty(billedTxnPannel[0]?.aem_TxnAmt, { value: ccBilledData[0]?.amount });
-  globals.functions.setProperty(billedTxnPannel[0]?.aem_TxnDate, { value: ccBilledData[0]?.date });
-  globals.functions.setProperty(billedTxnPannel[0]?.aem_TxnID, { value: ccBilledData[0]?.id });
-  globals.functions.setProperty(billedTxnPannel[0]?.billed_TxnName, { value: ccBilledData[0]?.name });
-
-  globals.functions.dispatchEvent(txnList, 'addItem');
-  globals.functions.setProperty(billedTxnPannel[1]?.aem_TxnAmt, { value: ccBilledData[1]?.amount });
-  globals.functions.setProperty(billedTxnPannel[1]?.aem_TxnDate, { value: ccBilledData[1]?.date });
-  globals.functions.setProperty(billedTxnPannel[1]?.aem_TxnID, { value: ccBilledData[1]?.id });
-  globals.functions.setProperty(billedTxnPannel[1]?.billed_TxnName, { value: ccBilledData[1]?.name });
+  if (ccBilledData?.length) {
+    ccBilledData?.forEach((txn, i) => {
+      globals.functions.dispatchEvent(billedTxnPannel, 'addItem');
+    });
+  }
 }
 export {
   getOTPV1,
