@@ -68,7 +68,6 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
       proCode: PRO_CODE,
       journeyID: currentFormContext.journeyID,
       journeyName: currentFormContext.journeyName,
-      //channel: 'ADOBE_WHATSAPP',
     },
   };
   const path = semiEndpoints.otpVal;
@@ -110,16 +109,22 @@ function checkELigibilityHandler(resPayload, globals) {
   const billed_txnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unbilled_txnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   if (ccBilledData?.length) {
-    ccBilledData?.forEach((txn, i) => {
-      if (i > 1) {
-        globals.functions.dispatchEvent(billedTxnPanel, 'addItem');
+    ccBilledData?.forEach(async (txn, i) => {
+      debugger;
+      if (i === 0) {
+        globals.functions.setProperty(billedTxnPanel[i]?.aem_TxnAmt, { value: txn?.amount });
+        // globals.functions.setProperty(billedTxnPanel[i]?.aem_TxnDate, { value: txn?.date });
+        globals.functions.setProperty(billedTxnPanel[i]?.aem_TxnID, { value: txn?.id });
+        globals.functions.setProperty(billedTxnPanel[i]?.billed_TxnName, { value: txn?.name });
+      } else {
+        await globals.functions.dispatchEvent(billedTxnPanel, 'addItem');
       }
     });
   }
   if (ccUnBilledData?.length) {
-    ccUnBilledData?.forEach((txn, i) => {
+    ccUnBilledData?.forEach(async (txn, i) => {
       if (i > 1) {
-        globals.functions.dispatchEvent(unBilledTxnPanel, 'addItem');
+        await globals.functions.dispatchEvent(unBilledTxnPanel, 'addItem');
       }
     });
   }
