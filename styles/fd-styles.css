@@ -1035,6 +1035,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
             font-size: var(--body-fd-md-font-size);
             color: var(--color-interface-text-primary);
             font-weight: var(--font-weight-medium);
+            margin-bottom: -9px;
         }
 
         .field-mailingaddresstoggle, .field-employeeassistancetoggle, .field-inpersonbiokycoptions {
@@ -1050,6 +1051,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 
         .field-nameoncard .field-description p {
             font-size: var(--body-x-sm-font-size);
+            margin-top: 30px;
         }
 
         .field-addressdetails {
@@ -1442,7 +1444,15 @@ header:has(~ .fd-form-wrapper) {
         }
     }
 
-    .field-basicdetails { padding: 0; }
+    .field-basicdetails { padding: 0; 
+        select { margin-bottom: 20px; }
+        
+        input, option, textarea, .field-addressdetailshelptag, .field-mailingaddresslabel, .field-employeeassistancetoggle {
+            margin-bottom: 10px;
+        }
+
+        .field-inpersonbiokycoptions { margin-bottom: 7px !important; }
+    }
 
     .wizard-menu-items {
         flex-wrap: nowrap;
