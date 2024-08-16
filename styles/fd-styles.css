@@ -744,11 +744,13 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     }
   }
 
-    .field-backlinkmultiplecust button, .field-backlinkbasicdetails button {
-        color: var(--color-action-text-secondary-default);
-        background: var(--color-interface-background-primary);
-        font-weight: var(--font-weight-regular);
-        max-width: fit-content !important;
+    .field-backlinkmultiplecust, .field-backlinkbasicdetails {
+        button, button:hover {
+            color: var(--color-action-text-secondary-default);
+            background: var(--color-interface-background-primary) !important;
+            font-weight: var(--font-weight-regular);
+            max-width: fit-content !important;
+        }
     }
 
     .field-fdselectioninfo .field-customername label, .field-fdselectioninfo .field-customername input,
@@ -1025,6 +1027,22 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     .field-basicdetails {
         padding: 0 30px;
 
+<<<<<<< Updated upstream
+=======
+        input, select, option, textarea {
+            font-size: var(--body-fd-md-font-size);
+            color: var(--color-interface-text-primary);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .field-mailingaddresstoggle, .field-employeeassistancetoggle, .field-inpersonbiokycoptions {
+            label, legend {
+                font-size: var(--body-fd-sm-font-size);
+                font-weight: var(--font-weight-medium);
+            }
+        }
+
+>>>>>>> Stashed changes
         .field-detailssectionlabel2 p {
             line-height: inherit;
         }
@@ -1032,6 +1050,52 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         .field-nameoncard .field-description p {
             font-size: var(--body-x-sm-font-size);
         }
+<<<<<<< Updated upstream
+=======
+
+        .field-addressdetails {
+            .field-mailingaddresslabel p, .field-currentmailingaddresslabel p {
+                margin: 0 0 -6px 5px;
+                font-size: var(--body-x-sm-font-size);
+                font-weight: var(--font-weight-regular);
+            }
+
+            textarea { margin: 0; }
+
+            .field-addressdetailshelptag {
+                width: fit-content;
+
+                p {
+                    margin: 0;
+                    padding: 4px 8px;
+                    background-color: var(--color-interface-background-quinary);
+                    border-radius: 12px;
+                    font-size: var(--body-x-sm-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-text-primary);
+                }
+            }
+        }
+
+        .field-employeeassistancepanel .field-inpersonbiokycoptions {
+            display: flex;
+
+            .radio-wrapper {
+                width: fit-content;
+                margin-right: 15px;
+            }
+        }
+
+        .wrapper-disabled {
+            label { margin-left: 5px; }
+
+            input {
+                font-size: var(--body-fd-lg-font-size) !important;
+                border: none;
+                pointer-events: none;
+            }
+        }
+>>>>>>> Stashed changes
     }
 }
 
