@@ -95,6 +95,22 @@ const cardDisplay = (globals, response) => {
   imageEl?.childNodes[1].setAttribute('srcset', imagePath);
 };
 
+const setTxnListPanelData = (dataList, pannel, globals) => {
+  if (dataList?.length) {
+    dataList?.forEach((txn, i) => {
+      if (i === 0) { /* empty */ } else {
+        setTimeout(() => {
+          globals.functions.setProperty(pannel[i - 1]?.aem_TxnAmt, { value: txn?.amount });
+          globals.functions.setProperty(pannel[i - 1]?.aem_TxnDate, { value: txn?.date });
+          globals.functions.setProperty(pannel[i - 1]?.aem_TxnID, { value: txn?.id });
+          globals.functions.setProperty(pannel[i - 1]?.billed_TxnName, { value: txn?.name });
+          globals.functions.dispatchEvent(pannel, 'addItem');
+        }, 20 * (2 * i));
+      }
+    });
+  }
+};
+
 /**
 * @param {resPayload} Object - checkEligibility response.
 * @return {PROMISE}
@@ -108,32 +124,8 @@ function checkELigibilityHandler(resPayload, globals) {
   cardDisplay(globals, resPayload);
   const billedTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
-  if (ccBilledData?.length) {
-    ccBilledData?.forEach((txn, i) => {
-      if (i === 0) { /* empty */ } else {
-        setTimeout(() => {
-          globals.functions.setProperty(billedTxnPanel[i - 1]?.aem_TxnAmt, { value: txn?.amount });
-          globals.functions.setProperty(billedTxnPanel[i - 1]?.aem_TxnDate, { value: txn?.date });
-          globals.functions.setProperty(billedTxnPanel[i - 1]?.aem_TxnID, { value: txn?.id });
-          globals.functions.setProperty(billedTxnPanel[i - 1]?.billed_TxnName, { value: txn?.name });
-          globals.functions.dispatchEvent(billedTxnPanel, 'addItem');
-        }, 20 * (2 * i));
-      }
-    });
-  }
-  if (ccUnBilledData?.length) {
-    ccUnBilledData?.forEach((txn, i) => {
-      if (i === 0) { /* empty */ } else {
-        setTimeout(() => {
-          globals.functions.setProperty(unBilledTxnPanel[i - 1]?.aem_TxnAmt, { value: txn?.amount });
-          globals.functions.setProperty(unBilledTxnPanel[i - 1]?.aem_TxnDate, { value: txn?.date });
-          globals.functions.setProperty(unBilledTxnPanel[i - 1]?.aem_TxnID, { value: txn?.id });
-          globals.functions.setProperty(unBilledTxnPanel[i - 1]?.billed_TxnName, { value: txn?.name });
-          globals.functions.dispatchEvent(unBilledTxnPanel, 'addItem');
-        }, 20 * (2 * i));
-      }
-    });
-  }
+  setTxnListPanelData(ccBilledData, billedTxnPanel, globals);
+  setTxnListPanelData(ccUnBilledData, unBilledTxnPanel, globals);
 }
 export {
   getOTPV1,
