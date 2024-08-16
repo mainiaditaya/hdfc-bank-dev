@@ -3,10 +3,6 @@ import { getOTPV1, otpValV1, checkELigibilityHandler } from './smart-emi-functio
 import {
   createJourneyId,
   getCurrentContext,
-  invokeJourneyDropOff,
-  invokeJourneyDropOffByParam,
-  invokeJourneyDropOffUpdate,
-  journeyResponseHandlerUtil,
 } from '../../common/journey-utils.js';
 
 /* load SEMI Styles- for loading semi - styles - temporary fix */
@@ -23,8 +19,4 @@ export {
   checkELigibilityHandler,
   createJourneyId,
   getCurrentContext,
-  invokeJourneyDropOff,
-  invokeJourneyDropOffByParam,
-  invokeJourneyDropOffUpdate,
-  journeyResponseHandlerUtil,
 };
