@@ -1186,6 +1186,23 @@ header:has(~ .fd-form-wrapper) {
             }
           }
 
+          .field-basicdetails {
+            padding: 0;
+
+            .hdfc-accordian {
+                .field-wrapper:not(.field-continuetoselectfd,.field-employeeassistancetoggle, .field-employeeassistancepanel) {
+                    grid-column: span 6;
+                }
+            }
+
+            .field-addressdetails { display: block; 
+
+                .field-prefilledmailingadddress {
+                    margin: 13px 0;
+                }
+            }
+          }
+
           .wizard-menu-items {
             width: 85%;
             left: 7%;
@@ -1295,6 +1312,8 @@ header:has(~ .fd-form-wrapper) {
             }
         }
     }
+
+    .field-basicdetails { padding: 0; }
 
     .wizard-menu-items {
         flex-wrap: nowrap;
