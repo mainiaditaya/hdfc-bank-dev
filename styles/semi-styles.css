@@ -4,6 +4,18 @@ main .section.form-container {
 }
 
 .semi-form {
+    .repeat-wrapper::-webkit-scrollbar {
+        width: 9px !important;
+    }
+      
+    .repeat-wrapper::-webkit-scrollbar-track {
+        background: var(--color-interface-border-primary) !important;
+    }
+    
+    .repeat-wrapper::-webkit-scrollbar-thumb {
+        background: var(--color-action-background-secondary-hover) !important; 
+    }
+    
     a {
         text-decoration: underline !important;
         color: var(--color-interface-background-tertiary) !important;
@@ -259,23 +271,31 @@ main .section.form-container {
                 }
     
                 .field-aem-txnslist {
-                    >.repeat-wrapper > .panel-wrapper { padding: 0 0 7px 25px; }
+                    >.repeat-wrapper {
+                        overflow-y: auto;
+                        max-height: 211px;
+
+                        > .panel-wrapper {
+                            padding: 0 0 0 25px;
+                            margin-bottom: -5px;
+                        }
+                    }
     
                     .field-wrapper { 
                         align-self: center;
                     }
                     .field-aem-billedtxnselection { grid-column: span 1; }
     
-                    .plain-text-wrapper p, input[type="text"] { 
+                    .plain-text-wrapper, .plain-text-wrapper p, input[type="text"] { 
                         margin: 0; 
                         font-size: var(--body-sm-font-size);
                         font-weight: var(--font-weight-regular);
                         color: var(--color-interface-text-primary);
                         pointer-events: none;
                     }
-                    .field-billed-txnname p { margin: 2px 0 0 -20px; }
+                    .field-billed-txnname { margin: 2px 0 0 -32px; }
     
-                    .field-aem-txndate input {
+                    .field-aem-txndate input, .field-aem-txnamt input {
                         margin: 0;
                         border: none;
                     }
@@ -294,12 +314,14 @@ main .section.form-container {
         padding-top: 10px;
 
         .field-aem-semicreditcardcontent {
-            .plain-text-wrapper p { 
+            max-height: 131px;
+
+            .plain-text-wrapper, .plain-text-wrapper p { 
                 color: var(--color-action-text-tertiary-default); 
                 margin: 0;
             }
 
-            .field-aem-customernamelabel p {
+            .field-aem-customernamelabel, .field-aem-customernamelabel p {
                 font-size: var(--body-lg-font-size);
                 font-weight: var(--font-weight-regular);
             }
@@ -309,10 +331,15 @@ main .section.form-container {
                 font-weight: var(--font-weight-regular);                
             }
 
-            .field-aem-outstandingamt p {
+            .field-aem-outstandingamt, .field-aem-outstandingamt p {
                 font-size: var(--body-xx-lg-font-size);
                 font-weight: var(--font-weight-bold);
             }
+        }
+
+        .field-aem-cardfacia img {
+            height: 131px;
+            grid-column: none;
         }
     }
 }
