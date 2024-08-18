@@ -16,7 +16,7 @@ window.setTimeout(() => loadSEMIStyles(), 600);
 export {
   getOTPV1,
   otpValV1,
-  checkELigibilityHandler,
   createJourneyId,
   getCurrentContext,
+  checkELigibilityHandler,
 };
