@@ -1475,24 +1475,28 @@ header:has(~ .fd-form-wrapper) {
     left: 2%;
 
     .field-selectfd {
-        .field-selectfddetailspanel {
-            display: grid;
-            .field-customername { grid-column: span 6; }
+        .field-selectedfdpanel {
+            flex-direction: row;
 
-            .field-creditlimit { 
-                grid-column: span 6;
-                text-align: center;
-                max-height: 52px;
+            .field-selectallfdbutton {
+                margin-top: 0 !important;
             }
 
-            .field-selectedfdpanel {
-                flex-direction: row;
+            .field-selectedfdselected {
+                margin-right: 10px;
+            }
+
+            .field-selectfddetailspanel {
+                display: grid;
+                .field-customername { grid-column: span 6; }
     
-                .field-selectallfdbutton {
-                    margin-top: 0 !important;
+                .field-creditlimit { 
+                    grid-column: span 6;
+                    text-align: center;
+                    max-height: 52px;
                 }
             }
-        }
+        }        
     }
 
     .field-basicdetails { padding: 0; 
@@ -1508,23 +1512,30 @@ header:has(~ .fd-form-wrapper) {
     .wizard-menu-items {
         flex-wrap: nowrap;
         text-align: center;
-        gap: 10px;
+        gap: 5px;
 
         .wizard-menu-item {
             font-size: var(--body-x-sm-font-size);
             margin: 0 10px;
+            display: flex;
+            flex-direction: column;
             
             &::before {
                 margin: 0 25px;
             }
 
             &::after {
-                margin: 0 0 0 -40px;
+                margin: 0 0 0 -115px;
             }
         }
     }
 
-    .field-fdnumberselection {
+    .field-fdnumberselection .repeat-wrapper { 
+        max-width: 400px;
+        margin-bottom: 20px;
+    }
+
+    .field-fdnumberselection:not(:has(.repeat-wrapper)), .field-fdnumberselection:has(.repeat-wrapper) fieldset {
         display: grid;
     }
   }
