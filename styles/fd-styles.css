@@ -113,6 +113,10 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     padding: 0 0 0 24px;
 }
 
+.fdlien header .cmp-container > div:nth-child(2):has(div:empty) {
+    border-left: none;
+}
+
 .fdlien header .cmp-container>div:nth-child(3) {
   position: absolute;
   width: 110px;
