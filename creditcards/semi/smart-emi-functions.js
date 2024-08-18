@@ -94,8 +94,8 @@ const cardDisplay = (globals, response) => {
   globals.functions.setProperty(creditCardDisplay, { visible: true });
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: `Dear ${response?.cardHolderName}` });
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: `${MISC.rupeesUnicode} ${response?.blockCode?.bbvlogn_card_outst}` }); // confirm it ?
-  globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_cardfacia, { value: urlPath(response.cardTypePath) });
-  const imageEl = document.querySelector(`.field-${globals.form.aem_semicreditCardDisplay.aem_cardfacia.$name} > picture`);
+  globals.functions.setProperty(creditCardDisplay.aem_cardfacia, { value: urlPath(response.cardTypePath) });
+  const imageEl = document.querySelector(`.field-${creditCardDisplay.aem_cardfacia.$name} > picture`);
   const imagePath = `${urlPath(response.cardTypePath)}?width=2000&optimize=medium`;
   imageEl?.childNodes[5].setAttribute('src', imagePath);
   imageEl?.childNodes[3].setAttribute('srcset', imagePath);
