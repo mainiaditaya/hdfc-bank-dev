@@ -77,6 +77,14 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
+/**
+ * sets the data for the instance of repetable panel
+ *
+ * @param {object} globals - gobal form object
+ * @param {Object} panel - The panel for unbilled transactions.
+ * @param {Object} txn - current tramsaction object
+ * @param {number} i - current instance of panel row
+ */
 const setData = (globals, panel, txn, i) => {
   globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: txn?.amount });
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date });
@@ -94,8 +102,8 @@ const cardDisplay = (globals, response) => {
   globals.functions.setProperty(creditCardDisplay, { visible: true });
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: `Dear ${response?.cardHolderName}` });
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: `${MISC.rupeesUnicode} ${response?.blockCode?.bbvlogn_card_outst}` }); // confirm it ?
-  globals.functions.setProperty(creditCardDisplay.aem_cardfacia, { value: urlPath(response.cardTypePath) });
-  const imageEl = document.querySelector(`.field-${creditCardDisplay.aem_cardfacia.$name} > picture`);
+  globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_cardfacia, { value: urlPath(response.cardTypePath) });
+  const imageEl = document.querySelector(`.field-${globals.form.aem_semicreditCardDisplay.aem_cardfacia.$name} > picture`);
   const imagePath = `${urlPath(response.cardTypePath)}?width=2000&optimize=medium`;
   imageEl?.childNodes[5].setAttribute('src', imagePath);
   imageEl?.childNodes[3].setAttribute('srcset', imagePath);
