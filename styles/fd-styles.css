@@ -42,6 +42,8 @@ main {
     background-color: var(--color-interface-background-quinary);
     color: var(--color-interface-background-quaternary);
     position: relative;
+    width: 100.3%;
+    left: -2px;
 }
 
 .hdfc-accordion-legend::after {
@@ -735,8 +737,8 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 .fdlien .field-fdbasedcreditcardwizard {  
   .wizard-menu-items {
     position: absolute;
-    left: 10%;
-    width: 80%;
+    left: 4%;
+    width: 92%;
     justify-content: center;
     margin-top: -50px;
     background: var(--color-interface-background-primary);
@@ -1117,8 +1119,6 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     }
 
     .field-basicdetails {
-        padding: 0 30px;
-
         input, select, option, textarea {
             font-size: var(--body-fd-md-font-size);
             color: var(--color-interface-text-primary);
@@ -1313,6 +1313,10 @@ header:has(~ .fd-form-wrapper) {
       text-align: center;
   }
 
+  .fdlien legend.hdfc-accordion-legend {
+    width: 100.5%;
+  }
+
   .fdlien header>.cmp-container div:nth-child(2) {
     display: none;
   }
@@ -1451,6 +1455,10 @@ header:has(~ .fd-form-wrapper) {
 
 /* For mobiles */
 @media (350px <=width <=767px) {
+    .fdlien legend.hdfc-accordion-legend {
+        width: 101%;
+    }
+
   .fdlien:has(.section.form-container) .section.form-container {
       .fd-form-wrapper{
           .field-bannerimagepanel {
