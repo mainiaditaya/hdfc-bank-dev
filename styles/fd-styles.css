@@ -116,6 +116,10 @@ body.fdlien .form-wrapper {
   max-width: 100%;
 }
 
+body.fdlien, body.fdlien main {
+  background: var( --color-interface-background-primary);
+}
+
 body.fdlien main .section.form-container {
   max-width: var(--form-fd-max-width) !important;
   width: var(--form-fd-max-width);
@@ -197,6 +201,13 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
 
       .field-loginmainpanel {
           padding: 40px 40px 7px 20px;
+
+          .field-welcometext {
+            p {
+                font-size: var(--body-fd-xx-lg-font-size);
+                font-weight: var(--font-weight-bold);
+            }
+          }
   
           .field-loginpanel {
               width: 100%;
@@ -321,7 +332,11 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       .field-identifierpanel {
           margin: 0 !important;
           max-width: 368px;
-          .field-pan input { letter-spacing: 9px; }
+
+          .field-pan input { 
+            letter-spacing: 9px; 
+            padding: 16px, 12px, 16px, 20px; 
+        }
   
           .field-pandobselection {
               gap: 4px;
@@ -625,7 +640,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   .field-multiplecustidrepeatable:not(:has(.repeat-wrapper)), .field-multiplecustidrepeatable:has(.repeat-wrapper) fieldset {
       border-radius: 16px;
       border: 1px solid var(--color-interface-border-primary);
-      padding: 24px;
+      padding: 24px 20px;
       max-height: 160px;
       max-width: 368px;
 
@@ -763,6 +778,10 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
       width: 42px;
     }
 
+    li.wizard-menu-active-item::after {
+        background: var(--color-interface-button-background);
+    }
+
     li.wizard-menu-active-item::before{
       border: none;
     }
@@ -799,11 +818,23 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   }
 
     .field-backlinkmultiplecust, .field-backlinkbasicdetails {
+        margin: 20px 0 0;
+
         button, button:hover {
             color: var(--color-action-text-secondary-default);
             background: var(--color-interface-background-primary) !important;
             font-weight: var(--font-weight-regular);
             max-width: fit-content !important;
+
+            &::before{
+                content: '';
+                background: url('../icons/left-arrow.png') no-repeat;
+                display: inline-block;
+                width: 8px;
+                height: 16px;
+                vertical-align: sub;
+                margin-right: 10px;
+            }
         }
     }
 
@@ -818,13 +849,18 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         padding-top: 10px;
     }
 
-    div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p, .field-detailssectionlabel2 p, .field-creditlimitmax p {
+    div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p, .field-detailssectionlabel2 p {
         font-weight: var(--font-weight-regular);
         font-size: var(--body-md-font-size);
         color: var(--color-interface-text-secondary);
         margin: 0;
-        line-height: 1px;
+        line-height: 24px;
         padding-bottom: 5px;
+    }
+
+    .field-creditlimitmax p {
+        font-weight: var(--font-weight-regular);
+        font-size: var(--body-fd-sm-font-size);
     }
 
     .field-creditlimitmax { text-align: end; }
@@ -840,6 +876,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
           .field-selectedfdpanel {
             display: flex;
             justify-content: end;
+            border-top: 1px dashed var(--color-interface-border-secondary);
 
             .field-selectallfdbutton {
                 button {
@@ -1103,6 +1140,18 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
         .field-nameoncard .field-description p {
             font-size: var(--body-x-sm-font-size);
             margin-top: 30px;
+        }
+
+        .field-reviewdetailsview {
+            fieldset.hdfc-accordian {
+                border: 1px solid var(--color-interface-border-secondary);
+                border-bottom-left-radius: 24px;
+                border-bottom-right-radius: 24px;
+            }
+        }
+
+        .field-reviewdetailsview > fieldset > :not(legend) {
+            padding: 20px;
         }
 
         .field-addressdetails {
