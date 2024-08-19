@@ -26,7 +26,8 @@ const FD_ENDPOINTS = {
 };
 
 const OTP_TIMER = 30;
-
+const MODE = 'dev';
+// const MODE = 'prod';
 const MAX_OTP_RESEND_COUNT = 3;
 
 export {
@@ -37,4 +38,5 @@ export {
   OTP_TIMER,
   FD_ENDPOINTS,
   MAX_OTP_RESEND_COUNT,
+  MODE,
 };

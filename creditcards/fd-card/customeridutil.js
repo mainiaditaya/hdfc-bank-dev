@@ -30,14 +30,35 @@ const fetchCustomerId = (mobileNumber, pan, dob, globals) => {
   return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
 };
 
-/**
- * Handles the success of a customer ID fetch call.
- * @name customerIdSuccessHandler
- * @param {Object} payload
- * @param {Object} globals
- */
-const customerIdSuccessHandler = (payload, globals) => {
-  console.log(payload, globals);
+const setCustIdPanelValue = async (globals, customerData, panel) => {
+  await globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerId });
+  await globals.functions.setProperty(panel.noofFDs, { value: customerData.eligibleFDCount });
+};
+
+const waitForPanelReady = async () => new Promise((resolve) => setTimeout(resolve, 200));
+
+const updateData = async (globals, customerData) => {
+  for (let i = 0; i < customerData.length; i += 1) {
+    const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable[i];
+
+    await setCustIdPanelValue(globals, customerData[i], panel);
+    await waitForPanelReady();
+  }
+};
+
+const customerIdSuccessHandler = async (payload, globals) => {
+  const customerData = payload?.customerAccountDetailsDTO;
+  if (!customerData?.length) return;
+
+  const basePanel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
+
+  for (let i = 0; i < customerData.length; i += 1) {
+    if (i !== 0) {
+      await globals.functions.dispatchEvent(basePanel, 'addItem');
+      await waitForPanelReady();
+    }
+  }
+  updateData(globals, customerData);
 };
 
 /**

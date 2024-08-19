@@ -153,12 +153,12 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
-  const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
+  const panValue = (pan.$value)?.replace(/\s+/g, '');
   const jsonObj = {
     requestString: {
       dateOfBirth: clearString(dob.$value) || '',
-      mobileNumber: mobileNumber.$value,
-      panNumber: panValue || '',
+      mobileNumber: FD_CONSTANT.MODE === 'dev' ? '9810558449' : mobileNumber.$value,
+      panNumber: FD_CONSTANT.MODE === 'dev' ? 'OJSPS6821J' : panValue || '',
       journeyID: globals.form.runtime.journeyId.$value,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
       identifierValue: panValue || dob.$value,
@@ -167,6 +167,11 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   };
   const path = urlPath(FD_ENDPOINTS.otpGen);
   formRuntime?.getOtpLoader();
+
+  if (FD_CONSTANT.MODE === 'dev') {
+    globals.functions.setProperty(mobileNumber, { value: '9810558449' });
+    globals.functions.setProperty(pan, { value: 'OJSPS6821J' });
+  }
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
 
@@ -246,6 +251,12 @@ function customSetFocus(errorMessage, numRetries, globals) {
 function reloadPage() {
   window.location.reload();
 }
+
+setTimeout(() => {
+  if (document && FD_CONSTANT.MODE === 'dev') {
+    document.querySelector('.field-getotpbutton button').removeAttribute('disabled');
+  }
+}, 2000);
 
 export {
   // eslint-disable-next-line import/prefer-default-export
