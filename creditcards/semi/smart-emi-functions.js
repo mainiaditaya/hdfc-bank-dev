@@ -89,7 +89,7 @@ const setData = (globals, panel, txn, i) => {
   globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: txn?.amount });
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date });
   globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id });
-  globals.functions.setProperty(panel[i]?.billed_TxnName, { value: txn?.name });
+  globals.functions.setProperty(panel[i]?.aem_TxnName, { value: txn?.name });
 };
 
 /*
@@ -101,7 +101,10 @@ const cardDisplay = (globals, response) => {
   const creditCardDisplay = globals.form.aem_semicreditCardDisplay;
   globals.functions.setProperty(creditCardDisplay, { visible: true });
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: `Dear ${response?.cardHolderName}` });
-  globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: `${MISC.rupeesUnicode} ${response?.blockCode?.bbvlogn_card_outst}` }); // confirm it ?
+  const nfObject = new Intl.NumberFormat('hi-IN');
+  // eslint-disable-next-line radix
+  const totalAmt = nfObject.format(parseInt(response.responseString.creditLimit) - Math.round(parseInt(response?.blockCode?.bbvlogn_card_outst) / 100));
+  globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: `${MISC.rupeesUnicode} ${totalAmt}` });
   globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_cardfacia, { value: urlPath(response.cardTypePath) });
   const imageEl = document.querySelector(`.field-${globals.form.aem_semicreditCardDisplay.aem_cardfacia.$name} > picture`);
   const imagePath = `${urlPath(response.cardTypePath)}?width=2000&optimize=medium`;
@@ -109,6 +112,7 @@ const cardDisplay = (globals, response) => {
   imageEl?.childNodes[3].setAttribute('srcset', imagePath);
   imageEl?.childNodes[1].setAttribute('srcset', imagePath);
 };
+
 const DELAY = 50;
 const DELTA_DELAY = 40;
 
@@ -158,8 +162,8 @@ function checkELigibilityHandler(resPayload, globals) {
     const allTxn = ccBilledData.concat(ccUnBilledData);
     setTxnPanelData(allTxn, ccBilledData.length, billedTxnPanel, unBilledTxnPanel, globals);
     // Display card and move wizard view
-    cardDisplay(globals, resPayload);
-    moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
+    if (window !== undefined) cardDisplay(globals, resPayload);
+    if (window !== undefined) moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
   } catch (error) {
     console.error('An error occurred while processing eligibility:', error);
     // show error screen with generic message .
