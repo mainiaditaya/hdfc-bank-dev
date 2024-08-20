@@ -319,6 +319,24 @@ const validatePanInput = (panNumber) => {
   return true;
 };
 
+const validateTextInput = (inputField, fieldRegex, length) => {
+  let { value } = inputField;
+  if (value.length > length) {
+    value = value.slice(0, length);
+  }
+  inputField.value = value;
+  if (!fieldRegex.test(value)) {
+    inputField.value = value.slice(0, -1);
+  }
+};
+
+const validateTextInputOnPaste = (inputField, fieldRegex) => {
+  const { value } = inputField;
+  if (!fieldRegex.test(value)) {
+    inputField.value = '';
+  }
+};
+
 export function imageClickable(selector, url, target) {
   const element = document.querySelector(selector);
   if (element) {
@@ -345,4 +363,6 @@ export {
   groupCharacters,
   validatePhoneNumber,
   validatePanInput,
+  validateTextInput,
+  validateTextInputOnPaste,
 };

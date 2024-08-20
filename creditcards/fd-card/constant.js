@@ -29,6 +29,8 @@ const OTP_TIMER = 30;
 const MODE = 'dev';
 // const MODE = 'prod';
 const MAX_OTP_RESEND_COUNT = 3;
+const MAXIMUM_CREDIT_AMOUNT = 800000;
+const NAME_ON_CARD_LENGTH = 19;
 
 export {
   JOURNEY_NAME,
@@ -39,4 +41,6 @@ export {
   FD_ENDPOINTS,
   MAX_OTP_RESEND_COUNT,
   MODE,
+  MAXIMUM_CREDIT_AMOUNT,
+  NAME_ON_CARD_LENGTH,
 };

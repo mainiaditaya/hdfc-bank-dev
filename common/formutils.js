@@ -395,6 +395,42 @@ const ageValidator = (minAge, maxAge, dobValue) => {
   return ageBtwMinMax;
 };
 
+/**
+ * Formats a date string into the format "DDth MMM YYYY".
+ *
+ * The day of the month will have the appropriate suffix (st, nd, rd, or th).
+ *
+ * @param {string} dateStr - The date string in a format recognized by the `Date` constructor.
+ * @returns {string} The formatted date string.
+ *
+ * @example
+ * formatDateDDMMMYYY('2023-08-19'); // '19th Aug 2023'
+ */
+const formatDateDDMMMYYY = (dateStr) => {
+  const dateObj = new Date(dateStr);
+
+  const day = dateObj.getDate();
+  const year = dateObj.getFullYear();
+
+  const months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+  const month = months[dateObj.getMonth()];
+
+  const daySuffix = (d) => {
+    if (d > 3 && d < 21) return 'th';
+    switch (d % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  };
+
+  return `${day}${daySuffix(day)} ${month} ${year}`;
+};
+
 export {
   urlPath,
   maskNumber,
@@ -421,4 +457,5 @@ export {
   createLabelInElement,
   decorateStepper,
   ageValidator,
+  formatDateDDMMMYYY,
 };

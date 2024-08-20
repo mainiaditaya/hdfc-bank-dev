@@ -1,7 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { FD_ENDPOINTS } from './constant.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { urlPath } from '../../common/formutils.js';
+
+const SELECTED_CUSTOMER_ID = {};
 
 const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
   const payload = {
@@ -30,48 +33,45 @@ const fetchCustomerId = (mobileNumber, pan, dob, globals) => {
   return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
 };
 
-const setCustIdPanelValue = async (globals, customerData, panel) => {
-  await globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerId });
-  await globals.functions.setProperty(panel.noofFDs, { value: customerData.eligibleFDCount });
+const updateData = (globals, customerData, panel) => {
+  globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerId });
+  globals.functions.setProperty(panel.noofFDs, { value: customerData.eligibleFDCount });
 };
 
-const waitForPanelReady = async () => new Promise((resolve) => setTimeout(resolve, 200));
-
-const updateData = async (globals, customerData) => {
-  for (let i = 0; i < customerData.length; i += 1) {
-    const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable[i];
-
-    await setCustIdPanelValue(globals, customerData[i], panel);
-    await waitForPanelReady();
-  }
-};
-
-const customerIdSuccessHandler = async (payload, globals) => {
-  const customerData = payload?.customerAccountDetailsDTO;
+const customerIdSuccessHandler = (payload, globals) => {
+  const customerData = payload?.customerDetailsDTO;
   if (!customerData?.length) return;
 
-  const basePanel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
+  CURRENT_FORM_CONTEXT.customerInfo = payload;
 
-  for (let i = 0; i < customerData.length; i += 1) {
-    if (i !== 0) {
-      await globals.functions.dispatchEvent(basePanel, 'addItem');
-      await waitForPanelReady();
+  const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
+
+  customerData.forEach((custItem, i) => {
+    if (i < customerData.length - 1) {
+      globals.functions.dispatchEvent(panel, 'addItem');
     }
-  }
-  updateData(globals, customerData);
+    setTimeout(() => {
+      updateData(globals, custItem, panel[i]);
+    }, i * 40);
+  });
 };
 
 /**
  * Handles on select of customer ID radio button.
  * @name customerIdClickHandler
- * @param {Object} globals
+ * @param {Object} customerIds
  */
-const customerIdClickHandler = (globals) => {
-  console.log(globals);
+const customerIdClickHandler = (customerIds) => {
+  const selectedCustIdPanel = customerIds.filter((item) => item.multipleCustIDSelect._data.$_value === 'on');
+  if (selectedCustIdPanel) {
+    const selectedCustId = selectedCustIdPanel[0].maskedAccNo._data.$_value;
+    SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerId === selectedCustId)?.[0];
+  }
 };
 
 export {
   fetchCustomerId,
   customerIdSuccessHandler,
   customerIdClickHandler,
+  SELECTED_CUSTOMER_ID,
 };

@@ -13,6 +13,11 @@ import {
   fdWizardSwitch,
 } from './fd-journey-util.js';
 
+import {
+  bindCustomerDetails,
+  validateNameOnCard,
+} from './customerdetails.js';
+
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
 import { redirect } from '../../common/functions.js';
 
@@ -31,6 +36,12 @@ import {
   customerIdSuccessHandler,
   customerIdClickHandler,
 } from './customeridutil.js';
+
+import {
+  customerIdProceedHandler,
+  fdSelectHandler,
+  selectAllFdClickHandler,
+} from './fddetailsutil.js';
 
 export {
   getOTP,
@@ -53,4 +64,9 @@ export {
   fetchCustomerId,
   customerIdSuccessHandler,
   customerIdClickHandler,
+  bindCustomerDetails,
+  fdSelectHandler,
+  customerIdProceedHandler,
+  selectAllFdClickHandler,
+  validateNameOnCard,
 };
