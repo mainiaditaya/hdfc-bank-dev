@@ -106,7 +106,7 @@ const cardDisplay = (globals, response) => {
   const totalAmt = nfObject.format(parseInt(response.responseString.creditLimit) - Math.round(parseInt(response?.blockCode?.bbvlogn_card_outst) / 100));
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: `${MISC.rupeesUnicode} ${totalAmt}` });
   globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_cardfacia, { value: urlPath(response.cardTypePath) });
-  const imageEl = document.querySelector(`.field-${globals.form.aem_semicreditCardDisplay.aem_cardfacia.$name} > picture`);
+  const imageEl = document.querySelector('.field-aem-cardfacia > picture');
   const imagePath = `${urlPath(response.cardTypePath)}?width=2000&optimize=medium`;
   imageEl?.childNodes[5].setAttribute('src', imagePath);
   imageEl?.childNodes[3].setAttribute('srcset', imagePath);
@@ -173,8 +173,18 @@ function checkELigibilityHandler(resPayload, globals) {
   }
 }
 
+/**
+ * Continue button on choose transactions.
+ *
+ * @param {Object} globals - Global variables and functions.
+ */
+function selectTenure(globals) {
+  debugger;
+}
+
 export {
   getOTPV1,
   otpValV1,
   checkELigibilityHandler,
+  selectTenure,
 };
