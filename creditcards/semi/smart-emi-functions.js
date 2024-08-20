@@ -154,6 +154,7 @@ const setTxnPanelData = (allTxn, btxn, billedTxnPanel, unBilledTxnPanel, globals
 */
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload, globals) {
+  const response = {};
   try {
     const ccBilledData = resPayload?.ccBilledTxnResponse?.responseString || [];
     const ccUnBilledData = resPayload?.ccUnBilledTxnResponse?.responseString || [];
@@ -164,9 +165,11 @@ function checkELigibilityHandler(resPayload, globals) {
     // Display card and move wizard view
     if (window !== undefined) cardDisplay(globals, resPayload);
     if (window !== undefined) moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
+    response.nextscreen = 'success';
+    return response;
   } catch (error) {
-    console.error('An error occurred while processing eligibility:', error);
-    // show error screen with generic message .
+    response.nextscreen = 'failure';
+    return response;
   }
 }
 
