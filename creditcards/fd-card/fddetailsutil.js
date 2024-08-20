@@ -45,7 +45,7 @@ const updateCreditLimit = (selectedFDsAmt, globals) => {
   const creditLimitPanel = fdSelectionInfoPanel.selectFDDetailsPanel.creditLimit;
 
   const totalSelectedAmount = selectedFDsAmt.reduce((acc, val) => acc + val, 0);
-  const creditAmt = totalSelectedAmount * 0.8;
+  const creditAmt = totalSelectedAmount * 0.9;
   const actualCreditAmount = Math.min(creditAmt, MAXIMUM_CREDIT_AMOUNT).toFixed(2);
 
   globals.functions.setProperty(creditLimitPanel, { value: selectedFDsAmt.length === 0 ? 0 : actualCreditAmount });
