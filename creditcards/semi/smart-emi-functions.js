@@ -173,8 +173,18 @@ function checkELigibilityHandler(resPayload, globals) {
   }
 }
 
+/**
+ * Continue button on choose transactions.
+ *
+ * @param {Object} globals - Global variables and functions.
+ */
+function selectTenure(globals) {
+  debugger;
+}
+
 export {
   getOTPV1,
   otpValV1,
   checkELigibilityHandler,
+  selectTenure,
 };

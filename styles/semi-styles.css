@@ -4,6 +4,13 @@ main .section.form-container {
 }
 
 .semi-form {
+    .field-aem-selecttenure {
+        .text-wrapper > label {
+            position: relative;
+            margin: 0;
+        }
+    }
+
     .hdfc-accordion-legend {
         .field-expand-btn {
             margin-top: 3px;
@@ -378,7 +385,39 @@ main .section.form-container {
 
             .field-aem-txnselectioncontinue { padding-bottom: 22px; }
         }
+
+        /* Step 3 - Wizard - Select Tenure */
+        .field-aem-selecttenure {
+            .field-aem-emidurationlabel p, .field-aem-roi label, .field-aem-tenureselectionheaderpanel .plain-text-wrapper p {
+                margin: 3px 0 0;
+                font-size: var(--body-lg-font-size);
+                font-weight: var(--font-weight-bold);
+                color: var(--color-interface-text-primary) !important;
+            }
+
+            .field-aem-tenureselectionmainpnl {
+                .field-aem-tenureselectionheaderpanel {
+                    background-color: var(--color-interface-background-quinary);
+                    border-radius: 16px 16px 2px 2px;
+                    padding: 17px 25px;
+
+                    p { margin: 0; }
+                }
+
+                .field-aem-tenureselectionrepeatablepanel {
+                    .field-aem-tenureselection {
+                        grid-column: span 1;
+                        width: fit-content;
+                    }
+
+                    .field-wrapper { align-self: center; }
+                    p { margin: 0; }
+                }
+            }
+        }
     }
+
+    /* Step 2 - Wizard - Choose Transactions */
 
     .field-aem-semiwizard:has(.field-aem-choosetransactions.current-wizard-step) { padding-left: 50px !important; }
 
