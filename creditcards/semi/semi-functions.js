@@ -1,5 +1,5 @@
 import { getOTPV1, otpValV1, checkELigibilityHandler } from './smart-emi-functions.js';
-import {invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
+import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
 
 /* load SEMI Styles- for loading semi - styles - temporary fix */
 async function loadSEMIStyles() {
