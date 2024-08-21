@@ -2,6 +2,7 @@
 import { formatDateDDMMMYYY } from '../../common/formutils.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { MAXIMUM_CREDIT_AMOUNT } from './constant.js';
+import { removeFDPanelsDom } from './fd-dom-functions.js';
 
 const updateData = (globals, fd, panel) => {
   const datMaturity = formatDateDDMMMYYY(fd.datMaturity);
@@ -9,6 +10,18 @@ const updateData = (globals, fd, panel) => {
   globals.functions.setProperty(panel.fdNumber, { value: fd.fdAccountNo });
   globals.functions.setProperty(panel.selectedFDAmount, { value: balPrincipal });
   globals.functions.setProperty(panel.maturingDate, { value: datMaturity });
+};
+
+/**
+ * @name resetFDPanels
+ * @param {Object} globals - The global context object containing various information.
+ */
+const resetFDPanels = (globals) => {
+  removeFDPanelsDom();
+  const fdNumberSelectionPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.fdNumberSelection;
+  while (fdNumberSelectionPanel.length > 1) {
+    fdNumberSelectionPanel.pop();
+  }
 };
 
 /**
@@ -21,19 +34,30 @@ const customerIdProceedHandler = (globals) => {
   const selectedCustIdFds = selectedCustId?.listFDSummary;
   const fdSelectionInfoPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
   const fdNumberSelectionPanel = fdSelectionInfoPanel.fdNumberSelection;
-
-  selectedCustIdFds.forEach((fd, i) => {
-    if (i < selectedCustIdFds.length - 1) {
-      globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
+  const createPanels = () => {
+    selectedCustIdFds.forEach((fd, i) => {
+      if (i < selectedCustIdFds.length - 1) {
+        globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
+      }
+      setTimeout(() => {
+        updateData(globals, fd, fdNumberSelectionPanel[i]);
+      }, i * 40);
+    });
+    const selectedFDNumPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNum;
+    const fdCountPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax;
+    globals.functions.setProperty(selectedFDNumPanel, '0');
+    globals.functions.setProperty(fdCountPanel, selectedCustIdFds.length);
+  };
+  if (fdSelectionInfoPanel.fdNumberSelection.length === 1) {
+    createPanels();
+  } else {
+    while (fdSelectionInfoPanel.fdNumberSelection.length > 1) {
+      fdSelectionInfoPanel.fdNumberSelection.pop();
     }
     setTimeout(() => {
-      updateData(globals, fd, fdNumberSelectionPanel[i]);
-    }, i * 40);
-  });
-  const selectedFDNumPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNum;
-  const fdCountPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax;
-  globals.functions.setProperty(selectedFDNumPanel, '0');
-  globals.functions.setProperty(fdCountPanel, selectedCustIdFds.length);
+      createPanels();
+    }, 50);
+  }
 };
 
 const updateCreditLimit = (selectedFDsAmt, globals) => {
@@ -86,4 +110,5 @@ export {
   customerIdProceedHandler,
   fdSelectHandler,
   selectAllFdClickHandler,
+  resetFDPanels,
 };

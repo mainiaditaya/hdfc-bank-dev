@@ -40,6 +40,7 @@ import {
 import {
   customerIdProceedHandler,
   fdSelectHandler,
+  resetFDPanels,
   selectAllFdClickHandler,
 } from './fddetailsutil.js';
 
@@ -68,5 +69,6 @@ export {
   fdSelectHandler,
   customerIdProceedHandler,
   selectAllFdClickHandler,
+  resetFDPanels,
   validateNameOnCard,
 };
