@@ -28,8 +28,7 @@ const bindCustomerDetails = (globals) => {
   setFormValue(personalDetails.emailID, customerInfo.emailId);
   setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
   if (customerInfo.address.length === 0) {
-    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off' });
-    globals.functions.setProperty(addressDetails.mailingAddressToggle, { enabled: false });
+    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
   }
   if (customerInfo.customerFullName.length < 5) {
     setFormValue(personalDetails.nameOnCard, customerInfo.customerFullName);
