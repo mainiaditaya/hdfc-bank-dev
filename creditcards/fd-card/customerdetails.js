@@ -14,7 +14,7 @@ const bindCustomerDetails = (globals) => {
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const genderMap = { Male: '0', Female: '1', Others: '3' };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
-  const { personalDetails } = reviewDetailsView;
+  const { personalDetails, addressDetails } = reviewDetailsView;
 
   const setFormValue = (field, value) => {
     const fieldUtil = formUtil(globals, field);
@@ -26,6 +26,11 @@ const bindCustomerDetails = (globals) => {
   setFormValue(personalDetails.dateOfBirth, customerInfo.dob);
   setFormValue(personalDetails.panNumber, customerInfo.pan);
   setFormValue(personalDetails.emailID, customerInfo.emailId);
+  setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
+  if (customerInfo.address.length === 0) {
+    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off' });
+    globals.functions.setProperty(addressDetails.mailingAddressToggle, { enabled: false });
+  }
   if (customerInfo.customerFullName.length < 5) {
     setFormValue(personalDetails.nameOnCard, customerInfo.customerFullName);
   }
