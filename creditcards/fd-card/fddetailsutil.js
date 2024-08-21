@@ -19,9 +19,7 @@ const updateData = (globals, fd, panel) => {
 const resetFDPanels = (globals) => {
   removeFDPanelsDom();
   const fdNumberSelectionPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.fdNumberSelection;
-  while (fdNumberSelectionPanel.length > 1) {
-    fdNumberSelectionPanel.pop();
-  }
+  fdNumberSelectionPanel.splice(1);
 };
 
 /**
@@ -34,30 +32,19 @@ const customerIdProceedHandler = (globals) => {
   const selectedCustIdFds = selectedCustId?.listFDSummary;
   const fdSelectionInfoPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
   const fdNumberSelectionPanel = fdSelectionInfoPanel.fdNumberSelection;
-  const createPanels = () => {
-    selectedCustIdFds.forEach((fd, i) => {
-      if (i < selectedCustIdFds.length - 1) {
-        globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
-      }
-      setTimeout(() => {
-        updateData(globals, fd, fdNumberSelectionPanel[i]);
-      }, i * 40);
-    });
-    const selectedFDNumPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNum;
-    const fdCountPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax;
-    globals.functions.setProperty(selectedFDNumPanel, '0');
-    globals.functions.setProperty(fdCountPanel, selectedCustIdFds.length);
-  };
-  if (fdSelectionInfoPanel.fdNumberSelection.length === 1) {
-    createPanels();
-  } else {
-    while (fdSelectionInfoPanel.fdNumberSelection.length > 1) {
-      fdSelectionInfoPanel.fdNumberSelection.pop();
+  selectedCustIdFds.forEach((fd, i) => {
+    if (i < selectedCustIdFds.length - 1) {
+      globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
     }
     setTimeout(() => {
-      createPanels();
-    }, 50);
-  }
+      updateData(globals, fd, fdNumberSelectionPanel[i]);
+    }, i * 40);
+  });
+  const selectedFDNumPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNum;
+  const fdCountPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax;
+  globals.functions.setProperty(selectedFDNumPanel, '0');
+  globals.functions.setProperty(fdCountPanel, selectedCustIdFds.length);
+  
 };
 
 const updateCreditLimit = (selectedFDsAmt, globals) => {
