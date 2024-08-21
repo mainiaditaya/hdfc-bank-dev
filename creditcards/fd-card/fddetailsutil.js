@@ -4,6 +4,7 @@ import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { MAXIMUM_CREDIT_AMOUNT } from './constant.js';
 import { removeFDPanelsDom } from './fd-dom-functions.js';
 
+let lastIndex = 0;
 const updateData = (globals, fd, panel) => {
   const datMaturity = formatDateDDMMMYYY(fd.datMaturity);
   const balPrincipal = Number(fd.balPrincipal);
@@ -22,13 +23,6 @@ const resetFDPanels = (globals) => {
   fdNumberSelectionPanel.splice(1);
 };
 
-const setDataIndex = () =>{
-  const panels = Array.from(document.querySelectorAll('.field-fdnumberselection fieldset'));
-  panels.forEach((element,i) => {
-    element.setAttribute('data-index', i);
-  });
-}
-
 /**
  * Binds customer details from the global context to the current form.
  * @name customerIdProceedHandler
@@ -44,8 +38,12 @@ const customerIdProceedHandler = (globals) => {
       globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
     }
     setTimeout(() => {
-      setDataIndex();
-      updateData(globals, fd, fdNumberSelectionPanel[i]);
+      let currentIndex = 0;
+      if(i !== 0){
+        currentIndex = i + lastIndex;
+      }
+      lastIndex = lastIndex + 1;
+      updateData(globals, fd, fdNumberSelectionPanel[currentIndex]);
     }, i * 40);
   });
   const selectedFDNumPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNum;
