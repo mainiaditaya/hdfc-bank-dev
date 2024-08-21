@@ -20,6 +20,7 @@ const updateData = (globals, fd, panel) => {
 const resetFDPanels = (globals) => {
   removeFDPanelsDom();
   const fdNumberSelectionPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.fdNumberSelection;
+  lastIndex = fdNumberSelectionPanel.length - 1;
   fdNumberSelectionPanel.splice(1);
 };
 
@@ -42,7 +43,6 @@ const customerIdProceedHandler = (globals) => {
       if(i !== 0){
         currentIndex = i + lastIndex;
       }
-      lastIndex = lastIndex + 1;
       updateData(globals, fd, fdNumberSelectionPanel[currentIndex]);
     }, i * 40);
   });
