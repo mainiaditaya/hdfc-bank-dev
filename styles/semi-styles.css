@@ -11,12 +11,11 @@ main .section.form-container {
         }
     }
 
-    .hdfc-accordion-legend {
-        .field-expand-btn {
-            margin-top: 3px;
-        }
-        
-        button, button:hover {
+    .hdfc-accordian-legend { align-content: center;
+
+        .field-expand-btn { margin-top: 3px; }
+
+            button, button:hover {
             background-color: var(--color-interface-background-quinary) !important;
             font-size: 0;
             background-repeat: no-repeat !important;
@@ -27,11 +26,11 @@ main .section.form-container {
         }
     }
 
-    .hdfc-accordion-legend .field-expand-btn button {
+    .hdfc-accordian-legend.field-expand-btn button {
         background-image: url('../icons/Arrow-Collapse.svg') !important;
     }
 
-    .hdfc-accordion-legend.accordion-collapse .field-expand-btn {
+    .hdfc-accordian-semi:has(.accordion-collapse) .field-expand-btn button {
         transform: rotate(-180deg);
         margin-bottom: 2px !important;
     }
