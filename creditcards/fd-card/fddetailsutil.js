@@ -22,6 +22,13 @@ const resetFDPanels = (globals) => {
   fdNumberSelectionPanel.splice(1);
 };
 
+const setDataIndex = () =>{
+  const panels = Array.from(document.querySelectorAll('.field-fdnumberselection fieldset'));
+  panels.forEach((element,i) => {
+    element.setAttribute('data-index', i);
+  });
+}
+
 /**
  * Binds customer details from the global context to the current form.
  * @name customerIdProceedHandler
@@ -37,6 +44,7 @@ const customerIdProceedHandler = (globals) => {
       globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
     }
     setTimeout(() => {
+      setDataIndex();
       updateData(globals, fd, fdNumberSelectionPanel[i]);
     }, i * 40);
   });
