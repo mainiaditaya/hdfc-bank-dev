@@ -1,6 +1,6 @@
 // declare CONSTANTS for (fd) fd only.
 
-const JOURNEY_NAME = 'FDLIEN_CARD_JOURNEY';
+const JOURNEY_NAME = 'EXISTING_CC_BASED_FDLIEN_JOURNEY';
 
 const AGE_LIMIT = {
   min: 18,
