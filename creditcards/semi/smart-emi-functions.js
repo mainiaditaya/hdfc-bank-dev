@@ -30,6 +30,16 @@ function generateJourneyId(visitMode, journeyAbbreviation, channel) {
 currentFormContext.journeyName = journeyName;
 currentFormContext.journeyID = generateJourneyId('a', 'b', 'c');
 
+
+/**
+ * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
+ *
+ * @param {object} data
+ * @returns {object}
+ */
+const sortTxnAmount = (data) => data.responseString.sort((a, b) => b.amount - a.amount);
+
+
 /**
  * generates the otp
  * @param {string} mobileNumber
@@ -114,7 +124,7 @@ const cardDisplay = (globals, response) => {
 };
 
 const DELAY = 50;
-const DELTA_DELAY = 40;
+const DELTA_DELAY = 70;
 
 /**
  * Combines transaction data and updates the appropriate panels.
