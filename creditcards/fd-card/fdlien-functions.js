@@ -211,7 +211,7 @@ const resendOTP = async (globals) => {
  * @return {PROMISE}
  */
 const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
-  addGaps('.field-pannumber input');
+  addGaps('.field-pannumberpersonaldetails input');
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space

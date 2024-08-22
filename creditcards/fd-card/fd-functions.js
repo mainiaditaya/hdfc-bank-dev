@@ -17,11 +17,15 @@ import {
 import {
   bindCustomerDetails,
   validateNameOnCard,
+  channelChangeHandler,
   validateEmailID,
 } from './customerdetails.js';
 
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
-import { redirect } from '../../common/functions.js';
+import {
+  redirect,
+  validatePan,
+} from '../../common/functions.js';
 
 import createJourneyId from '../../common/journey-utils.js';
 
@@ -75,4 +79,6 @@ export {
   validateNameOnCard,
   validateEmailID,
   pincodeChangeHandler,
+  channelChangeHandler,
+  validatePan,
 };

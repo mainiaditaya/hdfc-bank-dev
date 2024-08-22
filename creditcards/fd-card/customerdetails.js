@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
-import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
+import { CURRENT_FORM_CONTEXT, FORM_RUNTIME as formRuntime } from '../../common/constants.js';
 import { formUtil, urlPath } from '../../common/formutils.js';
-import { getJsonResponse } from '../../common/makeRestAPI.js';
+import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass } from '../domutils/domutils.js';
 import { FD_ENDPOINTS } from './constant.js';
 
@@ -11,6 +11,7 @@ import { FD_ENDPOINTS } from './constant.js';
  * @param {Object} globals - The global context object containing various information.
  */
 const bindCustomerDetails = (globals) => {
+  formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   const { customerInfo } = CURRENT_FORM_CONTEXT;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const genderMap = { Male: '0', Female: '1', Others: '3' };
@@ -24,11 +25,11 @@ const bindCustomerDetails = (globals) => {
 
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
   setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
-  setFormValue(personalDetails.dateOfBirth, customerInfo.dob);
-  // setFormValue(personalDetails.panNumber, customerInfo.pan);
+  setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob);
+  // setFormValue(personalDetails.panNumberPersonalDetails, customerInfo.pan);
   // setFormValue(personalDetails.emailID, customerInfo.emailId);
   // setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
-  setFormValue(personalDetails.panNumber, '');
+  setFormValue(personalDetails.panNumberPersonalDetails, '');
   setFormValue(personalDetails.emailID, '');
   setFormValue(addressDetails.prefilledMailingAdddress, '');
   if (customerInfo.address.length === 0 || true) {
@@ -73,8 +74,20 @@ const validateEmailID = async (email, globals) => {
   }
 };
 
+/**
+ *
+ * @name channelChangeHandler
+ * @param {Object} globals - The global context object containing various information.
+ */
+const channelChangeHandler = (globals) => {
+  const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+
+  console.log(globals);
+};
+
 export {
   bindCustomerDetails,
   validateNameOnCard,
   validateEmailID,
+  channelChangeHandler,
 };
