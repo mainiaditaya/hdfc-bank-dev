@@ -3,7 +3,7 @@ import {
   otpValV1,
   selectTenure,
   checkELigibilityHandler,
-  sortTxnAmount,
+  sortData,
   txnSelectHandler,
 } from './smart-emi-functions.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
@@ -24,6 +24,6 @@ export {
   invokeJourneyDropOff,
   invokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
-  sortTxnAmount,
+  sortData,
   txnSelectHandler,
 };
