@@ -8,7 +8,7 @@ main {
   background-color: var(--color-action-background-secondary-default);
 }
 
-.section>div {
+.section > div {
   max-width: max-content;
   margin: 0 !important;
 }
@@ -16,54 +16,60 @@ main {
 /* Repeat wrapper */
 
 .fdlien .repeat-wrapper .item-add {
-    display: none;
+  display: none;
 }
 
-.repeat-wrapper::-webkit-scrollbar, .field-multiplecustidrepeatable::-webkit-scrollbar {
-    height: 8px !important;
-    width: 8px !important;
-}
-  
-.repeat-wrapper::-webkit-scrollbar-track, .field-multiplecustidrepeatable::-webkit-scrollbar-track {
-    background: var(--color-action-scroll-background-primary) !important;
+.repeat-wrapper::-webkit-scrollbar,
+.field-multiplecustidrepeatable::-webkit-scrollbar {
+  height: 8px !important;
+  width: 8px !important;
 }
 
-.repeat-wrapper::-webkit-scrollbar-thumb, .field-multiplecustidrepeatable::-webkit-scrollbar-thumb {
-    background: var(--color-action-scroll-primary) !important;
-    border-radius:10px !important;
+.repeat-wrapper::-webkit-scrollbar-track,
+.field-multiplecustidrepeatable::-webkit-scrollbar-track {
+  background: var(--color-action-scroll-background-primary) !important;
+}
+
+.repeat-wrapper::-webkit-scrollbar-thumb,
+.field-multiplecustidrepeatable::-webkit-scrollbar-thumb {
+  background: var(--color-action-scroll-primary) !important;
+  border-radius: 10px !important;
 }
 
 /* Accordion styling */
-.fdlien legend.hdfc-accordion-legend {    
-    margin-bottom: 29px;
-    height: 70px;
-    padding: 24px 32px 10px;
-    border-radius: 24px 24px 4px 4px;
-    background-color: var(--color-interface-background-quinary);
-    color: var(--color-interface-background-quaternary);
-    position: relative;
+.fdlien legend.hdfc-accordion-legend {
+  margin-bottom: 29px;
+  height: 70px;
+  padding: 24px 32px 10px;
+  border-radius: 24px 24px 4px 4px;
+  background-color: var(--color-interface-background-quinary);
+  color: var(--color-interface-background-quaternary);
+  position: relative;
 }
 
 .hdfc-accordion-legend::after {
-    content: '\221F';
-    color: #1C3FCA;
-    font-size: 19px;
-    display: inline;
-    position: absolute;
-    transition: transform 0s;
-    transform: rotate(-45deg);
-    top: 18px;
-    right: 22px;
-    cursor: pointer;
+  content: '\221F';
+  color: #1c3fca;
+  font-size: 19px;
+  display: inline;
+  position: absolute;
+  transition: transform 0s;
+  transform: rotate(-45deg);
+  top: 18px;
+  right: 22px;
+  cursor: pointer;
 }
 
 .accordion-collapse::after {
-    transform: rotate(-225deg);
-    top: 23px;
+  transform: rotate(-225deg);
+  top: 23px;
 }
 
 /* Input box styling */
-.fdlien .field-registeredmobilenumber input, .field-pan input, .field-dateofbirth input:not([placeholder]), .field-countrycode select {
+.fdlien .field-registeredmobilenumber input,
+.field-pan input,
+.field-dateofbirth input:not([placeholder]),
+.field-countrycode select {
   font-size: var(--body-lg-font-size) !important;
   font-weight: var(--font-weight-medium) !important;
   line-height: 24px !important;
@@ -84,36 +90,37 @@ body.fdlien main .section.form-container {
   background: var(--color-interface-fd-background-primary);
 }
 
-body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visible='false'])) {
-    header {
-        height: 100px !important;
-    }
+body.fdlien:has(
+    .fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visible='false'])
+  ) {
+  header {
+    height: 100px !important;
+  }
 
-    main .section.form-container {
-        margin-top: 0 !important;
-    }
+  main .section.form-container {
+    margin-top: 0 !important;
+  }
 }
 
-
-.fdlien header>.cmp-container,
-.fdlien header>.cmp-container div:nth-child(1) {
+.fdlien header > .cmp-container,
+.fdlien header > .cmp-container div:nth-child(1) {
   max-width: 1160px;
 }
 
-.fdlien header .cmp-container>div:nth-child(2) {
-    content: unset;
-    position: absolute;
-    color: var(--color-interface-background-primary);
-    width: 600px;
-    font-size: var(--body-fd-x-lg-font-size);
-    font-weight: var(--font-weight-bold);
-    left: 15%;
-    top: 8px;
-    border-left: 1px solid var(--color-interface-fd-title-border);
-    padding: 0 0 0 24px;
+.fdlien header .cmp-container > div:nth-child(2) {
+  content: unset;
+  position: absolute;
+  color: var(--color-interface-background-primary);
+  width: 600px;
+  font-size: var(--body-fd-x-lg-font-size);
+  font-weight: var(--font-weight-bold);
+  left: 15%;
+  top: 8px;
+  border-left: 1px solid var(--color-interface-fd-title-border);
+  padding: 0 0 0 24px;
 }
 
-.fdlien header .cmp-container>div:nth-child(3) {
+.fdlien header .cmp-container > div:nth-child(3) {
   position: absolute;
   width: 110px;
   right: 0;
@@ -133,284 +140,304 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   margin: 0 auto !important;
 
   form {
-      padding: 0 !important;
-      gap: 20px;
+    padding: 0 !important;
+    gap: 20px;
   }
 
   .fd-form-wrapper {
-      margin-bottom: 40px;
+    margin-bottom: 40px;
 
-      .field-multiplecustidbanner {
-          background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner_multiple_customerid.png') no-repeat bottom center / 440px 649px;
-          min-height: 648px; 
+    .field-multiplecustidbanner {
+      background: var(--color-interface-fd-background-secondary)
+        url('../icons/side_bar_banner_multiple_customerid.png') no-repeat bottom
+        center / 440px 649px;
+      min-height: 648px;
+    }
+
+    .field-bannerimagepanel {
+      background: var(--color-interface-fd-background-secondary)
+        url('../icons/side_bar_banner.png') no-repeat center center / cover;
+      min-height: 648px;
+    }
+
+    .field-loginmainpanel {
+      padding: 40px 40px 7px 20px;
+
+      .field-loginpanel {
+        width: 100%;
+        padding-bottom: 10px;
       }
 
-      .field-bannerimagepanel {
-          background: var(--color-interface-fd-background-secondary) url('../icons/side_bar_banner.png') no-repeat center center / cover;
-          min-height: 648px;
+      .field-consenttext {
+        border-top: 1px dotted var(--color-interface-border-secondary);
+        padding-top: 15px;
+
+        a {
+          text-decoration: underline;
+        }
+
+        p p {
+          font-size: var(--body-fd-sm-font-size);
+        }
       }
 
-      .field-loginmainpanel {
-          padding: 40px 40px 7px 20px;
-  
-          .field-loginpanel {
-              width: 100%;
-              padding-bottom: 10px;
-          }
-  
-          .field-consenttext {
-              border-top: 1px dotted var(--color-interface-border-secondary);
-              padding-top: 15px;
+      .field-mobilepanel {
+        display: grid;
+        max-width: 368px;
 
-              a { text-decoration: underline; }
-  
-              p p {
-                  font-size: var(--body-fd-sm-font-size);
-              }
+        .field-wrapper {
+          p {
+            margin: 0;
           }
-  
-          .field-mobilepanel {
-              display: grid;
-              max-width: 368px;
-  
-              .field-wrapper {
-                  p {
-                      margin: 0;
-                  }
-  
-                  p p {
-                      font-size: var(--body-md-font-size) !important;
-                      font-weight: var(--font-weight-medium);
-                  }
-              }
-  
-              .field-countrycode {
-                  grid-column: span 4;
-                  margin-top: -19px;
-                  align-self: flex-end;
-                  max-width: 108px;
-  
-                  select {
-                      background: url('../icons/india-flag.png') no-repeat 20px center;
-                      border-radius: var(--form-input-border-radius) 0 0 var(--form-input-border-radius) !important;
-                      padding: 0 20px 0 0 !important;
-                      text-align: right;
-                      margin-top: 0;
-                      letter-spacing: 0 !important;
-                      pointer-events: none;
-                      appearance: none;
-  
-                      &:focus{
-                          outline: none;
-                      }
-                  }
-              }
-  
-              .field-registeredmobilenumber {
-                  grid-column: span 8;
-                  margin-left: -22px;
-                  align-self: flex-end;
-  
-                  input {
-                      border-radius: 0 var(--form-input-border-radius) var(--form-input-border-radius) 0;
-                      margin-top: 5px;
-                  }
 
-                  label { margin: 18px 0 0 10px; }
-  
-                  .field-description {
-                      margin: -12px -10px -11px 0;
-                      position: absolute;
-                      left: -38%;
-                  }
-              }
-
-              .field-registeredmobilenumber:is([data-active='true'], [data-empty='false']) > label {
-                  left: -32%;
-              }
+          p p {
+            font-size: var(--body-md-font-size) !important;
+            font-weight: var(--font-weight-medium);
           }
-  
-          .field-stepstofollow {
-              display: grid;
-              background: var(--color-interface-background-quinary);
-              padding: 10px 0 10px 10px;
-              border-radius: 20px;
-              width: 98%;
-              justify-content: center;
-  
-              legend {
-                  padding: 60px 0 0 20px;
-                  font-size: var(--body-fd-xx-lg-font-size);
-                  color: var(--color-interface-text-primary);
-              }
-  
-              fieldset {
-                  padding: 30px 10px 10px;
-                  text-align: center;
-                  display: inline-block;
-  
-                  img {
-                      width: 40px;
-                      height: 40px;
-                      font-size: var(--body-fd-sm-font-size);
-                  }
-  
-                  p:nth-child(1) {
-                      font-size: var(--body-fd-sm-font-size);
-                  }
-  
-                  .plain-text-wrapper {
-                      white-space: normal !important;
-                  }
-              }
+        }
 
-              .field-step4panel {
-                  padding-right: 20px;
-              }
+        .field-countrycode {
+          grid-column: span 4;
+          margin-top: -19px;
+          align-self: flex-end;
+          max-width: 108px;
+
+          select {
+            background: url('../icons/india-flag.png') no-repeat 20px center;
+            border-radius: var(--form-input-border-radius) 0 0
+              var(--form-input-border-radius) !important;
+            padding: 0 20px 0 0 !important;
+            text-align: right;
+            margin-top: 0;
+            letter-spacing: 0 !important;
+            pointer-events: none;
+            appearance: none;
+
+            &:focus {
+              outline: none;
+            }
           }
+        }
+
+        .field-registeredmobilenumber {
+          grid-column: span 8;
+          margin-left: -22px;
+          align-self: flex-end;
+
+          input {
+            border-radius: 0 var(--form-input-border-radius)
+              var(--form-input-border-radius) 0;
+            margin-top: 5px;
+          }
+
+          label {
+            margin: 18px 0 0 10px;
+          }
+
+          .field-description {
+            margin: -12px -10px -11px 0;
+            position: absolute;
+            left: -38%;
+          }
+        }
+
+        .field-registeredmobilenumber:is(
+            [data-active='true'],
+            [data-empty='false']
+          )
+          > label {
+          left: -32%;
+        }
       }
 
-      .field-identifierpanel {
-          margin: 0 !important;
-          max-width: 368px;
-          .field-pan input { letter-spacing: 9px; }
-  
-          .field-pandobselection {
-              gap: 4px;
-  
-              legend {
-                  font-size: var(--body-md-font-size) !important;
-                  font-weight: var(--font-weight-medium);
-                  margin-right: 24px;
-              }
-  
-              .field-pandobselection {
-                  margin-right: 15px;
-  
-                  label {
-                      font-size: var(--body-sm-font-size) !important;
-                      font-weight: var(--font-weight-medium);
-                  }
-              }
+      .field-stepstofollow {
+        display: grid;
+        background: var(--color-interface-background-quinary);
+        padding: 10px 0 10px 10px;
+        border-radius: 20px;
+        width: 98%;
+        justify-content: center;
+
+        legend {
+          padding: 60px 0 0 20px;
+          font-size: var(--body-fd-xx-lg-font-size);
+          color: var(--color-interface-text-primary);
+        }
+
+        fieldset {
+          padding: 30px 10px 10px;
+          text-align: center;
+          display: inline-block;
+
+          img {
+            width: 40px;
+            height: 40px;
+            font-size: var(--body-fd-sm-font-size);
           }
 
-          .field-dateofbirth, .field-pan { align-self: end; }
-      }
-
-      /* OTP Panel Styling */
-      .field-otppanelwrapper {
-          grid-template-rows: auto auto 270px;
-
-          .field-otppanel {
-              max-width: 100%;
-              grid-template-rows: auto;
-              padding: 40px 40px 0 10px;
-  
-              .field-otppanel { 
-                  text-align: left;
-
-                  .field-otpsubpanel .field-numretries {
-                    margin: -6px -14px 0 -30px;
-
-                    input {
-                      font-size: var(--body-fd-sm-font-size) !important;
-                      letter-spacing: normal !important;
-                      color: var(--color-interface-text-secondary) !important;
-                    }
-                  }
-              }
-  
-              legend {
-                  b {
-                      color: var(--color-interface-background-quaternary);
-                      font-size: var(--body-fd-xx-lg-font-size);
-                  }
-              }
-  
-              .field-otphelptext { 
-                  margin-top: -60px;
-                  font-size: var(--body-fd-md-font-size);
-                  font-weight: var(--font-weight-bold);
-  
-                  p {
-                      color: var(--color-input-text-primary);
-                      font-size: var(--body-fd-md-font-size);
-                      font-weight: var(--font-weight-regular);
-                      display: inline-block;
-                  }
-              }
-  
-              .field-otpnumber {
-                  margin: -28px 0 -18px;
-  
-                  input { 
-                    max-width: 422px;
-                    letter-spacing: 51px;
-                  }
-              }
-  
-              .field-secondspanel {
-                  display: flex;
-                  flex-direction: row;
-              }
-              
-              .field-resendotplabel {
-                  margin: 17px 0 0;
-                  width: fit-content;
-  
-                  p {
-                      font-size: var(--body-fd-sm-font-size);
-                      padding: 0;
-                  }
-              }
-  
-              .field-seconds { 
-                  margin: -1px 0 0 -15px;
-                  width: fit-content;
-  
-                  input[type="number"] {
-                      border: none;
-                      width: 50px;
-                      margin: 0;
-                      padding: 0;
-                      pointer-events: none;
-                      appearance: none;
-                  }
-              }
-  
-              .field-sectext { 
-                  width: fit-content;
-                  margin: 17px 0 0 -54px;
-                  p { font-size: var(--body-fd-sm-font-size); }
-              }
+          p:nth-child(1) {
+            font-size: var(--body-fd-sm-font-size);
           }
-      }
-      
 
-      .field-otppanel:has(.field-secondspanel:not([data-visible='false'])) {
-          .field-otpsubpanel {
-              grid-column: span 3;
-              margin: 5px 0 0;
+          .plain-text-wrapper {
+            white-space: normal !important;
           }
+        }
+
+        .field-step4panel {
+          padding-right: 20px;
+        }
+      }
+    }
+
+    .field-identifierpanel {
+      margin: 0 !important;
+      max-width: 368px;
+
+      .field-pan input {
+        letter-spacing: 9px;
       }
 
-      .field-submitotp {
-          padding: 0 20px 40px;
-          margin-top: 0 !important;
+      .field-pandobselection {
+        gap: 4px;
+
+        legend {
+          font-size: var(--body-md-font-size) !important;
+          font-weight: var(--font-weight-medium);
+          margin-right: 24px;
+        }
+
+        .field-pandobselection {
+          margin-right: 15px;
+
+          label {
+            font-size: var(--body-sm-font-size) !important;
+            font-weight: var(--font-weight-medium);
+          }
+        }
       }
 
-      /* Button Styling */
-      .button-wrapper {
+      .field-dateofbirth,
+      .field-pan {
+        align-self: end;
+      }
+    }
+
+    /* OTP Panel Styling */
+    .field-otppanelwrapper {
+      grid-template-rows: auto auto 270px;
+
+      .field-otppanel {
+        max-width: 100%;
+        grid-template-rows: auto;
+        padding: 40px 40px 0 10px;
+
+        .field-otppanel {
           text-align: left;
-      
-          .button {
-              font-size: var(--form-font-size-xs);
-              max-width: 272px;
-              width: 100%;
-          }
-      }
 
-  }    
+          .field-otpsubpanel .field-numretries {
+            margin: -6px -14px 0 -30px;
+
+            input {
+              font-size: var(--body-fd-sm-font-size) !important;
+              letter-spacing: normal !important;
+              color: var(--color-interface-text-secondary) !important;
+            }
+          }
+        }
+
+        legend {
+          b {
+            color: var(--color-interface-background-quaternary);
+            font-size: var(--body-fd-xx-lg-font-size);
+          }
+        }
+
+        .field-otphelptext {
+          margin-top: -60px;
+          font-size: var(--body-fd-md-font-size);
+          font-weight: var(--font-weight-bold);
+
+          p {
+            color: var(--color-input-text-primary);
+            font-size: var(--body-fd-md-font-size);
+            font-weight: var(--font-weight-regular);
+            display: inline-block;
+          }
+        }
+
+        .field-otpnumber {
+          margin: -28px 0 -18px;
+
+          input {
+            max-width: 422px;
+            letter-spacing: 51px;
+          }
+        }
+
+        .field-secondspanel {
+          display: flex;
+          flex-direction: row;
+        }
+
+        .field-resendotplabel {
+          margin: 17px 0 0;
+          width: fit-content;
+
+          p {
+            font-size: var(--body-fd-sm-font-size);
+            padding: 0;
+          }
+        }
+
+        .field-seconds {
+          margin: -1px 0 0 -15px;
+          width: fit-content;
+
+          input[type='number'] {
+            border: none;
+            width: 50px;
+            margin: 0;
+            padding: 0;
+            pointer-events: none;
+            appearance: none;
+          }
+        }
+
+        .field-sectext {
+          width: fit-content;
+          margin: 17px 0 0 -54px;
+
+          p {
+            font-size: var(--body-fd-sm-font-size);
+          }
+        }
+      }
+    }
+
+    .field-otppanel:has(.field-secondspanel:not([data-visible='false'])) {
+      .field-otpsubpanel {
+        grid-column: span 3;
+        margin: 5px 0 0;
+      }
+    }
+
+    .field-submitotp {
+      padding: 0 20px 40px;
+      margin-top: 0 !important;
+    }
+
+    /* Button Styling */
+    .button-wrapper {
+      text-align: left;
+
+      .button {
+        font-size: var(--form-font-size-xs);
+        max-width: 272px;
+        width: 100%;
+      }
+    }
+  }
 }
 
 /* Multiple Customer Id  */
@@ -420,115 +447,127 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
   grid-template-rows: auto auto 1fr;
 
   .field-custidproceedlabel p {
-      font-weight: var(--font-weight-extra-bold);
-      color: var(--color-interface-text-primary);
-      font-size: var(--body-fd-xx-lg-font-size);
-      margin-bottom: 10px;
+    font-weight: var(--font-weight-extra-bold);
+    color: var(--color-interface-text-primary);
+    font-size: var(--body-fd-xx-lg-font-size);
+    margin-bottom: 10px;
   }
 
-  .repeat-wrapper { gap: 20px; }
-  
+  .repeat-wrapper {
+    gap: 20px;
+  }
+
   .field-multiplecustidrepeatable {
     max-height: 383px;
     overflow-y: auto;
   }
 
-  .field-multiplecustidrepeatable:not(:has(.repeat-wrapper)):has(input[type="radio"]:checked):not(.radio-group-wrapper), .field-multiplecustidrepeatable:has(.repeat-wrapper) fieldset:has(input[type="radio"]:checked):not(.radio-group-wrapper) {
+  .field-multiplecustidrepeatable:not(:has(.repeat-wrapper)):has(
+      input[type='radio']:checked
+    ):not(.radio-group-wrapper),
+  .field-multiplecustidrepeatable:has(.repeat-wrapper)
+    fieldset:has(input[type='radio']:checked):not(.radio-group-wrapper) {
     border: 1px solid var(--color-action-border-primary-default);
   }
-  
 
-  .field-multiplecustidrepeatable:not(:has(.repeat-wrapper)), .field-multiplecustidrepeatable:has(.repeat-wrapper) fieldset {
-      border-radius: 16px;
-      border: 1px solid var(--color-interface-border-primary);
-      padding: 24px;
-      max-height: 160px;
-      max-width: 368px;
+  .field-multiplecustidrepeatable:not(:has(.repeat-wrapper)),
+  .field-multiplecustidrepeatable:has(.repeat-wrapper) fieldset {
+    border-radius: 16px;
+    border: 1px solid var(--color-interface-border-primary);
+    padding: 24px;
+    max-height: 160px;
+    max-width: 368px;
 
-      .field-custidlabel p {
-          color: var(--color-interface-text-primary);
-          font-size: var(--body-fd-md-font-size);
-          font-weight: var(--font-weight-regular);
+    .field-custidlabel p {
+      color: var(--color-interface-text-primary);
+      font-size: var(--body-fd-md-font-size);
+      font-weight: var(--font-weight-regular);
+    }
+
+    .field-multiplecustidselect {
+      margin-top: 2px;
+      flex-direction: row-reverse;
+      padding: 0;
+      border: none;
+
+      input {
+        margin-top: -7px;
       }
 
-      .field-multiplecustidselect { 
-          margin-top: 2px; 
-          flex-direction: row-reverse;
-          padding: 0;
-          border: none;
-          input { margin-top: -7px; }
-          
-          label { 
-            margin-top: -12px; 
-            font-size: var(--body-fd-md-font-size);
-            font-weight: var(--font-weight-small);
-            letter-spacing: -0.01em;
-            text-align: left;
-          }
-      }
-
-      .field-maskedaccno {
-        margin-top: -22px;
-
-          input { 
-              border: none;
-              margin: 0;
-              padding: 0;
-              height: 21px !important;
-              pointer-events: none;
-              font-size: var(--body-fd-x-lg-font-size);
-              font-weight: var(--font-weight-extra-bold);
-              letter-spacing: -0.01em;
-              text-align: left;
-              color: var(--color-interface-text-primary);
-          }
-      }
-
-      .field-nooffds {
-        display: grid;
-        grid-template-columns: 85% 15%;
-        height: 52px;
-        align-items: center;
-        background: var(--color-interface-background-quinary);
-        border-radius: 8px;
-        pointer-events: none;
+      label {
         margin-top: -12px;
-
-          label { 
-              padding-left: 16px; 
-              color: var(--color-interface-text-secondary);
-              font-size: var(--body-md-font-size);
-          }
-
-          input {
-              margin: 0;
-              height: 42px !important;
-              padding: 0;
-              text-align: center;
-              border: none;
-              background: var(--color-interface-background-quinary);
-              color: var(--color-interface-text-quaternary) !important;
-              font-size: var(--body-md-font-size) !important;
-              font-weight: var(--font-weight-bold);
-              letter-spacing: normal !important;
-          }
+        font-size: var(--body-fd-md-font-size);
+        font-weight: var(--font-weight-small);
+        letter-spacing: -0.01em;
+        text-align: left;
       }
+    }
+
+    .field-maskedaccno {
+      margin-top: -22px;
+
+      input {
+        border: none;
+        margin: 0;
+        padding: 0;
+        height: 21px !important;
+        pointer-events: none;
+        font-size: var(--body-fd-x-lg-font-size);
+        font-weight: var(--font-weight-extra-bold);
+        letter-spacing: -0.01em;
+        text-align: left;
+        color: var(--color-interface-text-primary);
+      }
+    }
+
+    .field-nooffds {
+      display: grid;
+      grid-template-columns: 85% 15%;
+      height: 52px;
+      align-items: center;
+      background: var(--color-interface-background-quinary);
+      border-radius: 8px;
+      pointer-events: none;
+      margin-top: -12px;
+
+      label {
+        padding-left: 16px;
+        color: var(--color-interface-text-secondary);
+        font-size: var(--body-md-font-size);
+      }
+
+      input {
+        margin: 0;
+        height: 42px !important;
+        padding: 0;
+        text-align: center;
+        border: none;
+        background: var(--color-interface-background-quinary);
+        color: var(--color-interface-text-quaternary) !important;
+        font-size: var(--body-md-font-size) !important;
+        font-weight: var(--font-weight-bold);
+        letter-spacing: normal !important;
+      }
+    }
   }
 }
 
 /* Wizard Screens */
-.fdlien .section.form-container:has(.field-fdbasedcreditcardwizard:not([data-visible='false'])) {
+.fdlien
+  .section.form-container:has(
+    .field-fdbasedcreditcardwizard:not([data-visible='false'])
+  ) {
   width: 95%;
   margin: 40px auto 0 !important;
   border-radius: 24px 24px 0 0;
 
   .wizard-button-wrapper {
-      display: none;
+    display: none;
   }
 }
 
 /* Select FD */
-.fdlien .field-fdbasedcreditcardwizard {  
+.fdlien .field-fdbasedcreditcardwizard {
   .wizard-menu-items {
     position: absolute;
     left: 10%;
@@ -539,7 +578,7 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     border-radius: 24px;
     padding: 10px;
     border: 1px solid var(--color-interface-border-primary);
-    
+
     .wizard-menu-item {
       margin: 0 25px 0 0;
     }
@@ -562,375 +601,393 @@ body.fdlien:has(.fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visibl
     }
 
     li.wizard-menu-active-item {
-        color: var(--color-interface-button-background);
+      color: var(--color-interface-button-background);
     }
 
-    li.wizard-menu-item::before{
+    li.wizard-menu-item::before {
       border: 1px solid #ccc;
       vertical-align: bottom;
     }
 
-    li.wizard-menu-active-item::before{
+    li.wizard-menu-active-item::before {
       border: none;
     }
 
     li:first-child::before {
-      background: url('../icons/Indicator.png') no-repeat center center / 40px 40px;
+      background: url('../icons/Indicator.png') no-repeat center center / 40px
+        40px;
       content: '';
     }
-    
+
     li.wizard-menu-active-item:first-child::before {
-      background: url('../icons/Indicator1-active.png') no-repeat center center / 40px 40px;
+      background: url('../icons/Indicator1-active.png') no-repeat center center /
+        40px 40px;
       content: '';
     }
 
     li.wizard-menu-item:nth-child(2)::before {
-      background: url('../icons/Indicator2.png') no-repeat center center / 40px 40px;
+      background: url('../icons/Indicator2.png') no-repeat center center / 40px
+        40px;
       content: '';
     }
 
     li.wizard-menu-active-item:nth-child(2)::before {
-        background: url('../icons/Indicator2-active.png') no-repeat center center / 40px 40px;
-        content: '';
+      background: url('../icons/Indicator2-active.png') no-repeat center center /
+        40px 40px;
+      content: '';
     }
 
     li.wizard-menu-item:last-child::before {
-      background: url('../icons/Indicator3.png') no-repeat center center / 40px 40px;
+      background: url('../icons/Indicator3.png') no-repeat center center / 40px
+        40px;
       content: '';
     }
 
     li.wizard-menu-active-item:nth-child(3)::before {
-        background: url('../icons/Indicator3-active.png') no-repeat center center / 40px 40px;
-        content: '';
+      background: url('../icons/Indicator3-active.png') no-repeat center center /
+        40px 40px;
+      content: '';
     }
   }
 
-    .field-backlinkmultiplecust button, .field-backlinkbasicdetails button {
-        color: var(--color-action-text-secondary-default);
-        background: var(--color-interface-background-primary);
-        font-weight: var(--font-weight-regular);
-        max-width: fit-content !important;
+  .field-backlinkmultiplecust button,
+  .field-backlinkbasicdetails button {
+    color: var(--color-action-text-secondary-default);
+    background: var(--color-interface-background-primary);
+    font-weight: var(--font-weight-regular);
+    max-width: fit-content !important;
+  }
+
+  .field-fdselectioninfo .field-customername label,
+  .field-fdselectioninfo .field-customername input,
+  .field-basicdetails .field-detailssectionlabel1 p {
+    font: var(--font-family-default);
+    font-weight: var(--font-weight-bold) !important;
+    font-size: var(--body-fd-xx-lg-font-size) !important;
+    color: var(--color-interface-text-primary) !important;
+    pointer-events: none;
+    line-height: 1px;
+    padding-top: 10px;
+  }
+
+  div[class*='field-select-fd-subtext'] p,
+  div[class*='field-pleasenotetext'] p,
+  .field-selectfdtncpanel-title p,
+  .field-detailssectionlabel2 p,
+  .field-creditlimitmax p {
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-md-font-size);
+    color: var(--color-interface-text-secondary);
+    margin: 0;
+    line-height: 1px;
+    padding-bottom: 5px;
+  }
+
+  .field-creditlimitmax {
+    text-align: end;
+  }
+
+  .field-selectfd {
+    .field-backlinkmultiplecust button:hover {
+      background-color: none !important;
     }
 
-    .field-fdselectioninfo .field-customername label, .field-fdselectioninfo .field-customername input,
-    .field-basicdetails .field-detailssectionlabel1 p {
-        font: var(--font-family-default);
-        font-weight: var(--font-weight-bold) !important;
-        font-size: var(--body-fd-xx-lg-font-size) !important;
-        color: var(--color-interface-text-primary) !important;
-        pointer-events: none;
-        line-height: 1px;
-        padding-top: 10px;
-    }
+    .field-fdselectioninfo {
+      margin-top: -21px;
 
-    div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p, .field-detailssectionlabel2 p, .field-creditlimitmax p {
-        font-weight: var(--font-weight-regular);
-        font-size: var(--body-md-font-size);
-        color: var(--color-interface-text-secondary);
-        margin: 0;
-        line-height: 1px;
-        padding-bottom: 5px;
-    }
+      .field-selectedfdpanel {
+        display: flex;
+        justify-content: end;
 
-    .field-creditlimitmax { text-align: end; }
-  
-    .field-selectfd {
-      .field-backlinkmultiplecust button:hover {
-        background-color: none !important;
+        .field-selectallfdbutton {
+          button {
+            &:hover {
+              background: none !important;
+            }
+          }
+        }
+
+        .field-selectedfdnum,
+        .field-selectedfdnummax {
+          width: 30px;
+
+          input[type='number'] {
+            border: none;
+            pointer-events: none;
+            margin-top: 2px;
+            padding: 0;
+            width: 30px;
+            height: 50px !important;
+
+            &:hover {
+              box-shadow: none;
+            }
+          }
+
+          input[type='number']:hover::-webkit-inner-spin-button,
+          input[type='number']:hover::-webkit-outer-spin-button {
+            display: none;
+          }
+        }
+
+        .field-selectedfdbreak {
+          margin-top: 10px;
+          width: 10px;
+        }
+
+        .field-selectedfdselected {
+          p {
+            margin: 12px 0 0 !important;
+            color: var(--color-input-text-primary);
+            font-size: var(--body-fd-md-font-size);
+          }
+        }
       }
 
-      .field-fdselectioninfo {
-          margin-top: -21px;
+      .field-customername {
+        display: flex;
 
-          .field-selectedfdpanel {
-            display: flex;
-            justify-content: end;
+        label {
+          width: max-content;
+          align-self: center;
+          pointer-events: none;
+          margin: -1px 0 0;
+          padding: 0;
+        }
 
-            .field-selectallfdbutton {
-                button {
-                    &:hover {
-                        background: none !important;
-                    }
-                }
-            }
+        input {
+          padding: 0;
+          margin: 0 0 0 8px;
+          border: none;
+          pointer-events: none;
 
-            .field-selectedfdnum, .field-selectedfdnummax {
-                width: 30px;
-
-                input[type="number"] {
-                    border: none;
-                    pointer-events: none;
-                    margin-top: 2px;
-                    padding: 0;
-                    width: 30px;
-                    height: 50px !important;
-
-                    &:hover {
-                        box-shadow: none;
-                    }
-                }
-
-                input[type="number"]:hover::-webkit-inner-spin-button,
-                input[type="number"]:hover::-webkit-outer-spin-button {
-                          display: none;
-                }
-            }
-
-            .field-selectedfdbreak {
-                margin-top: 10px;
-                width: 10px;
-            }
-
-            .field-selectedfdselected {
-                p { 
-                    margin: 12px 0 0 !important; 
-                    color: var(--color-input-text-primary);
-                    font-size: var(--body-fd-md-font-size);
-                }
-            }
-            
+          &:focus {
+            outline: none;
           }
-
-          .field-customername { 
-              display: flex; 
-              
-              label {
-                  width: max-content;
-                  align-self: center;
-                  pointer-events: none;
-                  margin: -1px 0 0;
-                  padding: 0;
-              }
-
-              input {
-                  padding: 0;
-                  margin: 0 0 0 8px;
-                  border: none;
-                  pointer-events: none;
-
-                  &:focus{
-                    outline: none;
-                  }
-              }
-          }
-
-          .field-creditlimit {
-              display: grid;
-              grid-template-columns: 204px auto;
-              border: solid 1px var(--color-interface-border-secondary);
-              border-radius: 12px;
-              height: 62px;
-
-              label {
-                  text-align: right;
-                  align-self: center;
-                  justify-self: center;
-              }
-
-              input {
-                  padding: 0;
-                  text-align: center;
-                  margin: 0;
-                  height: 50px;
-                  border-radius: 0 12px 12px 0;
-                  border: none;
-                  background: var(--color-interface-background-quinary);
-                  font-size: var(--body-fd-x-lg-font-size);
-                  font-weight: var(--font-weight-bold);
-                  color: var(--color-interface-text-primary);
-                  pointer-events: none;
-              }
-          }
-
-          .field-selectallfdbutton { text-align: right !important; 
-
-                button {
-                    text-align: end;
-                    background: var(--color-interface-background-primary);
-                    color: var(--color-action-text-secondary-default);
-                }
-          }
-
-          .field-fdnumberselection .repeat-wrapper { 
-            display: flex; 
-            overflow: auto;
-            padding-bottom: 20px;
-            gap: 23px;
-          }
-
-          .field-fdnumberselection:not(:has(.repeat-wrapper)), .field-fdnumberselection:has(.repeat-wrapper) fieldset {
-              padding: 20px 16px;
-              border: solid 1px var(--color-action-border-primary-default);
-              border-radius: 16px;
-              max-height: 196px;
-              max-width: 263px;
-              min-width: 263px;
-
-              label {
-                  padding: 0 0 0 12px;
-                  font-size: var(--body-fd-sm-font-size);
-                  font-weight: var(--font-weight-regular);
-              }
-
-              input:not([type="checkbox"]) {
-                  border: none;
-                  font-size: var(--body-fd-md-font-size);
-                  font-weight: var(--font-weight-bold);
-                  color: var(--color-interface-text-quaternary);
-                  text-align: right;
-                  padding: 0;
-                  margin: 0 12px 0 0;
-                  background: var(--color-interface-background-quinary);
-                  pointer-events: none;
-                  height: 50px !important;
-
-                  &:hover {
-                    box-shadow: none;
-                  }
-              }
-
-              .field-fdnumber {
-                  margin: -15px 0 10px;
-
-                  label {
-                      padding: 0;
-                      margin-top: -10px;
-                      font-weight: var(--font-weight-bold);
-                      font-size: var(--body-fd-x-lg-font-size);
-                      color: var(--color-interface-text-primary);
-                      pointer-events: none;
-                  }
-
-                  input {
-                      text-align: left;
-                      margin-top: -16px;
-                      font-weight: var(--font-weight-medium);
-                      font-size: var(--body-fd-md-font-size);
-                      background-color: var(--color-interface-background-primary);
-                      pointer-events: none;
-
-                      &:hover{
-                        border: none;
-                        outline: none;
-                        box-shadow: none;
-                      }
-                  }
-
-                  input[type="number"]:hover::-webkit-inner-spin-button,
-                  input[type="number"]:hover::-webkit-outer-spin-button {
-                      display: none;
-                  }
-              }
-
-              .field-fdaccselect { 
-                margin: 0;
-                grid-column: revert;
-              }
-              
-              .field-selectedfdamount {
-                  display: flex;
-                  margin-top: -30px;
-                  border-radius: 8px;
-                  background: var(--color-interface-background-quinary);
-
-                  label { 
-                    align-self: center; 
-                    color: var(--color-interface-text-secondary) !important;
-                    font-weight: var(--font-weight-medium) !important;
-                }
-              }
-
-              .field-maturingdate {
-                  display: flex;
-                  margin-top: -25px;
-                  border-bottom-left-radius: 8px;
-                  border-bottom-right-radius: 8px;
-                  background: var(--color-interface-background-quinary);                  
-                  border-top: 1px dashed var(--color-interface-border-primary);
-
-                  label {
-                      width: 90%;
-                      align-self: center;
-                  }
-
-                  input[type="text"] {
-                    font-size: var(--body-fd-sm-font-size);
-                  }
-              }
-          }
+        }
       }
 
-      .field-selectfdtncpanel {
-          padding: 16px 16px 23px;
-          border: solid 1px var(--color-action-border-primary-disabled);
-          border-radius: 12px;
+      .field-creditlimit {
+        display: grid;
+        grid-template-columns: 204px auto;
+        border: solid 1px var(--color-interface-border-secondary);
+        border-radius: 12px;
+        height: 62px;
+
+        label {
+          text-align: right;
+          align-self: center;
+          justify-self: center;
+        }
+
+        input {
+          padding: 0;
+          text-align: center;
+          margin: 0;
+          height: 50px;
+          border-radius: 0 12px 12px 0;
+          border: none;
+          background: var(--color-interface-background-quinary);
+          font-size: var(--body-fd-x-lg-font-size);
+          font-weight: var(--font-weight-bold);
+          color: var(--color-interface-text-primary);
+          pointer-events: none;
+        }
+      }
+
+      .field-selectallfdbutton {
+        text-align: right !important;
+
+        button {
+          text-align: end;
+          background: var(--color-interface-background-primary);
+          color: var(--color-action-text-secondary-default);
+        }
+      }
+
+      .field-fdnumberselection .repeat-wrapper {
+        display: flex;
+        overflow: auto;
+        padding-bottom: 20px;
+        gap: 23px;
+      }
+
+      .field-fdnumberselection:not(:has(.repeat-wrapper)),
+      .field-fdnumberselection:has(.repeat-wrapper) fieldset {
+        padding: 20px 16px;
+        border: solid 1px var(--color-action-border-primary-default);
+        border-radius: 16px;
+        max-height: 196px;
+        max-width: 263px;
+        min-width: 263px;
+
+        label {
+          padding: 0 0 0 12px;
+          font-size: var(--body-fd-sm-font-size);
+          font-weight: var(--font-weight-regular);
+        }
+
+        input:not([type='checkbox']) {
+          border: none;
+          font-size: var(--body-fd-md-font-size);
+          font-weight: var(--font-weight-bold);
+          color: var(--color-interface-text-quaternary);
+          text-align: right;
+          padding: 0;
+          margin: 0 12px 0 0;
+          background: var(--color-interface-background-quinary);
+          pointer-events: none;
+          height: 50px !important;
+
+          &:hover {
+            box-shadow: none;
+          }
+        }
+
+        .field-fdnumber {
+          margin: -15px 0 10px;
+
+          label {
+            padding: 0;
+            margin-top: -10px;
+            font-weight: var(--font-weight-bold);
+            font-size: var(--body-fd-x-lg-font-size);
+            color: var(--color-interface-text-primary);
+            pointer-events: none;
+          }
+
+          input {
+            text-align: left;
+            margin-top: -16px;
+            font-weight: var(--font-weight-medium);
+            font-size: var(--body-fd-md-font-size);
+            background-color: var(--color-interface-background-primary);
+            pointer-events: none;
+
+            &:hover {
+              border: none;
+              outline: none;
+              box-shadow: none;
+            }
+          }
+
+          input[type='number']:hover::-webkit-inner-spin-button,
+          input[type='number']:hover::-webkit-outer-spin-button {
+            display: none;
+          }
+        }
+
+        .field-fdaccselect {
+          margin: 0;
+          grid-column: revert;
+        }
+
+        .field-selectedfdamount {
+          display: flex;
+          margin-top: -30px;
+          border-radius: 8px;
           background: var(--color-interface-background-quinary);
 
-          .field-selectfdtncpanel-title p {
-              font-size: var(--body-fd-lg-font-size);
-              font-weight: var(--font-weight-medium);
-              line-height: 18px;
-              color: var(--color-interface-text-quaternary);
+          label {
+            align-self: center;
+            color: var(--color-interface-text-secondary) !important;
+            font-weight: var(--font-weight-medium) !important;
+          }
+        }
+
+        .field-maturingdate {
+          display: flex;
+          margin-top: -25px;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          background: var(--color-interface-background-quinary);
+          border-top: 1px dashed var(--color-interface-border-primary);
+
+          label {
+            width: 90%;
+            align-self: center;
           }
 
-          .field-pleasenotetext1, .field-pleasenotetext2 {
-              line-height: 7px;
-
-              p p{
-                line-height: 16px;
-              }
+          input[type='text'] {
+            font-size: var(--body-fd-sm-font-size);
           }
+        }
       }
     }
 
-    .field-basicdetails {
-        padding: 0 30px;
+    .field-selectfdtncpanel {
+      padding: 16px 16px 23px;
+      border: solid 1px var(--color-action-border-primary-disabled);
+      border-radius: 12px;
+      background: var(--color-interface-background-quinary);
 
-        .field-detailssectionlabel2 p {
-            line-height: inherit;
-        }
+      .field-selectfdtncpanel-title p {
+        font-size: var(--body-fd-lg-font-size);
+        font-weight: var(--font-weight-medium);
+        line-height: 18px;
+        color: var(--color-interface-text-quaternary);
+      }
 
-        .field-nameoncard .field-description p {
-            font-size: var(--body-x-sm-font-size);
+      .field-pleasenotetext1,
+      .field-pleasenotetext2 {
+        line-height: 7px;
+
+        p p {
+          line-height: 16px;
         }
+      }
     }
-}
+  }
 
+  .field-basicdetails {
+    padding: 0 30px;
+
+    .field-detailssectionlabel2 p {
+      line-height: inherit;
+    }
+
+    .field-nameoncard .field-description p {
+      font-size: var(--body-x-sm-font-size);
+    }
+  }
+}
 
 /* Error Screens */
 .field-resultpanel:has(.field-errorresultpanel) {
-    position: absolute;
-    left: 0;
-    top: 16%;
+  position: absolute;
+  left: 0;
+  top: 16%;
 }
 
 .field-errorresultpanel {
-    .field-errormessagetext {
-        border-radius: 0 !important;
-        background: var(--color-interface-fd-background-primary) !important;
+  .field-errormessagetext {
+    border-radius: 0 !important;
+    background: var(--color-interface-fd-background-primary) !important;
 
-        &:not(:has(p))::before {
-            width: 0 !important;
-            height: 0 !important;
-            background: none !important;
-        }        
+    &:not(:has(p))::before {
+      width: 0 !important;
+      height: 0 !important;
+      background: none !important;
     }
+  }
 
-    .field-errormessagetext:not(:has(p)){
-        text-align: left !important;
-        display: inline-block !important;
-        padding: 80px 450px 80px 60px !important;
-        background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 95% 0 !important ;
-    }
+  .field-errormessagetext:not(:has(p)) {
+    text-align: left !important;
+    display: inline-block !important;
+    padding: 80px 450px 80px 60px !important;
+    background: var(--color-interface-fd-background-primary)
+      url('../icons/log-out-sad.png') no-repeat 95% 0 !important ;
+  }
 
-  .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
-      text-align: center !important;
+  .button-wrapper.field-ntberrorpage,
+  .button-wrapper.field-tryagainbuttonerrorpanel {
+    text-align: center !important;
   }
 }
 
 /* Footer */
 header:has(~ .fd-form-wrapper) {
-  background-color: var(--color-interface-fd-background-primary)
+  background-color: var(--color-interface-fd-background-primary);
 }
 
 .fdlien footer {
@@ -938,208 +995,244 @@ header:has(~ .fd-form-wrapper) {
   text-align: center;
 
   .cmp-container {
-      div:nth-child(1) {
-          text-align: center;
-      }
+    div:nth-child(1) {
+      text-align: center;
+    }
   }
 }
 
 /* Error Screen */
 .fdlien .field-resultpanel .field-errorresultpanel .field-errormessagetext {
-    margin: -13px 0 0;
+  margin: -13px 0 0;
 }
 
 .fdlien {
-    input, .drop-down-wrapper select { 
-        height: 60px !important;
+  input,
+  .drop-down-wrapper select {
+    height: 60px !important;
+  }
+
+  .text-wrapper:is([data-active='true'], [data-empty='false']),
+  .drop-down-wrapper:is([data-active='true'], [data-empty='false']) {
+    > label {
+      color: var(--color-input-text-placeholder-disabled) !important;
+      font-size: var(--body-fd-sm-font-size) !important;
+      font-weight: var(--font-weight-regular) !important;
+    }
+  }
+
+  .field-invalid:is([data-active='true'], [data-empty='false']):has(
+      .field-description
+    ):not(.field-otpnumber),
+  .date-wrapper.field-invalid:is([data-active='true'], [data-empty='true']):has(
+      .field-description
+    ) {
+    label {
+      color: var(--color-input-text-msg-error) !important;
+      font-size: var(--body-fd-sm-font-size) !important;
+      font-weight: var(--font-weight-regular) !important;
+    }
+  }
+
+  .field-invalid:has(.field-description) {
+    input {
+      border-color: var(--color-input-border-error) !important;
+      box-shadow: 0 0 0 2px var(--color-input-box-shadow-error-default);
+      outline: none;
     }
 
-    .text-wrapper:is([data-active='true'], [data-empty='false']), .drop-down-wrapper:is([data-active='true'], [data-empty='false']) {
-        > label {
-            color: var(--color-input-text-placeholder-disabled) !important;
-            font-size: var(--body-fd-sm-font-size) !important;
-            font-weight: var(--font-weight-regular) !important;
-        }
+    .field-description {
+      color: var(--color-input-text-msg-error) !important;
+      font-size: var(--body-fd-sm-font-size) !important;
+      font-weight: var(--font-weight-regular) !important;
     }
+  }
 
-    .field-invalid:is([data-active='true'], [data-empty="false"]):has(.field-description):not(.field-otpnumber), .date-wrapper.field-invalid:is([data-active='true'], [data-empty="true"]):has(.field-description) {
-        label {
-            color: var(--color-input-text-msg-error) !important;
-            font-size: var(--body-fd-sm-font-size) !important;
-            font-weight: var(--font-weight-regular) !important;
-        }
-    }
-    
-    .field-invalid:has(.field-description) {
-        input {
-            border-color: var(--color-input-border-error) !important;
-            box-shadow: 0 0 0 2px var(--color-input-box-shadow-error-default);
-            outline: none;
-        }
-        
-        .field-description {
-            color: var(--color-input-text-msg-error) !important;
-            font-size: var(--body-fd-sm-font-size) !important;
-            font-weight: var(--font-weight-regular) !important;
-        }
-    }
+  input::placeholder {
+    text-transform: none !important;
+    font-size: var(--body-md-font-size) !important;
+    letter-spacing: normal !important;
+  }
 
-    input::placeholder {
-        text-transform: none !important;
-        font-size: var(--body-md-font-size) !important;
-        letter-spacing: normal !important;
-    }
+  input:not([type='radio']):focus,
+  input:not([type='radio']):hover,
+  select:focus,
+  select:hover {
+    border-color: var(--color-action-border-primary-default) !important;
+    box-shadow: 0 0 0 2px var(--color-interface-background-box-shadow-secondary);
+    outline: none;
+  }
 
-    input:not([type="radio"]):focus, input:not([type="radio"]):hover, select:focus, select:hover {
-        border-color: var(--color-action-border-primary-default) !important;
-        box-shadow: 0 0 0 2px var(--color-interface-background-box-shadow-secondary);
-        outline: none;
+  .text-wrapper:not(:focus),
+  .drop-down-wrapper:not(:focus) {
+    > label {
+      color: transparent;
     }
+  }
 
-    .text-wrapper:not(:focus), .drop-down-wrapper:not(:focus) {
-        > label { color: transparent; }
+  .field-otpnumber {
+    position: relative;
+
+    input {
+      color: var(--color-input-text-default);
     }
+  }
+
+  .field-otpnumber input::placeholder {
+    font-size: 36px !important;
+    letter-spacing: 51px !important;
+    color: var(--color-input-text-placeholder-default);
+  }
 }
 
 /* For screens more than form width */
 @media (width <1280px) {
   .fdlien:has(.section.form-container) .section.form-container {
-      margin: 0 !important;
-      width: 100%;
+    margin: 0 !important;
+    width: 100%;
 
-      .field-loginmainpanel {
-          .field-loginpanel {
-              display: grid;
-          }
+    .field-loginmainpanel {
+      .field-loginpanel {
+        display: grid;
       }
+    }
   }
 }
 
-@media (width < 1120px) {    
+@media (width < 1120px) {
   .field-pandobselection {
-      display: grid;
+    display: grid;
 
-      legend {
-          grid-column: span 12;
-      }
+    legend {
+      grid-column: span 12;
+    }
 
-      .field-pandobselection {
-          width: max-content;
-      }
+    .field-pandobselection {
+      width: max-content;
+    }
   }
 }
 
 /* For tablets */
 @media (768px <=width <1280px) {
   .fdlien .form form {
-      display: block;
+    display: block;
   }
 
   .fdlien .button-wrapper {
-      text-align: center;
+    text-align: center;
   }
 
-  .fdlien header>.cmp-container div:nth-child(2) {
+  .fdlien header > .cmp-container div:nth-child(2) {
     display: none;
   }
 
-  .fdlien header>.cmp-container div:nth-child(3) {
-  display: block;
-  right: 10px;
+  .fdlien header > .cmp-container div:nth-child(3) {
+    display: block;
+    right: 10px;
   }
 
-  .fdlien header>.cmp-container div:nth-child(1) {
-      margin: 0 0 0 10px;
-      text-align: left !important;
+  .fdlien header > .cmp-container div:nth-child(1) {
+    margin: 0 0 0 10px;
+    text-align: left !important;
   }
 
   main .form .field-otppanel {
-      .field-otphelptext { 
-        margin-top: -32px !important; 
+    .field-otphelptext {
+      margin-top: -32px !important;
     }
 
-      .field-otpnumber { 
-        margin: 2px 0 -18px !important; 
-        width: 100% !important;
+    .field-otpnumber {
+      margin: 2px 0 -18px !important;
+      width: 100% !important;
     }
   }
 
-  .fdlien .field-loginmainpanel, main .form .field-otppanel {
-      margin-top: 20px !important;
-      padding: 10px !important;
+  .fdlien .field-loginmainpanel,
+  main .form .field-otppanel {
+    margin-top: 20px !important;
+    padding: 10px !important;
   }
 
   .fdlien:has(.section.form-container) .section.form-container {
-      .fd-form-wrapper{
-          .field-bannerimagepanel {
-              background: var(--color-interface-fd-background-secondary) url('../icons/banner_tablet.png') no-repeat center center / 100% 100%;
-              min-height: 225px;
-          }
-      }    
+    .fd-form-wrapper {
+      .field-bannerimagepanel {
+        background: var(--color-interface-fd-background-secondary)
+          url('../icons/banner_tablet.png') no-repeat center center / 100% 100%;
+        min-height: 225px;
+      }
+    }
 
-      .field-loginmainpanel, .field-otppanelwrapper, .field-multiplecustidselectionpanel {
-          margin: 0 auto;
-          max-width: 768px;
-          padding: 0 40px !important;
+    .field-loginmainpanel,
+    .field-otppanelwrapper,
+    .field-multiplecustidselectionpanel {
+      margin: 0 auto;
+      max-width: 768px;
+      padding: 0 40px !important;
+    }
+
+    .field-multiplecustidpanel:not([data-visible='false']) {
+      display: block !important;
+    }
+
+    .field-loginmainpanel {
+      .field-registeredmobilenumber {
+        margin: -15px 0 0;
+        max-width: 225px;
       }
 
-      .field-multiplecustidpanel:not([data-visible='false']) { display: block !important; }
-
-      .field-loginmainpanel {
-          .field-registeredmobilenumber {
-              margin: -15px 0 0;
-              max-width: 225px;
-          }
-
-          .field-countrycode select {
-              padding: 0 !important;
-              background-position: 14px center !important;
-          }
-
-          .field-stepstofollow {
-              fieldset {
-                  .plain-text-wrapper {
-                      white-space: normal !important;
-                  }
-              }
-          }
+      .field-countrycode select {
+        padding: 0 !important;
+        background-position: 14px center !important;
       }
 
-      .field-fdbasedcreditcardwizard {
-            top: 10%;
-
-          .field-selectfd {
-              .field-customername { grid-column: span 6; }
-
-              .field-creditlimit { 
-                  grid-column: span 6;
-                  text-align: center;
-                  max-height: 62px;
-
-                  input {
-                      border-width: 0 1px 1px;
-                      border-style: none solid;
-                      border-color: transparent var(--color-interface-border-secondary) var(--color-interface-border-secondary);
-                      border-radius: 0 12px 12px 0;
-                      width: 101%;
-                      margin-left: -1px;
-                  }
-              }
-
-              .field-selectedfdpanel {
-                flex-direction: row;
-    
-                .field-selectallfdbutton {
-                    margin-top: 0 !important;
-                }
-            }
+      .field-stepstofollow {
+        fieldset {
+          .plain-text-wrapper {
+            white-space: normal !important;
           }
-
-          .wizard-menu-items {
-            width: 85%;
-            left: 7%;
-          }
+        }
       }
+    }
+
+    .field-fdbasedcreditcardwizard {
+      top: 10%;
+
+      .field-selectfd {
+        .field-customername {
+          grid-column: span 6;
+        }
+
+        .field-creditlimit {
+          grid-column: span 6;
+          text-align: center;
+          max-height: 62px;
+
+          input {
+            border-width: 0 1px 1px;
+            border-style: none solid;
+            border-color: transparent var(--color-interface-border-secondary)
+              var(--color-interface-border-secondary);
+            border-radius: 0 12px 12px 0;
+            width: 101%;
+            margin-left: -1px;
+          }
+        }
+
+        .field-selectedfdpanel {
+          flex-direction: row;
+
+          .field-selectallfdbutton {
+            margin-top: 0 !important;
+          }
+        }
+      }
+
+      .wizard-menu-items {
+        width: 85%;
+        left: 7%;
+      }
+    }
   }
 
   .fdlien .field-fdbasedcreditcardwizard {
@@ -1151,9 +1244,9 @@ header:has(~ .fd-form-wrapper) {
   }
 
   .field-errorresultpanel {
-    .field-errormessagetext:not(:has(p)){
-        padding: 30px 250px 80px 20px !important;
-            text-align: left !important;
+    .field-errormessagetext:not(:has(p)) {
+      padding: 30px 250px 80px 20px !important;
+      text-align: left !important;
     }
   }
 }
@@ -1161,63 +1254,71 @@ header:has(~ .fd-form-wrapper) {
 /* For mobiles */
 @media (350px <=width <=767px) {
   .fdlien:has(.section.form-container) .section.form-container {
-      .fd-form-wrapper{
-          .field-bannerimagepanel {
-              background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
-              min-height: 225px;
-          }
-      }    
+    .fd-form-wrapper {
+      .field-bannerimagepanel {
+        background: var(--color-interface-fd-background-secondary)
+          url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
+        min-height: 225px;
+      }
+    }
   }
 
-  .fdlien header>.cmp-container div:nth-child(2) {
-      display: none;
+  .fdlien header > .cmp-container div:nth-child(2) {
+    display: none;
   }
 
-  .fdlien header>.cmp-container div:nth-child(3) {
+  .fdlien header > .cmp-container div:nth-child(3) {
     display: block;
     right: 10px;
   }
 
-  .fdlien header>.cmp-container div:nth-child(1) {
-      margin: 0 0 0 10px;
-      text-align: left !important;
+  .fdlien header > .cmp-container div:nth-child(1) {
+    margin: 0 0 0 10px;
+    text-align: left !important;
   }
 
   .fdlien .button-wrapper button {
-      max-width: none !important;
+    max-width: none !important;
   }
 
-  .fdlien .field-loginmainpanel, .fdlien .field-otppanelwrapper {
-      max-width: 480px;
-      margin: 0 auto !important;
-      padding: 20px !important;
+  .fdlien .field-loginmainpanel,
+  .fdlien .field-otppanelwrapper {
+    max-width: 480px;
+    margin: 0 auto !important;
+    padding: 20px !important;
   }
 
   .fdlien .field-loginmainpanel {
-      .field-mobilepanel, .field-identifierpanel { grid-column: span 12 !important; }
+    .field-mobilepanel,
+    .field-identifierpanel {
+      grid-column: span 12 !important;
+    }
 
-      .field-mobilepanel {
-        .field-landinglabel {
-            margin-top: 30px;
-        }
+    .field-mobilepanel {
+      .field-landinglabel {
+        margin-top: 30px;
       }
-  }  
+    }
+  }
 
-  .field-otppanel { padding: 40px 10px 0 !important; 
+  .field-otppanel {
+    padding: 40px 10px 0 !important;
 
-      .field-otpnumber { 
-          margin: 5px 0 !important;
-          width: 100% !important; 
-          grid-column: span 12 !important;
-      }
+    .field-otpnumber {
+      margin: 5px 0 !important;
+      width: 100% !important;
+      grid-column: span 12 !important;
+    }
 
-      .field-secondspanel, .field-otpresend, .field-otpsubpanel {
-          grid-column: span 6 !important;
-      }
+    .field-secondspanel,
+    .field-otpresend,
+    .field-otpsubpanel {
+      grid-column: span 6 !important;
+    }
   }
 
   .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
-      display: grid;
+    display: grid;
   }
 
   .fdlien .field-fdbasedcreditcardwizard {
@@ -1225,47 +1326,50 @@ header:has(~ .fd-form-wrapper) {
     left: 2%;
 
     .field-selectfd {
-        .field-selectfddetailspanel {
-            display: grid;
-            .field-customername { grid-column: span 6; }
+      .field-selectfddetailspanel {
+        display: grid;
 
-            .field-creditlimit { 
-                grid-column: span 6;
-                text-align: center;
-                max-height: 52px;
-            }
-
-            .field-selectedfdpanel {
-                flex-direction: row;
-    
-                .field-selectallfdbutton {
-                    margin-top: 0 !important;
-                }
-            }
+        .field-customername {
+          grid-column: span 6;
         }
+
+        .field-creditlimit {
+          grid-column: span 6;
+          text-align: center;
+          max-height: 52px;
+        }
+
+        .field-selectedfdpanel {
+          flex-direction: row;
+
+          .field-selectallfdbutton {
+            margin-top: 0 !important;
+          }
+        }
+      }
     }
 
     .wizard-menu-items {
-        flex-wrap: nowrap;
-        text-align: center;
-        gap: 10px;
+      flex-wrap: nowrap;
+      text-align: center;
+      gap: 10px;
 
-        .wizard-menu-item {
-            font-size: var(--body-x-sm-font-size);
-            margin: 0 10px;
-            
-            &::before {
-                margin: 0 25px;
-            }
+      .wizard-menu-item {
+        font-size: var(--body-x-sm-font-size);
+        margin: 0 10px;
 
-            &::after {
-                margin: 0 0 0 -40px;
-            }
+        &::before {
+          margin: 0 25px;
         }
+
+        &::after {
+          margin: 0 0 0 -40px;
+        }
+      }
     }
 
     .field-fdnumberselection {
-        display: grid;
+      display: grid;
     }
   }
 
@@ -1274,9 +1378,9 @@ header:has(~ .fd-form-wrapper) {
   }
 
   .field-errorresultpanel {
-    .field-errormessagetext:not(:has(p)){
-        padding: 30px 250px 80px 20px !important;
-        text-align: left !important;
+    .field-errormessagetext:not(:has(p)) {
+      padding: 30px 250px 80px 20px !important;
+      text-align: left !important;
     }
   }
 }
