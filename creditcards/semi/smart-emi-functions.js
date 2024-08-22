@@ -14,6 +14,35 @@ const {
 } = SEMI_CONSTANT;
 
 /**
+ * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
+ *
+ * @param {object} data
+ * @returns {object}
+ */
+const sortDataByAmount = (data) => data.sort((a, b) => b.aem_TxnAmt - a.aem_TxnAmt);
+
+/**
+ * Description placeholder
+ *
+ * @param {*} data
+ * @returns {*}
+ */
+function sortByDate(data) {
+  return data.sort((a, b) => {
+    // Split the date strings into day, month, and year
+    const [dayA, monthA, yearA] = a.aem_TxnDate.split('-').map(Number);
+    const [dayB, monthB, yearB] = b.aem_TxnDate.split('-').map(Number);
+
+    // Create Date objects from the components
+    const dateA = new Date(yearA, monthA - 1, dayA);
+    const dateB = new Date(yearB, monthB - 1, dayB);
+
+    // Compare the dates
+    return dateA - dateB;
+  });
+}
+
+/**
    * generates the journeyId
    * @param {string} visitMode - The visit mode (e.g., "online", "offline").
    * @param {string} journeyAbbreviation - The abbreviation for the journey.
@@ -87,11 +116,11 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
  * @param {number} i - current instance of panel row
  */
 const setData = (globals, panel, txn, i) => {
-  // globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: txnlist.$value });
-  globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: txn?.amount });
-  globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date });
-  globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id });
-  globals.functions.setProperty(panel[i]?.aem_TxnName, { value: txn?.name });
+  globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: txn?.checkbox || txn?.aem_Txn_checkBox }); // set the checbox value
+  globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: txn?.amount || txn?.aem_TxnAmt });
+  globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date || txn?.aem_TxnDate });
+  globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id || txn?.aem_TxnID });
+  globals.functions.setProperty(panel[i]?.aem_TxnName, { value: txn?.name || txn?.aem_TxnName });
 };
 
 /*
@@ -168,6 +197,9 @@ function checkELigibilityHandler(resPayload, globals) {
     const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
     const allTxn = ccBilledData.concat(ccUnBilledData);
     setTxnPanelData(allTxn, ccBilledData.length, billedTxnPanel, unBilledTxnPanel, globals);
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_eligibleTxnLabel, { value: `Eligible Transactions (${allTxn?.length})` });
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_TxnAvailable, { value: `Billed Transaction: (${ccBilledData?.length})` });
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_TxnAvailable, { value: `Unbilled Transaction: (${ccUnBilledData?.length})` });
     // Display card and move wizard view
     if (window !== undefined) cardDisplay(globals, resPayload);
     if (window !== undefined) moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
@@ -190,37 +222,22 @@ function selectTenure(globals) {
 }
 
 /**
- * local state variable to indicate billed or unbilled sorted or unsorted.
- */
-const isSorted = {
-  BILLED: false,
-  UNBILLED: false,
-};
-let sort = false;
-/**
- * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
+ * function sorts the billed / Unbilled Txn  array in based on the orderBy field
  * @param {string} txnType  - BILLED /  UNBILLED
+ * @param {string} orderBy - orderby amount or date
  */
-function sortTxnAmount(txnType, globals) {
-  sort = true;
+function sortData(txnType, orderBy, globals) {
   if (!txnType) return;
-  const txnData = currentFormContext.txnResponse?.[txnType]?.map((el) => ({ ...el, amount: Number(el?.amount) }));
+  // orderBy - 0 - amount ; 1 - date
   const BILLED_FRAG = 'billedTxnFragment';
   const UNBILLED_FRAG = 'unbilledTxnFragment';
   const TXN_FRAG = txnType === 'BILLED' ? BILLED_FRAG : UNBILLED_FRAG;
   const pannel = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_TxnsList;
-  const sortedData = txnData?.sort((a, b) => ((isSorted[txnType]) ? (b.amount - a.amount) : (a.amount - b.amount)));
-  const filterSelected = pannel.filter((el) => el.aem_Txn_checkBox.$value === 'on');
-  sortedData?.forEach((data, i) => {
-    setData(globals, pannel, data, i);
-    if (filterSelected.find((item) => item.aem_TxnID.$value === data.id)) {
-      globals.functions.setProperty(pannel[i].aem_Txn_checkBox, { value: 'on' });
-    } else {
-      globals.functions.setProperty(pannel[i].aem_Txn_checkBox, { value: null });
-    }
-  });
-  isSorted[txnType] = !isSorted[txnType];
-  sort = false;
+  const billed = globals.functions.exportData().smartemi.aem_billedTxn.aem_billedTxnSelection;
+  const unBilled = globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection;
+  const dataTxnList = txnType === 'BILLED' ? billed : unBilled;
+  const sortedData = (orderBy === '0') ? sortDataByAmount(dataTxnList) : sortByDate(dataTxnList);
+  sortedData?.forEach((data, i) => setData(globals, pannel, data, i));
 }
 
 /**
@@ -229,7 +246,6 @@ function sortTxnAmount(txnType, globals) {
  * @param {string} txnType - BILLED /  UNBILLED
  */
 function txnSelectHandler(checkboxVal, txnType, globals) {
-  if (!sort);
   const MAX_SELECT = 10;
   const BILLED_FRAG = 'billedTxnFragment';
   const UNBILLED_FRAG = 'unbilledTxnFragment';
@@ -249,7 +265,10 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
   }
   if ((currentFormContext.totalSelect === MAX_SELECT)) {
     /* popup alert hanldles */
+    const CONFIRM_TXT = 'You can select up to 10 transactions at a time, but you can repeat the process to convert more transactions into SmartEMI.';
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: CONFIRM_TXT });
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation1, { visible: true });
   }
 }
 export {
@@ -257,6 +276,6 @@ export {
   otpValV1,
   checkELigibilityHandler,
   selectTenure,
-  sortTxnAmount,
+  sortData,
   txnSelectHandler,
 };
