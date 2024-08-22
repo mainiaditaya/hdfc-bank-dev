@@ -219,15 +219,17 @@ const composeNameOption = (fn, mn, ln, cardType, maxlength) => {
       break;
     case 'fd':
       names = [
-        [fn, mn, ln],
         [fn, initial(mn)],
         [fn, mn],
+        [fn, ln],
         [mn, fn],
         [mn, initial(fn)],
-        [initial(mn), fn],
-        [fn, ln],
         [mn, ln],
+        [initial(mn), fn],
         [initial(mn), ln],
+        [fn],
+        [mn],
+        [ln],
       ]?.map(stringify)?.filter((el) => el && el?.length <= maxlength);
       break;
     default:
