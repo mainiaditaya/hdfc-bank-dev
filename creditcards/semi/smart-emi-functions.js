@@ -87,7 +87,7 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
  * @param {number} i - current instance of panel row
  */
 const setData = (globals, panel, txn, i) => {
-  // globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: txnlist.$value });
+  // globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: panel[i]?.aem_Txn_checkBox.$value }); // set the checbox value
   globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: txn?.amount });
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date });
   globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id });
@@ -195,13 +195,11 @@ const isSorted = {
   BILLED: false,
   UNBILLED: false,
 };
-let sort = false;
 /**
  * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
  * @param {string} txnType  - BILLED /  UNBILLED
  */
 function sortTxnAmount(txnType, globals) {
-  sort = true;
   if (!txnType) return;
   const txnData = currentFormContext.txnResponse?.[txnType]?.map((el) => ({ ...el, amount: Number(el?.amount) }));
   const BILLED_FRAG = 'billedTxnFragment';
@@ -212,6 +210,7 @@ function sortTxnAmount(txnType, globals) {
   const filterSelected = pannel.filter((el) => el.aem_Txn_checkBox.$value === 'on');
   sortedData?.forEach((data, i) => {
     setData(globals, pannel, data, i);
+    /* set the checkbox value at the sorted format */
     if (filterSelected.find((item) => item.aem_TxnID.$value === data.id)) {
       globals.functions.setProperty(pannel[i].aem_Txn_checkBox, { value: 'on' });
     } else {
@@ -219,7 +218,6 @@ function sortTxnAmount(txnType, globals) {
     }
   });
   isSorted[txnType] = !isSorted[txnType];
-  sort = false;
 }
 
 /**
@@ -228,7 +226,6 @@ function sortTxnAmount(txnType, globals) {
  * @param {string} txnType - BILLED /  UNBILLED
  */
 function txnSelectHandler(checkboxVal, txnType, globals) {
-  if (!sort);
   const MAX_SELECT = 10;
   const BILLED_FRAG = 'billedTxnFragment';
   const UNBILLED_FRAG = 'unbilledTxnFragment';
