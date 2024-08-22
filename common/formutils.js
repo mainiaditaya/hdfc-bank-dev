@@ -3,6 +3,7 @@
 
 import * as CONSTANT from './constants.js';
 import * as DOM_API from '../creditcards/domutils/domutils.js';
+import { getJsonResponse } from './makeRestAPI.js';
 
 const {
   setDataAttributeOnClosestAncestor,
@@ -14,7 +15,7 @@ const {
   decorateStepper,
 } = DOM_API; // DOM_MANIPULATE_CODE_FUNCTION
 
-const { BASEURL } = CONSTANT;
+const { BASEURL, PIN_CODE_LENGTH } = CONSTANT;
 
 // declare-CONSTANTS
 const DATA_ATTRIBUTE_EMPTY = 'data-empty';
@@ -194,23 +195,44 @@ const dateFormat = (dateString, format) => {
  * @param {string} fn - The first name.
  * @param {string} mn - The middle name.
  * @param {string} ln - The last name.
+ * @param {string} cardType - The card type.
+ * @param {number} ln - max name length.
  * @returns {Array<Object>} -  An array of objects representing different combinations of names using the provided first name (fn), middle name (mn), and last name (ln).
  */
-const composeNameOption = (fn, mn, ln) => {
+const composeNameOption = (fn, mn, ln, cardType, maxlength) => {
   const initial = (str) => str?.charAt(0);
   const stringify = ([a, b]) => (a && b ? `${a} ${b}` : '');
   const toOption = (a) => ({ label: a, value: a });
-  const MAX_LENGTH = 19;
-  const names = [
-    [fn, initial(mn)],
-    [fn, mn],
-    [mn, fn],
-    [mn, initial(fn)],
-    [initial(mn), fn],
-    [fn, ln],
-    [mn, ln],
-    [initial(mn), ln],
-  ]?.map(stringify)?.filter((el) => el && el?.length <= MAX_LENGTH);
+  let names = [];
+  switch (cardType) {
+    case 'ccc':
+      names = [
+        [fn, initial(mn)],
+        [fn, mn],
+        [mn, fn],
+        [mn, initial(fn)],
+        [initial(mn), fn],
+        [fn, ln],
+        [mn, ln],
+        [initial(mn), ln],
+      ]?.map(stringify)?.filter((el) => el && el?.length <= maxlength);
+      break;
+    case 'fd':
+      names = [
+        [fn, mn, ln],
+        [fn, initial(mn)],
+        [fn, mn],
+        [mn, fn],
+        [mn, initial(fn)],
+        [initial(mn), fn],
+        [fn, ln],
+        [mn, ln],
+        [initial(mn), ln],
+      ]?.map(stringify)?.filter((el) => el && el?.length <= maxlength);
+      break;
+    default:
+  }
+
   return [...new Set(names)]?.map(toOption);
 };
 
@@ -442,6 +464,61 @@ const formatDateDDMMMYYY = (dateStr) => {
   return `${day}${daySuffix(day)} ${month} ${year}`;
 };
 
+/**
+ * Handles API call for validating pinCode using the pinCodeMaster function.
+ * @param {object} globalObj - The global object containing necessary globals form data.
+ * @param {object} cityField - The City field object from the global object.
+ * @param {object} stateField - The State field object from the global object.
+ * @param {object} pincodeField - The PinCode field object from the global object.
+ * @param {number} pincode - The PinCode.
+ */
+
+const pinCodeMasterCheck = async (globals, cityField, stateField, pincodeField, pincode) => {
+  const url = urlPath(`/content/hdfc_commonforms/api/mdm.CREDIT.SIX_DIGIT_PINCODE.PINCODE-${pincode}.json`);
+  if (pincodeField?.$value?.length < PIN_CODE_LENGTH) return;
+  const method = 'GET';
+  const cityFieldUtil = formUtil(globals, cityField);
+  const stateFieldUtil = formUtil(globals, stateField);
+  const resetStateCityFields = () => {
+    cityFieldUtil.resetField();
+    stateFieldUtil.resetField();
+    cityFieldUtil.enabled(false);
+    stateFieldUtil.enabled(false);
+  };
+  const errorMethod = async (errStack) => {
+    const { errorCode } = errStack;
+    const defErrMessage = 'Please enter a valid pincode';
+    if (errorCode === '500') {
+      globals.functions.markFieldAsInvalid(pincodeField.$qualifiedName, defErrMessage, { useQualifiedName: true });
+      resetStateCityFields();
+    }
+  };
+  const successMethod = async (value) => {
+    const changeDataAttrObj = { attrChange: true, value: false };
+    globals.functions.markFieldAsInvalid(pincodeField.$qualifiedName, '', { useQualifiedName: true });
+    globals.functions.setProperty(pincodeField, { valid: true });
+    cityFieldUtil.setValue(value?.CITY, changeDataAttrObj);
+    cityFieldUtil.enabled(false);
+    stateFieldUtil.setValue(value?.STATE, changeDataAttrObj);
+    stateFieldUtil.enabled(false);
+  };
+
+  try {
+    const response = await getJsonResponse(url, null, method);
+    globals.functions.setProperty(pincodeField, { valid: true });
+    const [{ CITY, STATE }] = response;
+    const [{ errorCode, errorMessage }] = response;
+    if (CITY && STATE) {
+      successMethod({ CITY, STATE });
+    } else if (errorCode) {
+      const errStack = { errorCode, errorMessage };
+      throw errStack;
+    }
+  } catch (error) {
+    errorMethod(error);
+  }
+};
+
 export {
   urlPath,
   maskNumber,
@@ -469,4 +546,5 @@ export {
   decorateStepper,
   ageValidator,
   formatDateDDMMMYYY,
+  pinCodeMasterCheck,
 };

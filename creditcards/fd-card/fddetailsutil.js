@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { formatDateDDMMMYYY } from '../../common/formutils.js';
+import { formatDateDDMMMYYY, formUtil } from '../../common/formutils.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { MAXIMUM_CREDIT_AMOUNT } from './constant.js';
 
@@ -86,11 +86,14 @@ const updateCreditLimit = (selectedFDsAmt, globals) => {
  */
 const fdSelectHandler = (fdPanel, globals) => {
   const selectedFDsAmt = [];
+  const { continueToBasicDetails } = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
   fdPanel.forEach((item) => {
     if (item.fdAccSelect._data.$_value === 'on') {
       selectedFDsAmt.push(Number(item.selectedFDAmount._data.$_value));
     }
   });
+  const continueToBasicDetailsUtil = formUtil(globals, continueToBasicDetails);
+  continueToBasicDetailsUtil.enabled(selectedFDsAmt.length > 0);
   updateCreditLimit(selectedFDsAmt, globals);
 };
 
@@ -101,11 +104,13 @@ const fdSelectHandler = (fdPanel, globals) => {
  */
 const selectAllFdClickHandler = (globals) => {
   const selectedFDsAmt = [];
-  const fdNumberSelectionPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.fdNumberSelection;
-  fdNumberSelectionPanel.forEach((item) => {
+  const { fdNumberSelection, continueToBasicDetails } = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
+  fdNumberSelection.forEach((item) => {
     globals.functions.setProperty(item.fdAccSelect, { value: 'on' });
     selectedFDsAmt.push(Number(item.selectedFDAmount._data.$_value));
   });
+  const continueToBasicDetailsUtil = formUtil(globals, continueToBasicDetails);
+  continueToBasicDetailsUtil.enabled(selectedFDsAmt.length > 0);
   updateCreditLimit(selectedFDsAmt, globals);
 };
 

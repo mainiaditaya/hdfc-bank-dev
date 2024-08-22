@@ -1,8 +1,9 @@
 /* eslint-disable no-useless-escape */
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import { formUtil } from '../../common/formutils.js';
+import { formUtil, urlPath } from '../../common/formutils.js';
+import { getJsonResponse } from '../../common/makeRestAPI.js';
 import { addDisableClass, validateTextInput, validateTextInputOnPaste } from '../domutils/domutils.js';
-import { NAME_ON_CARD_LENGTH } from './constant.js';
+import { FD_ENDPOINTS, NAME_ON_CARD_LENGTH } from './constant.js';
 
 /**
  * Binds customer details from the global context to the current form.
@@ -24,10 +25,14 @@ const bindCustomerDetails = (globals) => {
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
   setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
   setFormValue(personalDetails.dateOfBirth, customerInfo.dob);
-  setFormValue(personalDetails.panNumber, customerInfo.pan);
-  setFormValue(personalDetails.emailID, customerInfo.emailId);
-  setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
-  if (customerInfo.address.length === 0) {
+  // setFormValue(personalDetails.panNumber, customerInfo.pan);
+  // setFormValue(personalDetails.emailID, customerInfo.emailId);
+  // setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
+  setFormValue(personalDetails.panNumber, '');
+  setFormValue(personalDetails.emailID, '');
+  setFormValue(addressDetails.prefilledMailingAdddress, '');
+  if (customerInfo.address.length === 0 || true) {
+    globals.functions.setProperty(addressDetails.prefilledMailingAdddress, { visible: false });
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
   }
   if (customerInfo.customerFullName.length < 5) {
@@ -52,7 +57,27 @@ const validateNameOnCard = (globals) => {
   console.log(globals);
 };
 
+const validateEmailID = async (email, globals) => {
+  const url = urlPath(FD_ENDPOINTS.emailId);
+  const invalidMsg = 'Please enter valid email id...';
+  const payload = {
+    email,
+  };
+  const method = 'POST';
+  try {
+    const emailValid = await getJsonResponse(url, payload, method);
+    if (emailValid === true) {
+      globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress, { valid: true });
+    } else {
+      globals.functions.markFieldAsInvalid('$form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.personalEmailAddress', invalidMsg, { useQualifiedName: true });
+    }
+  } catch (error) {
+    console.error(error, 'error in emailValid');
+  }
+};
+
 export {
   bindCustomerDetails,
   validateNameOnCard,
+  validateEmailID,
 };
