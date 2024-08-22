@@ -1,4 +1,11 @@
-import { getOTPV1, otpValV1, selectTenure, checkELigibilityHandler } from './smart-emi-functions.js';
+import {
+  getOTPV1,
+  otpValV1,
+  selectTenure,
+  checkELigibilityHandler,
+  sortTxnAmount,
+  txnSelectHandler,
+} from './smart-emi-functions.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
 
 /* load SEMI Styles- for loading semi - styles - temporary fix */
@@ -17,4 +24,6 @@ export {
   invokeJourneyDropOff,
   invokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
+  sortTxnAmount,
+  txnSelectHandler,
 };
