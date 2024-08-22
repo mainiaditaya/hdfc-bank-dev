@@ -11,6 +11,7 @@ import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
 import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
 import createJourneyId from '../../common/journey-utils.js';
+import { addGaps } from './fd-dom-functions.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
@@ -210,6 +211,7 @@ const resendOTP = async (globals) => {
  * @return {PROMISE}
  */
 const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
+  addGaps('.field-pannumber input');
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
@@ -268,7 +270,7 @@ const pincodeChangeHandler = (pincode, globals) => {
     newCurentAddressState,
 
   } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
-  pinCodeMasterCheck(globals, newCurentAddressCity, newCurentAddressState, newCurentAddressPin, newCurentAddressPin._data.$_value);
+  pinCodeMasterCheck(globals, newCurentAddressCity, newCurentAddressState, newCurentAddressPin, pincode);
 };
 
 setTimeout(() => {
