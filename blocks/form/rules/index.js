@@ -168,7 +168,7 @@ function applyRuleEngine(htmlForm, form, captcha) {
   htmlForm.addEventListener('change', (e) => {
     const field = e.target;
     const { value, name, checked } = field;
-    const id = field.id || field.closest('.field-wrapper')?.id;
+    const { id } = field.closest('.field-wrapper').dataset;
     if ((field.type === 'checkbox' && field.dataset.fieldType === 'checkbox-group')) {
       const val = getCheckboxGroupValue(name, htmlForm);
       const el = form.getElement(name);
