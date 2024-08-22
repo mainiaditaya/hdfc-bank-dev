@@ -29,16 +29,7 @@ function generateJourneyId(visitMode, journeyAbbreviation, channel) {
 // Initialize all SEMI Journey Context Variables & formRuntime variables.
 currentFormContext.journeyName = journeyName;
 currentFormContext.journeyID = generateJourneyId('a', 'b', 'c');
-
-
-/**
- * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
- *
- * @param {object} data
- * @returns {object}
- */
-const sortTxnAmount = (data) => data.responseString.sort((a, b) => b.amount - a.amount);
-
+currentFormContext.totalSelect = 0;
 
 /**
  * generates the otp
@@ -96,6 +87,7 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
  * @param {number} i - current instance of panel row
  */
 const setData = (globals, panel, txn, i) => {
+  // globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: txnlist.$value });
   globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: txn?.amount });
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date });
   globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id });
@@ -168,6 +160,10 @@ function checkELigibilityHandler(resPayload, globals) {
   try {
     const ccBilledData = resPayload?.ccBilledTxnResponse?.responseString || [];
     const ccUnBilledData = resPayload?.ccUnBilledTxnResponse?.responseString || [];
+    currentFormContext.txnResponse = {
+      BILLED: ccBilledData,
+      UNBILLED: ccUnBilledData,
+    };
     const billedTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
     const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
     const allTxn = ccBilledData.concat(ccUnBilledData);
@@ -188,13 +184,78 @@ function checkELigibilityHandler(resPayload, globals) {
  *
  * @param {Object} globals - Global variables and functions.
  */
+// eslint-disable-next-line no-unused-vars
 function selectTenure(globals) {
-  debugger;
 }
 
+/**
+ * local state variable to indicate billed or unbilled sorted or unsorted.
+ */
+const isSorted = {
+  BILLED: false,
+  UNBILLED: false,
+};
+let sort = false;
+/**
+ * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
+ * @param {string} txnType  - BILLED /  UNBILLED
+ */
+function sortTxnAmount(txnType, globals) {
+  sort = true;
+  if (!txnType) return;
+  const txnData = currentFormContext.txnResponse?.[txnType]?.map((el) => ({ ...el, amount: Number(el?.amount) }));
+  const BILLED_FRAG = 'billedTxnFragment';
+  const UNBILLED_FRAG = 'unbilledTxnFragment';
+  const TXN_FRAG = txnType === 'BILLED' ? BILLED_FRAG : UNBILLED_FRAG;
+  const pannel = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_TxnsList;
+  const sortedData = txnData?.sort((a, b) => ((isSorted[txnType]) ? (b.amount - a.amount) : (a.amount - b.amount)));
+  const filterSelected = pannel.filter((el) => el.aem_Txn_checkBox.$value === 'on');
+  sortedData?.forEach((data, i) => {
+    setData(globals, pannel, data, i);
+    if (filterSelected.find((item) => item.aem_TxnID.$value === data.id)) {
+      globals.functions.setProperty(pannel[i].aem_Txn_checkBox, { value: 'on' });
+    } else {
+      globals.functions.setProperty(pannel[i].aem_Txn_checkBox, { value: null });
+    }
+  });
+  isSorted[txnType] = !isSorted[txnType];
+  sort = false;
+}
+
+/**
+ * function to update number of transaction selected.
+ * @param {string} checkboxVal - checkbox value
+ * @param {string} txnType - BILLED /  UNBILLED
+ */
+function txnSelectHandler(checkboxVal, txnType, globals) {
+  if (!sort);
+  const MAX_SELECT = 10;
+  const BILLED_FRAG = 'billedTxnFragment';
+  const UNBILLED_FRAG = 'unbilledTxnFragment';
+  const TXN_FRAG = txnType === 'BILLED' ? BILLED_FRAG : UNBILLED_FRAG;
+  const txnList = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_TxnsList;
+  const txnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
+  const selectedList = txnList?.filter((el) => (el.aem_Txn_checkBox.$value === 'on'));
+  globals.functions.setProperty(txnSelected, { value: selectedList?.length }); // set number of select in billed or unbilled txn list
+  if ((checkboxVal === 'on') && ((txnType === 'BILLED') || (txnType === 'UNBILLED'))) {
+    currentFormContext.totalSelect += 1;
+  } else if ((currentFormContext.totalSelect > 0)) {
+    currentFormContext.totalSelect -= 1;
+  }
+  const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${MAX_SELECT}`;
+  if (currentFormContext.totalSelect <= MAX_SELECT) {
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });// total no of select billed or unbilled txn list
+  }
+  if ((currentFormContext.totalSelect === MAX_SELECT)) {
+    /* popup alert hanldles */
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
+  }
+}
 export {
   getOTPV1,
   otpValV1,
   checkELigibilityHandler,
   selectTenure,
+  sortTxnAmount,
+  txnSelectHandler,
 };
