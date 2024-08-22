@@ -1129,6 +1129,8 @@ main {
               font-weight: var(--font-weight-medium);
               margin-bottom: -9px;
           }
+
+          .field-mailingaddresstoggle{ padding-left: 30px !important; }
   
           .field-mailingaddresstoggle, .field-employeeassistancetoggle {
               flex-direction: row-reverse;
@@ -1198,14 +1200,20 @@ main {
           }
   
           .wrapper-disabled {
-              label { margin-left: 5px; }
+                label { 
+                    margin-left: 5px; 
+                    font-size: var(--body-fd-sm-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-text-secondary);
+                }
   
-              input, input:disabled {
-                  font-size: var(--body-fd-lg-font-size) !important;
-                  background-color: var(--color-interface-background-primary);
-                  border: none;
-                  pointer-events: none;
-              }
+                input, input:disabled, select, select:disabled, textarea, textarea:disabled {
+                    font-size: var(--body-fd-lg-font-size) !important;
+                    background-color: var(--color-interface-background-primary) !important;
+                    border: none !important;
+                    pointer-events: none;
+                    appearance: none;
+                }
           }
       }
   
@@ -1589,6 +1597,71 @@ main {
         margin: 0;
       }
   }
+
+  .fdlien .field-addressdeclarationpanel {
+    padding: 60px 60px 40px;
+
+    .field-addressdeclarationlabel p {
+        margin: 0;
+        font-size: var(--body-fd-xx-lg-font-size);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-interface-text-primary);
+        line-height: 0;
+    }
+    .field-addressdeclarationtagline p { font-size: var(--body-fd-sm-font-size); }
+
+    .field-aadhaaraddressdeclaration, .field-currentaddressdeclarationaadhar, .field-currentresidenceaddressbiometricovd {
+      border: solid 1px var(--color-interface-border-secondary);
+      border-radius: 24px;
+      padding: 32px;
+    }
+
+    .field-aadhaaraddresslabel, .field-currentresidenceaddressaadhaarlabel, .field-currentresaddressbiometricovdlabel {
+      display: flex;
+      font-weight: var(--font-weight-bold);
+      font-size: var(--body-x-lg-font-size);
+
+      p {
+        margin: 0 0 0 10px;
+        color: #111827;
+      }
+    }
+
+    .field-aadhaaraddresslabel::before, .field-currentresaddressbiometricovdlabel::before { content: url('../icons/address-aadhar-icon.svg'); }
+    .field-currentresidenceaddressaadhaarlabel::before { content: url('../icons/address-current-icon.svg'); }
+
+    .field-aadhaaraddressprefilled, .field-currentresidenceaddressaadhaar, .field-currentresaddressbiometricovd {
+      margin: -25px 0 0 50px;
+      font-size: var(--body-sm-font-size);
+      font-weight: var(--font-weight-regular);
+
+      p {
+        margin-top: -3px;
+        font-size: var(--body-sm-font-size);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-interface-background-quaternary);
+      }
+    }
+
+    .checkbox-wrapper {
+        label { font-size: var(--body-fd-sm-font-size); 
+        margin-left: 10px; }
+    }
+
+    .radio-group-wrapper {
+        display: flex !important;
+        .radio-wrapper { margin-right: 15px !important; }
+
+        legend {
+            font-weight: var(--font-weight-regular); 
+            margin: 0 0 6px;
+            font-size: var(--body-fd-md-font-size);
+            color: var(--color-interface-background-quaternary);
+        }
+    }
+
+    .field-currentresidenceaddressdeclaration { margin-top: 0 !important; }
+  }
   
   /* Footer */
   header:has(~ .fd-form-wrapper) {
@@ -1953,9 +2026,26 @@ main {
                 }
             }
         }
+
+        .field-basicdetails {
+            .field-personaldetails, .field-addressdetails, .field-employmentdetails, .field-employeeassistance {
+                margin-bottom: 20px;
+
+                .text-wrapper, .drop-down-wrapper, .checkbox-wrapper, .multiline-wrapper {
+                    padding-bottom: 20px !important;
+                }
+            }
+        }
     }
   
     .fdlien .field-selectkycoptionspanel div[class*='field-identityverificationtext'] { margin-top: -44px !important; }
+
+    .fdlien .field-addressdeclarationpanel { padding: 20px;
+        .field-addressdeclarationlabel p { line-height: 30px; }
+        .field-aadhaaraddressprefilled, .field-currentresidenceaddressaadhaar, .field-currentresaddressbiometricovd { margin-top: 0; }
+        .field-aadharaddressconfirmation { margin-bottom: 0 !important; }
+        .field-aadhaaraddressdeclaration, .field-currentaddressdeclarationaadhar, .field-currentresidenceaddressbiometricovd { margin-bottom: 20px; }
+    }
   
     .field-resultpanel:has(.field-errorresultpanel) {
       top: 9%;
