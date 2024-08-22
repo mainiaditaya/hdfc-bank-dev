@@ -879,6 +879,7 @@ main {
   
             .field-selectedfdpanel {
               display: flex;
+              flex-direction: row;
               justify-content: end;
               border-top: 1px dashed var(--color-interface-border-secondary);
   
@@ -1327,6 +1328,79 @@ main {
               .field-viewallcardbenefitspanel::backdrop {
                   background-color: rgb(0 0 0 / 50%);
               }
+
+              .field-knowmorepopupwrapper {
+                border: none !important;
+                border-radius: 0 !important;
+                position: fixed;
+                z-index: 99999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+
+                /* display: grid; */
+                display: none;
+                background-color: var(--color-input-text-placeholder-disabled);
+  
+                .field-viewallcardbenefitspanel {
+                  border: none !important;
+                  background-color: var(--color-interface-background-primary);
+                  border-radius: 8px;
+                  padding: 10px 12px;
+                  max-width: 608px;
+                  width: 100%;
+                  position: absolute;
+                  top: 2%;
+                  justify-self: center;
+                  text-align: center;
+                  box-sizing: border-box;
+  
+                  .field-backlinkcardbenefits {
+                    button {
+                      max-width: 100% !important;
+                      border-radius: 6px;
+                      background: var(--color-interface-background-quinary);
+                      color: var(--color-interface-background-quaternary);
+                      text-align: left;
+                      padding: 0 0 0 20px;
+                      font-size: var(--body-fd-x-lg-font-size);
+                      font-weight: var(--font-weight-medium);
+  
+                      &::before {
+                        content: '';
+                        background: url('../icons/left-arrow.png') no-repeat;
+                        padding: 0 0 0 20px;
+                        vertical-align: middle;
+                      }
+  
+                      &::after {
+                        content: unset !important;
+                      }
+  
+                      &:hover {
+                        background: var(--color-interface-background-quinary) !important;
+                      }
+                    }
+                  }
+  
+                  .field-cardbenefitstext {
+                      text-align: left;
+  
+                      p {
+                        font-size: var(--body-fd-md-font-size);
+                        color: var(--color-input-text-primary);
+                        line-height: var(--font-linehight-large);
+                        margin: 0;
+                      }
+  
+                      b {
+                        color: var(--color-input-text-default);
+                      }
+                  }
+                }
+              }
           }
   
           /* Single Card */
@@ -1773,8 +1847,8 @@ main {
             }
   
             .wizard-menu-items {
-              width: 85%;
-              left: 7%;
+              width: 95%;
+              left: 3%;
             }
         }
     }
@@ -1867,6 +1941,18 @@ main {
   
     .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
         display: grid;
+    }
+
+    .field-fdbasedcreditcardwizard {
+        .field-selectfd {
+            .field-fdselectioninfo {
+                .field-selectedfdpanel {
+                    .field-selectallfdbutton {
+                        margin-top: 0 !important;
+                    }
+                }
+            }
+        }
     }
   
     .fdlien .field-selectkycoptionspanel div[class*='field-identityverificationtext'] { margin-top: -44px !important; }
