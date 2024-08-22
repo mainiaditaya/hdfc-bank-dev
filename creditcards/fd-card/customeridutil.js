@@ -5,6 +5,7 @@ import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { urlPath } from '../../common/formutils.js';
 
 const SELECTED_CUSTOMER_ID = {};
+let selectedCustIndex = -1;
 
 const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
   const payload = {
@@ -60,11 +61,21 @@ const customerIdSuccessHandler = (payload, globals) => {
  * Handles on select of customer ID radio button.
  * @name customerIdClickHandler
  * @param {Object} customerIds
+ * @param {Object} globals
  */
-const customerIdClickHandler = (customerIds) => {
-  const selectedCustIdPanel = customerIds.filter((item) => item.multipleCustIDSelect._data.$_value === 'on');
-  if (selectedCustIdPanel) {
-    const selectedCustId = selectedCustIdPanel[0].maskedAccNo._data.$_value;
+const customerIdClickHandler = (customerIds, globals) => {
+  const { mutipleCustIDProcced } = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel;
+  globals.functions.setProperty(mutipleCustIDProcced, { enabled: true });
+  if (selectedCustIndex !== -1) {
+    globals.functions.setProperty(customerIds[selectedCustIndex].multipleCustIDSelect, { value: undefined });
+    setTimeout(() => {
+      selectedCustIndex = customerIds.findIndex((item) => item.multipleCustIDSelect._data.$value === '0');
+      const selectedCustId = customerIds[selectedCustIndex].maskedAccNo._data.$_value;
+      SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerId === selectedCustId)?.[0];
+    }, 50);
+  } else {
+    selectedCustIndex = customerIds.findIndex((item) => item.multipleCustIDSelect._data.$value === '0');
+    const selectedCustId = customerIds[selectedCustIndex].maskedAccNo._data.$_value;
     SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerId === selectedCustId)?.[0];
   }
 };
