@@ -11,12 +11,11 @@ main .section.form-container {
         }
     }
 
-    .hdfc-accordion-legend {
-        .field-expand-btn {
-            margin-top: 3px;
-        }
-        
-        button, button:hover {
+    .hdfc-accordian-legend { align-content: center;
+
+        .field-expand-btn { margin-top: 3px; }
+
+            button, button:hover {
             background-color: var(--color-interface-background-quinary) !important;
             font-size: 0;
             background-repeat: no-repeat !important;
@@ -27,11 +26,11 @@ main .section.form-container {
         }
     }
 
-    .hdfc-accordion-legend .field-expand-btn button {
+    .hdfc-accordian-legend.field-expand-btn button {
         background-image: url('../icons/Arrow-Collapse.svg') !important;
     }
 
-    .hdfc-accordion-legend.accordion-collapse .field-expand-btn {
+    .hdfc-accordian-semi:has(.accordion-collapse) .field-expand-btn button {
         transform: rotate(-180deg);
         margin-bottom: 2px !important;
     }
@@ -63,7 +62,7 @@ main .section.form-container {
         .wizard-menu-items {
             max-width: 100%;
             gap: 0;
-            font: normal normal var(--font-weight-bold) var(--body-sm-font-size) / var(--body-lg-font-size) var(--font-family-secondary);
+            font-size: var(--body-sm-font-size);
             position: relative;
 
             .wizard-menu-item:not(:last-child) { width: 30%; }
@@ -103,7 +102,8 @@ main .section.form-container {
 
         .field-aem-welcometext p {
             color: var(--color-interface-background-tertiary);
-            font: normal normal var(--font-weight-bold) var(--body-lg-font-size) / var(--body-xx-lg-font-size) var(--font-family-secondary);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--body-lg-font-size);
         }
 
         .field-aem-loginpanel {
@@ -147,7 +147,7 @@ main .section.form-container {
         .field-consentpanel {
             p {
                 margin: 0;
-                font: normal normal normal var(--body-sm-font-size) / var(--body-xx-lg-font-size) var(--font-family-secondary);
+                font-size: var(--body-sm-font-size);
             }
 
             .field-aem-disclaimerflag {
@@ -168,17 +168,20 @@ main .section.form-container {
                 .field-otphelptext {
                     display: -webkit-box;
                     padding-top: 20px;
-                    font: normal normal var(--font-weight-bold) var(--body-md-font-size) / var(--body-x-lg-font-size) var(--font-family-secondary);
+                    font-weight: var(--font-weight-bold);
+                    font-size: var(--body-md-font-size);
                     color: var(--color-interface-text-primary);
     
                     p { 
-                        font: normal normal var(--font-weight-bold) var(--body-md-font-size) / var(--body-x-lg-font-size) var(--font-family-secondary);
+                        font-weight: var(--font-weight-bold);
+                        font-size: var(--body-md-font-size);
                         margin-right: 5px;
                     }
                 }
     
                 > legend b {
-                    font: normal normal var(--font-weight-bold) var(--body-xx-lg-font-size) / 33px var(--font-family-secondary);
+                    font-weight: var(--font-weight-bold);
+                    font-size: var(--body-xx-lg-font-size);
                     color: var(--color-interface-background-quaternary);                
                 }
 
@@ -396,6 +399,9 @@ main .section.form-container {
             }
 
             .field-aem-tenureselectionmainpnl {
+                border: solid 1px var(--color-interface-border-secondary);
+                border-radius: 16px;
+
                 .field-aem-tenureselectionheaderpanel {
                     background-color: var(--color-interface-background-quinary);
                     border-radius: 16px 16px 2px 2px;
@@ -405,14 +411,60 @@ main .section.form-container {
                 }
 
                 .field-aem-tenureselectionrepeatablepanel {
+                    padding: 0 0 0 25px;
+                    margin-top: -20px;
+
                     .field-aem-tenureselection {
                         grid-column: span 1;
                         width: fit-content;
                     }
 
                     .field-wrapper { align-self: center; }
-                    p { margin: 0; }
+
+                    p, input { 
+                        margin: 0; padding: 0; 
+                        border: none;
+                        font-size: var(--body-sm-font-size);
+                        font-weight: var(--font-weight-regular);
+                        color: var(--color-interface-text-primary);
+                        pointer-events: none;
+                    }
                 }
+            }
+
+            .field-aem-roi {
+                display: grid;
+                grid-template-columns: auto 161px;
+
+                label { transform: translateY(10px); }
+
+                input { 
+                    text-align: end; margin: 0; padding: 0;
+                    font-weight: var(--font-weight-bold);
+                    font-size: var(--body-x-lg-font-size);
+                    color: var(--color-interface-text-primary);
+                    border: none;
+                    pointer-events: none;
+                }
+            }
+ 
+            .field-rateofinterestperannumvalue { margin-top: -29px;
+
+                input {
+                    margin: 0; border: none;
+                    padding: 0;
+                    text-align: end;
+                }
+            }
+
+            .field-aem-bankassistedtoggle {
+                display: flex;
+                flex-direction: row-reverse;
+            }
+
+            .field-aem-tandc {
+                label p { font-size: var(--body-sm-font-size) !important; }
+                input { margin-top: 0; }
             }
         }
     }
