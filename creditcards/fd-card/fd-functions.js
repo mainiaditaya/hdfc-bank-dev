@@ -7,6 +7,7 @@ import {
   resendOTP,
   customSetFocus,
   reloadPage,
+  pincodeChangeHandler,
 } from './fdlien-functions.js';
 import {
   invokeJourneyDropOff,
@@ -41,7 +42,7 @@ import {
 import {
   customerIdProceedHandler,
   fdSelectHandler,
-  resetFDPanels,
+  resetFDSelection,
   selectAllFdClickHandler,
 } from './fddetailsutil.js';
 
@@ -70,7 +71,8 @@ export {
   fdSelectHandler,
   customerIdProceedHandler,
   selectAllFdClickHandler,
-  resetFDPanels,
+  resetFDSelection,
   validateNameOnCard,
   validateEmailID,
+  pincodeChangeHandler,
 };

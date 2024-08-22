@@ -2,8 +2,8 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { formUtil, urlPath } from '../../common/formutils.js';
 import { getJsonResponse } from '../../common/makeRestAPI.js';
-import { addDisableClass, validateTextInput, validateTextInputOnPaste } from '../domutils/domutils.js';
-import { FD_ENDPOINTS, NAME_ON_CARD_LENGTH } from './constant.js';
+import { addDisableClass } from '../domutils/domutils.js';
+import { FD_ENDPOINTS } from './constant.js';
 
 /**
  * Binds customer details from the global context to the current form.
@@ -43,9 +43,6 @@ const bindCustomerDetails = (globals) => {
   setTimeout(() => {
     addDisableClass(personaldetails);
   }, 10);
-  const nameOnCardInput = document.querySelector('.field-nameoncard input');
-  nameOnCardInput.addEventListener('input', () => validateTextInput(nameOnCardInput, /^[A-Za-z\s]+$/, NAME_ON_CARD_LENGTH));
-  nameOnCardInput.addEventListener('input', () => validateTextInputOnPaste(nameOnCardInput, /^[A-Za-z\s]+$/));
 };
 
 /**

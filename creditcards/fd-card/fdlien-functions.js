@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   ageValidator,
   clearString,
@@ -266,8 +267,8 @@ const pincodeChangeHandler = (pincode, globals) => {
     newCurentAddressCity,
     newCurentAddressState,
 
-  } = globals.form.fdBasedCreditCardWizard.basicDetailsreviewDetailsView.addressDetails.newCurentAddressPanel;
-  pinCodeMasterCheck(globals, newCurentAddressCity, newCurentAddressState, newCurentAddressPin, pincode);
+  } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
+  pinCodeMasterCheck(globals, newCurentAddressCity, newCurentAddressState, newCurentAddressPin, newCurentAddressPin._data.$_value);
 };
 
 setTimeout(() => {

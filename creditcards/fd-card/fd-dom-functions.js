@@ -20,8 +20,8 @@ const validateOtpInput = () => {
   });
 };
 
-const addGaps = () => {
-  const panInputField = document.querySelector('.char-gap-4 input');
+const addGaps = (elSelector) => {
+  const panInputField = document.querySelector(elSelector);
   panInputField.addEventListener('input', () => {
     const vaildInput = validatePanInput(panInputField.value.replace(/\s+/g, ''));
     if (!vaildInput) {
@@ -65,7 +65,7 @@ const changeCheckboxToToggle = () => {
 };
 
 setTimeout(() => {
-  addGaps();
+  addGaps('.field-pan.char-gap-4 input');
   addMobileValidation();
 }, 1000);
 

@@ -13,16 +13,17 @@ const updateData = (globals, fd, panel) => {
 };
 
 /**
- * @name resetFDPanels
+ * @name resetFDSelection
  * @param {Object} globals - The global context object containing various information.
  */
-const resetFDPanels = (globals) => {
+const resetFDSelection = (globals) => {
   const { selectedCustId } = SELECTED_CUSTOMER_ID;
   const selectedCustIdFds = selectedCustId?.listFDSummary ?? [];
   const { fdSelectionInfo } = globals.form.fdBasedCreditCardWizard.selectFD;
-  const { fdNumberSelection, selectFDDetailsPanel } = fdSelectionInfo;
+  const { fdNumberSelection, selectFDDetailsPanel, continueToBasicDetails } = fdSelectionInfo;
   const { creditLimit } = selectFDDetailsPanel;
-
+  const continueToBasicDetailsUtil = formUtil(globals, continueToBasicDetails);
+  continueToBasicDetailsUtil.enabled(false);
   if (fdNumberSelection.length > 0) {
     globals.functions.setProperty(fdNumberSelection[0].fdAccSelect, { value: 'off' });
   }
@@ -118,5 +119,5 @@ export {
   customerIdProceedHandler,
   fdSelectHandler,
   selectAllFdClickHandler,
-  resetFDPanels,
+  resetFDSelection,
 };
