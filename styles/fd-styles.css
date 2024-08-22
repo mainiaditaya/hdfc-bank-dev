@@ -19,18 +19,18 @@ main {
       display: none;
   }
   
-  .repeat-wrapper::-webkit-scrollbar, .field-multiplecustidrepeatable::-webkit-scrollbar {
+  *::-webkit-scrollbar, .field-multiplecustidrepeatable::-webkit-scrollbar {
       height: 8px !important;
       width: 8px !important;
   }
     
-  .repeat-wrapper::-webkit-scrollbar-track, .field-multiplecustidrepeatable::-webkit-scrollbar-track {
+  *::-webkit-scrollbar-track, .field-multiplecustidrepeatable::-webkit-scrollbar-track {
       background: var(--color-action-scroll-background-primary) !important;
   }
   
-  .repeat-wrapper::-webkit-scrollbar-thumb, .field-multiplecustidrepeatable::-webkit-scrollbar-thumb {
+  *::-webkit-scrollbar-thumb, .field-multiplecustidrepeatable::-webkit-scrollbar-thumb {
       background: var(--color-action-scroll-primary) !important;
-      border-radius:10px !important;
+      border-radius: 10px !important;
   }
   
   /* Accordion styling */
@@ -111,6 +111,31 @@ main {
     line-height: 24px !important;
     letter-spacing: 8px !important;
     color: var(--color-interface-text-primary) !important;
+  }
+
+
+  /* Popup Basic Styling */
+  .fdlien:has(.field-aadharconsent[data-visible="true"]) { overflow: hidden; }
+
+  .field-aadharconsent {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--color-interface-popup-background);
+
+    .field-aadharconsentpopup {
+        margin: auto !important;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: auto;
+        background: var(--color-interface-background-primary);
+        border-radius: 12px;
+    }
   }
   
   body.fdlien .form-wrapper {
@@ -1350,7 +1375,7 @@ main {
 
                 /* display: grid; */
                 display: none;
-                background-color: var(--color-input-text-placeholder-disabled);
+                background-color: var(--color-interface-popup-background);
   
                 .field-viewallcardbenefitspanel {
                   border: none !important;
@@ -1523,6 +1548,7 @@ main {
       }
   }
   
+  /* Select KYC identity Radio Group */
   .fdlien .field-selectkycoptionspanel {
       padding: 0 60px 60px;
   
@@ -1598,6 +1624,7 @@ main {
       }
   }
 
+  /* Address Declaration Panel */
   .fdlien .field-addressdeclarationpanel {
     padding: 60px 60px 40px;
 
@@ -1661,6 +1688,38 @@ main {
     }
 
     .field-currentresidenceaddressdeclaration { margin-top: 0 !important; }
+  }
+
+  /* Aadhar Consent Popup */
+  .fdlien .field-aadharconsent {
+    .field-aadharconsentpopup {
+        padding: 29px;
+        max-width: 525px;
+        height: 500px;
+
+        .field-aadharconsentlabel {
+            b, p {
+                font-size: var(--body-fd-x-lg-font-size);
+                font-weight: var(--font-weight-extra-bold);
+                color: var(--color-interface-background-quaternary);
+                margin: 0;
+            }
+        }
+
+        div[class*='field-aadharconsenttext-'] p, select, div[class*='field-aadharconsenthelp-'] p {
+            font-size: var(--body-fd-sm-font-size);
+            font-weight: var(--font-weight-regular);
+            padding-left: 15px;
+            margin: 0;
+            color: var(--color-interface-background-quaternary);
+        }
+
+        div[class*='field-aadharconsenthelp-'] p {
+            padding: 0;
+            font-size: var(--body-x-sm-font-size);
+            color: var(--color-interface-text-secondary);
+        }
+    }
   }
   
   /* Footer */
@@ -2046,7 +2105,8 @@ main {
         .field-aadharaddressconfirmation { margin-bottom: 0 !important; }
         .field-aadhaaraddressdeclaration, .field-currentaddressdeclarationaadhar, .field-currentresidenceaddressbiometricovd { margin-bottom: 20px; }
     }
-  
+    .fdlien .field-aadharconsentpopup { display: grid; }
+
     .field-resultpanel:has(.field-errorresultpanel) {
       top: 9%;
     }
