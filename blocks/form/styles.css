@@ -90,7 +90,10 @@ main
     .field-creditlimit,
     .field-fdnumber,
     .field-selectedfdamount,
-    .field-maturingdate
+    .field-maturingdate,
+    .field-eligiblecreditlimitamount,
+    .field-joiningfeeamt,
+    .field-renewalfeeamt
   )
   > label {
   margin: 20px;
@@ -328,7 +331,10 @@ main
     .field-creditlimit,
     .field-fdnumber,
     .field-selectedfdamount,
-    .field-maturingdate
+    .field-maturingdate,
+    .field-eligiblecreditlimitamount,
+    .field-joiningfeeamt,
+    .field-renewalfeeamt
   )
   > label {
   color: var(--label-color);
@@ -355,7 +361,10 @@ main
     .field-creditlimit,
     .field-fdnumber,
     .field-selectedfdamount,
-    .field-maturingdate
+    .field-maturingdate,
+    .field-eligiblecreditlimitamount,
+    .field-joiningfeeamt,
+    .field-renewalfeeamt
   )
   > label:has(p)
   p {
