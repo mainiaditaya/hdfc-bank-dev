@@ -64,20 +64,6 @@ const changeCheckboxToToggle = () => {
   createLabelInElement('.field-mailingaddresstoggle', 'mailing-address-toggle__label');
 };
 
-/**
- * Removes all but the first `fieldset` element within the specified parent container.
- *
- * @name removeFDPanelsDom
- * @returns {void}
- */
-const removeFDPanelsDom = () => {
-  const allFds = Array.from(document.querySelectorAll('.field-fdnumberselection .repeat-wrapper fieldset'));
-
-  while (allFds.length > 1) {
-    allFds.pop().remove();
-  }
-};
-
 setTimeout(() => {
   addGaps();
   addMobileValidation();
@@ -89,5 +75,4 @@ export {
   validateOtpInput,
   updateElementAttr,
   changeCheckboxToToggle,
-  removeFDPanelsDom,
 };

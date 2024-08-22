@@ -2,9 +2,8 @@
 import { formatDateDDMMMYYY } from '../../common/formutils.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { MAXIMUM_CREDIT_AMOUNT } from './constant.js';
-import { removeFDPanelsDom } from './fd-dom-functions.js';
 
-let lastIndex = 0;
+const lastIndex = 0;
 const updateData = (globals, fd, panel) => {
   const datMaturity = formatDateDDMMMYYY(fd.datMaturity);
   const balPrincipal = Number(fd.balPrincipal);
@@ -18,10 +17,20 @@ const updateData = (globals, fd, panel) => {
  * @param {Object} globals - The global context object containing various information.
  */
 const resetFDPanels = (globals) => {
-  removeFDPanelsDom();
-  const fdNumberSelectionPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.fdNumberSelection;
-  lastIndex = fdNumberSelectionPanel.length - 1;
-  fdNumberSelectionPanel.splice(1);
+  const { selectedCustId } = SELECTED_CUSTOMER_ID;
+  const selectedCustIdFds = selectedCustId?.listFDSummary ?? [];
+  const { fdSelectionInfo } = globals.form.fdBasedCreditCardWizard.selectFD;
+  const { fdNumberSelection, selectFDDetailsPanel } = fdSelectionInfo;
+  const { creditLimit } = selectFDDetailsPanel;
+
+  if (fdNumberSelection.length > 0) {
+    globals.functions.setProperty(fdNumberSelection[0].fdAccSelect, { value: 'off' });
+  }
+  globals.functions.setProperty(creditLimit, { value: '0' });
+
+  selectedCustIdFds.slice(0, -1).forEach(() => {
+    globals.functions.dispatchEvent(fdNumberSelection, 'removeItem');
+  });
 };
 
 /**
@@ -40,7 +49,7 @@ const customerIdProceedHandler = (globals) => {
     }
     setTimeout(() => {
       let currentIndex = 0;
-      if(i !== 0){
+      if (i !== 0) {
         currentIndex = i + lastIndex;
       }
       updateData(globals, fd, fdNumberSelectionPanel[currentIndex]);
@@ -50,7 +59,6 @@ const customerIdProceedHandler = (globals) => {
   const fdCountPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax;
   globals.functions.setProperty(selectedFDNumPanel, '0');
   globals.functions.setProperty(fdCountPanel, selectedCustIdFds.length);
-  
 };
 
 const updateCreditLimit = (selectedFDsAmt, globals) => {
@@ -65,7 +73,9 @@ const updateCreditLimit = (selectedFDsAmt, globals) => {
   const creditAmt = totalSelectedAmount * 0.9;
   const actualCreditAmount = Math.min(creditAmt, MAXIMUM_CREDIT_AMOUNT).toFixed(2);
 
-  globals.functions.setProperty(creditLimitPanel, { value: selectedFDsAmt.length === 0 ? 0 : actualCreditAmount });
+  globals.functions.setProperty(creditLimitPanel, {
+    value: selectedFDsAmt.length === 0 ? 0 : actualCreditAmount,
+  });
 };
 
 /**
