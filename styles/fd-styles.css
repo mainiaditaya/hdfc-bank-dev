@@ -879,6 +879,7 @@ main {
   
             .field-selectedfdpanel {
               display: flex;
+              flex-direction: row;
               justify-content: end;
               border-top: 1px dashed var(--color-interface-border-secondary);
   
@@ -1338,7 +1339,9 @@ main {
                 width: 100%;
                 height: 100%;
                 overflow: auto;
-                display: grid;
+
+                /* display: grid; */
+                display: none;
                 background-color: var(--color-input-text-placeholder-disabled);
   
                 .field-viewallcardbenefitspanel {
@@ -1938,6 +1941,18 @@ main {
   
     .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
         display: grid;
+    }
+
+    .field-fdbasedcreditcardwizard {
+        .field-selectfd {
+            .field-fdselectioninfo {
+                .field-selectedfdpanel {
+                    .field-selectallfdbutton {
+                        margin-top: 0 !important;
+                    }
+                }
+            }
+        }
     }
   
     .fdlien .field-selectkycoptionspanel div[class*='field-identityverificationtext'] { margin-top: -44px !important; }
