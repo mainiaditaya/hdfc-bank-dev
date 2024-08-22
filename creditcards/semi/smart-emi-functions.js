@@ -14,6 +14,35 @@ const {
 } = SEMI_CONSTANT;
 
 /**
+ * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
+ *
+ * @param {object} data
+ * @returns {object}
+ */
+const sortDataByAmount = (data) => data.responseString.sort((a, b) => b.amount - a.amount);
+
+/**
+ * Description placeholder
+ *
+ * @param {*} data
+ * @returns {*}
+ */
+function sortByDate(data) {
+  return data.sort((a, b) => {
+    // Split the date strings into day, month, and year
+    const [dayA, monthA, yearA] = a.date.split('-').map(Number);
+    const [dayB, monthB, yearB] = b.date.split('-').map(Number);
+
+    // Create Date objects from the components
+    const dateA = new Date(yearA, monthA - 1, dayA);
+    const dateB = new Date(yearB, monthB - 1, dayB);
+
+    // Compare the dates
+    return dateA - dateB;
+  });
+}
+
+/**
    * generates the journeyId
    * @param {string} visitMode - The visit mode (e.g., "online", "offline").
    * @param {string} journeyAbbreviation - The abbreviation for the journey.
@@ -200,6 +229,7 @@ const isSorted = {
  * @param {string} txnType  - BILLED /  UNBILLED
  */
 function sortTxnAmount(txnType, globals) {
+  debugger;
   if (!txnType) return;
   const txnData = currentFormContext.txnResponse?.[txnType]?.map((el) => ({ ...el, amount: Number(el?.amount) }));
   const BILLED_FRAG = 'billedTxnFragment';
