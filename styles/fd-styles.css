@@ -1944,7 +1944,7 @@ main {
           outline: none;
       }
   
-      .text-wrapper:not(:focus), .drop-down-wrapper:not(:focus), .multiline-wrapper:not(:focus) {
+      .text-wrapper:not(:focus), .drop-down-wrapper:not(:focus), .multiline-wrapper:not(:focus), .number-wrapper:not(:focus) {
           > label, label p { color: transparent; }
       }
   }

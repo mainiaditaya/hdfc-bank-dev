@@ -16,7 +16,6 @@ import {
 
 import {
   bindCustomerDetails,
-  validateNameOnCard,
   channelChangeHandler,
   validateEmailID,
 } from './customerdetails.js';
@@ -76,7 +75,6 @@ export {
   customerIdProceedHandler,
   selectAllFdClickHandler,
   resetFDSelection,
-  validateNameOnCard,
   validateEmailID,
   pincodeChangeHandler,
   channelChangeHandler,
