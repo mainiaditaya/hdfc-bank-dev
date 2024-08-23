@@ -1624,6 +1624,66 @@ main {
       }
   }
 
+  /* Doc Upload */
+  .fdlien .field-docuploadflow {
+      padding: 0 60px 60px;
+
+      .plain-text-wrapper p b {
+        font-size: var(--body-fd-xx-lg-font-size);
+        color: var(--color-interface-background-quaternary);
+        font-weight: var(--font-weight-bold);
+        margin: 0;
+      }
+
+      .plain-text-wrapper p {
+        font-size: var(--body-fd-sm-font-size);
+        color: var(--color-interface-text-quaternary);
+        font-weight: var(--font-weight-regular);
+        margin: 0;
+      }
+
+      .drop-down-wrapper {
+        select {
+            width: 25%;
+        }
+      }
+
+      .file-wrapper {
+        border-radius: 8px;
+        grid-column: span 4;
+
+        button {
+            background: none;
+            color: var(--color-action-background-primary-default);
+            font-size: var(--body-fd-sm-font-size);
+            font-weight: var(--font-weight-bold);
+            padding: 0;
+            margin: 0;
+        }
+
+        p {            
+            position: relative;
+            margin: 0;
+            padding-top: 40px;
+            font-size: var(--body-fd-lg-font-size);
+            color: var(--color-interface-background-quaternary);
+            font-weight: var(--font-weight-bold);
+        
+            &::before {
+                content: '';
+                background: url('../icons/upload_icon.png') no-repeat;
+                width: 45px;
+                height: 45px;
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }            
+        }
+        
+      }
+  }
+
   /* Address Declaration Panel */
   .fdlien .field-addressdeclarationpanel {
     padding: 60px 60px 40px;
@@ -1988,7 +2048,21 @@ main {
     .fdlien .field-fdbasedcreditcardwizard { left: 2%; }
   
     .field-selectkycoptionspanel fieldset[class*='field-selectkycmethodoption'] { grid-column: span 6 !important; }
+    
+    .fdlien .field-docuploadflow {  
+        padding: 0 20px 20px;
+
+        .drop-down-wrapper {
+          select {
+              width: 50%;
+          }
+        }
   
+        .file-wrapper {
+          grid-column: span 6;   
+        }
+    }
+
     .field-resultpanel:has(.field-errorresultpanel) {
       top: 8%;
     }
@@ -2097,7 +2171,7 @@ main {
         }
     }
   
-    .fdlien .field-selectkycoptionspanel div[class*='field-identityverificationtext'] { margin-top: -44px !important; }
+    .fdlien .field-selectkycoptionspanel div[class*='field-identityverificationtext'] { margin-top: 0 !important; }
 
     .fdlien .field-addressdeclarationpanel { padding: 20px;
         .field-addressdeclarationlabel p { line-height: 30px; }
@@ -2106,6 +2180,20 @@ main {
         .field-aadhaaraddressdeclaration, .field-currentaddressdeclarationaadhar, .field-currentresidenceaddressbiometricovd { margin-bottom: 20px; }
     }
     .fdlien .field-aadharconsentpopup { display: grid; }
+
+    .fdlien .field-docuploadflow {  
+        padding: 0 20px 20px;
+
+        .drop-down-wrapper {
+          select {
+              width: 100%;
+          }
+        }
+  
+        .file-wrapper {
+          margin: 10px 0 0;        
+        }
+    }
 
     .field-resultpanel:has(.field-errorresultpanel) {
       top: 9%;
