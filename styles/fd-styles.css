@@ -1751,6 +1751,13 @@ main {
         }
       }
 
+      .file-wrapper.file-error {        
+        .file-drag-area {
+            border: 1px dashed var(--color-input-border-error);
+            background: var(--color-interface-error-box-primary);
+        }
+      }
+
       .field-uploadaddressproof {
             .plain-text-wrapper p b {
                 font-size: var(--body-fd-xx-lg-font-size);
