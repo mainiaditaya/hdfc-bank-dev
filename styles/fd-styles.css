@@ -1697,6 +1697,60 @@ main {
         
       }
 
+      .file-wrapper.file-uploaded {
+        position: relative;
+        
+        .file-drag-area {
+            border: 1px dashed var(--color-interface-fileupload-border);
+            background: var(--color-interface-fileupload-background);
+        }
+
+        .files-list {
+            text-align: center;
+            position: absolute;
+            left: 22%;
+
+            .file-description {
+                position: relative;
+                top: -125px;
+                margin: 0;
+                padding-top: 40px;
+                background: var(--color-interface-fileupload-background);
+
+                &::before {
+                    content: '';
+                    background: url('../icons/doc_upload_success.png') no-repeat;
+                    width: 45px;
+                    height: 45px;
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+
+            .file-description-name {
+                font-size: var(--body-x-sm-font-size);
+                font-weight: var(--font-weight-regular);
+                color: var(--color-interface-background-quaternary);
+            }
+
+            .file-description-size {
+                font-size: var(--body-x-sm-font-size);
+                font-weight: var(--font-weight-regular);
+                color: var(--color-interface-text-secondary);
+
+                &::before {
+                    content: '(';
+                }
+
+                &::after {
+                    content: ')';
+                }
+            }
+        }
+      }
+
       .field-uploadaddressproof {
             .plain-text-wrapper p b {
                 font-size: var(--body-fd-xx-lg-font-size);
