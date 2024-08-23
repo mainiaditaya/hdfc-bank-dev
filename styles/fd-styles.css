@@ -1153,6 +1153,7 @@ main {
               color: var(--color-interface-text-primary);
               font-weight: var(--font-weight-medium);
               margin-bottom: -9px;
+              border: 1px solid var(--color-interface-border-primary) !important;
           }
 
           .field-mailingaddresstoggle{ padding-left: 30px !important; }
@@ -1181,7 +1182,7 @@ main {
           .field-reviewdetailsview {
               fieldset.hdfc-accordian {
                   padding: 15px 0;
-                  border: 1px solid var(--color-interface-border-secondary);
+                  border: 1px solid var(--color-interface-border-primary);
                   border-bottom-left-radius: 24px;
                   border-bottom-right-radius: 24px;
               }
@@ -1230,6 +1231,7 @@ main {
                     font-size: var(--body-fd-sm-font-size);
                     font-weight: var(--font-weight-regular);
                     color: var(--color-interface-text-secondary);
+                    transform: translateY(-22px);
                 }
   
                 input, input:disabled, select, select:disabled, textarea, textarea:disabled {
@@ -1238,6 +1240,10 @@ main {
                     border: none !important;
                     pointer-events: none;
                     appearance: none;
+                    
+                    &:hover {
+                        box-shadow: none;
+                    }
                 }
           }
       }
@@ -2156,6 +2162,38 @@ main {
                     .field-selectallfdbutton {
                         margin-top: 0 !important;
                     }
+                }
+            }
+        }
+
+        .wizard-menu-items {
+            flex-wrap: nowrap;
+            text-align: center;
+            gap: 10px;
+    
+            .wizard-menu-item {
+                font-size: var(--body-x-sm-font-size);
+                flex-direction: column;
+                
+                &::before {
+                    margin: 0 25px !important;
+                    background: url('../icons/Indicator_Mobile.png') no-repeat center center / 40px 40px !important;
+                }
+    
+                &::after {
+                    margin: 0 0 0 -125px !important;
+                }
+            }
+
+            .wizard-menu-active-item {
+                &::before {
+                    background: url('../icons/Indicator_Mobile_Active.png') no-repeat center center / 40px 40px !important;
+                }
+            }
+
+            .wizard-menu-item:has(+ .wizard-menu-active-item) {
+                &::before {
+                    background: url('../icons/Indicator_Mobile_Completed.png') no-repeat center center / 40px 40px !important;
                 }
             }
         }
