@@ -445,7 +445,6 @@ main .section.form-container {
 
             .field-aem-roi {
                 display: grid;
-                grid-template-columns: auto 161px;
 
                 label { transform: translateY(10px); }
 
