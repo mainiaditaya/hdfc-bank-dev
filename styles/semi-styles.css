@@ -245,7 +245,7 @@ main .section.form-container {
 
         /* Step 2 - Wizard - Choose Transactions */
         .field-aem-choosetransactions {
-            .field-aem-eligibletxnlabel p, .field-aem-txnavailable p, .field-aem-totalselectedtxt p {
+            .field-aem-eligibletxnlabel, field-aem-eligibletxnlabel p, .field-aem-txnavailable, .field-aem-txnavailable p, .field-aem-totalselectedtxt, .field-aem-totalselectedtxt p {
                 margin: 3px 0 0;
                 font-size: var(--body-lg-font-size);
                 font-weight: var(--font-weight-bold);
@@ -374,7 +374,6 @@ main .section.form-container {
                     max-height: fit-content;
                     max-width: 608px;
                     text-align: center;
-
                     p, input { 
                         color: var(--color-interface-background-tertiary);
                         font-size: var(--body-md-font-size);
