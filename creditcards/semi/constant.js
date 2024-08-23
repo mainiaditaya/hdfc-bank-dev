@@ -13,6 +13,7 @@ const SEMI_ENDPOINTS = {
 const DOM_ELEMENT = {
   semiWizard: 'aem_semiWizard',
   chooseTransaction: 'aem_chooseTransactions',
+  selectTenure: 'aem_selectTenure',
 };
 
 const MISC = {

@@ -218,7 +218,7 @@ function checkELigibilityHandler(resPayload, globals) {
  */
 // eslint-disable-next-line no-unused-vars
 function selectTenure(globals) {
-  if (window !== undefined) moveWizardView(domElements.semiWizard, 'aem_selectTenure');
+  if (window !== undefined) moveWizardView(domElements.semiWizard, domElements.selectTenure);
 }
 
 /**
@@ -253,7 +253,8 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
   const txnList = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_TxnsList;
   const txnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
   const selectedList = txnList?.filter((el) => (el.aem_Txn_checkBox.$value === 'on'));
-  globals.functions.setProperty(txnSelected, { value: selectedList?.length }); // set number of select in billed or unbilled txn list
+  const SELECTED = `${selectedList?.length} Selected`;
+  globals.functions.setProperty(txnSelected, { value: SELECTED }); // set number of select in billed or unbilled txn list
   if ((checkboxVal === 'on') && ((txnType === 'BILLED') || (txnType === 'UNBILLED'))) {
     currentFormContext.totalSelect += 1;
   } else if ((currentFormContext.totalSelect > 0)) {
