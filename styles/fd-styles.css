@@ -1650,13 +1650,17 @@ main {
 
       .drop-down-wrapper {
         select {
-            width: 25%;
+            width: 32%;
         }
       }
 
       .file-wrapper {
-        border-radius: 8px;
         grid-column: span 4;
+
+        .file-drag-area {
+            border-radius: 8px;
+            border: 1px dashed var(--color-input-text-disabled)
+        }
 
         button {
             background: none;
@@ -1687,6 +1691,22 @@ main {
             }            
         }
         
+      }
+
+      .field-uploadaddressproof {
+            .plain-text-wrapper p b {
+                font-size: var(--body-fd-xx-lg-font-size);
+                color: var(--color-interface-background-quaternary);
+                font-weight: var(--font-weight-bold);
+                margin: 0;
+            }
+
+            .plain-text-wrapper p {
+                font-size: var(--body-fd-sm-font-size);
+                color: var(--color-interface-text-quaternary);
+                font-weight: var(--font-weight-regular);
+                margin: 0;
+            }
       }
   }
 
@@ -2060,12 +2080,20 @@ main {
 
         .drop-down-wrapper {
           select {
-              width: 50%;
+              width: 48.5%;
           }
         }
   
         .file-wrapper {
-          grid-column: span 6;   
+          grid-column: span 6;
+        }
+
+        .field-uploadaddressproof {
+            .drop-down-wrapper {
+                select {
+                    width: 48.5%;
+                }
+              }
         }
     }
 
@@ -2230,6 +2258,14 @@ main {
   
         .file-wrapper {
           margin: 10px 0 0;        
+        }
+
+        .field-uploadaddressproof {
+            .drop-down-wrapper {
+                select {
+                    width: 100%;
+                }
+              }
         }
     }
 
