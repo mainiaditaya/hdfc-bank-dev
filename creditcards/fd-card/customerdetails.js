@@ -1,11 +1,21 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-useless-escape */
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME as formRuntime } from '../../common/constants.js';
-import { formUtil, urlPath } from '../../common/formutils.js';
+import { composeNameOption, formUtil, urlPath } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
-import { addDisableClass } from '../domutils/domutils.js';
+import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
 import { FD_ENDPOINTS, NAME_ON_CARD_LENGTH } from './constant.js';
 
+const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) => {
+  const elementNameSelect = 'nameOnCardDD';
+  const firstName = customerInfo.firstName ? customerInfo.firstName : 'FirstName';
+  const middleName = customerInfo.middleName ? customerInfo.firstName : 'MiddleName';
+  const lastName = customerInfo.lastName ? customerInfo.firstName : 'LastName';
+  const options = composeNameOption(firstName, middleName, lastName, 'fd', NAME_ON_CARD_LENGTH);
+  const initialValue = options[0]?.value;
+  setSelectOptions(options, elementNameSelect);
+  globals.functions.setProperty(personalDetails.nameOnCardDD, { enum: options, value: initialValue });
+};
 /**
  * Binds customer details from the global context to the current form.
  * @name bindCustomerDetails
@@ -28,8 +38,9 @@ const bindCustomerDetails = (globals) => {
   setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
   setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob);
   setFormValue(personalDetails.panNumberPersonalDetails, customerInfo.pan);
-  setFormValue(personalDetails.emailID, customerInfo.emailId);
   setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
+  const emailIDUtil = formUtil(globals, personalDetails.emailID);
+  emailIDUtil.setValue(customerInfo.emailId, { attrChange: true, value: false });
   // setFormValue(personalDetails.fullName, '');
   // setFormValue(personalDetails.panNumberPersonalDetails, '');
   // setFormValue(personalDetails.emailID, '');
@@ -42,11 +53,13 @@ const bindCustomerDetails = (globals) => {
     setFormValue(personalDetails.nameOnCard, customerInfo.customerFullName);
   } else {
     globals.functions.setProperty(personalDetails.nameOnCard, { visible: false });
+    globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: true });
+    initializeNameOnCardDdOptions(globals, personalDetails, customerInfo);
   }
 
   const personaldetails = document.querySelector('.field-personaldetails');
   setTimeout(() => {
-    addDisableClass(personaldetails);
+    addDisableClass(personaldetails, ['nameOnCardDD', 'emailID']);
   }, 10);
 };
 
