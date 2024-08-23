@@ -121,6 +121,11 @@ const bindCustomerDetails = (globals) => {
   }, 10);
 };
 
+/**
+ *
+ * @name validateEmailID
+ * @param {Object} globals - The global context object containing various information.
+ */
 const validateEmailID = async (email, globals) => {
   const url = urlPath(FD_ENDPOINTS.emailId);
   const invalidMsg = 'Please enter valid email id...';
@@ -131,7 +136,7 @@ const validateEmailID = async (email, globals) => {
   try {
     const emailValid = await getJsonResponse(url, payload, method);
     if (emailValid === true) {
-      console.log(email);
+      console.log(email, globals, invalidMsg);
     } else {
       console.log(email);
     }
