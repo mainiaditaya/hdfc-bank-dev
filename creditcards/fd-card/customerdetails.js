@@ -43,13 +43,15 @@ const bindEmployeeAssitanceField = async (globals) => {
   const successMethod = async (data) => {
     const dropDownSelectField = employeeAssistancePanel.channel;
     const options = [{ label: 'Website Download', value: 'Website Download' }];
+    let noMatch = true;
     data.forEach((item) => {
       options.push({ label: item.CHANNELS, value: item.CHANNELS });
       if (defaultChannel?.toLowerCase() === item.CHANNELS.toLowerCase()) {
         defaultChannel = item.CHANNELS;
+        noMatch = false;
       }
     });
-    if (!defaultChannel) {
+    if (noMatch) {
       defaultChannel = options[0].value;
     }
     setSelectOptions(options, elementNameSelect);
