@@ -27,10 +27,10 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) =
 };
 
 /**
- * @name bindEmployeeAssitanceField
+ * @name bindEmployeeAssistanceField
  * @returns {Promise<Object>} - A promise that resolves with the JSON response from the provided URL.
  */
-const bindEmployeeAssitanceField = async (globals) => {
+const bindEmployeeAssistanceField = async (globals) => {
   const params = new URLSearchParams(window.location.search);
   const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
   const elementNameSelect = 'channel';
@@ -79,7 +79,7 @@ const bindCustomerDetails = (globals) => {
   if (!CUSTOMER_DATA_BINDING_CHECK) return;
   CUSTOMER_DATA_BINDING_CHECK = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
-  bindEmployeeAssitanceField(globals);
+  bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const genderMap = { Male: '0', Female: '1', Others: '3' };
@@ -173,8 +173,39 @@ const channelChangeHandler = (globals) => {
   setVisibility(employeeAssistancePanel, propertiesToHide, false, globals);
 };
 
+/**
+ *
+ * @name dsaCodeHandler
+ * @param {Object} globals - The global context object containing various information.
+ */
+const dsaCodeHandler = async (globals) => {
+  const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  const dsaCode = employeeAssistancePanel.dsaCode._data.$_value.toLowerCase();
+  const url = `${FD_ENDPOINTS.dsamaster}${dsaCode}.json`;
+
+  try {
+    const response = await getJsonResponse(url, null, 'GET');
+
+    if (response && response.length === 1) {
+      const { DSA_CODE, DSA_NAME } = response[0];
+
+      if (DSA_CODE.toLowerCase() === dsaCode) {
+        const changeDataAttrObj = { attrChange: true, value: false, disable: true };
+        const dsaNameUtil = formUtil(globals, employeeAssistancePanel.dsaName);
+        dsaNameUtil.setValue(DSA_NAME, changeDataAttrObj);
+        return;
+      }
+    }
+
+    globals.functions.setProperty(employeeAssistancePanel.dsaName, { value: '', readOnly: false });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   bindCustomerDetails,
   validateEmailID,
   channelChangeHandler,
+  dsaCodeHandler,
 };
