@@ -24,6 +24,7 @@ const FD_ENDPOINTS = {
   journeyDropOff: '/content/hdfc_commonforms/api/journeydropoff.json',
   emailId: '/content/hdfc_commonforms/api/emailid.json',
   customeraccountdetailsdto: '/content/hdfc_hafcards/api/hdfccardscustomeraccountdetailsdto.json',
+  masterchannel: 'https://applyonlineuat01.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.CHANNEL_MASTER.CHANNELS.json',
 };
 
 const OTP_TIMER = 30;
