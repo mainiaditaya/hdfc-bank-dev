@@ -218,6 +218,7 @@ function checkELigibilityHandler(resPayload, globals) {
  */
 // eslint-disable-next-line no-unused-vars
 function selectTenure(globals) {
+  if (window !== undefined) moveWizardView(domElements.semiWizard, 'aem_selectTenure');
 }
 
 /**
