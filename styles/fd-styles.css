@@ -1178,6 +1178,10 @@ main {
               font-size: var(--body-x-sm-font-size);
               margin-top: 30px;
           }
+            
+          .field-nameoncard input, .field-nameoncarddd  select, .field-pannumberpersonaldetails input{
+              text-transform: uppercase;
+          }
   
           .field-reviewdetailsview {
               fieldset.hdfc-accordian {
