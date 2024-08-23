@@ -7,6 +7,7 @@ import {
   resendOTP,
   customSetFocus,
   reloadPage,
+  pincodeChangeHandler,
 } from './fdlien-functions.js';
 import {
   invokeJourneyDropOff,
@@ -16,10 +17,15 @@ import {
 import {
   bindCustomerDetails,
   validateNameOnCard,
+  channelChangeHandler,
+  validateEmailID,
 } from './customerdetails.js';
 
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
-import { redirect } from '../../common/functions.js';
+import {
+  redirect,
+  validatePan,
+} from '../../common/functions.js';
 
 import createJourneyId from '../../common/journey-utils.js';
 
@@ -40,7 +46,7 @@ import {
 import {
   customerIdProceedHandler,
   fdSelectHandler,
-  resetFDPanels,
+  resetFDSelection,
   selectAllFdClickHandler,
 } from './fddetailsutil.js';
 
@@ -69,6 +75,10 @@ export {
   fdSelectHandler,
   customerIdProceedHandler,
   selectAllFdClickHandler,
-  resetFDPanels,
+  resetFDSelection,
   validateNameOnCard,
+  validateEmailID,
+  pincodeChangeHandler,
+  channelChangeHandler,
+  validatePan,
 };

@@ -26,7 +26,7 @@ const validatePan = (mobileNumber, panNumber, dob, firstName, showLoader, hideLo
     journeyID: currentFormContext.journeyID,
     mobileNumber,
     panInfo: {
-      panNumber,
+      panNumber: panNumber.replace(/\s+/g, ''),
       panType: 'P',
       dob: convertDateToDdMmYyyy(new Date(dob)),
       name: firstName ? firstName.split(' ')[0] : '',

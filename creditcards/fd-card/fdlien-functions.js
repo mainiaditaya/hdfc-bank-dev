@@ -1,14 +1,17 @@
+/* eslint-disable no-underscore-dangle */
 import {
   ageValidator,
   clearString,
   getTimeStamp,
   maskNumber,
+  pinCodeMasterCheck,
   urlPath,
 } from '../../common/formutils.js';
 import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
 import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
 import createJourneyId from '../../common/journey-utils.js';
+import { addGaps } from './fd-dom-functions.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
@@ -208,6 +211,7 @@ const resendOTP = async (globals) => {
  * @return {PROMISE}
  */
 const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
+  addGaps('.field-pannumberpersonaldetails input');
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
@@ -254,6 +258,21 @@ function reloadPage() {
   window.location.reload();
 }
 
+/**
+ * @name pincodeChangeHandler
+ * @param {string} pincode
+ * @param {object} globals
+ */
+const pincodeChangeHandler = (pincode, globals) => {
+  const {
+    newCurentAddressPin,
+    newCurentAddressCity,
+    newCurentAddressState,
+
+  } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
+  pinCodeMasterCheck(globals, newCurentAddressCity, newCurentAddressState, newCurentAddressPin, pincode);
+};
+
 // setTimeout(() => {
 //   if (document && FD_CONSTANT.MODE === 'dev') {
 //     document.querySelector('.field-getotpbutton button').removeAttribute('disabled');
@@ -270,4 +289,5 @@ export {
   customSetFocus,
   reloadPage,
   createJourneyId,
+  pincodeChangeHandler,
 };
