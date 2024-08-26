@@ -1,7 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-useless-escape */
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME as formRuntime } from '../../common/constants.js';
-import { composeNameOption, formUtil, urlPath } from '../../common/formutils.js';
+import {
+  composeNameOption,
+  formUtil,
+  urlPath,
+  getUrlParamCaseInsensitive,
+} from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
 import { FD_ENDPOINTS, NAME_ON_CARD_LENGTH } from './constant.js';
@@ -10,10 +15,10 @@ let CUSTOMER_DATA_BINDING_CHECK = true;
 
 const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) => {
   const elementNameSelect = 'nameOnCardDD';
-  // const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
-  const customerFirstName = customerInfo.customerFirstName ? customerInfo.customerFirstName : 'FirstName';
-  const customerMiddleName = customerInfo.customerMiddleName ? customerInfo.customerMiddleName : 'MiddleName';
-  const customerLastName = customerInfo.customerLastName ? customerInfo.customerLastName : 'LastName';
+  const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
+  // const customerFirstName = customerInfo.customerFirstName ? customerInfo.customerFirstName : 'FirstName';
+  // const customerMiddleName = customerInfo.customerMiddleName ? customerInfo.customerMiddleName : 'MiddleName';
+  // const customerLastName = customerInfo.customerLastName ? customerInfo.customerLastName : 'LastName';
   const options = composeNameOption(
     customerFirstName.toUpperCase(),
     customerMiddleName.toUpperCase(),
@@ -27,49 +32,50 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) =
 };
 
 /**
- * @name bindEmployeeAssitanceField
+ * @name bindEmployeeAssistanceField
  * @returns {Promise<Object>} - A promise that resolves with the JSON response from the provided URL.
  */
-const bindEmployeeAssitanceField = async (globals) => {
-  const params = new URLSearchParams(window.location.search);
+const bindEmployeeAssistanceField = async (globals) => {
   const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
-  const elementNameSelect = 'channel';
-  let defaultChannel = params.get('channel');
-  const url = FD_ENDPOINTS.masterchannel;
-  const method = 'GET';
-  const errorMethod = async (errStack) => {
-    console.log(errStack);
+  const defaultChannel = getUrlParamCaseInsensitive('channel');
+  const codes = {
+    lc1Code: getUrlParamCaseInsensitive('lccode'),
+    lgCode: getUrlParamCaseInsensitive('lgcode'),
+    smCode: getUrlParamCaseInsensitive('smcode'),
+    lc2Code: getUrlParamCaseInsensitive('lc2'),
+    dsaCode: getUrlParamCaseInsensitive('dsacode'),
+    branchCode: getUrlParamCaseInsensitive('branchcode'),
   };
-  const successMethod = async (data) => {
+
+  try {
+    const response = await getJsonResponse(FD_ENDPOINTS.masterchannel, null, 'GET');
+    if (!response) return;
+
     const dropDownSelectField = employeeAssistancePanel.channel;
     const options = [{ label: 'Website Download', value: 'Website Download' }];
-    let noMatch = true;
-    data.forEach((item) => {
-      options.push({ label: item.CHANNELS, value: item.CHANNELS });
-      if (defaultChannel?.toLowerCase() === item.CHANNELS.toLowerCase()) {
-        defaultChannel = item.CHANNELS;
-        noMatch = false;
+    let matchedChannel = options[0].value;
+
+    response.forEach((item) => {
+      const channel = item.CHANNELS;
+      options.push({ label: channel, value: channel });
+      if (defaultChannel?.toLowerCase() === channel.toLowerCase()) {
+        matchedChannel = channel;
       }
     });
-    if (noMatch) {
-      defaultChannel = options[0].value;
-    }
-    setSelectOptions(options, elementNameSelect);
-    globals.functions.setProperty(dropDownSelectField, { enum: options, value: defaultChannel });
-  };
-  try {
-    const response = await getJsonResponse(url, null, method);
-    const [{ errorCode, errorMessage }] = response;
-    if (response) {
-      successMethod(response);
-    } else if (errorCode) {
-      const errStack = { errorCode, errorMessage };
-      throw errStack;
-    }
+
+    setSelectOptions(options, 'channel');
+    globals.functions.setProperty(dropDownSelectField, { enum: options, value: matchedChannel });
+
+    const changeDataAttrObj = { attrChange: true, value: false };
+    ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
+      const util = formUtil(globals, employeeAssistancePanel[code]);
+      if (codes[code] !== null) util.setValue(codes[code], changeDataAttrObj);
+    });
   } catch (error) {
-    errorMethod(error);
+    console.log(error);
   }
 };
+
 /**
  * Binds customer details from the global context to the current form.
  * @name bindCustomerDetails
@@ -79,7 +85,7 @@ const bindCustomerDetails = (globals) => {
   if (!CUSTOMER_DATA_BINDING_CHECK) return;
   CUSTOMER_DATA_BINDING_CHECK = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
-  bindEmployeeAssitanceField(globals);
+  bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const genderMap = { Male: '0', Female: '1', Others: '3' };
@@ -90,7 +96,7 @@ const bindCustomerDetails = (globals) => {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-  customerInfo.customerFullName = 'FirstName MiddleName LastName';
+  // customerInfo.customerFullName = 'FirstName MiddleName LastName';
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
   setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
   setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob);
@@ -173,8 +179,63 @@ const channelChangeHandler = (globals) => {
   setVisibility(employeeAssistancePanel, propertiesToHide, false, globals);
 };
 
+/**
+ *
+ * @name dsaCodeHandler
+ * @param {Object} globals - The global context object containing various information.
+ */
+const dsaCodeHandler = async (globals) => {
+  const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  const dsaCode = employeeAssistancePanel.dsaCode._data.$_value?.toLowerCase();
+  const url = `${FD_ENDPOINTS.dsamaster}${dsaCode}.json`;
+
+  try {
+    const response = await getJsonResponse(url, null, 'GET');
+
+    if (response && response.length === 1) {
+      const { DSA_CODE, DSA_NAME } = response[0];
+
+      if (DSA_CODE.toLowerCase() === dsaCode) {
+        const changeDataAttrObj = { attrChange: true, value: false, disable: true };
+        const dsaNameUtil = formUtil(globals, employeeAssistancePanel.dsaName);
+        dsaNameUtil.setValue(DSA_NAME, changeDataAttrObj);
+        return;
+      }
+    }
+    globals.functions.setProperty(employeeAssistancePanel.dsaName, { value: '', readOnly: false });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/**
+*
+* @name branchCodeHandler
+* @param {Object} globals - The global context object containing various information.
+*/
+const branchCodeHandler = async (globals) => {
+  const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  const branchCode = employeeAssistancePanel.branchCode._data.$_value;
+  const url = `${FD_ENDPOINTS.branchMaster}${branchCode}.json`;
+  const branchNameUtil = formUtil(globals, employeeAssistancePanel.branchName);
+  const branchCityUtil = formUtil(globals, employeeAssistancePanel.branchCity);
+  try {
+    const response = await getJsonResponse(url, null, 'GET');
+    if (response?.total === 1) {
+      const changeDataAttrObj = { attrChange: true, value: false, disable: true };
+      branchNameUtil.setValue(response.branchDetails[0].Name, changeDataAttrObj);
+      branchCityUtil.setValue(response.cityDetails[0].CityName, changeDataAttrObj);
+    }
+  } catch (error) {
+    globals.functions.setProperty(employeeAssistancePanel.branchName, { value: '', readOnly: false });
+    globals.functions.setProperty(employeeAssistancePanel.branchCity, { value: '', readOnly: false });
+  }
+};
+
 export {
   bindCustomerDetails,
   validateEmailID,
   channelChangeHandler,
+  dsaCodeHandler,
+  branchCodeHandler,
 };

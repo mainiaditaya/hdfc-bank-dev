@@ -18,6 +18,8 @@ import {
   bindCustomerDetails,
   channelChangeHandler,
   validateEmailID,
+  dsaCodeHandler,
+  branchCodeHandler,
 } from './customerdetails.js';
 
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
@@ -79,4 +81,6 @@ export {
   pincodeChangeHandler,
   channelChangeHandler,
   validatePan,
+  dsaCodeHandler,
+  branchCodeHandler,
 };
