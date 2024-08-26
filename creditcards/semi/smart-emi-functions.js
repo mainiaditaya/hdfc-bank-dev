@@ -11,6 +11,7 @@ const {
   PRO_CODE,
   DOM_ELEMENT: domElements,
   MISC,
+  RESPONSE_PAYLOAD,
 } = SEMI_CONSTANT;
 
 /**
@@ -60,6 +61,8 @@ function generateJourneyId(visitMode, journeyAbbreviation, channel) {
 currentFormContext.journeyName = journeyName;
 currentFormContext.journeyID = generateJourneyId('a', 'b', 'c');
 currentFormContext.totalSelect = 0;
+currentFormContext.billed = 0;
+currentFormContext.unbilled = 0;
 let tnxPopupAlertOnce = true; // flag alert for the pop to show only once on click of continue
 
 /**
@@ -72,6 +75,7 @@ let tnxPopupAlertOnce = true; // flag alert for the pop to show only once on cli
 function getOTPV1(mobileNumber, cardDigits, globals) {
   globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyID });
   currentFormContext.journeyName = SEMI_CONSTANT.JOURNEY_NAME;
+
   const jsonObj = {
     requestString: {
       mobileNo: mobileNumber,
@@ -147,7 +151,7 @@ const cardDisplay = (globals, response) => {
 };
 
 const DELAY = 90;
-const DELTA_DELAY = 90;
+const DELTA_DELAY = 100;
 
 /**
  * Combines transaction data and updates the appropriate panels.
@@ -186,7 +190,8 @@ const setTxnPanelData = (allTxn, btxn, billedTxnPanel, unBilledTxnPanel, globals
 * @return {PROMISE}
 */
 // eslint-disable-next-line no-unused-vars
-function checkELigibilityHandler(resPayload, globals) {
+function checkELigibilityHandler(resPayload1, globals) {
+  const resPayload = SEMI_CONSTANT.RESPONSE_PAYLOAD.response;
   const response = {};
   try {
     let ccBilledData = resPayload?.ccBilledTxnResponse?.responseString || [];
@@ -230,7 +235,7 @@ function selectTenure(globals) {
   } else if (window !== undefined) moveWizardView(domElements.semiWizard, domElements.selectTenure);
   tnxPopupAlertOnce = !tnxPopupAlertOnce;
 }
-
+let selectTopTenFlag = false;
 /**
  * function sorts the billed / Unbilled Txn  array in based on the orderBy field
  * @param {string} txnType  - BILLED /  UNBILLED
@@ -267,7 +272,6 @@ const disableCheckBoxes = (txnList, allCheckBoxes, globals) => {
   });
 };
 
-let selectTopTenFlag = false;
 /**
  * enable all fields of transaction from billed or unbilled.
  * @param {Array} txnList - array of repeatable pannel
@@ -279,13 +283,16 @@ const enableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => glob
  * function to update number of transaction selected.
  * @param {string} checkboxVal - checkbox value
  * @param {string} txnType - BILLED /  UNBILLED
+* @param {object} globals - globals form object
  */
 function txnSelectHandler(checkboxVal, txnType, globals) {
+  // null || ON
   if (selectTopTenFlag) return;
   const MAX_SELECT = 10;
   const BILLED_FRAG = 'billedTxnFragment';
   const UNBILLED_FRAG = 'unbilledTxnFragment';
   const TXN_FRAG = txnType === 'BILLED' ? BILLED_FRAG : UNBILLED_FRAG;
+
   const txnList = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_TxnsList;
   const txnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
   const selectedList = txnList?.filter((el) => (el.aem_Txn_checkBox.$value === 'on'));
@@ -332,23 +339,30 @@ function selectTopTxn(globals) {
   const SELECT_TOP_TXN_LIMIT = 10;
   const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
-  disableCheckBoxes(unbilledTxnList, true, globals);
-  disableCheckBoxes(billedTxnList, true, globals);
   const billed = globals.functions.exportData().smartemi.aem_billedTxn.aem_billedTxnSelection;
   const unBilled = globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection;
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSortDD, { value: '0' });
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSortDD, { value: '0' });
+  // sortData('UNBILLED', '0', globals);
+  // sortData('BILLED', '0', globals);
+  disableCheckBoxes(unbilledTxnList, true, globals);
+  disableCheckBoxes(billedTxnList, true, globals);
   const allTxn = billed.concat(unBilled);
   const sortedArr = sortDataByAmount(allTxn);
   const sortedTxnList = sortedArr?.slice(0, SELECT_TOP_TXN_LIMIT);
   const billedTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
-  console.log(sortedArr);
-  sortedTxnList?.forEach((txn, i) => {
+  let billedCounter = 0;
+  let unbilledCounter = 0;
+  sortedTxnList?.forEach((txn) => {
     if (txn.aem_txn_type === 'UNBILLED') {
-      globals.functions.setProperty(unBilledTxnPanel[i].aem_Txn_checkBox, { enabled: true });
-      globals.functions.setProperty(unBilledTxnPanel[i].aem_Txn_checkBox, { value: 'on' });
+      globals.functions.setProperty(unBilledTxnPanel[unbilledCounter].aem_Txn_checkBox, { enabled: true });
+      globals.functions.setProperty(unBilledTxnPanel[unbilledCounter].aem_Txn_checkBox, { value: 'on' });
+      unbilledCounter += 1;
     } else {
-      globals.functions.setProperty(billedTxnPanel[i].aem_Txn_checkBox, { enabled: true });
-      globals.functions.setProperty(billedTxnPanel[i].aem_Txn_checkBox, { value: 'on' });
+      globals.functions.setProperty(billedTxnPanel[billedCounter].aem_Txn_checkBox, { enabled: true });
+      globals.functions.setProperty(billedTxnPanel[billedCounter].aem_Txn_checkBox, { value: 'on' });
+      billedCounter += 1;
     }
   });
   currentFormContext.totalSelect = sortedTxnList.length;
