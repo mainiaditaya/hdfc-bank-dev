@@ -17,9 +17,10 @@ const {
  * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
  *
  * @param {object} data
+ * @param {object} key
  * @returns {object}
  */
-const sortDataByAmount = (data) => data.sort((a, b) => b.aem_TxnAmt - a.aem_TxnAmt);
+const sortDataByAmount = (data, key = 'aem_TxnAmt') => data.sort((a, b) => b[key] - a[key]);
 
 /**
  * Description placeholder
@@ -145,8 +146,8 @@ const cardDisplay = (globals, response) => {
   imageEl?.childNodes[1].setAttribute('srcset', imagePath);
 };
 
-const DELAY = 50;
-const DELTA_DELAY = 70;
+const DELAY = 90;
+const DELTA_DELAY = 90;
 
 /**
  * Combines transaction data and updates the appropriate panels.
@@ -188,8 +189,12 @@ const setTxnPanelData = (allTxn, btxn, billedTxnPanel, unBilledTxnPanel, globals
 function checkELigibilityHandler(resPayload, globals) {
   const response = {};
   try {
-    const ccBilledData = resPayload?.ccBilledTxnResponse?.responseString || [];
-    const ccUnBilledData = resPayload?.ccUnBilledTxnResponse?.responseString || [];
+    let ccBilledData = resPayload?.ccBilledTxnResponse?.responseString || [];
+    ccBilledData = sortDataByAmount(ccBilledData, 'amount');
+    // apply sort by amount here to ccBilledData
+    let ccUnBilledData = resPayload?.ccUnBilledTxnResponse?.responseString || [];
+    // apply sort by amount here to ccBilledData
+    ccUnBilledData = sortDataByAmount(ccUnBilledData, 'amount');
     currentFormContext.txnResponse = {
       BILLED: ccBilledData,
       UNBILLED: ccUnBilledData,
@@ -311,11 +316,21 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
     disableUncheckedTxnField(billedTxnList, globals);
   }
 }
+
+/**
+ * select top txnlist
+* @param {object} globals - global object
+ */
+function selectTopTxn(globals){
+debugger;
+}
+ 
 export {
   getOTPV1,
   otpValV1,
   checkELigibilityHandler,
   selectTenure,
   sortData,
+  selectTopTxn,
   txnSelectHandler,
 };
