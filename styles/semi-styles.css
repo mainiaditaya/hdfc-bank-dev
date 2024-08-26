@@ -48,6 +48,8 @@ main .section.form-container {
         background-image: url('../icons/Arrow-Collapse.svg') !important;
     }
 
+    .hdfc-accordian-semi .accordion-collapse { display: none; }
+
     .hdfc-accordian-semi:has(.accordion-collapse) .field-expand-btn button {
         transform: rotate(-180deg);
         margin-bottom: 2px !important;
@@ -285,7 +287,7 @@ main .section.form-container {
                     border-radius: 16px 16px 2px 2px;
                     position: relative;
     
-                    .field-aem-txnavailable, .field-aem-txnselected input, .field-aem-txnselected-label {
+                    .field-aem-txnavailable, .field-aem-txnselected input, .field-aem-txnselected {
                         align-self: center;
                         padding: 0;
                         margin: -1px 0 0;
@@ -303,8 +305,8 @@ main .section.form-container {
                         font-size: var(--body-x-sm-font-size);
                     }
 
-                    .field-aem-txnselected-label p { 
-                        margin: 0 0 0 -14px !important; 
+                    .field-aem-txnselected, .field-aem-txnselected p { 
+                        margin: 0 0 0 -2px !important; 
                         font-size: var(--body-x-sm-font-size);
                     }
     
@@ -346,6 +348,15 @@ main .section.form-container {
                         pointer-events: none;
                         border: none;
                     }
+
+                    input:disabled {
+                        background-color: var(--color-interface-background-primary);
+                        color: var(--color-interface-text-secondary);
+                        opacity: 0.8;
+                    }
+
+                    input[type="checkbox"]:disabled { cursor: not-allowed; }
+
                     .field-billed-txnname { margin: 2px 0 0 -32px; }
 
                     .field-aem-txndate input, .field-aem-txnamt input {
@@ -369,26 +380,25 @@ main .section.form-container {
                 display: grid;
                 background-color: var(--color-interface-popup-background);
 
-                .field-aem-txtselectionpopup {
-                    padding: 10px 12px;
+                .field-aem-txtselectionpopup, p, input {
+                    margin: 0;
+                    padding: 16px;
                     max-height: fit-content;
                     max-width: 608px;
                     text-align: center;
-                    
-                    p, input { 
-                        color: var(--color-interface-background-tertiary);
-                        font-size: var(--body-md-font-size);
-                        font-weight: var(--font-weight-bold);
-                    }
+                    color: var(--color-interface-background-tertiary);
+                    font-size: var(--body-md-font-size);
+                    font-weight: var(--font-weight-bold);
+
+                    p, input { padding: 0; }
 
                     .field-aem-txtselectionpopupicon img {
                         height: 151px;
                         width: 142px;
                     }
 
-                    .field-aem-txtselectionconfirmation, .field-aem-txtselectionconfirmation1 { border-bottom: 1px solid var(--color-interface-text-secondary); }
+                    .field-aem-txtselectionconfirmationbutton { border-top: 1px solid var(--color-interface-text-secondary);
 
-                    .field-aem-txtselectionconfirmationbutton { 
                         button, button:hover {
                             background-color: var(--color-interface-background-primary) !important;
                             color: var(--color-interface-background-tertiary) !important;
@@ -432,7 +442,7 @@ main .section.form-container {
 
                     .field-wrapper { align-self: center; }
 
-                    p, input { 
+                    p, input:not([type="radio"]) { 
                         margin: 0; padding: 0; 
                         border: none;
                         font-size: var(--body-sm-font-size);
