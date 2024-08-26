@@ -43,6 +43,10 @@ main {
       position: relative;
       width: 100.3%;
       left: -2px;
+
+      p {
+        color: var(--color-interface-background-quaternary);
+      }
   }
   
   .hdfc-accordion-legend::after {
@@ -893,7 +897,7 @@ main {
           color: var(--color-interface-text-secondary);
           margin: 0;
           line-height: 24px;
-          padding-bottom: 5px;
+          padding-bottom: 0;
       }
   
       .field-creditlimitmax p {
@@ -910,12 +914,27 @@ main {
   
         .field-fdselectioninfo {
             margin-top: -21px;
+
+            .field-selectfddetailspanel {
+                gap: 9px !important;
+
+                .field-select-fd-subtext1 {
+                    position: relative;
+                    top: -20px;
+                }
+
+                .field-select-fd-subtext2 {
+                    position: relative;
+                    top: -45px;
+                }
+            }
   
             .field-selectedfdpanel {
               display: flex;
               flex-direction: row;
               justify-content: end;
               border-top: 1px dashed var(--color-interface-border-secondary);
+              margin-top: -45px;
   
               .field-selectallfdbutton {
                   button {
@@ -991,7 +1010,7 @@ main {
                 grid-template-columns: 204px auto;
                 border: solid 1px var(--color-interface-border-secondary);
                 border-radius: 12px;
-                height: 62px;
+                height: 52px;
   
                 label {
                     text-align: right;
@@ -1004,7 +1023,7 @@ main {
                     padding: 0;
                     text-align: center;
                     margin: 0;
-                    height: 50px;
+                    height: 51px !important;
                     border-radius: 0 12px 12px 0 !important;
                     border: none;
                     background: var(--color-interface-background-quinary);
@@ -1022,6 +1041,10 @@ main {
                       background: var(--color-interface-background-primary);
                       color: var(--color-action-text-secondary-default);
                   }
+            }
+
+            .field-fdnumberselection {
+                margin-top: -20px;
             }
   
             .field-fdnumberselection .repeat-wrapper { 
@@ -1148,9 +1171,11 @@ main {
   
             .field-pleasenotetext1, .field-pleasenotetext2 {
                 line-height: 7px;
+                margin-top: -15px;
   
                 p p{
                   line-height: 16px;
+                  font-size: var(--body-fd-md-font-size);
                 }
             }
         }
@@ -2108,6 +2133,13 @@ main {
   
             .field-selectfd {
                 .field-customername { grid-column: span 6; }
+
+                .field-selectfddetailspanel {    
+                    .field-select-fd-subtext2 {
+                        position: relative;
+                        top: -25px;
+                    }
+                }
   
                 .field-creditlimit { 
                     grid-column: span 6;
@@ -2126,6 +2158,7 @@ main {
   
                 .field-selectedfdpanel {
                   flex-direction: row;
+                  margin-top: -30px;
       
                   .field-selectallfdbutton {
                       margin-top: 0 !important;
@@ -2272,10 +2305,48 @@ main {
     .field-fdbasedcreditcardwizard {
         .field-selectfd {
             .field-fdselectioninfo {
+                .field-selectfddetailspanel {
+                    .field-creditlimit {
+                        position: relative;
+                        top: 110px;
+                    }
+
+                    .field-creditlimitmax {
+                        text-align: left;
+                        position: relative;
+                        top: 65px;
+                    }
+
+                    .field-select-fd-subtext1 {
+                        position: relative;
+                        top: -55px !important;
+                    }
+    
+                    .field-select-fd-subtext2 {
+                        position: relative;
+                        top: -80px !important;
+                    }
+                }                
+
+                .field-fdnumberselection > div > fieldset {
+                    display: grid;
+                }
+
+                .field-fdnumberselection .repeat-wrapper {
+                    max-width: 365px;
+                    margin-bottom: 20px;
+                }
+
                 .field-selectedfdpanel {
+                    margin-top: 10px !important;
+
                     .field-selectallfdbutton {
                         margin-top: 0 !important;
                     }
+                }
+
+                .field-fdnumberselection {
+                    overflow-x: scroll;
                 }
             }
         }
