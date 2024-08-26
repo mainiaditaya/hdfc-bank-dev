@@ -68,7 +68,7 @@ const changeCheckboxToToggle = () => {
 setTimeout(() => {
   addGaps('.field-pan.char-gap-4 input');
   addMobileValidation();
-}, 1000);
+}, 1200);
 
 export {
   addGaps,

@@ -16,9 +16,9 @@ let CUSTOMER_DATA_BINDING_CHECK = true;
 const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) => {
   const elementNameSelect = 'nameOnCardDD';
   const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
-  // const customerFirstName = customerInfo.customerFirstName ? customerInfo.customerFirstName : 'FirstName';
-  // const customerMiddleName = customerInfo.customerMiddleName ? customerInfo.customerMiddleName : 'MiddleName';
-  // const customerLastName = customerInfo.customerLastName ? customerInfo.customerLastName : 'LastName';
+  // const customerFirstName = 'FIRSTNAME';
+  // const customerMiddleName = '';
+  // const customerLastName = 'LASTNAME';
   const options = composeNameOption(
     customerFirstName.toUpperCase(),
     customerMiddleName.toUpperCase(),
@@ -36,7 +36,7 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) =
  * @returns {Promise<Object>} - A promise that resolves with the JSON response from the provided URL.
  */
 const bindEmployeeAssistanceField = async (globals) => {
-  const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  const { employeeAssistancePanel, employeeAssistanceToggle } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
   const defaultChannel = getUrlParamCaseInsensitive('channel');
   const codes = {
     lc1Code: getUrlParamCaseInsensitive('lccode'),
@@ -48,6 +48,9 @@ const bindEmployeeAssistanceField = async (globals) => {
   };
 
   try {
+    if (defaultChannel || Object.values(codes).some(Boolean)) {
+      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on' });
+    }
     const response = await getJsonResponse(FD_ENDPOINTS.masterchannel, null, 'GET');
     if (!response) return;
 

@@ -201,41 +201,40 @@ const dateFormat = (dateString, format) => {
  */
 const composeNameOption = (fn, mn, ln, cardType, maxlength) => {
   const initial = (str) => str?.charAt(0);
-  const stringify = ([a, b]) => (a && b ? `${a} ${b}` : '');
-  const toOption = (a) => ({ label: a, value: a });
+  const createNames = (patterns) => patterns
+    .map(([a, b]) => [a, b].filter(Boolean).join(' '))
+    .filter((el) => el.length <= maxlength);
+
+  const basePatterns = [
+    fn && mn ? [fn, initial(mn)] : null,
+    fn && mn ? [fn, mn] : null,
+    fn && ln ? [fn, ln] : null,
+    mn && fn ? [mn, fn] : null,
+    mn && fn ? [mn, initial(fn)] : null,
+    mn && ln ? [mn, ln] : null,
+    mn ? [initial(mn), fn] : null,
+    mn && ln ? [initial(mn), ln] : null,
+  ].filter(Boolean); // Remove nulls
+
+  const fdExtraPatterns = [
+    fn ? [fn] : null,
+    mn ? [mn] : null,
+    ln ? [ln] : null,
+  ].filter(Boolean);
+
   let names = [];
   switch (cardType) {
     case 'ccc':
-      names = [
-        [fn, initial(mn)],
-        [fn, mn],
-        [mn, fn],
-        [mn, initial(fn)],
-        [initial(mn), fn],
-        [fn, ln],
-        [mn, ln],
-        [initial(mn), ln],
-      ]?.map(stringify)?.filter((el) => el && el?.length <= maxlength);
+      names = createNames(basePatterns);
       break;
     case 'fd':
-      names = [
-        [fn, initial(mn)],
-        [fn, mn],
-        [fn, ln],
-        [mn, fn],
-        [mn, initial(fn)],
-        [mn, ln],
-        [initial(mn), fn],
-        [initial(mn), ln],
-        [fn],
-        [mn],
-        [ln],
-      ]?.map(stringify)?.filter((el) => el && el?.length <= maxlength);
+      names = createNames([...basePatterns, ...fdExtraPatterns]);
       break;
     default:
+      return [];
   }
 
-  return [...new Set(names)]?.map(toOption);
+  return [...new Set(names)].map((a) => ({ label: a, value: a }));
 };
 
 /**
