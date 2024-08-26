@@ -829,6 +829,15 @@ main {
         background: url('../icons/Indicator2.png') no-repeat center center / 40px 40px;
         content: '';
       }
+
+      li:nth-child(2):has(+ li.wizard-menu-active-item)::before {
+        background: url('../icons/Indicator.png') no-repeat center center / 40px 40px;
+        content: '';
+      }
+
+      li:nth-child(2):has(+ li.wizard-menu-active-item)::after {
+        background: var(--color-interface-button-background);
+      }
   
       li.wizard-menu-active-item:nth-child(2)::before {
           background: url('../icons/Indicator2-active.png') no-repeat center center / 40px 40px;
@@ -1280,6 +1289,7 @@ main {
                   text-align: right;
                   align-content: center;
                   justify-self: center;
+                  color: var(--color-interface-text-primary);
               }
   
               input {
@@ -1346,6 +1356,7 @@ main {
                           font-size: 14px;
                           font-weight: 400;
                           padding-left: 20px;
+                          color: var(--color-interface-text-primary);
                       }
   
                       input { 
@@ -1524,6 +1535,7 @@ main {
                   label {
                       font-size: var(--body-x-sm-font-size);
                       font-weight: var(--font-weight-medium);
+                      color: var(--color-interface-text-primary);
                   }
   
                   input {
@@ -2297,6 +2309,11 @@ main {
                 &::before {
                     background: url('../icons/Indicator_Mobile_Completed.png') no-repeat center center / 40px 40px !important;
                 }
+            }
+
+            li:nth-child(1):has(~ li:nth-child(3).wizard-menu-active-item)::before {
+                background: url('../icons/Indicator_Mobile_Completed.png') no-repeat center center / 40px 40px !important;
+                content: '';
             }
         }
 
