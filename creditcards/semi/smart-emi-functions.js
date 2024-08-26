@@ -351,7 +351,9 @@ function selectTopTxn(globals) {
       globals.functions.setProperty(billedTxnPanel[i].aem_Txn_checkBox, { value: 'on' });
     }
   });
-
+  currentFormContext.totalSelect = sortedTxnList.length;
+  const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${sortedTxnList.length}`;
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });
   setTimeout(() => {
     selectTopTenFlag = !selectTopTenFlag;
   }, 1000);
