@@ -59,6 +59,7 @@ function generateJourneyId(visitMode, journeyAbbreviation, channel) {
 currentFormContext.journeyName = journeyName;
 currentFormContext.journeyID = generateJourneyId('a', 'b', 'c');
 currentFormContext.totalSelect = 0;
+let tnxPopupAlertOnce = true; // flag alert for the pop to show only once on click of continue
 
 /**
  * generates the otp
@@ -218,7 +219,11 @@ function checkELigibilityHandler(resPayload, globals) {
  */
 // eslint-disable-next-line no-unused-vars
 function selectTenure(globals) {
-  if (window !== undefined) moveWizardView(domElements.semiWizard, domElements.selectTenure);
+  if (tnxPopupAlertOnce) { // flag alert for the pop to show only once on click of continue
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup, { visible: true });
+  } else if (window !== undefined) moveWizardView(domElements.semiWizard, domElements.selectTenure);
+  tnxPopupAlertOnce = !tnxPopupAlertOnce;
 }
 
 /**
@@ -241,6 +246,28 @@ function sortData(txnType, orderBy, globals) {
 }
 
 /**
+ * disable the unselected fields of transaction from billed or unbilled.
+ * @param {Array} txnList - array of repeatable pannel
+ * @param {object} globals - global object
+ */
+const disableUncheckedTxnField = (txnList, globals) => {
+  txnList?.forEach((item) => {
+    if (item.aem_Txn_checkBox.$value === 'on') {
+      globals.functions.setProperty(item, { enabled: true });
+    } else {
+      globals.functions.setProperty(item, { enabled: false });
+    }
+  });
+};
+
+/**
+ * enable all fields of transaction from billed or unbilled.
+ * @param {Array} txnList - array of repeatable pannel
+ * @param {object} globals - global object
+ */
+const enableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => globals.functions.setProperty(list, { enabled: true }));
+
+/**
  * function to update number of transaction selected.
  * @param {string} checkboxVal - checkbox value
  * @param {string} txnType - BILLED /  UNBILLED
@@ -261,8 +288,15 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
     currentFormContext.totalSelect -= 1;
   }
   const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${MAX_SELECT}`;
+
+  const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
+
   if (currentFormContext.totalSelect <= MAX_SELECT) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });// total no of select billed or unbilled txn list
+    /* enabling selected fields in case disabled */
+    enableAllTxnFields(unbilledTxnList, globals);
+    enableAllTxnFields(billedTxnList, globals);
   }
   if ((currentFormContext.totalSelect === MAX_SELECT)) {
     /* popup alert hanldles */
@@ -271,6 +305,10 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup, { visible: true });
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: CONFIRM_TXT });
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation1, { visible: true });
+
+    /* disabling unselected fiels */
+    disableUncheckedTxnField(unbilledTxnList, globals);
+    disableUncheckedTxnField(billedTxnList, globals);
   }
 }
 export {
