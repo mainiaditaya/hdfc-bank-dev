@@ -267,12 +267,13 @@ const disableCheckBoxes = (txnList, allCheckBoxes, globals) => {
   });
 };
 
+let selectTopTenFlag = false;
 /**
  * enable all fields of transaction from billed or unbilled.
  * @param {Array} txnList - array of repeatable pannel
  * @param {object} globals - global object
  */
-const enableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => globals.functions.setProperty(list, { enabled: true }));
+const enableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => globals.functions.setProperty(list.aem_Txn_checkBox, { enabled: true }));
 
 /**
  * function to update number of transaction selected.
@@ -280,6 +281,7 @@ const enableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => glob
  * @param {string} txnType - BILLED /  UNBILLED
  */
 function txnSelectHandler(checkboxVal, txnType, globals) {
+  if (selectTopTenFlag) return;
   const MAX_SELECT = 10;
   const BILLED_FRAG = 'billedTxnFragment';
   const UNBILLED_FRAG = 'unbilledTxnFragment';
@@ -299,8 +301,11 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
   const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
 
-  if (currentFormContext.totalSelect <= MAX_SELECT) {
+  if ((currentFormContext.totalSelect <= MAX_SELECT)) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });// total no of select billed or unbilled txn list
+  }
+
+  if (currentFormContext.totalSelect < MAX_SELECT) {
     /* enabling selected fields in case disabled */
     enableAllTxnFields(unbilledTxnList, globals);
     enableAllTxnFields(billedTxnList, globals);
@@ -323,6 +328,8 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
 * @param {object} globals - global object
  */
 function selectTopTxn(globals) {
+  selectTopTenFlag = !selectTopTenFlag;
+  const SELECT_TOP_TXN_LIMIT = 10;
   const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
   disableCheckBoxes(unbilledTxnList, true, globals);
@@ -331,12 +338,23 @@ function selectTopTxn(globals) {
   const unBilled = globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection;
   const allTxn = billed.concat(unBilled);
   const sortedArr = sortDataByAmount(allTxn);
+  const sortedTxnList = sortedArr?.slice(0, SELECT_TOP_TXN_LIMIT);
+  const billedTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
   console.log(sortedArr);
+  sortedTxnList?.forEach((txn, i) => {
+    if (txn.aem_txn_type === 'UNBILLED') {
+      globals.functions.setProperty(unBilledTxnPanel[i].aem_Txn_checkBox, { enabled: true });
+      globals.functions.setProperty(unBilledTxnPanel[i].aem_Txn_checkBox, { value: 'on' });
+    } else {
+      globals.functions.setProperty(billedTxnPanel[i].aem_Txn_checkBox, { enabled: true });
+      globals.functions.setProperty(billedTxnPanel[i].aem_Txn_checkBox, { value: 'on' });
+    }
+  });
 
-  // slice arr and then run below 
-  sortedArr.forEach(txn, i) => {
-    txn.aem_txn_type === 'UNBILLED' ? setData(unbiledPable, ) : setData(billedPanel)
-
+  setTimeout(() => {
+    selectTopTenFlag = !selectTopTenFlag;
+  }, 1000);
 }
 
 export {
