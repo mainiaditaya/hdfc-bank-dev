@@ -16,9 +16,9 @@ let CUSTOMER_DATA_BINDING_CHECK = true;
 const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) => {
   const elementNameSelect = 'nameOnCardDD';
   const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
-  // const customerFirstName = customerInfo.customerFirstName ? customerInfo.customerFirstName : 'FirstName';
-  // const customerMiddleName = customerInfo.customerMiddleName ? customerInfo.customerMiddleName : 'MiddleName';
-  // const customerLastName = customerInfo.customerLastName ? customerInfo.customerLastName : 'LastName';
+  // const customerFirstName = 'FIRSTNAME';
+  // const customerMiddleName = '';
+  // const customerLastName = 'LASTNAME';
   const options = composeNameOption(
     customerFirstName.toUpperCase(),
     customerMiddleName.toUpperCase(),
