@@ -253,14 +253,16 @@ function sortData(txnType, orderBy, globals) {
 /**
  * disable the unselected fields of transaction from billed or unbilled.
  * @param {Array} txnList - array of repeatable pannel
+ * @param {boolean} allCheckBoxes - array of repeatable pannel
  * @param {object} globals - global object
  */
-const disableUncheckedTxnField = (txnList, globals) => {
+const disableCheckBoxes = (txnList, allCheckBoxes, globals) => {
   txnList?.forEach((item) => {
-    if (item.aem_Txn_checkBox.$value === 'on') {
-      globals.functions.setProperty(item, { enabled: true });
+    if (item.aem_Txn_checkBox.$value === 'on' && !allCheckBoxes) {
+      globals.functions.setProperty(item.aem_Txn_checkBox, { enabled: true });
     } else {
-      globals.functions.setProperty(item, { enabled: false });
+      globals.functions.setProperty(item.aem_Txn_checkBox, { value: undefined });
+      globals.functions.setProperty(item.aem_Txn_checkBox, { enabled: false });
     }
   });
 };
@@ -310,10 +312,9 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup, { visible: true });
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: CONFIRM_TXT });
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation1, { visible: true });
-
-    /* disabling unselected fiels */
-    disableUncheckedTxnField(unbilledTxnList, globals);
-    disableUncheckedTxnField(billedTxnList, globals);
+    /* disabling unselected checkBoxes */
+    disableCheckBoxes(unbilledTxnList, false, globals);
+    disableCheckBoxes(billedTxnList, false, globals);
   }
 }
 
@@ -321,10 +322,23 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
  * select top txnlist
 * @param {object} globals - global object
  */
-function selectTopTxn(globals){
-debugger;
+function selectTopTxn(globals) {
+  const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  disableCheckBoxes(unbilledTxnList, true, globals);
+  disableCheckBoxes(billedTxnList, true, globals);
+  const billed = globals.functions.exportData().smartemi.aem_billedTxn.aem_billedTxnSelection;
+  const unBilled = globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection;
+  const allTxn = billed.concat(unBilled);
+  const sortedArr = sortDataByAmount(allTxn);
+  console.log(sortedArr);
+
+  // slice arr and then run below 
+  sortedArr.forEach(txn, i) => {
+    txn.aem_txn_type === 'UNBILLED' ? setData(unbiledPable, ) : setData(billedPanel)
+
 }
- 
+
 export {
   getOTPV1,
   otpValV1,
