@@ -186,7 +186,7 @@ const channelChangeHandler = (globals) => {
  */
 const dsaCodeHandler = async (globals) => {
   const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
-  const dsaCode = employeeAssistancePanel.dsaCode._data.$_value.toLowerCase();
+  const dsaCode = employeeAssistancePanel.dsaCode._data.$_value?.toLowerCase();
   const url = `${FD_ENDPOINTS.dsamaster}${dsaCode}.json`;
 
   try {
