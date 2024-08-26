@@ -2310,6 +2310,11 @@ main {
                     background: url('../icons/Indicator_Mobile_Completed.png') no-repeat center center / 40px 40px !important;
                 }
             }
+
+            li:nth-child(1):has(~ li:nth-child(3).wizard-menu-active-item)::before {
+                background: url('../icons/Indicator_Mobile_Completed.png') no-repeat center center / 40px 40px !important;
+                content: '';
+            }
         }
 
         .field-basicdetails {
