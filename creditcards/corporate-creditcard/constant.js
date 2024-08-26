@@ -43,7 +43,9 @@ const DOM_ELEMENT = {
     lastName: 'lastName',
   },
 };
+const NAME_ON_CARD_MAX_LENGTH = 19;
 export {
   JOURNEY_NAME,
   DOM_ELEMENT,
+  NAME_ON_CARD_MAX_LENGTH,
 };

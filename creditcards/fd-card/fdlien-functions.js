@@ -1,12 +1,19 @@
+/* eslint-disable no-underscore-dangle */
 import {
-  ageValidator, clearString, getTimeStamp, maskNumber, urlPath,
+  ageValidator,
+  clearString,
+  getTimeStamp,
+  maskNumber,
+  pinCodeMasterCheck,
+  urlPath,
 } from '../../common/formutils.js';
 import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
 import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
-import { createJourneyId } from '../../common/journey-utils.js';
+import createJourneyId from '../../common/journey-utils.js';
+import { addGaps } from './fd-dom-functions.js';
 
-const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext, CHANNEL } = CONSTANT;
+const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
 
 let resendOtpCount = 0;
@@ -130,14 +137,6 @@ const maskedMobNum = (mobileNo, globals) => {
   globals.functions.setProperty(globals.form.loginMainPanel.maskedMobileNumber, { value: `${maskNumber(mobileNo, 6)}.` });
 };
 
-/* loadFDStyles - for loading fd - styles - temporary fix */
-async function loadFDStyles() {
-  if (document.querySelector('.fd-form-wrapper')) {
-    document.body.classList.add('fdlien');
-  }
-}
-window.setTimeout(() => loadFDStyles(), 600);
-
 /**
  * generates the otp
  * @param {object} mobileNumber
@@ -154,17 +153,18 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   } else {
     globals.functions.setProperty(otpPanel.secondsPanel, { visible: false });
   }
-  const jidTemporary = createJourneyId('online', globals.form.runtime.journeyName.$value, CHANNEL, globals);
   currentFormContext.action = 'getOTP';
-  currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
+  currentFormContext.journeyID = globals.form.runtime.journeyId.$value;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
-  const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
+  const panValue = (pan.$value)?.replace(/\s+/g, '');
   const jsonObj = {
     requestString: {
       dateOfBirth: clearString(dob.$value) || '',
+      // mobileNumber: FD_CONSTANT.MODE === 'dev' ? '9810558449' : mobileNumber.$value,
+      // panNumber: FD_CONSTANT.MODE === 'dev' ? 'OJSPS6821J' : panValue || '',
       mobileNumber: mobileNumber.$value,
       panNumber: panValue || '',
-      journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
+      journeyID: globals.form.runtime.journeyId.$value,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
       identifierValue: panValue || dob.$value,
       identifierName: panValue ? 'PAN' : 'DOB',
@@ -172,6 +172,11 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   };
   const path = urlPath(FD_ENDPOINTS.otpGen);
   formRuntime?.getOtpLoader();
+
+  // if (FD_CONSTANT.MODE === 'dev') {
+  //   globals.functions.setProperty(mobileNumber, { value: '9810558449' });
+  //   globals.functions.setProperty(pan, { value: 'OJSPS6821J' });
+  // }
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
 
@@ -206,6 +211,7 @@ const resendOTP = async (globals) => {
  * @return {PROMISE}
  */
 const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
+  addGaps('.field-pannumberpersonaldetails input');
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
@@ -252,8 +258,28 @@ function reloadPage() {
   window.location.reload();
 }
 
+/**
+ * @name pincodeChangeHandler
+ * @param {string} pincode
+ * @param {object} globals
+ */
+const pincodeChangeHandler = (pincode, globals) => {
+  const {
+    newCurentAddressPin,
+    newCurentAddressCity,
+    newCurentAddressState,
+
+  } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
+  pinCodeMasterCheck(globals, newCurentAddressCity, newCurentAddressState, newCurentAddressPin, pincode);
+};
+
+// setTimeout(() => {
+//   if (document && FD_CONSTANT.MODE === 'dev') {
+//     document.querySelector('.field-getotpbutton button').removeAttribute('disabled');
+//   }
+// }, 2000);
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   validateLogin,
   otpTimer,
   maskedMobNum,
@@ -262,4 +288,6 @@ export {
   resendOTP,
   customSetFocus,
   reloadPage,
+  createJourneyId,
+  pincodeChangeHandler,
 };

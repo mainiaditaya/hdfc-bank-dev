@@ -41,6 +41,8 @@ const ID_COM = {
   },
 };
 
+const PIN_CODE_LENGTH = 6;
+
 export {
   BASEURL,
   CHANNEL,
@@ -49,4 +51,5 @@ export {
   CURRENT_FORM_CONTEXT,
   FORM_RUNTIME,
   ID_COM,
+  PIN_CODE_LENGTH,
 };

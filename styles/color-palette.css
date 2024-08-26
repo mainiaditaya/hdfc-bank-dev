@@ -57,4 +57,7 @@
   --color-interface-fd-title-border: #525D75;
   --color-action-scroll-primary: #4F6FDF;
   --color-action-scroll-background-primary: #f5f6fb;
+  --color-interface-popup-background: #00000080;
+  --color-interface-fileupload-border: #B9D7CA;
+  --color-interface-fileupload-background: #FAFFFD;
 }

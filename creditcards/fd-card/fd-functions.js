@@ -7,23 +7,49 @@ import {
   resendOTP,
   customSetFocus,
   reloadPage,
+  pincodeChangeHandler,
 } from './fdlien-functions.js';
-// import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
-import { redirect } from '../../common/functions.js';
 import {
-  createJourneyId,
-  getCurrentContext,
   invokeJourneyDropOff,
-  invokeJourneyDropOffByParam,
-  invokeJourneyDropOffUpdate,
-  journeyResponseHandlerUtil,
-} from '../../common/journey-utils.js';
+  fdWizardSwitch,
+} from './fd-journey-util.js';
+
+import {
+  bindCustomerDetails,
+  channelChangeHandler,
+  validateEmailID,
+  dsaCodeHandler,
+  branchCodeHandler,
+} from './customerdetails.js';
+
+// import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
+import {
+  redirect,
+  validatePan,
+} from '../../common/functions.js';
+
+import createJourneyId from '../../common/journey-utils.js';
 
 import {
   addGaps,
   addMobileValidation,
   validateOtpInput,
+  updateElementAttr,
+  changeCheckboxToToggle,
 } from './fd-dom-functions.js';
+
+import {
+  fetchCustomerId,
+  customerIdSuccessHandler,
+  customerIdClickHandler,
+} from './customeridutil.js';
+
+import {
+  customerIdProceedHandler,
+  fdSelectHandler,
+  resetFDSelection,
+  selectAllFdClickHandler,
+} from './fddetailsutil.js';
 
 export {
   getOTP,
@@ -31,11 +57,6 @@ export {
   otpValidation,
   validateLogin,
   createJourneyId,
-  getCurrentContext,
-  invokeJourneyDropOff,
-  invokeJourneyDropOffByParam,
-  invokeJourneyDropOffUpdate,
-  journeyResponseHandlerUtil,
   maskedMobNum,
   addGaps,
   addMobileValidation,
@@ -44,4 +65,22 @@ export {
   customSetFocus,
   reloadPage,
   validateOtpInput,
+  invokeJourneyDropOff,
+  updateElementAttr,
+  fdWizardSwitch,
+  changeCheckboxToToggle,
+  fetchCustomerId,
+  customerIdSuccessHandler,
+  customerIdClickHandler,
+  bindCustomerDetails,
+  fdSelectHandler,
+  customerIdProceedHandler,
+  selectAllFdClickHandler,
+  resetFDSelection,
+  validateEmailID,
+  pincodeChangeHandler,
+  channelChangeHandler,
+  validatePan,
+  dsaCodeHandler,
+  branchCodeHandler,
 };

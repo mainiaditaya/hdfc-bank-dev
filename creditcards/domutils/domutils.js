@@ -122,15 +122,15 @@ const removeIncorrectOtpText = () => {
  * if their values are truthy (or) the name of the panel input is 'middleName'.
  * @param {HTMLElement} selectedPanel - The panel element containing the inputs or selects.
  */
-const addDisableClass = (selectedPanel) => {
+const addDisableClass = (selectedPanel, exceptions = []) => {
   const panelInputs = Array.from(selectedPanel.querySelectorAll('input, select'));
 
   // Iterates over each input or select element
-  panelInputs.forEach((panelInput) => {
-    // Checks if the input or select element has a truthy value
-    if (panelInput.value || panelInput.name === 'middleName') {
-      // Adds the 'wrapper-disabled' class to the parent element
-      panelInput.parentElement.classList.add('wrapper-disabled');
+  panelInputs.forEach(({ value, name, parentElement }) => {
+    const shouldDisable = value || name === 'middleName';
+    const isException = exceptions.includes(name);
+    if (shouldDisable && !isException) {
+      parentElement.classList.add('wrapper-disabled');
     }
   });
 };
@@ -319,6 +319,24 @@ const validatePanInput = (panNumber) => {
   return true;
 };
 
+const validateTextInput = (inputField, fieldRegex, length) => {
+  let { value } = inputField;
+  if (value.length > length) {
+    value = value.slice(0, length);
+  }
+  inputField.value = value;
+  if (!fieldRegex.test(value)) {
+    inputField.value = value.slice(0, -1);
+  }
+};
+
+const validateTextInputOnPaste = (inputField, fieldRegex) => {
+  const { value } = inputField;
+  if (!fieldRegex.test(value)) {
+    inputField.value = '';
+  }
+};
+
 export function imageClickable(selector, url, target) {
   const element = document.querySelector(selector);
   if (element) {
@@ -345,4 +363,6 @@ export {
   groupCharacters,
   validatePhoneNumber,
   validatePanInput,
+  validateTextInput,
+  validateTextInputOnPaste,
 };

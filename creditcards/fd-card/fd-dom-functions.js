@@ -2,6 +2,7 @@ import {
   groupCharacters,
   validatePhoneNumber,
   validatePanInput,
+  createLabelInElement,
 } from '../domutils/domutils.js';
 
 /**
@@ -20,8 +21,8 @@ const validateOtpInput = () => {
   });
 };
 
-const addGaps = () => {
-  const panInputField = document.querySelector('.char-gap-4 input');
+const addGaps = (elSelector) => {
+  const panInputField = document.querySelector(elSelector);
   panInputField.addEventListener('input', () => {
     const vaildInput = validatePanInput(panInputField.value.replace(/\s+/g, ''));
     if (!vaildInput) {
@@ -40,13 +41,39 @@ const addMobileValidation = () => {
   inputField.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
 };
 
+/**
+ * Updates name attribute of customer id radio buttons
+ *
+ * @function updateElementAttr
+ * @returns {void}
+ */
+const updateElementAttr = () => {
+  const custIdRadioButtons = Array.from(document.querySelectorAll('.field-multiplecustidselect input'));
+  custIdRadioButtons.forEach((radioButton) => {
+    radioButton.setAttribute('name', 'cust-id-radio');
+  });
+};
+
+/**
+ * calls function to update checkbox to label
+ *
+ * @function changeCheckboxToToggle
+ * @returns {void}
+ */
+const changeCheckboxToToggle = () => {
+  createLabelInElement('.field-employeeassistancetoggle', 'employee-assistance-toggle__label');
+  createLabelInElement('.field-mailingaddresstoggle', 'mailing-address-toggle__label');
+};
+
 setTimeout(() => {
-  addGaps();
+  addGaps('.field-pan.char-gap-4 input');
   addMobileValidation();
-}, 800);
+}, 1200);
 
 export {
   addGaps,
   addMobileValidation,
   validateOtpInput,
+  updateElementAttr,
+  changeCheckboxToToggle,
 };
