@@ -1182,6 +1182,14 @@ main {
           .field-nameoncard input, .field-nameoncarddd  select, .field-pannumberpersonaldetails input{
               text-transform: uppercase;
           }
+
+          .field-nameoncarddd:has(.field-description) {
+            p {
+                font-size: var(--body-x-sm-font-size);
+                color: var(--color-interface-text-secondary);
+                margin: 25px 0 0;
+            }
+          }
   
           .field-reviewdetailsview {
               fieldset.hdfc-accordian {
@@ -1244,6 +1252,7 @@ main {
                     border: none !important;
                     pointer-events: none;
                     appearance: none;
+                    opacity: 1;
                     
                     &:hover {
                         box-shadow: none;
