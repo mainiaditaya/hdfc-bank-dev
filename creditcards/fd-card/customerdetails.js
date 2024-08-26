@@ -69,7 +69,7 @@ const bindEmployeeAssistanceField = async (globals) => {
     const changeDataAttrObj = { attrChange: true, value: false };
     ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
       const util = formUtil(globals, employeeAssistancePanel[code]);
-      util.setValue(codes[code], changeDataAttrObj);
+      if (codes[code] !== null) util.setValue(codes[code], changeDataAttrObj);
     });
   } catch (error) {
     console.log(error);
