@@ -6,10 +6,14 @@ import {
   formUtil,
   urlPath,
   getUrlParamCaseInsensitive,
+  ageValidator,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
-import { FD_ENDPOINTS, NAME_ON_CARD_LENGTH } from './constant.js';
+import {
+  FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
+} from './constant.js';
+import { validFDPan } from './fdlien-functions.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
 
@@ -85,7 +89,7 @@ const bindEmployeeAssistanceField = async (globals) => {
  * @param {Object} globals - The global context object containing various information.
  */
 const bindCustomerDetails = (globals) => {
-  if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  // if (!CUSTOMER_DATA_BINDING_CHECK) return;
   CUSTOMER_DATA_BINDING_CHECK = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   bindEmployeeAssistanceField(globals);
@@ -102,10 +106,10 @@ const bindCustomerDetails = (globals) => {
   // customerInfo.customerFullName = 'FirstName MiddleName LastName';
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
   setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
-  setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob);
+  if (customerInfo.dob) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob); }
   if (customerInfo.pan) {
     const formattedPan = customerInfo.pan.replace(/([A-Za-z])(\d)|(\d)([A-Za-z])/g, '$1$3 $2$4');
-    setFormValue(personalDetails.panNumberPersonalDetails, formattedPan);
+    if (formattedPan !== '') setFormValue(personalDetails.panNumberPersonalDetails, formattedPan);
   }
   setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
   const emailIDUtil = formUtil(globals, personalDetails.emailID);
@@ -235,10 +239,24 @@ const branchCodeHandler = async (globals) => {
   }
 };
 
+/**
+ * @name dobPanChangeHandler
+ * @param {Object} globals - The global state object containing form details.
+ */
+const dobChangeHandler = (globals) => {
+  const { personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  if (ageValidator(AGE_LIMIT.min, AGE_LIMIT.max, personalDetails.dateOfBirthPersonalDetails.$value)) {
+    globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.dateOfBirthPersonalDetails', '', { useQualifiedName: true });
+  } else {
+    globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.dateOfBirthPersonalDetails', ERROR_MSG.ageLimit, { useQualifiedName: true });
+  }
+};
+
 export {
   bindCustomerDetails,
   validateEmailID,
   channelChangeHandler,
   dsaCodeHandler,
   branchCodeHandler,
+  dobChangeHandler,
 };
