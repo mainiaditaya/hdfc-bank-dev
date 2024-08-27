@@ -8,6 +8,7 @@ import {
   changeCheckboxToToggle,
   changeWizardView,
   selectTopTxn,
+  semiWizardSwitch,
 } from './smart-emi-functions.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
 
@@ -32,4 +33,5 @@ export {
   changeCheckboxToToggle,
   changeWizardView,
   selectTopTxn,
+  semiWizardSwitch,
 };
