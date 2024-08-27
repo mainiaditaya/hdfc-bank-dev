@@ -8,6 +8,7 @@ const ERROR_MSG = {
 const SEMI_ENDPOINTS = {
   otpGen: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
   otpVal: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/eligibilitycheck.json',
+  preexecution: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/preexecution.json',
 };
 
 const DOM_ELEMENT = {
