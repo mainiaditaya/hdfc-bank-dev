@@ -17,13 +17,11 @@ import { validFDPan } from './fdlien-functions.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
 
-const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) => {
+const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstName, customerMiddleName, customerLastName) => {
   const elementNameSelect = 'nameOnCardDD';
-  const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
-  // const customerFirstName = 'FIRSTNAME';
-  // const customerMiddleName = '';
-  // const customerLastName = 'LASTNAME';
-  const options = composeNameOption(
+  let options = [];
+  setSelectOptions(options, elementNameSelect);
+  options = composeNameOption(
     customerFirstName.toUpperCase(),
     customerMiddleName.toUpperCase(),
     customerLastName.toUpperCase(),
@@ -104,6 +102,9 @@ const bindCustomerDetails = (globals) => {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
   // customerInfo.customerFullName = 'FirstName MiddleName LastName';
+  // customerInfo.customerFirstName = 'FirstName';
+  // customerInfo.customerMiddleName = '';
+  // customerInfo.customerLastName = '';
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
   setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
   if (customerInfo.dob) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob); }
@@ -122,12 +123,14 @@ const bindCustomerDetails = (globals) => {
     globals.functions.setProperty(addressDetails.prefilledMailingAdddress, { visible: false });
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
   }
-  if (customerInfo.customerFullName.length < NAME_ON_CARD_LENGTH) {
+  if (customerInfo.customerFullName.length <= NAME_ON_CARD_LENGTH && (customerInfo.customerMiddleName || customerInfo.customerLastName)) {
     setFormValue(personalDetails.nameOnCard, customerInfo.customerFullName?.toUpperCase());
   } else {
     globals.functions.setProperty(personalDetails.nameOnCard, { visible: false });
     globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: true });
-    initializeNameOnCardDdOptions(globals, personalDetails, customerInfo);
+    globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
+    const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
+    initializeNameOnCardDdOptions(globals, personalDetails, customerFirstName, customerMiddleName, customerLastName);
   }
 
   const personaldetails = document.querySelector('.field-personaldetails');
@@ -252,6 +255,43 @@ const dobChangeHandler = (globals) => {
   }
 };
 
+/**
+*
+* @name fathersNameChangeHandler
+* @param {Object} globals - The global context object containing various information.
+*/
+const fathersNameChangeHandler = (globals) => {
+  const { customerInfo } = CURRENT_FORM_CONTEXT;
+  const { personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const fathersNameArr = personalDetails.fathersFullName._data.$_value?.toUpperCase()?.split(' ') || [];
+
+  const [middleName = '', lastName = ''] = fathersNameArr.length === 1
+    ? ['', fathersNameArr[0]]
+    : fathersNameArr;
+
+  const customerFullName = `${customerInfo.customerFirstName} ${middleName} ${lastName}`
+    .toUpperCase()
+    .replace(/\s+/g, ' ');
+
+  const nameOnCardVisible = customerFullName.length <= NAME_ON_CARD_LENGTH && fathersNameArr.length > 0;
+
+  globals.functions.setProperty(personalDetails.nameOnCard, { visible: nameOnCardVisible });
+  globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: !nameOnCardVisible });
+
+  if (nameOnCardVisible) {
+    formUtil(globals, personalDetails.nameOnCard).setValue(customerFullName, { attrChange: true, value: false, disable: true });
+  } else {
+    const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
+    initializeNameOnCardDdOptions(
+      globals,
+      personalDetails,
+      customerFirstName,
+      middleName || customerMiddleName,
+      lastName || customerLastName,
+    );
+  }
+};
+
 export {
   bindCustomerDetails,
   validateEmailID,
@@ -259,4 +299,5 @@ export {
   dsaCodeHandler,
   branchCodeHandler,
   dobChangeHandler,
+  fathersNameChangeHandler,
 };
