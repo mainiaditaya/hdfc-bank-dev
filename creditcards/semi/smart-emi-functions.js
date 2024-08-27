@@ -387,6 +387,16 @@ const changeWizardView = () => {
 };
 
 /**
+   * @name semiWizardSwitch to switch panel visibility
+   * @param {string} currentPanel
+   * @param {string} nextPanel
+   * @returns {void}
+   */
+const semiWizardSwitch = (currentPanel, nextPanel) => {
+  moveWizardView(currentPanel, nextPanel);
+};
+
+/**
  * select top txnlist
 * @param {object} globals - global object
  */
@@ -458,4 +468,5 @@ export {
   changeWizardView,
   preExecution,
   radioBtnValCommit,
+  semiWizardSwitch,
 };

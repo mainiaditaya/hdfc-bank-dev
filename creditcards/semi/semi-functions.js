@@ -10,6 +10,7 @@ import {
   selectTopTxn,
   preExecution,
   radioBtnValCommit,
+  semiWizardSwitch,
 } from './smart-emi-functions.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
 
@@ -36,4 +37,5 @@ export {
   selectTopTxn,
   preExecution,
   radioBtnValCommit,
+  semiWizardSwitch,
 };
