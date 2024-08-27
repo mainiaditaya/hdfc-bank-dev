@@ -1,8 +1,7 @@
 import { displayLoader, fetchJsonResponse, hideLoaderGif } from '../../common/makeRestAPI.js';
 import * as SEMI_CONSTANT from './constant.js';
-import {
-  generateUUID, moveWizardView, urlPath,
-} from '../../common/formutils.js';
+import { generateUUID, moveWizardView, urlPath } from '../../common/formutils.js';
+import { createLabelInElement } from '../domutils/domutils.js';
 
 const {
   CURRENT_FORM_CONTEXT: currentFormContext,
@@ -342,6 +341,28 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
 }
 
 /**
+ * calls function to update checkbox to label
+ *
+ * @function changeCheckboxToToggle
+ * @returns {void}
+ */
+const changeCheckboxToToggle = () => {
+  createLabelInElement('.field-employeeassistancetoggle', 'employee-assistance-toggle__label');
+  createLabelInElement('.field-mailingaddresstoggle', 'mailing-address-toggle__label');
+};
+
+/**
+ * calls function to add styling to completed steppers
+ *
+ * @function changeWizardView
+ * @returns {void}
+ */
+const changeWizardView = () => {
+  const completedStep = document.querySelector('.field-aem-semiwizard .wizard-menu-items .wizard-menu-active-item');
+  completedStep.classList.add('wizard-completed-item');
+};
+
+/**
  * select top txnlist
 * @param {object} globals - global object
  */
@@ -399,4 +420,6 @@ export {
   sortData,
   selectTopTxn,
   txnSelectHandler,
+  changeCheckboxToToggle,
+  changeWizardView,
 };

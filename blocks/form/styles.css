@@ -115,7 +115,8 @@ main .form form {
 
   .field-permanentaddresstoggle,
   .field-ckyctoggle,
-  .field-currentaddresstoggle {
+  .field-currentaddresstoggle,
+  .field-aem-bankassistedtoggle {
     align-items: center !important;
 
     .field-label {
@@ -143,7 +144,7 @@ main .form form {
     }
   }
 
-  .field-currentaddresstoggle {
+  .field-currentaddresstoggle, .field-aem-bankassistedtoggle {
     flex-direction: row-reverse;
     width: fit-content;
 
@@ -155,13 +156,15 @@ main .form form {
 
   .field-permanentaddresstoggle input[type='checkbox'],
   .field-currentaddresstoggle input[type='checkbox'],
-  .field-ckyctoggle input[type='checkbox'] {
+  .field-ckyctoggle input[type='checkbox'],
+  .field-aem-bankassistedtoggle input[type='checkbox'] {
     display: none;
   }
 
   .field-permanentaddresstoggle input[type='checkbox']:checked + .field-label,
   .field-currentaddresstoggle input[type='checkbox']:checked + .field-label,
-  .field-ckyctoggle input[type='checkbox']:checked + .field-label {
+  .field-ckyctoggle input[type='checkbox']:checked + .field-label,
+  .field-aem-bankassistedtoggle input[type='checkbox']:checked + .field-label {
     background-color: #1c3fca;
   }
 
@@ -171,7 +174,8 @@ main .form form {
   .field-currentaddresstoggle
     input[type='checkbox']:checked
     + .field-label::before,
-  .field-ckyctoggle input[type='checkbox']:checked + .field-label::before {
+  .field-ckyctoggle input[type='checkbox']:checked + .field-label::before,
+  .field-aem-bankassistedtoggle input[type='checkbox']:checked + .field-label::before {
     transform: translateX(20px);
     margin-right: 21px;
   }
