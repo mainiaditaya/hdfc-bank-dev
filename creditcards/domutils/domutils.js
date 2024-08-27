@@ -34,6 +34,11 @@ const setDataAttributeOnClosestAncestor = (elementName, fieldValue, dataAttribut
  */
 const setSelectOptions = (optionLists, elementName) => {
   const selectOption = document.querySelector(`[name=${elementName}]`);
+  if (optionLists.length === 0) {
+    const options = selectOption.querySelectorAll('option:not(:first-child)');
+    options.forEach((option) => option.remove());
+    return;
+  }
   optionLists?.forEach((option) => {
     const optionElement = document.createElement('option');
     optionElement.value = option?.value;
