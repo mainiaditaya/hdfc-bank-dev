@@ -6,20 +6,21 @@ import {
   formUtil,
   urlPath,
   getUrlParamCaseInsensitive,
+  ageValidator,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
-import { FD_ENDPOINTS, NAME_ON_CARD_LENGTH } from './constant.js';
+import {
+  FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
+} from './constant.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
 
-const initializeNameOnCardDdOptions = (globals, personalDetails, customerInfo) => {
+const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstName, customerMiddleName, customerLastName) => {
   const elementNameSelect = 'nameOnCardDD';
-  const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
-  // const customerFirstName = 'FIRSTNAME';
-  // const customerMiddleName = '';
-  // const customerLastName = 'LASTNAME';
-  const options = composeNameOption(
+  let options = [];
+  setSelectOptions(options, elementNameSelect);
+  options = composeNameOption(
     customerFirstName.toUpperCase(),
     customerMiddleName.toUpperCase(),
     customerLastName.toUpperCase(),
@@ -100,12 +101,15 @@ const bindCustomerDetails = (globals) => {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
   // customerInfo.customerFullName = 'FirstName MiddleName LastName';
+  // customerInfo.customerFirstName = 'FirstName';
+  // customerInfo.customerMiddleName = '';
+  // customerInfo.customerLastName = '';
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
   setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
-  setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob);
+  if (customerInfo.dob) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob); }
   if (customerInfo.pan) {
     const formattedPan = customerInfo.pan.replace(/([A-Za-z])(\d)|(\d)([A-Za-z])/g, '$1$3 $2$4');
-    setFormValue(personalDetails.panNumberPersonalDetails, formattedPan);
+    if (formattedPan !== '') setFormValue(personalDetails.panNumberPersonalDetails, formattedPan);
   }
   setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
   const emailIDUtil = formUtil(globals, personalDetails.emailID);
@@ -118,12 +122,14 @@ const bindCustomerDetails = (globals) => {
     globals.functions.setProperty(addressDetails.prefilledMailingAdddress, { visible: false });
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
   }
-  if (customerInfo.customerFullName.length < NAME_ON_CARD_LENGTH) {
+  if (customerInfo.customerFullName.length <= NAME_ON_CARD_LENGTH && (customerInfo.customerMiddleName || customerInfo.customerLastName)) {
     setFormValue(personalDetails.nameOnCard, customerInfo.customerFullName?.toUpperCase());
   } else {
     globals.functions.setProperty(personalDetails.nameOnCard, { visible: false });
     globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: true });
-    initializeNameOnCardDdOptions(globals, personalDetails, customerInfo);
+    globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
+    const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
+    initializeNameOnCardDdOptions(globals, personalDetails, customerFirstName, customerMiddleName, customerLastName);
   }
 
   const personaldetails = document.querySelector('.field-personaldetails');
@@ -235,10 +241,62 @@ const branchCodeHandler = async (globals) => {
   }
 };
 
+/**
+ * @name dobPanChangeHandler
+ * @param {Object} globals - The global state object containing form details.
+ */
+const dobChangeHandler = (globals) => {
+  const { personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  if (ageValidator(AGE_LIMIT.min, AGE_LIMIT.max, personalDetails.dateOfBirthPersonalDetails.$value)) {
+    globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.dateOfBirthPersonalDetails', '', { useQualifiedName: true });
+  } else {
+    globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.dateOfBirthPersonalDetails', ERROR_MSG.ageLimit, { useQualifiedName: true });
+  }
+};
+
+/**
+*
+* @name fathersNameChangeHandler
+* @param {Object} globals - The global context object containing various information.
+*/
+const fathersNameChangeHandler = (globals) => {
+  const { customerInfo } = CURRENT_FORM_CONTEXT;
+  const { personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const fathersNameArr = personalDetails.fathersFullName._data.$_value?.toUpperCase()?.split(' ') || [];
+
+  const [middleName = '', lastName = ''] = fathersNameArr.length === 1
+    ? ['', fathersNameArr[0]]
+    : fathersNameArr;
+
+  const customerFullName = `${customerInfo.customerFirstName} ${middleName} ${lastName}`
+    .toUpperCase()
+    .replace(/\s+/g, ' ');
+
+  const nameOnCardVisible = customerFullName.length <= NAME_ON_CARD_LENGTH && fathersNameArr.length > 0;
+
+  globals.functions.setProperty(personalDetails.nameOnCard, { visible: nameOnCardVisible });
+  globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: !nameOnCardVisible });
+
+  if (nameOnCardVisible) {
+    formUtil(globals, personalDetails.nameOnCard).setValue(customerFullName, { attrChange: true, value: false, disable: true });
+  } else {
+    const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
+    initializeNameOnCardDdOptions(
+      globals,
+      personalDetails,
+      customerFirstName,
+      middleName || customerMiddleName,
+      lastName || customerLastName,
+    );
+  }
+};
+
 export {
   bindCustomerDetails,
   validateEmailID,
   channelChangeHandler,
   dsaCodeHandler,
   branchCodeHandler,
+  dobChangeHandler,
+  fathersNameChangeHandler,
 };
