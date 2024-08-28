@@ -60,4 +60,7 @@
   --color-interface-popup-background: #00000080;
   --color-interface-fileupload-border: #B9D7CA;
   --color-interface-fileupload-background: #FAFFFD;
+  --color-interface-feedback-notlikelyrating: #ED5A6E;
+  --color-interface-feedback-mayberating: #F99F35;
+  --color-interface-feedback-verylikelyrating : #2DB780;
 }
