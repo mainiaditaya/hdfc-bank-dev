@@ -20,6 +20,7 @@ import {
   validateEmailID,
   dsaCodeHandler,
   branchCodeHandler,
+  dobChangeHandler,
   fathersNameChangeHandler,
 } from './customerdetails.js';
 
@@ -84,5 +85,6 @@ export {
   validatePan,
   dsaCodeHandler,
   branchCodeHandler,
+  dobChangeHandler,
   fathersNameChangeHandler,
 };

@@ -290,4 +290,5 @@ export {
   reloadPage,
   createJourneyId,
   pincodeChangeHandler,
+  validFDPan,
 };
