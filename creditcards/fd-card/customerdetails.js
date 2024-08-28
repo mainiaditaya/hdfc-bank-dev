@@ -13,7 +13,6 @@ import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
 import {
   FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
 } from './constant.js';
-import { validFDPan } from './fdlien-functions.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
 
@@ -87,7 +86,7 @@ const bindEmployeeAssistanceField = async (globals) => {
  * @param {Object} globals - The global context object containing various information.
  */
 const bindCustomerDetails = (globals) => {
-  // if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  if (!CUSTOMER_DATA_BINDING_CHECK) return;
   CUSTOMER_DATA_BINDING_CHECK = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   bindEmployeeAssistanceField(globals);
