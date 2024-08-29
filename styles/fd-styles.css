@@ -56,15 +56,15 @@ main {
       display: inline;
       position: absolute;
       transition: transform 0s;
-      transform: rotate(-45deg);
-      top: 18px;
       right: 22px;
       cursor: pointer;
+      transform: rotate(-225deg);
+      top: 23px;
   }
   
   .accordion-collapse::after {
-      transform: rotate(-225deg);
-      top: 23px;
+      transform: rotate(-45deg);
+      top: 18px;
   }
   
   /* Checkbox Styling */
@@ -946,7 +946,7 @@ main {
   /* Multiple Customer Id  */
   .fdlien .field-multiplecustidselectionpanel {
     display: grid !important;
-    padding: 40px 40px 0 15px;
+    padding: 40px 40px 40px 15px;
     grid-template-rows: auto auto 1fr;
   
     .field-custidproceedlabel p {
@@ -1497,10 +1497,17 @@ main {
           }
   
           .field-mailingaddresstoggle, .field-employeeassistancetoggle, .field-inpersonbiokycoptions {
-              label, legend {
-                  font-size: var(--body-fd-sm-font-size);
-                  font-weight: var(--font-weight-medium);
-              }
+            display: flex;
+
+            label, legend {
+                font-size: var(--body-fd-sm-font-size);
+                font-weight: var(--font-weight-medium);
+            }
+
+            .radio-wrapper { 
+            width: fit-content; 
+            padding-right: 20px; 
+            }
           }
   
           .field-detailssectionlabel2 p {
@@ -2327,7 +2334,11 @@ main {
               }
               
               .field-selectcardtnc { display: grid; }
-            }
+          }
+
+          .field-basicdetails {
+            .field-addressdetailshelptag { margin-top: 20px; }
+          }
         }
         
     }
@@ -2393,7 +2404,7 @@ main {
   
     .fdlien:has(.section.form-container) .section.form-container {
         .fd-form-wrapper{
-            .field-bannerimagepanel {
+            .field-bannerimagepanel, .field-multiplecustidbanner {
                 background: var(--color-interface-fd-background-secondary) url('../icons/banner_tablet.png') no-repeat center center / 100% 100%;
                 min-height: 225px;
             }
@@ -2402,7 +2413,7 @@ main {
         .field-loginmainpanel, .field-otppanelwrapper, .field-multiplecustidselectionpanel {
             margin: 0 auto;
             max-width: 768px;
-            padding: 0 40px !important;
+            padding: 40px !important;
         }
   
         .field-multiplecustidpanel:not([data-visible='false']) { display: block !important; }
@@ -2469,7 +2480,7 @@ main {
               padding: 0;
   
               .hdfc-accordian {
-                  .field-wrapper:not(.field-continuetoselectfd,.field-employeeassistancetoggle, .field-employeeassistancepanel) {
+                  .field-wrapper:not(.field-continuetoselectfd,.field-employeeassistancetoggle, .field-employeeassistancepanel, .field-inpersonbiokycpanel, .field-inpersonbiokycoptions) {
                       grid-column: span 6;
                   }
               }
@@ -2684,7 +2695,7 @@ main {
   
     .fdlien:has(.section.form-container) .section.form-container {
         .fd-form-wrapper{
-            .field-bannerimagepanel {
+            .field-bannerimagepanel, .field-multiplecustidbanner {
                 background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
                 min-height: 225px;
             }
@@ -2748,6 +2759,14 @@ main {
   
     .fdlien .field-multiplecustidselectionpanel .field-multiplecustidrepeatable {
         display: grid;
+
+        > .repeat-wrapper {
+            .panel-wrapper, .field-multiplecustidselect {
+                grid-column: span 12;
+                max-width: 99%;
+            }
+            .field-multiplecustidselect { margin-bottom: 0 !important; }
+        }
     }
 
     .field-fdbasedcreditcardwizard {
