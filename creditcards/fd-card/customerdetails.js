@@ -37,8 +37,9 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstNa
  * @returns {Promise<Object>} - A promise that resolves with the JSON response from the provided URL.
  */
 const bindEmployeeAssistanceField = async (globals) => {
-  const { employeeAssistancePanel, employeeAssistanceToggle } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  const { employeeAssistancePanel, employeeAssistanceToggle, inPersonBioKYCPanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
   const defaultChannel = getUrlParamCaseInsensitive('channel');
+  const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC');
   const codes = {
     lc1Code: getUrlParamCaseInsensitive('lccode'),
     lgCode: getUrlParamCaseInsensitive('lgcode'),
@@ -51,6 +52,9 @@ const bindEmployeeAssistanceField = async (globals) => {
   try {
     if (defaultChannel || Object.values(codes).some(Boolean)) {
       globals.functions.setProperty(employeeAssistanceToggle, { value: 'on' });
+    }
+    if (inPersonBioKYC?.toLowerCase() === 'yes') {
+      globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
     }
     const response = await getJsonResponse(FD_ENDPOINTS.masterchannel, null, 'GET');
     if (!response) return;
