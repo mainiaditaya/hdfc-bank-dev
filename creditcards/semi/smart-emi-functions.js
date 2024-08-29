@@ -542,9 +542,8 @@ const changeWizardView = () => {
    * @param {object} global -  global form object
    * @returns {void}
    */
-const semiWizardSwitch = (source, target, globals) => {
+const semiWizardSwitch = (source, target, current, globals) => {
   /* reset the value of card display while coming back from tenure section */
-  const current = 'aem_selectTenure'; /* current param should be added in form autoring so that , it could be reused  everywhere */
   if ((target === domElements.chooseTransaction) && (current === domElements.selectTenure)) {
     const LABEL_OUTSTANDING_AMT = 'Your Total Outstanding Amount is';
     const CUST_NAME_LABEL = `Dear ${currentFormContext.EligibilityResponse?.cardHolderName}`;
