@@ -668,6 +668,37 @@ main {
                 }                
             }
 
+            .field-vkycconfirmationpanel {
+                padding: 25px;
+                margin: 70px 60px 0;
+                position: absolute;
+                top: 25%;
+                left: 20px;
+                width: 65%;
+                background: var(--color-interface-background-quinary);
+                border-radius: 12px;
+                
+                > legend {
+                    position: relative;
+                    top: 25px;
+                }
+
+                .field-vkyctext1, .field-vkyctext2, .field-vkyctext3 {
+                    height: 0;
+                    margin-top: -10px;
+                    
+                    p {
+                        margin: 0;
+                    }
+                }
+
+                .field-vkycproceedbutton {
+                    margin-top: 25px;
+                    position: absolute;
+                    right: -14%;
+                }
+            }
+
             .field-refnumpanel {
                 margin: -70px 60px 0;
                 width: 70%;
@@ -675,6 +706,7 @@ main {
                 border: 1px solid var(--color-interface-border-secondary);
                 border-radius: 24px;
                 padding: 20px;
+                min-height: 400px;
 
                 .field-refnumlabel {
                     background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
@@ -690,6 +722,8 @@ main {
                 }
 
                 .field-referencenumbertagline {
+                    margin-top: -30px;
+
                     p {
                         font-size: var(--body-fd-md-font-size);
                         font-weight: var(--font-weight-regular);
