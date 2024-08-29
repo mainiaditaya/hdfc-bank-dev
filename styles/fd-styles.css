@@ -642,7 +642,7 @@ main {
             .field-tqbannertext1:has(p) {
                 text-align: left;
                 padding: 80px 300px 170px 45px;
-                background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 95% 0 !important;
+                background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 95% 0;
                 margin: -12px 0 0;
                 border-radius: 0;
             } 
@@ -672,7 +672,7 @@ main {
                 padding: 25px;
                 margin: 70px 60px 0;
                 position: absolute;
-                top: 25%;
+                top: 24%;
                 left: 20px;
                 width: 65%;
                 background: var(--color-interface-background-quinary);
@@ -700,13 +700,13 @@ main {
             }
 
             .field-refnumpanel {
-                margin: -70px 60px 0;
+                margin: -85px 60px 0;
                 width: 70%;
                 background: var(--color-interface-background-primary);
                 border: 1px solid var(--color-interface-border-secondary);
                 border-radius: 24px;
                 padding: 20px;
-                min-height: 400px;
+                min-height: 300px;
 
                 .field-refnumlabel {
                     background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
@@ -719,6 +719,16 @@ main {
                         font-size: var(--body-fd-md-font-size);
                         font-weight: var(--font-weight-regular);
                     }
+                }
+
+                .field-referencenumber {
+                    margin: -65px 0 0 83px;
+
+                    p {
+                        font-size: var(--body-fd-xx-lg-font-size);
+                        font-weight: var(--font-weight-bold);
+                        color: var(--color-interface-background-quaternary);
+                    }                    
                 }
 
                 .field-referencenumbertagline {
@@ -926,7 +936,7 @@ main {
         }
 
         > .field-banklink {
-            margin-left: 0;
+            margin-left: 50px;
         }
       }    
   
@@ -2517,9 +2527,107 @@ main {
     }
 
     .field-successresultpanel {
+        .field-tqbannertext1:has(p) {
+            text-align: left;
+            padding: 80px 300px 170px 10px !important;
+            margin: -12px 0 0;
+            border-radius: 0;
+            line-height: 22px !important;
+
+            p {
+                line-height: var(--font-linehight-m-large) !important;
+            }
+        }
+
+        .field-tqbannertext2 {
+            margin: -180px 0 0;
+            padding: 0 0 0 10px !important;
+            text-wrap: wrap !important;
+            text-align: left !important;
+
+            p {
+                line-height: var(--font-linehight-medium) !important;
+                margin-top: 10px !important;
+            }                
+        }
+
+        .field-vkycconfirmationpanel {
+            padding: 25px;
+            margin: 70px 20px 0 !important;
+            top: 21% !important;
+            left: 20px;
+            width: 90% !important;
+            background: var(--color-interface-background-quinary);
+            border-radius: 12px;
+            
+            > legend {
+                position: relative;
+                top: 25px;
+            }
+
+            .field-vkyctext1, .field-vkyctext2, .field-vkyctext3 {
+                height: 0;
+                margin-top: -10px;
+                
+                p {
+                    margin: 0;
+                }
+            }
+
+            .field-vkycproceedbutton {
+                position: unset !important;
+                left: 0 !important;
+                margin-top: 0 !important;
+            }
+        }
+
+        .field-refnumpanel {
+            margin: -70px 20px 0 !important;
+            width: 95% !important;
+            background: var(--color-interface-background-primary);
+            border: 1px solid var(--color-interface-border-secondary);
+            border-radius: 24px;
+            padding: 20px;
+            min-height: 380px !important;
+
+            .field-refnumlabel {
+                background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
+                width: 72px;
+                height: 72px;
+                padding-left: 80px;
+                text-wrap: nowrap;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-regular);
+                }
+            }
+
+            .field-referencenumber {
+                margin: -65px 0 0 83px;
+
+                p {
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-background-quaternary);
+                }                    
+            }
+
+            .field-referencenumbertagline {
+                margin-top: -30px;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-regular);
+                }
+            }
+        }
+
         /* Thank You Summary */
         .field-tqsummarysection {
             display: grid !important;
+            width: 95% !important;
+            margin: 0 20px !important;
 
             .text-wrapper {
                 display: grid;
@@ -2534,6 +2642,8 @@ main {
 
         .field-feedbackconfirmation {
             padding: 0 20px 20px !important;
+            width: 95% !important;
+            margin: 0 20px !important;
 
             .field-ratingbuttons {
                 display: flex;
@@ -2550,7 +2660,7 @@ main {
                 flex-direction: row;
 
                 .field-notlikelytext {
-                    width: 57.7% !important;
+                    width: 60.7% !important;
                 }
     
                 .field-maybetext {
@@ -2558,7 +2668,7 @@ main {
                 }
     
                 .field-verylikelytext {
-                    width: 16% !important;
+                    width: 18% !important;
                 }
             }           
 
@@ -2781,9 +2891,117 @@ main {
     }
 
     .field-successresultpanel {
+        .field-tqbannertext1 {
+            max-width: 100%;
+
+            p p {
+                font-size: var(--body-fd-xx-lg-font-size) !important;
+                color: var(--color-interface-background-primary);                
+                line-height: var(--font-linehight-medium) !important;
+
+                &::after {
+                    background: var(--color-interface-fd-background-primary) url('../icons/Essential.svg') no-repeat 100% 0;
+                    position: absolute !important;
+                    top:20px !important;
+                }
+            }
+        }
+
+        .field-tqbannertext1:has(p) {
+            text-align: left;
+            padding: 80px 92px 170px 10px !important;
+            background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 96% 38% !important;
+            background-size: 90px 90px !important;
+            margin: -12px 0 0;
+            border-radius: 0;
+            width: 100%;
+        } 
+
+        .field-tqbannertext1:not(:has(p)) {
+            text-align: left;
+            padding: 60px 275px 120px 50px;
+            background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
+            font-size: var(--body-fd-xxx-lg-font-size);
+            font-weight: var(--font-weight-bold);
+            line-height: var(--font-linehight-x-large);
+        }
+
+        .field-tqbannertext2 {
+            margin: -140px 0 0 !important;
+            padding: 0 0 0 9px !important;
+            text-wrap: wrap !important;
+            text-align: left !important;
+
+            p {
+                color: var(--color-interface-border-secondary) !important;
+                line-height: var(--font-linehight-medium) !important;
+            }                
+        }
+
+        .field-vkycconfirmationpanel {
+            padding: 25px;
+            margin: 70px 15px 0 !important;
+            position: absolute;
+            top: 20% !important;
+            left: 20px;
+            width: 85% !important;
+            background: var(--color-interface-background-quinary);
+            border-radius: 12px;
+            
+            > legend {
+                position: relative;
+                top: 25px;
+            }
+
+            .field-vkyctext1, .field-vkyctext2, .field-vkyctext3 {
+                height: auto !important;
+                margin-top: 5px !important;
+                
+                p {
+                    margin: 0;
+                }
+            }
+
+            .field-vkycproceedbutton {
+                margin-top: 25px;
+                position: unset !important;
+                width: 100%;
+            }
+        }
+
+        .field-refnumpanel {
+            margin: 50px 10px 20px !important;
+            width: 95% !important;
+            min-height: 460px !important;
+
+
+            .field-referencenumber {
+                margin: -50px 0 0 83px !important;
+
+                p {
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-background-quaternary);
+                }                    
+            }
+
+            .field-referencenumbertagline {
+                margin-top: 35px !important;
+                border-bottom: 1px dashed var(--color-interface-border-secondary);
+                padding-bottom: 10px;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-regular);
+                }
+            }
+        }
+
         /* Thank You Summary */
         .field-tqsummarysection {
             display: grid !important;
+            width: 95% !important;
+            margin: 0 10px !important;
 
             .text-wrapper {
                 display: grid;
@@ -2798,6 +3016,8 @@ main {
 
         .field-feedbackconfirmation {
             padding: 0 20px 20px !important;
+            width: 62% !important;
+            margin: 0 10px !important;
 
             .field-ratingbuttons {
                 display: flex;
@@ -2805,7 +3025,7 @@ main {
 
                 .button-wrapper {    
                     button {
-                        min-width: 35px !important;
+                        min-width: 32px !important;
                     }        
                 }
             }
@@ -2823,7 +3043,7 @@ main {
                 }
     
                 .field-verylikelytext {
-                    width: 30% !important;
+                    width: 28% !important;
                 }
             }           
 
