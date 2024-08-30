@@ -55,6 +55,8 @@ import {
 
 import executeInterface from './executeinterfaceutil.js';
 
+import confirmCardClickHandler from './confirmcardutil.js';
+
 export {
   getOTP,
   otpTimer,
@@ -90,4 +92,5 @@ export {
   dobChangeHandler,
   fathersNameChangeHandler,
   executeInterface,
+  confirmCardClickHandler,
 };
