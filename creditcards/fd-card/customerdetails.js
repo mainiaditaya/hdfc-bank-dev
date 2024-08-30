@@ -277,7 +277,8 @@ const fathersNameChangeHandler = (globals) => {
     .replace(/\s+/g, ' ');
 
   customerInfo.customerFullName = `${customerInfo.customerFirstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ');
-
+  customerInfo.customerMiddleName = middleName;
+  customerInfo.customerLastName = lastName;
   const nameOnCardVisible = customerFullName.length <= NAME_ON_CARD_LENGTH && fathersNameArr.length > 0;
 
   globals.functions.setProperty(personalDetails.nameOnCard, { visible: nameOnCardVisible });

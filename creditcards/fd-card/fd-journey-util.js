@@ -49,7 +49,12 @@ const fdWizardSwitch = (currentPanel, nextPanel) => {
   moveWizardView(currentPanel, nextPanel);
 };
 
+const errorScreenHandler = () => {
+  console.log('hide loader');
+};
+
 export {
   invokeJourneyDropOff,
   fdWizardSwitch,
+  errorScreenHandler,
 };

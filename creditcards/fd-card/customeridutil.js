@@ -7,7 +7,7 @@ import { urlPath } from '../../common/formutils.js';
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
 
-const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
+const customerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
   const payload = {
     requestString: {
       mobileNumber,
@@ -30,7 +30,7 @@ const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
  * @returns {Promise<Object>} A promise that resolves to the JSON response of the customer account details.
  */
 const fetchCustomerId = (mobileNumber, pan, dob, globals) => {
-  const payload = custmerIdPayload(mobileNumber, pan, dob, globals);
+  const payload = customerIdPayload(mobileNumber, pan, dob, globals);
   return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
 };
 

@@ -1,91 +1,126 @@
-import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
+import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
+import { urlPath } from '../../common/formutils.js';
+import { fetchJsonResponse } from '../../common/makeRestAPI.js';
+import { JOURNEY_NAME, FD_ENDPOINTS } from './constant.js';
 
-const { customerInfo } = CURRENT_FORM_CONTEXT;
 const createExecuteInterfaceRequest = (payload, globals) => {
+  const { customerInfo, journeyID } = CURRENT_FORM_CONTEXT;
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const { personalDetails, addressDetails } = reviewDetailsView;
+  let communicationAddress1 = customerInfo?.communicationAddress1;
+  let communicationAddress2 = customerInfo?.communicationAddress2;
+  let communicationAddress3 = customerInfo?.communicationAddress3;
+  let communicationCity = customerInfo?.communicationCity;
+  let communicationState = customerInfo?.communicationState;
+  let comCityZip = customerInfo?.comCityZip;
+  const addressEditFlag = addressDetails?.mailingAddressToggle?.$value === 'on' ? 'N' : 'Y';
+  if (addressEditFlag === 'Y') {
+    communicationAddress1 = addressDetails.newCurentAddressPanel.newCurrentAddressLine1;
+    communicationAddress2 = addressDetails.newCurentAddressPanel.newCurrentAddressLine2;
+    communicationAddress3 = addressDetails.newCurentAddressPanel.newCurrentAddressLine3;
+    communicationCity = addressDetails.newCurentAddressPanel.newCurrentAddressCity;
+    communicationState = addressDetails.newCurentAddressPanel.newCurentAddressState;
+    comCityZip = addressDetails.newCurentAddressPanel.newCurentAddressPin;
+  }
   const request = {
     requestString: {
-      bankEmployee: 'N',
-      mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
-      fullName: customerInfo?.customerFullName,
-      panCheckFlag: 'Y',
-      perAddressType: '2',
-      personalEmailId: personalDetails?.emailID,
-      selfConfirmation: 'Y',
-      addressEditFlag: addressDetails?.mailingAddressToggle?.$value === 'on' ? 'N' : 'Y',
-      communicationAddress1: 'I THINK LODHA FLAT NO 93',
-      communicationAddress2: 'COURTYARD MUMBAI',
-      communicationCity: 'Mumbai',
-      dateOfBirth: '20020218',
-      firstName: 'Ranjit',
-      lastName: 'Vijay',
-      gender: '1',
-      occupation: '1',
-      officialEmailId: 'deepak.bisht@hdfcbank.com',
-      panEditFlag: 'N',
-      panNumber: 'OJSPS6821J',
-      permanentAddress1: 'I THINK LODHA FLAT NO 93',
-      permanentAddress2: 'COURTYARD MUMBAI',
-      permanentCity: 'Mumbai',
-      permanentZipCode: '400042',
-      eReferenceNumber: 'AD20240826120139101',
-      nameEditFlag: 'Y',
-      mobileEditFlag: 'N',
-      resPhoneEditFlag: 'N',
-      comAddressType: '2',
-      comCityZip: '400042',
-      customerID: 'XXXXX7890',
-      timeInfo: '2024-08-06T05:39:55.021Z',
-      communicationAddress3: '',
-      permanentAddress3: '',
-      officeAddress1: 'off add 1',
-      officeAddress2: 'off add 2',
-      officeAddress3: null,
-      officeCity: 'HYDERABAD',
-      officeZipCode: '500019',
-      officeState: 'Telangana',
-      productCode: '',
-      leadClosures: 'R2432',
-      leadGenerater: '34234',
-      applyingBranch: 'N',
-      smCode: '',
-      dseCode: '',
-      lc2: '2323',
-      filler6: '',
-      branchName: '',
-      branchCity: '',
-      companyName: 'HDFC Bank',
-      departmentOrEmpCode: 'D11434',
-      designation: 'AVP',
-      middleName: 'SO',
-      perfiosTxnID: '',
-      monthlyincome: '',
+      addressEditFlag,
+      annualIncomeOrItrAmount: '',
       annualItr: '',
-      permanentState: 'MAHARASHTRA',
-      communicationState: 'MAHARASHTRA',
-      authMode: '',
-      journeyID: 'f04317f0-b484-4ec5-9d9a-b43f3e3d06bf_01_aa_a_bb',
-      journeyName: 'CORPORATE_CARD_JOURNEY',
-      nameOnCard: 'RANJIT SO VIJAY',
-      dsaValue: '',
-      cardsData: '',
-      channelSource: '',
-      isManualFlow: 'false',
-      channel: '',
+      applyingBranch: 'N',
       apsDobEditFlag: 'N',
       apsEmailEditFlag: 'N',
-      journeyFlag: 'ETB',
-      annualIncomeOrItrAmount: '100000',
+      authMode: '',
+      bankEmployee: 'N',
+      branchCity: '',
+      branchName: '',
+      CCAD_Relationship_number: '',
+      cardsData: '',
+      channel: '',
+      channelSource: '',
+      communicationAddress1: communicationAddress1 || 'Address line 1',
+      communicationAddress2: communicationAddress2 || 'Address line 2',
+      communicationAddress3: communicationAddress3 || 'Address line 3',
+      communicationCity: communicationCity || 'Bengaluru',
+      communicationState: communicationState || 'Karnataka',
+      comAddressType: '2',
+      comCityZip: comCityZip || '560102',
       comResidenceType: '2',
-      CCAD_Relationship_number: '20045266',
+      companyName: '',
+      // customerID: SELECTED_CUSTOMER_ID.selectedCustId.customerId,
+      customerID: '',
+      dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
+      departmentOrEmpCode: '',
+      designation: '',
+      dsaValue: '',
+      dseCode: '',
+      eReferenceNumber: CURRENT_FORM_CONTEXT.referenceNumber,
+      filler6: '',
+      firstName: customerInfo.customerFirstName,
+      fullName: customerInfo?.customerFullName,
+      gender: '1',
+      isManualFlow: 'false',
+      journeyFlag: 'ETB',
+      journeyID,
+      journeyName: JOURNEY_NAME,
+      lastName: customerInfo.customerLastName,
+      leadClosures: '',
+      leadGenerater: '',
+      lc2: '',
+      middleName: customerInfo.customerMiddleName,
+      mobileEditFlag: 'N',
+      mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
+      monthlyincome: '',
+      nameEditFlag: personalDetails?.fathersFullName?.$value?.length > 0 ? 'Y' : 'N',
+      nameOnCard: 'RANJIT SO VIJAY',
+      occupation: '1',
+      officialEmailId: 'deepak.bisht@hdfcbank.com',
+      officeAddress1: '',
+      officeAddress2: '',
+      officeAddress3: '',
+      officeCity: '',
+      officeState: '',
+      officeZipCode: '',
+      panCheckFlag: 'Y',
+      panEditFlag: 'N',
+      panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),
+      permanentAddress1: 'I THINK LODHA FLAT NO 93',
+      permanentAddress2: 'COURTYARD MUMBAI',
+      permanentAddress3: '',
+      perAddressType: '2',
+      permanentCity: 'Mumbai',
+      permanentState: 'MAHARASHTRA',
+      permanentZipCode: '400042',
+      perfiosTxnID: '',
+      personalEmailId: personalDetails?.emailID.$value,
+      productCode: '',
+      resPhoneEditFlag: 'N',
+      selfConfirmation: 'Y',
+      smCode: '',
+      timeInfo: new Date().toISOString(),
     },
   };
   return request;
 };
-
-const executeInterface = (payload, globals) => {
+/**
+ * Executes an interface request.
+ * @name executeInterface
+ * @param {object} payload - The payload for the interface request.
+ * @param {boolean} showLoader - Whether to show a loader while the request is in progress.
+ * @param {boolean} hideLoader - Whether to hide the loader after the request is complete.
+ * @param {object} globals - The global context object.
+ * @returns {Promise<object>} A promise that resolves to the response of the interface request.
+ */
+const executeInterface = (payload, showLoader, hideLoader, globals) => {
   const executeInterfaceRequest = createExecuteInterfaceRequest(payload, globals);
+  Object.keys(executeInterfaceRequest).forEach((key) => {
+    if (executeInterfaceRequest[key] === undefined) {
+      executeInterfaceRequest[key] = '';
+    }
+  });
+  const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
+  if (showLoader) FORM_RUNTIME.executeInterface();
+  return fetchJsonResponse(apiEndPoint, executeInterfaceRequest, 'POST', hideLoader);
 };
 
 export default executeInterface;
