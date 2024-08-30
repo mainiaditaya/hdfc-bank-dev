@@ -53,6 +53,8 @@ import {
   selectAllFdClickHandler,
 } from './fddetailsutil.js';
 
+import executeInterface from './executeinterfaceutil.js';
+
 export {
   getOTP,
   otpTimer,
@@ -87,4 +89,5 @@ export {
   branchCodeHandler,
   dobChangeHandler,
   fathersNameChangeHandler,
+  executeInterface,
 };
