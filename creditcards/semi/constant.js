@@ -26,6 +26,8 @@ const MAX_OTP_RESEND_COUNT = 3;
 const CURRENT_FORM_CONTEXT = {};
 const DATA_LIMITS = {
   totalSelectLimit: 10,
+  otpTimeLimit: 30,
+  maxOtpResendLimit: 3,
 };
 const RESPONSE_PAYLOAD = {
   response: {

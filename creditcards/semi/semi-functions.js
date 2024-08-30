@@ -11,6 +11,8 @@ import {
   preExecution,
   radioBtnValCommit,
   semiWizardSwitch,
+  otpTimerV1,
+  resendOTP,
 } from './smart-emi-functions.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
 
@@ -38,4 +40,6 @@ export {
   preExecution,
   radioBtnValCommit,
   semiWizardSwitch,
+  otpTimerV1,
+  resendOTP,
 };

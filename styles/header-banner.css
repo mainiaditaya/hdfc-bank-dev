@@ -50,73 +50,75 @@ header {
     background: var(--color-interface-background-tertiary);
 
     .cmp-container {
+        max-width: 960px;
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        max-height: 48px;
+
+        div:nth-child(1) {
+            height: 48px;
             max-width: 960px;
-            width: 100%;
             margin: 0 auto;
             position: relative;
-            max-height: 48px;
-    
-            div:nth-child(1) {
-                height: 48px;
-                max-width: 960px;
-                margin: 0 auto;
-                position: relative;
-                text-align: left;
-    
-                p {
-                    margin: 0;
-                    padding: 0;
-                    width: 19%;
+            text-align: left;
+
+            p {
+                margin: 0;
+                padding: 0;
+                width: 19%;
+            }
+
+            picture {
+                img {
+                    margin-top: 10px;
                 }
-    
-                picture {
-                    img {
-                        margin-top: 10px;
-                    }
-                }
-            }
-    
-            div:nth-child(2) {
-                position: absolute;
-                width: 30px;
-                right: 7.5em;
-                top: 0.2em;
-                height: 30px;
-                content: url('../../icons/location-icon.jpg');
-    
-    
-            }
-    
-            div:nth-child(3) {
-                position: absolute;
-                top: -2px;
-                right: 6em;
-                padding: 10px;
-                font-size: 14px;
-                font-weight: 400;
-                color: var(--color-action-text-primary-default);
-            }
-    
-            div:nth-child(4) {
-                position: absolute;
-                width: 24px;
-                right: 1.7em;
-                top: 0.3em;
-                height: 24px;
-                content: url('../../icons/help.svg');
-            }
-    
-            div:nth-child(5) {
-                position: absolute;
-                top: -2px;
-                right: -0.8em;
-                padding: 10px;
-                font-size: 14px;
-                font-weight: 400;
-                color: var(--color-action-text-primary-default);
             }
         }
     }
+}
+
+body:not(.semi-form, .fdlien) header {
+    .cmp-container {
+        div:nth-child(2) {
+            position: absolute;
+            width: 30px;
+            right: 7.5em;
+            top: 0.2em;
+            height: 30px;
+            content: url('../../icons/location-icon.jpg');
+        }
+    
+        div:nth-child(3) {
+            position: absolute;
+            top: -2px;
+            right: 6em;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--color-action-text-primary-default);
+        }
+
+        div:nth-child(4) {
+            position: absolute;
+            width: 24px;
+            right: 1.7em;
+            top: 0.3em;
+            height: 24px;
+            content: url('../../icons/help.svg');
+        }
+
+        div:nth-child(5) {
+            position: absolute;
+            top: -2px;
+            right: -0.8em;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--color-action-text-primary-default);
+        }
+    }
+}
 
 /* banner start */
 .cmp-container-wrapper {
@@ -124,6 +126,16 @@ header {
     border-bottom: none !important;
     content: url('../icons/header_banner_1400x200.jpg');
     width: 100% !important;
+}
+
+.semi-form .cmp-container-wrapper {
+    content: '';
+    background-color: var(--color-interface-background-primary);
+    width: 100%;
+    background-size: 100% 100%;
+    background-position: center;
+    background-image: url('../icons/bannerDesktopSemi.png');
+    height: 120px;
 }
 
 /***** mobile large ********/
@@ -141,8 +153,9 @@ header {
     div p:nth-child(2) {
         display: none;
     }
+    .semi-form header { padding-left: 10px; }
     
-    header{
+    body:not(.semi-form) header{
         div:nth-child(1){
                 text-align: center !important;
             }
@@ -188,8 +201,9 @@ header {
             display: none;
         }
     }
-
-    header{
+    .semi-form header { padding-left: 10px; }
+    
+    body:not(.semi-form) header{
         .cmp-container{
             div:nth-child(1){
                 text-align: center;
@@ -217,8 +231,9 @@ header {
             display: none
         }
     }
-
-    header{
+    .semi-form header { padding-left: 10px; }
+    
+    body:not(.semi-form) header {
         .cmp-container{
             div:nth-child(1){
                 text-align: center;
@@ -228,5 +243,13 @@ header {
                 display: none;
             }
         }
+    }
+}
+
+@media (width < 991px) {
+    .semi-form .cmp-container-wrapper {
+        content: '';
+        background-image: url('../icons/bannerTabletSemi.png');
+        height: 160px;
     }
 }
