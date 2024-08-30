@@ -152,12 +152,16 @@ function preExecution(mobileNumber, cardDigits) {
  * @param {number} i - current instance of panel row
  */
 const setData = (globals, panel, txn, i) => {
+  let enabled = true;
+  if (currentFormContext.totalSelect === 10 && txn?.aem_Txn_checkBox !== 'on') enabled = false;
   globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: txn?.checkbox || txn?.aem_Txn_checkBox });
-  globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { enabled: true });// set the checbox value
+  globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { enabled });// set the checbox value
   globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: txn?.amount || txn?.aem_TxnAmt });
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date || txn?.aem_TxnDate });
   globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id || txn?.aem_TxnID });
   globals.functions.setProperty(panel[i]?.aem_TxnName, { value: txn?.name || txn?.aem_TxnName });
+  globals.functions.setProperty(panel[i]?.authCode, { value: txn?.AUTH_CODE || txn?.aem_TxnName });
+  globals.functions.setProperty(panel[i]?.logicMod, { value: txn?.LOGICMOD || txn?.aem_TxnName });
 };
 
 /*
@@ -183,7 +187,7 @@ const cardDisplay = (globals, response) => {
   imageEl?.childNodes[1].setAttribute('srcset', imagePath);
 };
 
-const DELAY = 90;
+const DELAY = 120;
 const DELTA_DELAY = 100;
 
 /**
@@ -224,8 +228,8 @@ const setTxnPanelData = (allTxn, btxn, billedTxnPanel, unBilledTxnPanel, globals
 */
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload1, globals) {
-  // const resPayload = RESPONSE_PAYLOAD.response;
-  const resPayload = resPayload1;
+  const resPayload = RESPONSE_PAYLOAD.response;
+  //const resPayload = resPayload1;
   const response = {};
   try {
     /* continue btn disabling code added temorary, can be removed after form authoring */
@@ -410,7 +414,6 @@ let isUserSelection = false;
  * @param {string} orderBy - orderby amount or date
  */
 function sortData(txnType, orderBy, globals) {
-  displayLoader();
   isUserSelection = !isUserSelection;
   if (!txnType) return;
   // orderBy - 0 - amount ; 1 - date
@@ -425,8 +428,7 @@ function sortData(txnType, orderBy, globals) {
   sortedData?.forEach((data, i) => setData(globals, pannel, data, i));
   setTimeout(() => {
     isUserSelection = !isUserSelection;
-    hideLoaderGif();
-  }, 5500);
+  }, 1000);
 }
 
 /**
@@ -562,53 +564,49 @@ const semiWizardSwitch = (source, target, current, globals) => {
 function selectTopTxn(globals) {
   selectTopTenFlag = !selectTopTenFlag;
   const SELECT_TOP_TXN_LIMIT = 10;
-  const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
-  const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const billedTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const billed = globals.functions.exportData().smartemi.aem_billedTxn.aem_billedTxnSelection;
   const unBilled = globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection;
-  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSortDD, { value: '0' });
-  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSortDD, { value: '0' });
-  // sortData('UNBILLED', '0', globals);
-  // sortData('BILLED', '0', globals);
-  setTimeout(() => {
-    disableCheckBoxes(unbilledTxnList, true, globals);
-    disableCheckBoxes(billedTxnList, true, globals);
-  }, 3000);
 
+  const allTxn = billed.concat(unBilled);
+  const sortedArr = sortDataByAmount(allTxn);
+  const sortedTxnList = sortedArr?.slice(0, SELECT_TOP_TXN_LIMIT);
+  let billedCounter = 0;
+  let unbilledCounter = 0;
+  let unbilledCheckedItems = 0;
+  let billedCheckedItems = 0;
+  let value = 'on';
+  let enabled = true;
+
+  sortedArr?.forEach((txn, i) => {
+    if (i > 9) {
+      value = undefined;
+      enabled = false;
+    }
+    if (txn.aem_txn_type === 'UNBILLED') {
+      globals.functions.setProperty(unBilledTxnPanel[unbilledCounter].aem_Txn_checkBox, { enabled });
+      globals.functions.setProperty(unBilledTxnPanel[unbilledCounter].aem_Txn_checkBox, { value });
+      if (i <= 9) unbilledCheckedItems += 1;
+      unbilledCounter += 1;
+    } else {
+      globals.functions.setProperty(billedTxnPanel[billedCounter].aem_Txn_checkBox, { enabled });
+      globals.functions.setProperty(billedTxnPanel[billedCounter].aem_Txn_checkBox, { value });
+      if (i <= 9) billedCheckedItems += 1;
+      billedCounter += 1;
+    }
+    const billedTxnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.billedTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
+    const unbilledTxnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.unbilledTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
+    globals.functions.setProperty(billedTxnSelected, { value: `${billedCheckedItems} Selected` });
+    globals.functions.setProperty(unbilledTxnSelected, { value: `${unbilledCheckedItems} Selected` });
+    currentFormContext.totalSelect = sortedTxnList.length;
+    const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${sortedTxnList.length}`;
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });
+  });
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnSelectionContinue, { enabled: true });
   setTimeout(() => {
-    const allTxn = billed.concat(unBilled);
-    const sortedArr = sortDataByAmount(allTxn);
-    const sortedTxnList = sortedArr?.slice(0, SELECT_TOP_TXN_LIMIT);
-    let billedCounter = 0;
-    let unbilledCounter = 0;
-    const billedTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
-    const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
-    sortedTxnList?.forEach((txn) => {
-      if (txn.aem_txn_type === 'UNBILLED') {
-        globals.functions.setProperty(unBilledTxnPanel[unbilledCounter].aem_Txn_checkBox, { enabled: true });
-        globals.functions.setProperty(unBilledTxnPanel[unbilledCounter].aem_Txn_checkBox, { value: 'on' });
-        unbilledCounter += 1;
-      } else {
-        globals.functions.setProperty(billedTxnPanel[billedCounter].aem_Txn_checkBox, { enabled: true });
-        globals.functions.setProperty(billedTxnPanel[billedCounter].aem_Txn_checkBox, { value: 'on' });
-        billedCounter += 1;
-      }
-      const billedTxnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.billedTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
-      const unbilledTxnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.unbilledTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
-      globals.functions.setProperty(billedTxnSelected, { value: `${billedCounter} Selected` });
-      globals.functions.setProperty(unbilledTxnSelected, { value: `${unbilledCounter} Selected` });
-      currentFormContext.totalSelect = sortedTxnList.length;
-      const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${DATA_LIMITS.totalSelectLimit}`;
-      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });
-      /* enable disable select-tenure continue button */
-      if (currentFormContext.totalSelect === 0) {
-        globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnSelectionContinue, { enabled: false });
-      } else if (currentFormContext.totalSelect > 0) {
-        globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnSelectionContinue, { enabled: true });
-      }
-    });
     selectTopTenFlag = !selectTopTenFlag;
-  }, 3000);
+  }, 1000);
 }
 
 /**
