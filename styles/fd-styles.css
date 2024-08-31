@@ -533,6 +533,9 @@ main {
               p {
                   text-align: left;
                   padding: 0;
+                  font-size: var(--body-fd-xxx-lg-font-size);
+                  font-weight: var(--font-weight-bold);
+                  line-height: var(--font-linehight-m-large);
               }
   
               p::before {
@@ -545,7 +548,7 @@ main {
                   width: 0;
                   height: 0;
                   background: none;
-              }        
+              }                     
           }
   
           .field-errormessagetextplaceholder p p{
@@ -558,7 +561,7 @@ main {
           .field-errormessagetext:has(p) {
               text-align: left;
               padding: 60px 275px 120px 50px;
-              background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
+              background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important;
           } 
   
           .field-errormessagetext:not(:has(p)) {
@@ -575,7 +578,7 @@ main {
               color: var(--color-interface-background-quaternary);
               border-radius: 24px;
               width: 92%;
-              margin: -160px auto 0;
+              margin: -100px auto 0;
   
               .field-errresdealertext1 {
                   padding: 20px 20px 0;
@@ -615,7 +618,154 @@ main {
               color: var(--color-interface-background-quaternary);
               font-size: var(--body-fd-md-font-size);
           }
+
+          .button-wrapper:nth-child(5) {
+            position: absolute;
+            top: 80%;
+            left: 55px;
+            width: 90%;
+        }
       }
+
+      
+
+      .field-error2colresultpanel {
+        display: grid;
+        margin: 0 60px;
+        background: var(--color-interface-background-primary);
+        border-radius: 0;
+
+        .field-errorctapanel {
+            grid-column: span 3;
+
+            .field-getccnowlabel {                
+                background: var(--color-interface-error-cta-background) url('../icons/error_cta_icon.svg') no-repeat;
+                border-radius: 24px;
+                min-height: 250px;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    color: var(--color-interface-text-quaternary);
+                    font-weight: var(--font-weight-bold);
+                    margin-top: 50%;
+                    padding-left: 5px;
+                }
+            }
+
+            .field-errorctabutton {
+                    position: relative;
+                    top: -100px;
+                    padding-left: 20px;
+                    
+                    button {
+                        background: none;
+                        color: var(--color-interface-icon-highlight);
+                        text-align: left;
+    
+                        &::after {
+                            background: url('../icons/arrow-right-blue.svg');
+                        }
+    
+                        &:hover {
+                            background: none !important;
+                        }
+                    }
+            }
+                
+            }
+
+            .field-errorassistancepanel {
+                grid-column: span 8;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 0 !important;
+
+                > legend {
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-background-quaternary);
+                }
+
+                .plain-text-wrapper {
+                    flex: 1 1 45%;
+                    border-bottom: 1px solid var(--color-interface-border-primary);
+                    height: 45px;
+
+                    p {
+                        color: var(--color-interface-background-quaternary);
+                        font-size: var(--body-fd-md-font-size);
+                        font-weight: var(--font-weight-medium);
+                    }
+
+                    &:last-child, &:nth-last-child(2) {
+                        border-bottom: none;
+                    }
+                }
+
+                .plain-text-wrapper:nth-child(odd) {
+                    text-align: right;
+                }
+                
+                .plain-text-wrapper:nth-child(even) {
+                    text-align: left;
+                }
+
+                .field-furtherassistance1 {
+                    p {
+                        p::before {
+                            content: '';
+                            background: url('../icons/bank_icon.svg') no-repeat;
+                            width: 30px;
+                            height: 25px;
+                            display: inline-block;
+                            vertical-align: bottom;
+                        }
+                    }                    
+                }
+
+                .field-furtherassistance2 {
+                    p {
+                        p::before {
+                            content: '';
+                            background: url('../icons/call_icon.svg') no-repeat;
+                            width: 30px;
+                            height: 23px;
+                            display: inline-block;
+                            vertical-align: bottom;
+                        }
+                    }                    
+                }
+
+                .field-furtherassistance3 {
+                    p {
+                        p::before {
+                            content: '';
+                            background: url('../icons/message_icon.svg') no-repeat;
+                            width: 30px;
+                            height: 23px;
+                            display: inline-block;
+                            vertical-align: bottom;
+                        }
+                    }                    
+                }
+
+                .field-furtherassistance4 {
+                    p {
+                        p::before {
+                            content: '';
+                            background: url('../icons/SMS_icon.svg') no-repeat;
+                            width: 30px;
+                            height: 23px;
+                            display: inline-block;
+                            vertical-align: bottom;
+                        }
+                    }                    
+                }
+            }
+            
+            
+        }
   
       .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
           text-align: center;
@@ -2199,6 +2349,47 @@ main {
               left: 3%;
             }
         }
+
+        .field-error2colresultpanel {
+            margin: 0 10px !important;
+    
+            .field-errorctapanel {
+                grid-column: span 12 !important;
+    
+                .field-getccnowlabel {  
+                    min-height: 150px !important;   
+    
+                    p {
+                        margin-top: 0 !important;
+                        position: relative !important;
+                        top: 14px !important;
+                        left: 75px !important;
+                    }
+                }
+    
+                .field-errorctabutton {
+                    top: -220px;
+                    left: 145px;
+                }
+            }
+    
+            .field-errorassistancepanel {
+                grid-column: span 12 !important;
+                flex-direction: row;
+    
+                .plain-text-wrapper {
+                    flex: 1 1 45% !important;
+                    height: 40px;
+                    text-align: left !important;
+                    border: none;
+                }
+                
+                .plain-text-wrapper:nth-child(odd) {
+                    border-bottom: 1px solid var(--color-interface-border-primary);
+                    margin-bottom: 10px;
+                }
+            }
+        }
     }
   
     .fdlien .field-fdbasedcreditcardwizard { left: 2%; }
@@ -2236,7 +2427,7 @@ main {
           padding: 30px 250px 80px 20px !important;
               text-align: left !important;
       }
-    }
+    }   
   }
   
   /* For mobiles */
@@ -2246,7 +2437,7 @@ main {
       }
   
     .fdlien:has(.section.form-container) .section.form-container {
-        .fd-form-wrapper{
+        .fd-form-wrapper {
             .field-bannerimagepanel, .field-multiplecustidbanner {
                 background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
                 min-height: 225px;
@@ -2258,8 +2449,82 @@ main {
                       top: 45px;
                   }
               }
-            }     
-        }    
+            } 
+
+            .field-errorresultpanel {
+                .field-errormessagetext p{
+                    font-size: var(--font-linehight-m-large) !important;
+                    line-height: var(--body-fd-xxx-lg-font-size);                    
+                }
+    
+                .field-errormessagetext:has(p) {
+                    text-align: left;
+                    padding: 30px 150px 120px 9px !important;
+                    background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important;
+                    background-size: 150px 150px !important;
+                }
+            
+                .field-errormessagetext:not(:has(p)){
+                    padding: 30px 250px 80px 20px !important;
+                    text-align: left !important;
+                }
+                
+                .field-errresdealerpanel {
+                   margin: -80px auto 0 !important;
+                }
+            
+                .button-wrapper:nth-child(5) {
+                    position: absolute;
+                    top: 80%;
+                    left: 20px !important;
+                    width: 90% !important;
+                }
+            }
+
+            .field-error2colresultpanel {
+                margin: 0 10px;
+
+                .field-errorctapanel {
+                    grid-column: span 12;
+
+                    .field-getccnowlabel {  
+                        min-height: 150px;   
+
+                        p {
+                            margin-top: 0;
+                            position: relative;
+                            top: 14px;
+                            left: 75px;
+                        }
+                    }
+
+                    .field-errorctabutton {
+                        top: -220px;
+                        left: 145px;
+                    }
+                }
+
+                .field-errorassistancepanel {
+                    grid-column: span 12;
+
+                    .plain-text-wrapper {
+                        flex: 1 1 auto;
+                        height: 40px;
+                        text-align: left !important;
+                        border: none;
+                    }
+                    
+                    .plain-text-wrapper:nth-child(odd) {
+                        border-bottom: 1px solid var(--color-interface-border-primary);
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+         
+
+        
+        
     }
   
     .fdlien header>.cmp-container div:nth-child(2) {
@@ -2452,12 +2717,5 @@ main {
 
     .field-resultpanel:has(.field-errorresultpanel) {
       top: 9%;
-    }
-  
-    .field-errorresultpanel {
-      .field-errormessagetext:not(:has(p)){
-          padding: 30px 250px 80px 20px !important;
-          text-align: left !important;
-      }
     }
   }
