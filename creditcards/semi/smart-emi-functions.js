@@ -55,13 +55,22 @@ const addOtpFieldValidation = () => {
 };
 
 /**
- * function sorts the billed / Unbilled Txn  array in ascending order based on the amount field
+ * function sorts the billed / Unbilled Txn  array in descending order based on the amount field
  *
  * @param {object} data
  * @param {object} key
  * @returns {object}
  */
 const sortDataByAmount = (data, key = 'aem_TxnAmt') => data.sort((a, b) => b[key] - a[key]);
+
+/**
+ * convert a amount with unicode to Number
+ * @param {string} str - txn-amount - i.e.:'₹ 50,000'
+ * @returns {number} - number-  50000
+ */
+const currencyStrToNum = (str) => parseFloat((String(str))?.replace(/[^\d.-]/g, ''));
+
+const sortDataByAmountSymbol = (data, key = 'aem_TxnAmt') => data.sort((a, b) => currencyStrToNum(b[key]) - currencyStrToNum(a[key]));
 
 /**
  * Description placeholder
@@ -80,7 +89,7 @@ function sortByDate(data) {
     const dateB = new Date(yearB, monthB - 1, dayB);
 
     // Compare the dates
-    return dateA - dateB;
+    return dateB - dateA;
   });
 }
 
@@ -201,8 +210,8 @@ const setData = (globals, panel, txn, i) => {
   if (currentFormContext.totalSelect === 10 && txn?.aem_Txn_checkBox !== 'on') enabled = false;
   globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: txn?.checkbox || txn?.aem_Txn_checkBox });
   globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { enabled });// set the checbox value
-  globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: `${MISC.rupeesUnicode} ${nfObject.format(txn?.amount)}` || `${MISC.rupeesUnicode} ${nfObject.format(txn?.aem_TxnAmt)}` });
-  // globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: txn?.amount || txn?.aem_TxnAmt });
+  const TXN_AMT = `${MISC.rupeesUnicode} ${nfObject.format((txn?.amount || txn?.aem_TxnAmt))}`;
+  globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: TXN_AMT });
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date || txn?.aem_TxnDate });
   globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id || txn?.aem_TxnID });
   globals.functions.setProperty(panel[i]?.aem_TxnName, { value: txn?.name || txn?.aem_TxnName });
@@ -472,8 +481,12 @@ function sortData(txnType, orderBy, globals) {
   const billed = globals.functions.exportData().smartemi.aem_billedTxn.aem_billedTxnSelection;
   const unBilled = globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection;
   const dataTxnList = txnType === 'BILLED' ? billed : unBilled;
-  const sortedData = (orderBy === '0') ? sortDataByAmount(dataTxnList) : sortByDate(dataTxnList);
-  sortedData?.forEach((data, i) => setData(globals, pannel, data, i));
+  const sortedData = (orderBy === '0') ? sortDataByAmountSymbol(dataTxnList) : sortByDate(dataTxnList);
+  const mapSortedDat = sortedData?.map((item) => ({
+    ...item,
+    aem_TxnAmt: (currencyStrToNum(item?.aem_TxnAmt)),
+  }));
+  mapSortedDat?.forEach((data, i) => setData(globals, pannel, data, i));
   setTimeout(() => {
     isUserSelection = !isUserSelection;
   }, 1000);
@@ -618,7 +631,7 @@ function selectTopTxn(globals) {
   const unBilled = globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection;
 
   const allTxn = billed.concat(unBilled);
-  const sortedArr = sortDataByAmount(allTxn);
+  const sortedArr = sortDataByAmountSymbol(allTxn);
   const sortedTxnList = sortedArr?.slice(0, SELECT_TOP_TXN_LIMIT);
   let billedCounter = 0;
   let unbilledCounter = 0;
