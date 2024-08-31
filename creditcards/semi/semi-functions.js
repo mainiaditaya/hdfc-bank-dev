@@ -11,6 +11,7 @@ import {
   preExecution,
   radioBtnValCommit,
   semiWizardSwitch,
+  getCCSmartEmi,
   otpTimerV1,
   resendOTP,
 } from './smart-emi-functions.js';
@@ -40,6 +41,7 @@ export {
   preExecution,
   radioBtnValCommit,
   semiWizardSwitch,
+  getCCSmartEmi,
   otpTimerV1,
   resendOTP,
 };
