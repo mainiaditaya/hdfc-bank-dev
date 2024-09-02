@@ -713,6 +713,7 @@ const otpTimerV1 = (pannelName, globals) => {
  * @return {PROMISE}
  */
 const resendOTP = async (globals) => {
+  const channel = 'web';
   const mobileNumber = globals.form.aem_semiWizard.aem_identifierPanel.aem_loginPanel.mobilePanel.aem_mobileNum.$value;
   const cardDigits = globals.form.aem_semiWizard.aem_identifierPanel.aem_loginPanel.aem_cardNo.$value;
   const { otpPanel } = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel;
@@ -724,7 +725,7 @@ const resendOTP = async (globals) => {
       globals.functions.setProperty(otpPanel.aem_otpResend, { visible: false });
       globals.functions.setProperty(otpPanel.aem_maxlimitOTP, { visible: true });
     }
-    return getOTPV1(mobileNumber, cardDigits, globals);
+    return getOTPV1(mobileNumber, cardDigits, channel, globals);
   }
 
   return null;
