@@ -120,8 +120,6 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
  * @return {PROMISE}
  */
 function preExecution(mobileNumber, cardDigits) {
-  // eslint-disable-next-line no-debugger
-  debugger;
   const jsonObj = {
     requestString: {
       mobileNo: mobileNumber,
@@ -222,8 +220,8 @@ const setTxnPanelData = (allTxn, btxn, billedTxnPanel, unBilledTxnPanel, globals
 */
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload1, globals) {
-  const resPayload = RESPONSE_PAYLOAD.response;
-  // const resPayload = resPayload1;
+  // const resPayload = RESPONSE_PAYLOAD.response;
+  const resPayload = resPayload1;
   const response = {};
   try {
     /* continue btn disabling code added temorary, can be removed after form authoring */
@@ -267,6 +265,7 @@ const getLoanOptionsInfo = (responseStringJsonObj) => {
       period: responseStringJsonObj[0][periodKey],
       interest: responseStringJsonObj[0][interestKey],
       tid: responseStringJsonObj[0][tidKey],
+      processingFee: responseStringJsonObj[0].memoLine1,
     };
   });
   return loanoptions;
@@ -305,7 +304,7 @@ const tenureOption = (loanOptions, loanAmt) => {
     const roiAnnually = currencyUtil(parseFloat(option?.interest), 2);
     const monthlyEMI = nfObject.format(calculateEMI(loanAmt, roiMonthly, parseInt(option.period, 10)));
     const period = `${parseInt(option.period, 10)} Months`;
-    const procesingFee = '500';
+    const procesingFee = nfObject.format(option.processingFee);
     const emiSubStance = option;
     return ({
       ...option,
@@ -642,31 +641,33 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
   const TENURE = (parseInt(emiSubData?.period, 10).toString().length === 1) ? (parseInt(emiSubData?.period, 10).toString().padStart(2, '0')) : parseInt(emiSubData?.period, 10).toString(); // '003' into '03' / '18'-'18'
   const TID = emiSubData?.tid; // '000000101'
   const jsonObj = {
-    cardNo: cardNum,
-    OTP: otpNum,
-    proCode: PRO_CODE,
-    prodId: eligibiltyResponse.responseString.records[0].prodId,
-    agencyCode: AGENCY_CODE,
-    tenure: TENURE,
-    interestRate: INTEREST,
-    encryptedToken: eligibiltyResponse.responseString.records[0].encryptedToken,
-    loanAmt: LOAN_AMOUNT,
-    ltrExctCode: LTR_EXACT_CODE,
-    caseNumber: mobileNum,
-    dept: DEPT,
-    memCategory: MEM_CATEGORY,
-    memSubCat: MEM_SUB_CAT,
-    memoLine4: MEMO_LINE_4,
-    memoLine5: MEMO_LINE_5,
-    mobileNo: mobileNum,
-    tid: TID,
-    reqAmt: LOAN_AMOUNT,
-    procFeeWav: PROC_FEES,
-    reqNbr: REQ_NBR,
-    emiConversion: emiConversionArray,
-    journeyID: currentFormContext.journeyID,
-    journeyName: currentFormContext.journeyName,
-    userAgent: window.navigator.userAgent,
+    requestString: {
+      cardNo: cardNum,
+      OTP: otpNum,
+      proCode: PRO_CODE,
+      prodId: eligibiltyResponse.responseString.records[0].prodId,
+      agencyCode: AGENCY_CODE,
+      tenure: TENURE,
+      interestRate: INTEREST,
+      encryptedToken: eligibiltyResponse.responseString.records[0].encryptedToken,
+      loanAmt: LOAN_AMOUNT,
+      ltrExctCode: LTR_EXACT_CODE,
+      caseNumber: mobileNum,
+      dept: DEPT,
+      memCategory: MEM_CATEGORY,
+      memSubCat: MEM_SUB_CAT,
+      memoLine4: MEMO_LINE_4,
+      memoLine5: MEMO_LINE_5,
+      mobileNo: mobileNum,
+      tid: TID,
+      reqAmt: LOAN_AMOUNT,
+      procFeeWav: PROC_FEES,
+      reqNbr: REQ_NBR,
+      emiConversion: emiConversionArray,
+      journeyID: currentFormContext.journeyID,
+      journeyName: currentFormContext.journeyName,
+      userAgent: window.navigator.userAgent,
+    },
   };
   const path = semiEndpoints.ccSmartEmi;
   if (window !== undefined) displayLoader();
