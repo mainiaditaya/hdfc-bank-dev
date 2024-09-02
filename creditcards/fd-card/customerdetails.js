@@ -104,10 +104,6 @@ const bindCustomerDetails = (globals) => {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-  // customerInfo.customerFullName = 'FirstName MiddleName LastName';
-  // customerInfo.customerFirstName = 'FirstName';
-  // customerInfo.customerMiddleName = '';
-  // customerInfo.customerLastName = '';
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
   setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
   if (customerInfo.dob) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob); }
@@ -118,21 +114,26 @@ const bindCustomerDetails = (globals) => {
   setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
   const emailIDUtil = formUtil(globals, personalDetails.emailID);
   emailIDUtil.setValue(customerInfo.emailId, { attrChange: true, value: false });
-  // setFormValue(personalDetails.fullName, '');
-  // setFormValue(personalDetails.panNumberPersonalDetails, '');
-  // setFormValue(personalDetails.emailID, '');
-  // setFormValue(addressDetails.prefilledMailingAdddress, '');
   if (customerInfo.address.length === 0) {
     globals.functions.setProperty(addressDetails.prefilledMailingAdddress, { visible: false });
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
   }
-  if (customerInfo.customerFullName.length <= NAME_ON_CARD_LENGTH && (customerInfo.customerMiddleName || customerInfo.customerLastName)) {
-    setFormValue(personalDetails.nameOnCard, customerInfo.customerFullName?.toUpperCase());
+  const {
+    customerFullName, customerFirstName, customerMiddleName, customerLastName,
+  } = customerInfo;
+
+  if (customerFullName.length <= NAME_ON_CARD_LENGTH) {
+    setFormValue(personalDetails.nameOnCard, customerFullName.toUpperCase());
   } else {
+    const hasNoMiddleOrLastName = !customerMiddleName && !customerLastName;
+
     globals.functions.setProperty(personalDetails.nameOnCard, { visible: false });
     globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: true });
-    globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
-    const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
+
+    if (hasNoMiddleOrLastName) {
+      globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
+    }
+
     initializeNameOnCardDdOptions(globals, personalDetails, customerFirstName, customerMiddleName, customerLastName);
   }
 

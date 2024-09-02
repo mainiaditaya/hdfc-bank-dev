@@ -7,7 +7,7 @@ import { urlPath } from '../../common/formutils.js';
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
 
-const referenceIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
+const createPayload = (mobileNumber, panNumber, dateOfBirth) => {
   const payload = {
     requestString: {
       mobileNumber,
@@ -26,12 +26,14 @@ const referenceIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
  * @param {string} mobileNumber
  * @param {string} pan
  * @param {string} dob
+ * @param {object} response
  * @param {Object} globals
  * @returns {Promise<Object>} A promise that resolves to the JSON response of the customer account details.
  */
-const fetchCustomerId = (mobileNumber, pan, dob, globals) => {
-  const payload = referenceIdPayload(mobileNumber, pan, dob, globals);
-  return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
+const fetchCustomerId = (mobileNumber, pan, dob, response, globals) => {
+  const payload = createPayload(mobileNumber, pan, dob, globals);
+  payload.requestString.referenceNumber = response.referenceNo;
+  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus), payload, 'POST');
 };
 
 /**
@@ -44,8 +46,8 @@ const fetchCustomerId = (mobileNumber, pan, dob, globals) => {
  * @returns {Promise<Object>}
  */
 const fetchReferenceId = (mobileNumber, pan, dob, globals) => {
-  const payload = referenceIdPayload(mobileNumber, pan, dob, globals);
-  return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
+  const payload = createPayload(mobileNumber, pan, dob, globals);
+  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetrefidfdcc), payload, 'POST');
 };
 
 const updateData = (globals, customerData, panel) => {
