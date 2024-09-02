@@ -79,6 +79,7 @@ main {
           border-radius: 5px;
           background-color: var(--color-interface-background-primary);
           border: 1px solid var(--color-interface-border-secondary);
+          padding: 0;
       }
   
       input[type="checkbox"]:focus, input[type="checkbox"]:hover {
@@ -95,6 +96,7 @@ main {
       input[type="checkbox"]:checked {
           background: var(--color-action-border-primary-default);
           border: 1px solid var(--color-action-border-primary-default);
+          padding: 10px 0 0 10px;
       }
       
       input[type="checkbox"]:checked::before {
@@ -463,7 +465,7 @@ main {
                     margin: -1px 0 0 -15px;
                     width: fit-content;
     
-                    input[type="number"] {
+                    input[type="number"], input[type="text"] {
                         border: none;
                         width: 50px;
                         margin: 0;
@@ -1338,13 +1340,14 @@ main {
           pointer-events: none;
           line-height: 1px;
           padding-top: 10px;
+          margin-bottom: 0;
       }
   
       div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p, .field-detailssectionlabel2 p, .field-selectsuitablecardtext p {
           font-weight: var(--font-weight-regular);
-          font-size: var(--body-md-font-size);
+          font-size: var(--body-lg-font-size);
           color: var(--color-interface-text-secondary);
-          margin: 0;
+          margin: 7px 0 10px;
           line-height: 24px;
           padding-bottom: 0;
       }
@@ -1616,15 +1619,21 @@ main {
                 font-weight: var(--font-weight-medium);
                 line-height: 18px;
                 color: var(--color-interface-text-quaternary);
+                margin-bottom: 5px;
             }
   
             .field-pleasenotetext1, .field-pleasenotetext2 {
                 line-height: 7px;
                 margin-top: -15px;
+
+                p {
+                    margin: 2px 0;
+                }
   
                 p p{
                   line-height: 16px;
                   font-size: var(--body-fd-md-font-size);
+                  margin-bottom: 0;
                 }
             }
         }
@@ -1687,6 +1696,16 @@ main {
                   border: 1px solid var(--color-interface-border-primary);
                   border-bottom-left-radius: 24px;
                   border-bottom-right-radius: 24px;
+              }
+
+              .drop-down-wrapper select{
+                  cursor: pointer;
+                  appearance: none;
+                  background: url('../icons/dropdown_arrow.svg') no-repeat right 10px center;
+                   
+                  &:hover, &:focus {
+                    box-shadow: none;
+                  }
               }
           }
   
@@ -3051,12 +3070,14 @@ main {
 
                     .field-select-fd-subtext1 {
                         position: relative;
-                        top: -55px !important;
+                        top: -70px !important;
+                        font-size: var(--body-fd-md-font-size);
                     }
     
                     .field-select-fd-subtext2 {
                         position: relative;
-                        top: -80px !important;
+                        top: -100px !important;
+                        font-size: var(--body-fd-md-font-size);
                     }
                 }                
 
@@ -3079,6 +3100,16 @@ main {
 
                 .field-fdnumberselection {
                     overflow-x: scroll;
+                }
+
+                .field-selectfdtncpanel {
+                    .field-selectfdtncpanel-title p {
+                        margin-bottom: 25px;
+                    }
+
+                    .field-pleasenotetext1 p {
+                        margin: 0 0 20px;
+                    }
                 }
             }
         }
@@ -3128,6 +3159,11 @@ main {
                     padding-bottom: 20px !important;
                 }
             }
+        }
+
+       .field-fdselectioninfo .field-customername label, .field-fdselectioninfo .field-customername input,
+       .field-basicdetails .field-detailssectionlabel1 p, .field-cardsforyoutitle p {
+            margin-bottom: 15px !important;
         }
     }
   
