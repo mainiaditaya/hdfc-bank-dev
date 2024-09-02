@@ -741,9 +741,6 @@ export {
   radioBtnValCommit,
   semiWizardSwitch,
   getCCSmartEmi,
-  addMobileValidation,
-  addCardFieldValidation,
-  addOtpFieldValidation,
   otpTimerV1,
   resendOTP,
 };
