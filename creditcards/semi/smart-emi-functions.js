@@ -216,8 +216,8 @@ const setTxnPanelData = (allTxn, btxn, billedTxnPanel, unBilledTxnPanel, globals
 */
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload1, globals) {
-  // const resPayload = RESPONSE_PAYLOAD.response;
-  const resPayload = resPayload1;
+  const resPayload = RESPONSE_PAYLOAD.response;
+  // const resPayload = resPayload1;
   const response = {};
   try {
     /* continue btn disabling code added temorary, can be removed after form authoring */
@@ -337,6 +337,10 @@ const tenureDisplay = (globals) => {
   /* pre-select the last tenure option (radio btn) by default */
   const DEFUALT_SELCT_TENURE = (tenureRepatablePanel.length > 0) ? (tenureRepatablePanel.length - 1) : 0;
   globals.functions.setProperty(tenureRepatablePanel[DEFUALT_SELCT_TENURE].aem_tenureSelection, { value: '0' });
+  /* discount */
+  // const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
+  // const calcDiscount = ((Number().toFixed(2)) - (Number(discount) / 100));
+  // globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.discount, { value: calcDiscount });
   /* set data for tenure panel */
   tenureArrayOption?.forEach((option, i) => {
     setDataTenurePanel(globals, tenureRepatablePanel, option, i);
@@ -576,10 +580,17 @@ function radioBtnValCommit(arg1, globals) {
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI, { value: roiMonthly });
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.rateOfInterestPerAnnumValue, { value: roiAnnually });
         // set the same data for review panel screen - whatsapp flow.
-        // const tenureData = JSON.parse(tenureData[i].aem_tenureRawData);
-        // globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_monthlyEmi, { value: tenureData[i]. });
-        // globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_roi, { value: roiMonthly });
-        // globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_processingFee, { value: tenureData[i]. });
+        const rawTenureData = JSON.parse(tenureData[i].aem_tenureRawData);
+        const duration = `${parseInt(rawTenureData.period, 10)} Months`;
+        globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_monthlyEmi, { value: tenureData[i].aem_tenureSelectionEmi });
+        globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_duration, { value: duration });
+        globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_roi, { value: roiMonthly });
+        globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_processingFee, { value: tenureData[i].aem_tenureSelectionProcessing });
+
+        /* discount */
+        const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
+        const calcDiscount = ((Number(tenureData[i].aem_roi_monthly).toFixed(2)) - (Number(discount) / 100));
+        globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.discount, { value: calcDiscount });
       } else {
         globals.functions.setProperty(item.aem_tenureSelection, { value: null });
       }
