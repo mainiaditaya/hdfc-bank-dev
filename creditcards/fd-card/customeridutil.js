@@ -7,7 +7,7 @@ import { urlPath } from '../../common/formutils.js';
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
 
-const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
+const referenceIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
   const payload = {
     requestString: {
       mobileNumber,
@@ -30,7 +30,21 @@ const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
  * @returns {Promise<Object>} A promise that resolves to the JSON response of the customer account details.
  */
 const fetchCustomerId = (mobileNumber, pan, dob, globals) => {
-  const payload = custmerIdPayload(mobileNumber, pan, dob, globals);
+  const payload = referenceIdPayload(mobileNumber, pan, dob, globals);
+  return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
+};
+
+/**
+ *
+ * @name fetchReferenceId
+ * @param {string} mobileNumber
+ * @param {string} pan
+ * @param {string} dob
+ * @param {Object} globals
+ * @returns {Promise<Object>}
+ */
+const fetchReferenceId = (mobileNumber, pan, dob, globals) => {
+  const payload = referenceIdPayload(mobileNumber, pan, dob, globals);
   return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
 };
 
@@ -85,4 +99,5 @@ export {
   customerIdSuccessHandler,
   customerIdClickHandler,
   SELECTED_CUSTOMER_ID,
+  fetchReferenceId,
 };
