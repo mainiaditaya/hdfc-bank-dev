@@ -33,4 +33,18 @@ const ipa = (payload, showLoader, hideLoader, globals) => {
   return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
 };
 
-export default ipa;
+/**
+ *
+ * @name ipaSuccessHandler
+ * @param {object} response - The response recieved from the IPA request.
+ * @param {object} globals - The global context object.
+ * @returns {Promise<object>}
+ */
+const ipaSuccessHandler = (response, globals) => {
+  console.log(response);
+};
+
+export {
+  ipa,
+  ipaSuccessHandler,
+};
