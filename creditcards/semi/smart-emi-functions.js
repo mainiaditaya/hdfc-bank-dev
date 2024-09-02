@@ -11,9 +11,6 @@ import {
   numberToText,
   currencyUtil,
   calculateEMI,
-  addMobileValidation,
-  addCardFieldValidation,
-  addOtpFieldValidation,
   sortDataByAmount,
   sortDataByAmountSymbol,
   sortByDate,
@@ -673,12 +670,6 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
   if (window !== undefined) displayLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
-
-setTimeout(() => {
-  addMobileValidation();
-  addCardFieldValidation();
-  addOtpFieldValidation();
-}, 500);
 
 /**
  * otp timer logic to handle based on the screen of otp

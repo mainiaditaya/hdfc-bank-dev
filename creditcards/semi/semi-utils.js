@@ -127,13 +127,16 @@ const numberToText = (num) => {
   return str;
 };
 
+setTimeout(() => {
+  addMobileValidation();
+  addCardFieldValidation();
+  addOtpFieldValidation();
+}, 500);
+
 export {
   numberToText,
   currencyUtil,
   calculateEMI,
-  addMobileValidation,
-  addCardFieldValidation,
-  addOtpFieldValidation,
   sortDataByAmount,
   sortDataByAmountSymbol,
   sortByDate,
