@@ -51,6 +51,7 @@ currentFormContext.billed = 0;
 currentFormContext.unbilled = 0;
 let tnxPopupAlertOnce = 0; // flag alert for the pop to show only once on click of continue
 let resendOtpCount = 0;
+let resendOtpCount2 = 0;
 
 /**
  * generates the otp
@@ -117,7 +118,15 @@ function otpValV1(mobileNumber, cardDigits, otpNumber) {
  * @param {object} globals
  * @return {PROMISE}
  */
-function preExecution(mobileNumber, cardDigits) {
+function preExecution(mobileNumber, cardDigits, globals) {
+  /* restrict to show otp-resend option once it reaches max-attemt and to show otptimer */
+  const otpPanel = globals.form.aem_semiWizard.aem_selectTenure.aem_otpPanelConfirmation.aem_otpPanel2;
+  if (resendOtpCount2 < DATA_LIMITS.maxOtpResendLimit) {
+    globals.functions.setProperty(otpPanel.secondsPanel, { visible: true });
+    globals.functions.setProperty(otpPanel.aem_otpResend2, { visible: false });
+  } else {
+    globals.functions.setProperty(otpPanel.secondsPanel, { visible: false });
+  }
   const jsonObj = {
     requestString: {
       mobileNo: mobileNumber,
@@ -210,6 +219,17 @@ const setTxnPanelData = (allTxn, btxn, billedTxnPanel, unBilledTxnPanel, globals
 };
 
 /**
+ * calls function to add styling to completed steppers
+ *
+ * @function changeWizardView
+ * @returns {void}
+ */
+const changeWizardView = () => {
+  const completedStep = document.querySelector('.field-aem-semiwizard .wizard-menu-items .wizard-menu-active-item');
+  completedStep.classList.add('wizard-completed-item');
+};
+
+/**
 * @param {resPayload} Object - checkEligibility response.
 * @param {object} globals - global object
 * @return {PROMISE}
@@ -238,6 +258,7 @@ function checkELigibilityHandler(resPayload1, globals) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_txnHeaderPanel.aem_TxnAvailable, { value: `Unbilled Transaction: (${ccUnBilledData?.length})` });
     // set runtime values
     globals.functions.setProperty(globals.form.runtime.originAcct, { value: currentFormContext.EligibilityResponse.responseString.aanNumber });
+    changeWizardView();
     // Display card and move wizard view
     if (window !== undefined) cardDisplay(globals, resPayload);
     if (window !== undefined) moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
@@ -476,17 +497,6 @@ function txnSelectHandler(checkboxVal, txnType, globals) {
 }
 
 /**
- * calls function to add styling to completed steppers
- *
- * @function changeWizardView
- * @returns {void}
- */
-const changeWizardView = () => {
-  const completedStep = document.querySelector('.field-aem-semiwizard .wizard-menu-items .wizard-menu-active-item');
-  completedStep.classList.add('wizard-completed-item');
-};
-
-/**
    * Switches the visibility of panels in the card wizard interface.
    * @name semiWizardSwitch to switch panel visibility
    * @param {string} source -  The source of the card wizard (e.g., 'aem_semiWizard' - parent).
@@ -637,7 +647,6 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
   const MEMO_LINE_5 = 'Adobe';
   const LTR_EXACT_CODE = 'Y  ';
   const DEPT = 'IT';
-  const PROC_FEES = '000'; // String(currencyStrToNum(selectedTenurePlan?.aem_tenureSelectionProcessing)) - actual process Fee in display
   const emiConversionArray = getEmiArrayOption(globals);
   const REQ_NBR = String(emiConversionArray?.length === 1) ? ((String(emiConversionArray?.length)).padStart(2, '0')) : (String(emiConversionArray?.length)); // format '01'? or '1'
   const paiseDecimal = '00';
@@ -646,6 +655,7 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
   const tenurePlan = globals.functions.exportData().aem_tenureSelectionRepeatablePanel;
   const selectedTenurePlan = tenurePlan?.find((emiPlan) => emiPlan.aem_tenureSelection === '0');
   const emiSubData = JSON.parse(selectedTenurePlan?.aem_tenureRawData);
+  const PROC_FEES = String(currencyStrToNum(selectedTenurePlan?.aem_tenureSelectionProcessing));
   const INTEREST = emiSubData?.interest; // '030888'
   const TENURE = (parseInt(emiSubData?.period, 10).toString().length === 1) ? (parseInt(emiSubData?.period, 10).toString().padStart(2, '0')) : parseInt(emiSubData?.period, 10).toString(); // '003' into '03' / '18'-'18'
   const TID = emiSubData?.tid; // '000000101'
@@ -691,13 +701,30 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
 const otpTimerV1 = (pannelName, globals) => {
   let sec = DATA_LIMITS.otpTimeLimit;
   let dispSec = DATA_LIMITS.otpTimeLimit;
-  let otpPanel;
   const FIRST_PANNEL_OTP = 'firstotp';
+  const SECOND_PANNEL_OTP = 'secondotp';
+  const panelOtp = {
+    otpTimerPanel: null,
+    otpTimerSecond: null,
+    resendOtp: null,
+    limitCheck: null,
+  };
   if (pannelName === FIRST_PANNEL_OTP) {
-    otpPanel = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel.otpPanel;
+    const otp1 = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel.otpPanel;
+    panelOtp.otpTimerSecond = otp1.secondsPanel.seconds;
+    panelOtp.otpTimerPanel = otp1.secondsPanel;
+    panelOtp.resendOtp = otp1.aem_otpResend;
+    panelOtp.limitCheck = resendOtpCount < DATA_LIMITS.maxOtpResendLimit;
+  }
+  if (pannelName === SECOND_PANNEL_OTP) {
+    const otp2 = globals.form.aem_semiWizard.aem_selectTenure.aem_otpPanelConfirmation.aem_otpPanel2;
+    panelOtp.otpTimerSecond = otp2.secondsPanel.seconds2;
+    panelOtp.otpTimerPanel = otp2.secondsPanel;
+    panelOtp.resendOtp = otp2.aem_otpResend2;
+    panelOtp.limitCheck = resendOtpCount2 < DATA_LIMITS.maxOtpResendLimit;
   }
   const timer = setInterval(() => {
-    globals.functions.setProperty(otpPanel.secondsPanel.seconds, { value: dispSec });
+    globals.functions.setProperty(panelOtp.otpTimerSecond, { value: dispSec });
     sec -= 1;
     dispSec = sec;
     if (sec < 10) {
@@ -705,10 +732,10 @@ const otpTimerV1 = (pannelName, globals) => {
     }
     if (sec < 0) {
       clearInterval(timer);
-      globals.functions.setProperty(otpPanel.secondsPanel, { visible: false });
-      if (resendOtpCount < DATA_LIMITS.maxOtpResendLimit) {
+      globals.functions.setProperty(panelOtp.otpTimerPanel, { visible: false });
+      if (panelOtp.limitCheck) {
         globals.functions.setProperty(
-          otpPanel.aem_otpResend,
+          panelOtp.resendOtp,
           { visible: true },
         );
       }
@@ -717,29 +744,60 @@ const otpTimerV1 = (pannelName, globals) => {
 };
 
 /**
- * @name resendOTP
- * @param {Object} globals - The global object containing necessary data for DAP request.
+ * @name resendOTPV1 - to handle resend otp for otpv1 &  preExecution
+ * @param {Object} globals - The global form object
+ * @param {string} - otp pannel - firstotp or secondotp
  * @return {PROMISE}
  */
-const resendOTP = async (globals) => {
+const resendOTPV1 = async (pannelName, globals) => {
   const channel = 'web';
+  const FIRST_PANNEL_OTP = 'firstotp';
+  const SECOND_PANNEL_OTP = 'secondotp';
+  const panelOtp = {
+    otpTimerPanel: null,
+    otpTimerSecond: null,
+    resendOtp: null,
+    limitCheck: null,
+    maxLimitOtp: null,
+    resendOtpCount: null,
+  };
+  if (pannelName === FIRST_PANNEL_OTP) {
+    const otp1 = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel.otpPanel;
+    panelOtp.otpTimerSecond = otp1.secondsPanel.seconds;
+    panelOtp.otpTimerPanel = otp1.secondsPanel;
+    panelOtp.resendOtp = otp1.aem_otpResend;
+    panelOtp.limitCheck = resendOtpCount < DATA_LIMITS.maxOtpResendLimit;
+    panelOtp.maxLimitOtp = otp1.aem_maxlimitOTP;
+    resendOtpCount += 1;
+    panelOtp.resendOtpCount = resendOtpCount;
+  }
+  if (pannelName === SECOND_PANNEL_OTP) {
+    const otp2 = globals.form.aem_semiWizard.aem_selectTenure.aem_otpPanelConfirmation.aem_otpPanel2;
+    panelOtp.otpTimerSecond = otp2.secondsPanel.seconds2;
+    panelOtp.otpTimerPanel = otp2.secondsPanel;
+    panelOtp.resendOtp = otp2.aem_otpResend2;
+    panelOtp.limitCheck = resendOtpCount2 < DATA_LIMITS.maxOtpResendLimit;
+    panelOtp.maxLimitOtp = otp2.aem_maxlimitOTP2;
+    resendOtpCount2 += 1;
+    panelOtp.resendOtpCount = resendOtpCount2;
+  }
   const mobileNumber = globals.form.aem_semiWizard.aem_identifierPanel.aem_loginPanel.mobilePanel.aem_mobileNum.$value;
   const cardDigits = globals.form.aem_semiWizard.aem_identifierPanel.aem_loginPanel.aem_cardNo.$value;
-  const { otpPanel } = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel;
-
-  if (resendOtpCount < DATA_LIMITS.maxOtpResendLimit) {
-    resendOtpCount += 1;
-    if (resendOtpCount === DATA_LIMITS.maxOtpResendLimit) {
-      globals.functions.setProperty(otpPanel.secondsPanel, { visible: false });
-      globals.functions.setProperty(otpPanel.aem_otpResend, { visible: false });
-      globals.functions.setProperty(otpPanel.aem_maxlimitOTP, { visible: true });
+  if (panelOtp.limitCheck) {
+    if (panelOtp.resendOtpCount === DATA_LIMITS.maxOtpResendLimit) {
+      globals.functions.setProperty(panelOtp.otpTimerPanel, { visible: false });
+      globals.functions.setProperty(panelOtp.resendOtp, { visible: false });
+      globals.functions.setProperty(panelOtp.maxLimitOtp, { visible: true });
     }
-    return getOTPV1(mobileNumber, cardDigits, channel, globals);
+    if (pannelName === FIRST_PANNEL_OTP) {
+      return getOTPV1(mobileNumber, cardDigits, channel, globals);
+    }
+    if (pannelName === SECOND_PANNEL_OTP) {
+      return preExecution(mobileNumber, cardDigits, globals);
+    }
   }
-
   return null;
 };
-
 export {
   getOTPV1,
   otpValV1,
@@ -755,5 +813,5 @@ export {
   semiWizardSwitch,
   getCCSmartEmi,
   otpTimerV1,
-  resendOTP,
+  resendOTPV1,
 };

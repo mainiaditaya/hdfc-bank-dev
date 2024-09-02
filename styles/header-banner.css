@@ -134,8 +134,8 @@ body:not(.semi-form, .fdlien) header {
     width: 100%;
     background-size: 100% 100%;
     background-position: center;
-    background-image: url('../icons/bannerDesktopSemi.png');
-    height: 120px;
+    background-image: url('../icons/bannerDesktopSemi.webp');
+    height: 200px;
 }
 
 /***** mobile large ********/
@@ -153,7 +153,11 @@ body:not(.semi-form, .fdlien) header {
     div p:nth-child(2) {
         display: none;
     }
-    .semi-form header { padding-left: 10px; }
+
+    .semi-form header { 
+        padding-left: 10px; 
+        .cmp-container { height: 120px; }
+    }
     
     body:not(.semi-form) header{
         div:nth-child(1){
@@ -201,7 +205,11 @@ body:not(.semi-form, .fdlien) header {
             display: none;
         }
     }
-    .semi-form header { padding-left: 10px; }
+
+    .semi-form header { 
+        padding-left: 10px; 
+        .cmp-container { height: 140px; }
+    }
     
     body:not(.semi-form) header{
         .cmp-container{
@@ -249,7 +257,7 @@ body:not(.semi-form, .fdlien) header {
 @media (width < 991px) {
     .semi-form .cmp-container-wrapper {
         content: '';
-        background-image: url('../icons/bannerTabletSemi.png');
+        background-image: url('../icons/bannerTabletSemi.webp');
         height: 160px;
     }
 }

@@ -8,7 +8,11 @@
 body.semi-form { 
     font-family: var(--font-family-secondary); 
     input { font-family: var(--font-family-secondary) !important; }
-    main { background-color: var(--color-interface-background-primary) !important; }
+
+    main { 
+        background-color: var(--color-interface-background-primary) !important; 
+        min-height: 93vh;
+    }
     .section.form-container { box-shadow: none; }
     main .form form { padding-top: 10px !important; }
 }
@@ -83,7 +87,7 @@ body.semi-form {
     .item-add { display: none; }
 
     .field-aem-semiwizard {
-        padding: 0 !important;
+        padding: 0 0 50px !important;
 
         .wizard-button-wrapper { display: none !important; }
 
@@ -210,7 +214,6 @@ body.semi-form {
         .field-aem-otppanel, .field-aem-otppanelconfirmation {
             max-width: 400px;
             margin: 0 auto;
-            padding-bottom: 40px;
 
             .field-aem-otpicon, .field-aem-otpicon2 {
                 margin: 0 auto -25px;
@@ -241,7 +244,7 @@ body.semi-form {
                     color: var(--color-interface-background-quaternary);                
                 }
 
-                .field-aem-maxlimitotp {
+                .field-aem-maxlimitotp, .field-aem-maxlimitotp2 {
                     margin-top: -20px;
                     
                     p{
@@ -254,13 +257,15 @@ body.semi-form {
                 }
                 
                 .field-aem-otpresend {
-                    margin-top: -20px;
+                    margin-top: -28px !important;
 
                     button{
                         font-size: var(--body-md-font-size);
+                        text-decoration: underline;
                         background: var(--color-action-text-primary-default);
                         color: var(--color-action-text-secondary-default);
                         text-align: left;
+                        height: fit-content;
                     }
                     
                     button:hover{
@@ -274,10 +279,13 @@ body.semi-form {
 
                 .field-aem-otpnumber, .field-aem-otpnumber2 {
                     margin: -14px 0 0 -7px;
+                    z-index: 100;
 
                     input { 
                         border-color: transparent transparent var(--color-input-border-default) transparent; 
                         outline: transparent transparent var(--color-input-border-default) transparent;
+                        border-radius: 0;
+                        margin-bottom: 0 !important;
                     }
 
                     input::placeholder {
@@ -288,15 +296,19 @@ body.semi-form {
                 .field-secondspanel {
                     display: flex;
                     flex-direction: row;
-                    margin-top: -20px;
+                    margin-top: -19px;
 
                     .field-wrapper {
                         width: fit-content;
-                        p, input { font-size: var(--body-sm-font-size); }
+
+                        p, input { 
+                            font-size: var(--body-sm-font-size); 
+                            color: var(--color-action-text-tertiary-default);
+                        }
                     }
 
                     .field-seconds, .field-seconds2 { 
-                        margin: -13px 0 0 -14px;
+                        margin: -14px 0 0 -14px;
                         
                         input {
                             width: 50px;
@@ -304,10 +316,11 @@ body.semi-form {
                             margin: 0;
                             border: none;
                             pointer-events: none;
+                            font-weight: var(--font-weight-bold);
                         }
                     }
 
-                    .field-sectext, .field-sectext2 { margin: 0 0 0 -53px; }
+                    .field-sectext, .field-sectext2 { margin: 0 0 0 -49px; }
                 }
             }
         }
@@ -376,7 +389,7 @@ body.semi-form {
                     }
 
                     .field-aem-txnselected, .field-aem-txnselected p { 
-                        margin: 0 0 0 -2px !important; 
+                        margin: 0 !important; 
                         font-size: var(--body-x-sm-font-size);
                     }
     
@@ -818,11 +831,12 @@ body.semi-form {
                             position: relative;
 
                             .field-aem-txnavailable { grid-column: span 12;
+                                border-right: transparent;
                                 p { border-right: solid 1px transparent; }
                             }
 
                             .field-aem-txnselected {
-                                grid-column: span 2;
+                                grid-column: span 3;
                                 input { margin-left: -16px; }
                             }
 
@@ -834,7 +848,7 @@ body.semi-form {
                             .field-aem-txnsortdd { display: none; }
 
                             .field-expand-btn { 
-                                margin-top: -103px !important;
+                                margin: -151px -73px 0 !important;
                                 grid-column: span 10;
                                 justify-self: flex-end;
                              }
@@ -845,7 +859,7 @@ body.semi-form {
                                 display: grid;
 
                                 .field-aem-txnname { 
-                                    grid-column: span 10; 
+                                    grid-column: span 11; 
                                     margin-left: 0;
                                 }
 
@@ -860,8 +874,8 @@ body.semi-form {
                                 }
 
                                 .field-aem-txnamt {
-                                    grid-column: span 4;
-                                    margin: -108px 0 0 -7px;                               
+                                    grid-column: span 6;
+                                    margin: -31px 0 0 -7px;                               
                                 }
                             }
                         }

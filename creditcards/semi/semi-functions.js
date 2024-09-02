@@ -13,17 +13,9 @@ import {
   semiWizardSwitch,
   getCCSmartEmi,
   otpTimerV1,
-  resendOTP,
+  resendOTPV1,
 } from './smart-emi-functions.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
-
-/* load SEMI Styles- for loading semi - styles - temporary fix */
-async function loadSEMIStyles() {
-  if (document.querySelector('.semi-form-wrapper')) {
-    document.body.classList.add('semi-form');
-  }
-}
-window.setTimeout(() => loadSEMIStyles(), 600);
 
 export {
   getOTPV1,
@@ -43,5 +35,5 @@ export {
   semiWizardSwitch,
   getCCSmartEmi,
   otpTimerV1,
-  resendOTP,
+  resendOTPV1,
 };
