@@ -1084,7 +1084,7 @@ const RESPONSE_PAYLOAD = {
           thresholdAmountRedef3: '000000000000',
           thresholdAmountRedef5: '000000000000',
           percentage2: '00',
-          memoLine1: 'MEMOLINE001',
+          memoLine1: '499',
           percentage3: '> 00',
           feeWaiverFlg: '0',
           percentage4: '00',
