@@ -79,6 +79,7 @@ main {
           border-radius: 5px;
           background-color: var(--color-interface-background-primary);
           border: 1px solid var(--color-interface-border-secondary);
+          padding: 0;
       }
   
       input[type="checkbox"]:focus, input[type="checkbox"]:hover {
@@ -95,6 +96,7 @@ main {
       input[type="checkbox"]:checked {
           background: var(--color-action-border-primary-default);
           border: 1px solid var(--color-action-border-primary-default);
+          padding: 10px 0 0 10px;
       }
       
       input[type="checkbox"]:checked::before {
@@ -463,7 +465,7 @@ main {
                     margin: -1px 0 0 -15px;
                     width: fit-content;
     
-                    input[type="number"] {
+                    input[type="number"], input[type="text"] {
                         border: none;
                         width: 50px;
                         margin: 0;
@@ -519,10 +521,14 @@ main {
           position: absolute;
           left: 0;
           top: 60px;
-      }
+      }      
   
       .field-resultpanel .field-errorresultpanel .field-errormessagetext {
           margin: -13px 0 0;
+      }
+
+      .field-resultpanel {
+        background: var(--color-interface-background-primary);
       }
   
       .field-errorresultpanel {
@@ -533,6 +539,9 @@ main {
               p {
                   text-align: left;
                   padding: 0;
+                  font-size: var(--body-fd-xxx-lg-font-size);
+                  font-weight: var(--font-weight-bold);
+                  line-height: var(--font-linehight-m-large);
               }
   
               p::before {
@@ -545,7 +554,7 @@ main {
                   width: 0;
                   height: 0;
                   background: none;
-              }        
+              }                     
           }
   
           .field-errormessagetextplaceholder p p{
@@ -558,7 +567,7 @@ main {
           .field-errormessagetext:has(p) {
               text-align: left;
               padding: 60px 275px 120px 50px;
-              background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
+              background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important;
           } 
   
           .field-errormessagetext:not(:has(p)) {
@@ -575,7 +584,7 @@ main {
               color: var(--color-interface-background-quaternary);
               border-radius: 24px;
               width: 92%;
-              margin: -160px auto 0;
+              margin: -100px auto 0;
   
               .field-errresdealertext1 {
                   padding: 20px 20px 0;
@@ -615,13 +624,275 @@ main {
               color: var(--color-interface-background-quaternary);
               font-size: var(--body-fd-md-font-size);
           }
+
+          .button-wrapper:nth-child(5) {
+            position: absolute;
+            top: 80%;
+            left: 55px;
+            width: 90%;
+        }
       }
+
+      
+
+      .field-error2colresultpanel {
+        display: grid;
+        margin: 0 60px;
+        background: var(--color-interface-background-primary);
+        border-radius: 0;
+
+        .field-errorctapanel {
+            grid-column: span 3;
+
+            .field-getccnowlabel {                
+                background: var(--color-interface-error-cta-background) url('../icons/error_cta_icon.svg') no-repeat;
+                border-radius: 24px;
+                min-height: 250px;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    color: var(--color-interface-text-quaternary);
+                    font-weight: var(--font-weight-bold);
+                    margin-top: 50%;
+                    padding-left: 5px;
+                }
+            }
+
+            .field-errorctabutton {
+                    position: relative;
+                    top: -100px;
+                    padding-left: 20px;
+                    
+                    button {
+                        background: none;
+                        color: var(--color-interface-icon-highlight);
+                        text-align: left;
+    
+                        &::after {
+                            background: url('../icons/arrow-right-blue.svg');
+                        }
+    
+                        &:hover {
+                            background: none !important;
+                        }
+                    }
+            }
+                
+            }
+
+            .field-errorassistancepanel {
+                grid-column: span 8;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 0 !important;
+
+                > legend {
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-background-quaternary);
+                }
+
+                .plain-text-wrapper {
+                    flex: 1 1 45%;
+                    border-bottom: 1px solid var(--color-interface-border-primary);
+                    height: 45px;
+
+                    p {
+                        color: var(--color-interface-background-quaternary);
+                        font-size: var(--body-fd-md-font-size);
+                        font-weight: var(--font-weight-medium);
+                    }
+
+                    &:last-child, &:nth-last-child(2) {
+                        border-bottom: none;
+                    }
+                }
+
+                .plain-text-wrapper:nth-child(odd) {
+                    text-align: right;
+                }
+                
+                .plain-text-wrapper:nth-child(even) {
+                    text-align: left;
+                }
+
+                .field-furtherassistance1 {
+                    p {
+                        p::before {
+                            content: '';
+                            background: url('../icons/bank_icon.svg') no-repeat;
+                            width: 30px;
+                            height: 25px;
+                            display: inline-block;
+                            vertical-align: bottom;
+                        }
+                    }                    
+                }
+
+                .field-furtherassistance2 {
+                    p {
+                        p::before {
+                            content: '';
+                            background: url('../icons/call_icon.svg') no-repeat;
+                            width: 30px;
+                            height: 23px;
+                            display: inline-block;
+                            vertical-align: bottom;
+                        }
+                    }                    
+                }
+
+                .field-furtherassistance3 {
+                    p {
+                        p::before {
+                            content: '';
+                            background: url('../icons/message_icon.svg') no-repeat;
+                            width: 30px;
+                            height: 23px;
+                            display: inline-block;
+                            vertical-align: bottom;
+                        }
+                    }                    
+                }
+
+                .field-furtherassistance4 {
+                    p {
+                        p::before {
+                            content: '';
+                            background: url('../icons/SMS_icon.svg') no-repeat;
+                            width: 30px;
+                            height: 23px;
+                            display: inline-block;
+                            vertical-align: bottom;
+                        }
+                    }                    
+                }
+            }
+            
+            
+        }
   
       .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
           text-align: center;
       }
   
       .field-successresultpanel {
+            .field-tqbannertext1 {
+                max-width: 100%;
+
+                p p {
+                    font-size: var(--body-fd-xxx-lg-font-size);
+                    color: var(--color-interface-background-primary);
+                    background: var(--color-interface-fd-background-primary) url('../icons/Essential.svg') no-repeat 100% 0;
+                    padding-right: 45px;
+                    padding-top: 8px;
+                    height: 40px;
+                }
+            }
+
+            .field-tqbannertext1:has(p) {
+                text-align: left;
+                padding: 80px 300px 170px 45px;
+                background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 95% 0;
+                margin: -12px 0 0;
+                border-radius: 0;
+            } 
+    
+            .field-tqbannertext1:not(:has(p)) {
+                text-align: left;
+                padding: 60px 275px 120px 50px;
+                background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
+                font-size: var(--body-fd-xxx-lg-font-size);
+                font-weight: var(--font-weight-bold);
+                line-height: var(--font-linehight-x-large);
+            }
+
+            .field-tqbannertext2 {
+                margin: -180px 0 0;
+                padding: 0 0 0 45px;
+                text-wrap: nowrap;
+
+                p {
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-background-primary);
+                }                
+            }
+
+            .field-vkycconfirmationpanel {
+                padding: 25px;
+                margin: 70px 60px 0;
+                position: absolute;
+                top: 24%;
+                left: 20px;
+                width: 65%;
+                background: var(--color-interface-background-quinary);
+                border-radius: 12px;
+                
+                > legend {
+                    position: relative;
+                    top: 25px;
+                }
+
+                .field-vkyctext1, .field-vkyctext2, .field-vkyctext3 {
+                    height: 0;
+                    margin-top: -10px;
+                    
+                    p {
+                        margin: 0;
+                    }
+                }
+
+                .field-vkycproceedbutton {
+                    margin-top: 25px;
+                    position: absolute;
+                    right: -14%;
+                }
+            }
+
+            .field-refnumpanel {
+                margin: -85px 60px 0;
+                width: 70%;
+                background: var(--color-interface-background-primary);
+                border: 1px solid var(--color-interface-border-secondary);
+                border-radius: 24px;
+                padding: 20px;
+                min-height: 300px;
+
+                .field-refnumlabel {
+                    background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
+                    width: 72px;
+                    height: 72px;
+                    padding-left: 80px;
+                    text-wrap: nowrap;
+
+                    p {
+                        font-size: var(--body-fd-md-font-size);
+                        font-weight: var(--font-weight-regular);
+                    }
+                }
+
+                .field-referencenumber {
+                    margin: -65px 0 0 83px;
+
+                    p {
+                        font-size: var(--body-fd-xx-lg-font-size);
+                        font-weight: var(--font-weight-bold);
+                        color: var(--color-interface-background-quaternary);
+                    }                    
+                }
+
+                .field-referencenumbertagline {
+                    margin-top: -30px;
+
+                    p {
+                        font-size: var(--body-fd-md-font-size);
+                        font-weight: var(--font-weight-regular);
+                    }
+                }
+            }
+
           .field-successresulttextlabel {
               text-align: left;
               padding: 70px 450px 70px 85px;
@@ -639,7 +910,187 @@ main {
                   content: unset !important;
               }        
           }
-      }
+
+        /* Thank You Summary */
+
+        .field-tqsummarysection {
+            border: 1px solid var(--color-interface-border-secondary);
+            padding: 20px;
+            display: flex;
+            border-radius: 24px;
+            margin: 0 60px;
+            width: 70%;
+
+            >.plain-text-wrapper {
+                width: 100%;
+
+                p {
+                    font-size: var(--body-fd-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-background-quaternary);
+                }
+            }
+
+            .text-wrapper {
+                padding-top: 20px;
+
+                label {
+                    font-size: var(--body-fd-sm-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-text-secondary);
+                }
+
+                input[type="text"] {
+                    border: none;
+                    cursor: auto;
+                    font-size: var(--body-fd-lg-font-size);
+                    font-weight: var(--font-weight-medium);
+                    color: var(--color-interface-text-primary);
+
+                    &:hover {
+                        box-shadow: none;
+                    }
+                }
+            }
+
+            .field-tqselectedfds {
+                display: flex;
+
+                > legend {
+                    font-size: var(--body-fd-sm-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-text-secondary);
+                    margin-left: 10px;
+                }
+
+                .plain-text-wrapper {
+                    border: 1px solid var(--color-action-border-primary-disabled);
+                    border-radius: 8px;
+                    cursor: default;
+
+                    &:nth-child(2) {
+                        margin-left: 10px;
+                    }
+                }
+            }
+
+            .field-tqsummarytext {
+                background: var(--color-interface-background-quinary);
+                border-radius: 12px;
+                padding: 16px;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-text-quaternary);
+                }
+            }
+        }
+
+        /* Feedback Panel */
+        .field-feedbackconfirmation {
+            border: 1px solid var(--color-interface-border-secondary);
+            padding: 20px;
+            border-radius: 24px;
+            margin: 0 60px;
+            width: 70%;
+
+            legend {
+                padding: 50px 0 0;
+                color: var(--color-interface-background-quaternary);
+                font-size: var(--body-fd-xx-lg-font-size);
+                font-weight: var(--font-weight-bold);
+                background: transparent;
+            }
+
+            .field-ratingbuttons {
+                display: flex;
+
+                .button-wrapper {
+                    margin-left: -20px;
+    
+                    &:nth-of-type(1) {
+                        margin-left: 0;
+            
+                        button {
+                            border-top-left-radius: 8px;
+                            border-bottom-left-radius: 8px;
+                        }
+                    }
+    
+                    &:nth-last-of-type(1) {    
+                        button {
+                            border-top-right-radius: 8px;
+                            border-bottom-right-radius: 8px; 
+                            border-right: 1px solid var(--color-interface-border-secondary);
+                        }
+                    }
+    
+                    button {
+                        background: none;
+                        border: 1px solid var(--color-interface-border-secondary);
+                        color: var(--color-input-text-primary);
+                        font-size: var(--body-fd-sm-font-size);
+                        min-width: 75px;
+                        border-radius: 0;
+                        border-right: none;
+                        transition: transform 0.3s ease, background 0.3s ease;
+    
+                        &::after {
+                            content: unset;
+                        }
+    
+                        &:hover {
+                            background: none !important;
+                            position: relative;
+                            color: var(--color-interface-background-primary);
+                            transform: scaleY(1.2);
+                            border-radius: 5px;
+                        }
+                    }
+
+                    &:nth-of-type(-n+7) button:hover {
+                        background: var(--color-interface-feedback-notlikelyrating) !important;
+                    }
+
+                    &:nth-of-type(8) button:hover, &:nth-of-type(9) button:hover {
+                        background: var(--color-interface-feedback-mayberating) !important;
+                    }
+
+                    &:nth-of-type(10) button:hover, &:nth-of-type(11) button:hover {
+                        background: var(--color-interface-feedback-verylikelyrating) !important;
+                    }
+        
+                }
+            }
+
+            .field-ratingcolorcodes {
+                display: flex;
+
+                .field-notlikelytext {
+                    border-top: 6px solid var(--color-interface-feedback-notlikelyrating);
+                    width: 61.8%;
+                }
+    
+                .field-maybetext {
+                    border-top: 6px solid var(--color-interface-feedback-mayberating);
+                    width: 17.5%;
+                    margin-left: -18px;
+                }
+    
+                .field-verylikelytext {
+                    border-top: 6px solid var(--color-interface-feedback-verylikelyrating);
+                    width: 17.5%;
+                    margin-left: -18px;
+                }
+            }           
+
+        }
+
+        > .field-banklink {
+            margin-left: 50px;
+        }
+      }    
   
     }    
   }
@@ -889,13 +1340,14 @@ main {
           pointer-events: none;
           line-height: 1px;
           padding-top: 10px;
+          margin-bottom: 0;
       }
   
       div[class*='field-select-fd-subtext'] p, div[class*='field-pleasenotetext'] p, .field-selectfdtncpanel-title p, .field-detailssectionlabel2 p, .field-selectsuitablecardtext p {
           font-weight: var(--font-weight-regular);
-          font-size: var(--body-md-font-size);
+          font-size: var(--body-lg-font-size);
           color: var(--color-interface-text-secondary);
-          margin: 0;
+          margin: 7px 0 10px;
           line-height: 24px;
           padding-bottom: 0;
       }
@@ -1167,15 +1619,21 @@ main {
                 font-weight: var(--font-weight-medium);
                 line-height: 18px;
                 color: var(--color-interface-text-quaternary);
+                margin-bottom: 5px;
             }
   
             .field-pleasenotetext1, .field-pleasenotetext2 {
                 line-height: 7px;
                 margin-top: -15px;
+
+                p {
+                    margin: 2px 0;
+                }
   
                 p p{
                   line-height: 16px;
                   font-size: var(--body-fd-md-font-size);
+                  margin-bottom: 0;
                 }
             }
         }
@@ -1238,6 +1696,16 @@ main {
                   border: 1px solid var(--color-interface-border-primary);
                   border-bottom-left-radius: 24px;
                   border-bottom-right-radius: 24px;
+              }
+
+              .drop-down-wrapper select{
+                  cursor: pointer;
+                  appearance: none;
+                  background: url('../icons/dropdown_arrow.svg') no-repeat right 10px center;
+                   
+                  &:hover, &:focus {
+                    box-shadow: none;
+                  }
               }
           }
   
@@ -2199,6 +2667,47 @@ main {
               left: 3%;
             }
         }
+
+        .field-error2colresultpanel {
+            margin: 0 10px !important;
+    
+            .field-errorctapanel {
+                grid-column: span 12 !important;
+    
+                .field-getccnowlabel {  
+                    min-height: 150px !important;   
+    
+                    p {
+                        margin-top: 0 !important;
+                        position: relative !important;
+                        top: 14px !important;
+                        left: 75px !important;
+                    }
+                }
+    
+                .field-errorctabutton {
+                    top: -220px;
+                    left: 145px;
+                }
+            }
+    
+            .field-errorassistancepanel {
+                grid-column: span 12 !important;
+                flex-direction: row;
+    
+                .plain-text-wrapper {
+                    flex: 1 1 45% !important;
+                    height: 40px;
+                    text-align: left !important;
+                    border: none;
+                }
+                
+                .plain-text-wrapper:nth-child(odd) {
+                    border-bottom: 1px solid var(--color-interface-border-primary);
+                    margin-bottom: 10px;
+                }
+            }
+        }
     }
   
     .fdlien .field-fdbasedcreditcardwizard { left: 2%; }
@@ -2237,6 +2746,155 @@ main {
               text-align: left !important;
       }
     }
+
+    .field-successresultpanel {
+        .field-tqbannertext1:has(p) {
+            text-align: left;
+            padding: 80px 300px 170px 10px !important;
+            margin: -12px 0 0;
+            border-radius: 0;
+            line-height: 22px !important;
+
+            p {
+                line-height: var(--font-linehight-m-large) !important;
+            }
+        }
+
+        .field-tqbannertext2 {
+            margin: -180px 0 0;
+            padding: 0 0 0 10px !important;
+            text-wrap: wrap !important;
+            text-align: left !important;
+
+            p {
+                line-height: var(--font-linehight-medium) !important;
+                margin-top: 10px !important;
+            }                
+        }
+
+        .field-vkycconfirmationpanel {
+            padding: 25px;
+            margin: 70px 20px 0 !important;
+            top: 21% !important;
+            left: 20px;
+            width: 90% !important;
+            background: var(--color-interface-background-quinary);
+            border-radius: 12px;
+            
+            > legend {
+                position: relative;
+                top: 25px;
+            }
+
+            .field-vkyctext1, .field-vkyctext2, .field-vkyctext3 {
+                height: 0;
+                margin-top: -10px;
+                
+                p {
+                    margin: 0;
+                }
+            }
+
+            .field-vkycproceedbutton {
+                position: unset !important;
+                left: 0 !important;
+                margin-top: 0 !important;
+            }
+        }
+
+        .field-refnumpanel {
+            margin: -70px 20px 0 !important;
+            width: 95% !important;
+            background: var(--color-interface-background-primary);
+            border: 1px solid var(--color-interface-border-secondary);
+            border-radius: 24px;
+            padding: 20px;
+            min-height: 380px !important;
+
+            .field-refnumlabel {
+                background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
+                width: 72px;
+                height: 72px;
+                padding-left: 80px;
+                text-wrap: nowrap;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-regular);
+                }
+            }
+
+            .field-referencenumber {
+                margin: -65px 0 0 83px;
+
+                p {
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-background-quaternary);
+                }                    
+            }
+
+            .field-referencenumbertagline {
+                margin-top: -30px;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-regular);
+                }
+            }
+        }
+
+        /* Thank You Summary */
+        .field-tqsummarysection {
+            display: grid !important;
+            width: 95% !important;
+            margin: 0 20px !important;
+
+            .text-wrapper {
+                display: grid;
+                grid-column: span 6;
+            }
+
+            .field-tqselectedfds {
+                display: flex;
+                flex-direction: row;
+            }
+        }
+
+        .field-feedbackconfirmation {
+            padding: 0 20px 20px !important;
+            width: 95% !important;
+            margin: 0 20px !important;
+
+            .field-ratingbuttons {
+                display: flex;
+                flex-direction: row;
+
+                .button-wrapper {    
+                    button {
+                        min-width: 60px !important;
+                    }        
+                }
+            }
+
+            .field-ratingcolorcodes {
+                flex-direction: row;
+
+                .field-notlikelytext {
+                    width: 60.7% !important;
+                }
+    
+                .field-maybetext {
+                    width: 17% !important;
+                }
+    
+                .field-verylikelytext {
+                    width: 18% !important;
+                }
+            }           
+
+        }
+    }
   }
   
   /* For mobiles */
@@ -2246,7 +2904,7 @@ main {
       }
   
     .fdlien:has(.section.form-container) .section.form-container {
-        .fd-form-wrapper{
+        .fd-form-wrapper {
             .field-bannerimagepanel, .field-multiplecustidbanner {
                 background: var(--color-interface-fd-background-secondary) url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
                 min-height: 225px;
@@ -2258,8 +2916,82 @@ main {
                       top: 45px;
                   }
               }
-            }     
-        }    
+            } 
+
+            .field-errorresultpanel {
+                .field-errormessagetext p{
+                    font-size: var(--font-linehight-m-large) !important;
+                    line-height: var(--body-fd-xxx-lg-font-size);                    
+                }
+    
+                .field-errormessagetext:has(p) {
+                    text-align: left;
+                    padding: 30px 150px 120px 9px !important;
+                    background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important;
+                    background-size: 150px 150px !important;
+                }
+            
+                .field-errormessagetext:not(:has(p)){
+                    padding: 30px 250px 80px 20px !important;
+                    text-align: left !important;
+                }
+                
+                .field-errresdealerpanel {
+                   margin: -80px auto 0 !important;
+                }
+            
+                .button-wrapper:nth-child(5) {
+                    position: absolute;
+                    top: 80%;
+                    left: 20px !important;
+                    width: 90% !important;
+                }
+            }
+
+            .field-error2colresultpanel {
+                margin: 0 10px;
+
+                .field-errorctapanel {
+                    grid-column: span 12;
+
+                    .field-getccnowlabel {  
+                        min-height: 150px;   
+
+                        p {
+                            margin-top: 0;
+                            position: relative;
+                            top: 14px;
+                            left: 75px;
+                        }
+                    }
+
+                    .field-errorctabutton {
+                        top: -220px;
+                        left: 145px;
+                    }
+                }
+
+                .field-errorassistancepanel {
+                    grid-column: span 12;
+
+                    .plain-text-wrapper {
+                        flex: 1 1 auto;
+                        height: 40px;
+                        text-align: left !important;
+                        border: none;
+                    }
+                    
+                    .plain-text-wrapper:nth-child(odd) {
+                        border-bottom: 1px solid var(--color-interface-border-primary);
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+         
+
+        
+        
     }
   
     .fdlien header>.cmp-container div:nth-child(2) {
@@ -2338,12 +3070,14 @@ main {
 
                     .field-select-fd-subtext1 {
                         position: relative;
-                        top: -55px !important;
+                        top: -70px !important;
+                        font-size: var(--body-fd-md-font-size);
                     }
     
                     .field-select-fd-subtext2 {
                         position: relative;
-                        top: -80px !important;
+                        top: -100px !important;
+                        font-size: var(--body-fd-md-font-size);
                     }
                 }                
 
@@ -2366,6 +3100,16 @@ main {
 
                 .field-fdnumberselection {
                     overflow-x: scroll;
+                }
+
+                .field-selectfdtncpanel {
+                    .field-selectfdtncpanel-title p {
+                        margin-bottom: 25px;
+                    }
+
+                    .field-pleasenotetext1 p {
+                        margin: 0 0 20px;
+                    }
                 }
             }
         }
@@ -2416,6 +3160,11 @@ main {
                 }
             }
         }
+
+       .field-fdselectioninfo .field-customername label, .field-fdselectioninfo .field-customername input,
+       .field-basicdetails .field-detailssectionlabel1 p, .field-cardsforyoutitle p {
+            margin-bottom: 15px !important;
+        }
     }
   
     .fdlien .field-selectkycoptionspanel div[class*='field-identityverificationtext'] { margin-top: 0 !important; }
@@ -2459,5 +3208,165 @@ main {
           padding: 30px 250px 80px 20px !important;
           text-align: left !important;
       }
+    }
+
+    .field-successresultpanel {
+        .field-tqbannertext1 {
+            max-width: 100%;
+
+            p p {
+                font-size: var(--body-fd-xx-lg-font-size) !important;
+                color: var(--color-interface-background-primary);                
+                line-height: var(--font-linehight-medium) !important;
+
+                &::after {
+                    background: var(--color-interface-fd-background-primary) url('../icons/Essential.svg') no-repeat 100% 0;
+                    position: absolute !important;
+                    top:20px !important;
+                }
+            }
+        }
+
+        .field-tqbannertext1:has(p) {
+            text-align: left;
+            padding: 80px 92px 170px 10px !important;
+            background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad.png') no-repeat 96% 38% !important;
+            background-size: 90px 90px !important;
+            margin: -12px 0 0;
+            border-radius: 0;
+            width: 100%;
+        } 
+
+        .field-tqbannertext1:not(:has(p)) {
+            text-align: left;
+            padding: 60px 275px 120px 50px;
+            background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important ;
+            font-size: var(--body-fd-xxx-lg-font-size);
+            font-weight: var(--font-weight-bold);
+            line-height: var(--font-linehight-x-large);
+        }
+
+        .field-tqbannertext2 {
+            margin: -140px 0 0 !important;
+            padding: 0 0 0 9px !important;
+            text-wrap: wrap !important;
+            text-align: left !important;
+
+            p {
+                color: var(--color-interface-border-secondary) !important;
+                line-height: var(--font-linehight-medium) !important;
+            }                
+        }
+
+        .field-vkycconfirmationpanel {
+            padding: 25px;
+            margin: 70px 15px 0 !important;
+            position: absolute;
+            top: 20% !important;
+            left: 20px;
+            width: 85% !important;
+            background: var(--color-interface-background-quinary);
+            border-radius: 12px;
+            
+            > legend {
+                position: relative;
+                top: 25px;
+            }
+
+            .field-vkyctext1, .field-vkyctext2, .field-vkyctext3 {
+                height: auto !important;
+                margin-top: 5px !important;
+                
+                p {
+                    margin: 0;
+                }
+            }
+
+            .field-vkycproceedbutton {
+                margin-top: 25px;
+                position: unset !important;
+                width: 100%;
+            }
+        }
+
+        .field-refnumpanel {
+            margin: 50px 10px 20px !important;
+            width: 95% !important;
+            min-height: 460px !important;
+
+
+            .field-referencenumber {
+                margin: -50px 0 0 83px !important;
+
+                p {
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-bold);
+                    color: var(--color-interface-background-quaternary);
+                }                    
+            }
+
+            .field-referencenumbertagline {
+                margin-top: 35px !important;
+                border-bottom: 1px dashed var(--color-interface-border-secondary);
+                padding-bottom: 10px;
+
+                p {
+                    font-size: var(--body-fd-md-font-size);
+                    font-weight: var(--font-weight-regular);
+                }
+            }
+        }
+
+        /* Thank You Summary */
+        .field-tqsummarysection {
+            display: grid !important;
+            width: 95% !important;
+            margin: 0 10px !important;
+
+            .text-wrapper {
+                display: grid;
+                grid-column: span 6;
+            }
+
+            .field-tqselectedfds {
+                display: flex;
+                flex-direction: row;
+            }
+        }
+
+        .field-feedbackconfirmation {
+            padding: 0 20px 20px !important;
+            width: 62% !important;
+            margin: 0 10px !important;
+
+            .field-ratingbuttons {
+                display: flex;
+                flex-direction: row;
+
+                .button-wrapper {    
+                    button {
+                        min-width: 32px !important;
+                    }        
+                }
+            }
+
+            .field-ratingcolorcodes {
+                flex-direction: row;
+                margin-top: 10px;
+
+                .field-notlikelytext {
+                    width: 54.2% !important;
+                }
+    
+                .field-maybetext {
+                    width: 17.5% !important;
+                }
+    
+                .field-verylikelytext {
+                    width: 28% !important;
+                }
+            }           
+
+        }
     }
   }
