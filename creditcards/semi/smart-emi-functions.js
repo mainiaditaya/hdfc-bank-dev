@@ -575,7 +575,10 @@ function radioBtnValCommit(arg1, globals) {
       if (selectedIndex === i) {
         globals.functions.setProperty(item.aem_tenureSelection, { value: '0' });
         /* set roi based on radio select */
-        const roiMonthly = `${Number(tenureData[i].aem_roi_monthly).toFixed(2)} %`;
+        /* discount */
+        const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
+        const calcDiscount = ((Number(tenureData[i].aem_roi_monthly).toFixed(2)) - (Number(discount) / 100));
+        const roiMonthly = `${calcDiscount} %`;
         const roiAnnually = `${tenureData[i].aem_roi_annually}% per annum`;
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI, { value: roiMonthly });
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.rateOfInterestPerAnnumValue, { value: roiAnnually });
@@ -586,11 +589,6 @@ function radioBtnValCommit(arg1, globals) {
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_duration, { value: duration });
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_roi, { value: roiMonthly });
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_processingFee, { value: tenureData[i].aem_tenureSelectionProcessing });
-
-        /* discount */
-        const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
-        const calcDiscount = ((Number(tenureData[i].aem_roi_monthly).toFixed(2)) - (Number(discount) / 100));
-        globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.discount, { value: calcDiscount });
       } else {
         globals.functions.setProperty(item.aem_tenureSelection, { value: null });
       }
