@@ -131,7 +131,7 @@ const bindCustomerDetails = (globals) => {
   } else {
     globals.functions.setProperty(personalDetails.nameOnCard, { visible: false });
     globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: true });
-    globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
+    if (!customerInfo.customerMiddleName && !customerInfo.customerLastName) globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
     const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
     initializeNameOnCardDdOptions(globals, personalDetails, customerFirstName, customerMiddleName, customerLastName);
   }
