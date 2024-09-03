@@ -359,9 +359,9 @@ const tenureDisplay = (globals) => {
   const DEFUALT_SELCT_TENURE = (tenureRepatablePanel.length > 0) ? (tenureRepatablePanel.length - 1) : 0;
   globals.functions.setProperty(tenureRepatablePanel[DEFUALT_SELCT_TENURE].aem_tenureSelection, { value: '0' });
   /* discount */
-  // const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
-  // const calcDiscount = ((Number().toFixed(2)) - (Number(discount) / 100));
-  // globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.discount, { value: calcDiscount });
+  const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
+  const calcDiscount = ((Number().toFixed(2)) - (Number(discount) / 100));
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.discount, { value: calcDiscount });
   /* set data for tenure panel */
   tenureArrayOption?.forEach((option, i) => {
     setDataTenurePanel(globals, tenureRepatablePanel, option, i);
