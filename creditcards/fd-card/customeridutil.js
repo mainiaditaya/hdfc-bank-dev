@@ -51,7 +51,8 @@ const fetchReferenceId = (mobileNumber, pan, dob, globals) => {
 };
 
 const updateData = (globals, customerData, panel) => {
-  globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerID });
+  globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerID.slice(-4).padStart(customerData.customerID.length, 'X') });
+  globals.functions.setProperty(panel.customerID, { value: customerData.customerID });
   globals.functions.setProperty(panel.noofFDs, { value: customerData.eligibleFDCount });
 };
 
@@ -92,12 +93,12 @@ const customerIdClickHandler = (customerIds, globals) => {
     globals.functions.setProperty(customerIds[selectedCustIndex].multipleCustIDSelect, { value: undefined });
     setTimeout(() => {
       selectedCustIndex = customerIds.findIndex((item) => item.multipleCustIDSelect._data.$value === '0');
-      const selectedCustId = customerIds[selectedCustIndex].maskedAccNo._data.$_value;
+      const selectedCustId = customerIds[selectedCustIndex].customerID._data.$_value;
       SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerID === selectedCustId)?.[0];
     }, 50);
   } else {
     selectedCustIndex = customerIds.findIndex((item) => item.multipleCustIDSelect._data.$value === '0');
-    const selectedCustId = customerIds[selectedCustIndex].maskedAccNo._data.$_value;
+    const selectedCustId = customerIds[selectedCustIndex].customerID._data.$_value;
     SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerID === selectedCustId)?.[0];
   }
 };
