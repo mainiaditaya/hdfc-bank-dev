@@ -129,7 +129,7 @@ const bindCustomerDetails = (globals) => {
     customerFullName, customerFirstName, customerMiddleName, customerLastName,
   } = customerInfo;
 
-  if (customerFullName.length <= NAME_ON_CARD_LENGTH) {
+  if (customerFullName.length <= NAME_ON_CARD_LENGTH && (customerMiddleName || customerLastName)) {
     setFormValue(personalDetails.nameOnCard, customerFullName.toUpperCase());
   } else {
     const hasNoMiddleOrLastName = !customerMiddleName && !customerLastName;
