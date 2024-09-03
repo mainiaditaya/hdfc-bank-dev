@@ -44,6 +44,7 @@ import {
   fetchCustomerId,
   customerIdSuccessHandler,
   customerIdClickHandler,
+  fetchReferenceId,
 } from './customeridutil.js';
 
 import {
@@ -97,6 +98,7 @@ export {
   dobChangeHandler,
   fathersNameChangeHandler,
   executeInterface,
+  fetchReferenceId,
   confirmCardClickHandler,
   ipa,
   ipaSuccessHandler,

@@ -29,6 +29,8 @@ const FD_ENDPOINTS = {
   branchMaster: 'https://applyonlineuat01.hdfcbank.com/content/hdfc_ccforms/api/branchcode.',
   executeInterface: '/content/hdfc_hafcards/api/hdfccardsexecuteinterface.json',
   ipa: '/content/hdfc_hafcards/api/hdfccardsipa.json',
+  hdfccardsgetrefidfdcc: '/content/hdfc_hafcards/api/hdfccardsgetrefidfdcc.json',
+  hdfccardsgetfdeligibilitystatus: '/content/hdfc_hafcards/api/hdfccardsgetfdeligibilitystatus.json',
 };
 
 const OTP_TIMER = 30;

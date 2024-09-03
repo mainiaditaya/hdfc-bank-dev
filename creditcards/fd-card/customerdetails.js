@@ -97,48 +97,58 @@ const bindCustomerDetails = (globals) => {
   const { customerInfo } = CURRENT_FORM_CONTEXT;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const genderMap = { Male: '0', Female: '1', Others: '3' };
+  const occupationMap = {
+    salaried: '1',
+    'self employed': '2',
+    student: '3',
+    housewife: '4',
+    retired: '5',
+  };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
-  const { personalDetails, addressDetails } = reviewDetailsView;
+  const { personalDetails, addressDetails, employmentDetails } = reviewDetailsView;
 
   const setFormValue = (field, value) => {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-  // customerInfo.customerFullName = 'FirstName MiddleName LastName';
-  // customerInfo.customerFirstName = 'FirstName';
-  // customerInfo.customerMiddleName = '';
-  // customerInfo.customerLastName = '';
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
-  setFormValue(personalDetails.gender, genderMap[customerInfo.gender]);
-  if (customerInfo.dob) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.dob); }
-  if (customerInfo.pan) {
-    const formattedPan = customerInfo.pan.replace(/([A-Za-z])(\d)|(\d)([A-Za-z])/g, '$1$3 $2$4');
+  setFormValue(personalDetails.gender, genderMap[customerInfo.genderDescription]);
+  if (customerInfo.datBirthCust) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.datBirthCust); }
+  if (customerInfo.refCustItNum) {
+    const formattedPan = customerInfo.refCustItNum.replace(/([A-Za-z])(\d)|(\d)([A-Za-z])/g, '$1$3 $2$4');
     if (formattedPan !== '') setFormValue(personalDetails.panNumberPersonalDetails, formattedPan);
   }
-  setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.address);
+  setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.currentAddress);
   const emailIDUtil = formUtil(globals, personalDetails.emailID);
-  emailIDUtil.setValue(customerInfo.emailId, { attrChange: true, value: false });
-  // setFormValue(personalDetails.fullName, '');
-  // setFormValue(personalDetails.panNumberPersonalDetails, '');
-  // setFormValue(personalDetails.emailID, '');
-  // setFormValue(addressDetails.prefilledMailingAdddress, '');
-  if (customerInfo.address.length === 0) {
+  emailIDUtil.setValue(customerInfo.refCustEmail, { attrChange: true, value: false });
+  if (customerInfo.currentAddress.length === 0) {
     globals.functions.setProperty(addressDetails.prefilledMailingAdddress, { visible: false });
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
   }
-  if (customerInfo.customerFullName.length <= NAME_ON_CARD_LENGTH && (customerInfo.customerMiddleName || customerInfo.customerLastName)) {
-    setFormValue(personalDetails.nameOnCard, customerInfo.customerFullName?.toUpperCase());
+  const {
+    customerFullName, customerFirstName, customerMiddleName, customerLastName,
+  } = customerInfo;
+
+  if (customerFullName.length <= NAME_ON_CARD_LENGTH && (customerMiddleName || customerLastName)) {
+    setFormValue(personalDetails.nameOnCard, customerFullName.toUpperCase());
   } else {
+    const hasNoMiddleOrLastName = !customerMiddleName && !customerLastName;
+
     globals.functions.setProperty(personalDetails.nameOnCard, { visible: false });
     globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: true });
-    if (!customerInfo.customerMiddleName && !customerInfo.customerLastName) globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
-    const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
+
+    if (hasNoMiddleOrLastName) {
+      globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
+    }
+
     initializeNameOnCardDdOptions(globals, personalDetails, customerFirstName, customerMiddleName, customerLastName);
   }
 
+  globals.functions.setProperty(employmentDetails.employmentType, occupationMap[customerInfo?.employeeDetail?.txtOccupDesc?.toLowerCase()]);
+
   const personaldetails = document.querySelector('.field-personaldetails');
   setTimeout(() => {
-    addDisableClass(personaldetails, ['nameOnCardDD', 'emailID']);
+    addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
   }, 10);
 };
 
