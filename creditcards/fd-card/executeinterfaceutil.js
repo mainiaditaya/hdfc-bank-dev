@@ -15,12 +15,12 @@ const createExecuteInterfaceRequest = (payload, globals) => {
   let comCityZip = customerInfo?.comCityZip;
   const addressEditFlag = addressDetails?.mailingAddressToggle?.$value === 'on' ? 'N' : 'Y';
   if (addressEditFlag === 'Y') {
-    communicationAddress1 = addressDetails.newCurentAddressPanel.newCurrentAddressLine1;
-    communicationAddress2 = addressDetails.newCurentAddressPanel.newCurrentAddressLine2;
-    communicationAddress3 = addressDetails.newCurentAddressPanel.newCurrentAddressLine3;
-    communicationCity = addressDetails.newCurentAddressPanel.newCurrentAddressCity;
-    communicationState = addressDetails.newCurentAddressPanel.newCurentAddressState;
-    comCityZip = addressDetails.newCurentAddressPanel.newCurentAddressPin;
+    communicationAddress1 = addressDetails.newCurentAddressPanel.newCurrentAddressLine1.$value || '';
+    communicationAddress2 = addressDetails.newCurentAddressPanel.newCurrentAddressLine2.$value || '';
+    communicationAddress3 = addressDetails.newCurentAddressPanel.newCurrentAddressLine3.$value || '';
+    communicationCity = addressDetails.newCurentAddressPanel.newCurentAddressCity.$value;
+    communicationState = addressDetails.newCurentAddressPanel.newCurentAddressState.$value;
+    comCityZip = addressDetails.newCurentAddressPanel.newCurentAddressPin.$value;
   }
   const request = {
     requestString: {
