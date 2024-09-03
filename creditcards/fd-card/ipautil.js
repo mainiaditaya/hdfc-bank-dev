@@ -11,10 +11,10 @@ const createIpaRequest = (payload, globals) => {
       applRefNumber: payload.APS_APPL_REF_NUM,
       eRefNumber: CURRENT_FORM_CONTEXT.referenceNumber,
       // customerID: SELECTED_CUSTOMER_ID.selectedCustId.customerId,
-      customerID: 50187305,
+      customerID: '50187305',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
-      productCode: 'FCFL',
+      productCode: 'ISBU',
     },
   };
   return ipaRequest;
