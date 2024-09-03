@@ -590,7 +590,7 @@ function radioBtnValCommit(arg1, globals) {
         /* discount */
         const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
         const calcDiscount = ((Number(tenureData[i].aem_roi_monthly).toFixed(2)) - (Number(discount) / 100));
-        const roiMonthly = `${calcDiscount} %`;
+        const roiMonthly = `${calcDiscount.toFixed(2)} %`;
         const roiAnnually = `${tenureData[i].aem_roi_annually}% per annum`;
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI, { value: roiMonthly });
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.rateOfInterestPerAnnumValue, { value: roiAnnually });

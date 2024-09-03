@@ -82,7 +82,7 @@ async function fieldChanged(payload, form, generateFormRendition, formModel) {
     activeChild,
     } = fieldModel;
   const field = form.querySelector(`#${id}`);
-  const fieldWrapper = field.closest('.field-wrapper');
+  const fieldWrapper = field?.closest('.field-wrapper');
   changes.forEach((change) => {
     const { propertyName, currentValue, prevValue } = change;
     if (!field) {
