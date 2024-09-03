@@ -236,8 +236,8 @@ const changeWizardView = () => {
 */
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload1, globals) {
-  const resPayload = RESPONSE_PAYLOAD.response;
-  // const resPayload = resPayload1;
+  // const resPayload = RESPONSE_PAYLOAD.response;
+  const resPayload = resPayload1;
   const response = {};
   try {
     /* continue btn disabling code added temorary, can be removed after form authoring */
@@ -302,7 +302,8 @@ const setDataTenurePanel = (globals, panel, option, i) => {
   /* */
   // const monthlyEmi = `${MISC.rupeesUnicode} ${Number(clearString(option?.monthlyEMI))}`;
   // const processingFees = `${MISC.rupeesUnicode} ${option?.procesingFee}`;
-  const emiAmt = `${MISC.rupeesUnicode} ${nfObject.format(Number(clearString(option?.monthlyEMI)))}`;
+  const monthEmiNumVal = Number(clearString(option?.monthlyEMI));
+  const emiAmt = `${MISC.rupeesUnicode} ${nfObject.format(monthEmiNumVal)}`;
   const procesFees = `${MISC.rupeesUnicode} ${nfObject.format(option?.procesingFee)}`;
   globals.functions.setProperty(panel[i].aem_tenureSelectionEmi, { value: emiAmt });
   globals.functions.setProperty(panel[i].aem_tenureSelectionProcessing, { value: procesFees });
@@ -359,11 +360,11 @@ const tenureDisplay = (globals) => {
   const DEFUALT_SELCT_TENURE = (tenureRepatablePanel.length > 0) ? (tenureRepatablePanel.length - 1) : 0;
   globals.functions.setProperty(tenureRepatablePanel[DEFUALT_SELCT_TENURE].aem_tenureSelection, { value: '0' });
   /* discount */
-  const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
-  const calcDiscount = ((Number().toFixed(2)) - (Number(discount) / 100));
-  const roi = parseFloat(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI.$value) + calcDiscount;
-  const roiPercentage = `${roi.toFixed(2)}%`;
-  globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI, { value: roiPercentage });
+  // const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
+  // const calcDiscount = ((Number().toFixed(2)) - (Number(discount) / 100));
+  // const roi = parseFloat(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI.$value) + calcDiscount;
+  // const roiPercentage = `${roi.toFixed(2)}%`;
+  // globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI, { value: roiPercentage });
   /* set data for tenure panel */
   tenureArrayOption?.forEach((option, i) => {
     setDataTenurePanel(globals, tenureRepatablePanel, option, i);
@@ -587,14 +588,19 @@ function radioBtnValCommit(arg1, globals) {
       if (selectedIndex === i) {
         globals.functions.setProperty(item.aem_tenureSelection, { value: '0' });
         /* set roi based on radio select */
-        /* discount */
-        const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
-        const calcDiscount = ((Number(tenureData[i].aem_roi_monthly).toFixed(2)) - (Number(discount) / 100));
-        const roiMonthly = `${calcDiscount.toFixed(2)} %`;
+        const roiMonthly = `${Number(tenureData[i].aem_roi_monthly).toFixed(2)} %`;
         const roiAnnually = `${tenureData[i].aem_roi_annually}% per annum`;
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI, { value: roiMonthly });
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.rateOfInterestPerAnnumValue, { value: roiAnnually });
-        // set the same data for review panel screen - whatsapp flow.
+        // /* discount */
+        // const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
+        // const calcDiscount = ((Number(tenureData[i].aem_roi_monthly).toFixed(2)) - (Number(discount) / 100));
+        // const roiMonthly = `${calcDiscount.toFixed(2)} %`;
+        // const roiAnnually = `${tenureData[i].aem_roi_annually}% per annum`;
+        // globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI, { value: roiMonthly });
+        // globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.rateOfInterestPerAnnumValue, { value: roiAnnually });
+
+        /* set the same data for review panel screen - whatsapp flow. */
         const rawTenureData = JSON.parse(tenureData[i].aem_tenureRawData);
         const duration = `${parseInt(rawTenureData.period, 10)} Months`;
         globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_monthlyEmi, { value: tenureData[i].aem_tenureSelectionEmi });
