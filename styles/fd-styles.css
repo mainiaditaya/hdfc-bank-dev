@@ -637,12 +637,42 @@ main {
 
       .field-error2colresultpanel {
         display: grid;
-        margin: 0 60px;
         background: var(--color-interface-background-primary);
         border-radius: 0;
+        margin-top: -13px;
+
+        .field-errormessagetext2col:has(p) {
+            text-align: left;
+            padding: 60px 275px 150px 50px;
+            background: var(--color-interface-fd-background-primary) url('../icons/log-out-sad-expression.png') no-repeat 95% 0 !important;
+        } 
+
+        .field-errormessagetext2col {
+            p {
+                text-align: left;
+                padding: 0;
+                font-size: var(--body-fd-xxx-lg-font-size);
+                font-weight: var(--font-weight-bold);
+                line-height: var(--font-linehight-m-large);
+                color: var(--color-interface-background-primary);
+            }
+        }
+
+        .field-errormessagetextplaceholder2col {
+            margin: -120px 0 0;
+
+            p {
+                font-size: var(--body-fd-xx-lg-font-size);
+                font-weight: var(--font-weight-regular);
+                color: var(--color-interface-background-primary);
+                padding: 0 0 0 25px;
+            }
+        }
+        
 
         .field-errorctapanel {
             grid-column: span 3;
+            margin: -80px 0 0 60px;
 
             .field-getccnowlabel {                
                 background: var(--color-interface-error-cta-background) url('../icons/error_cta_icon.svg') no-repeat;
@@ -686,17 +716,24 @@ main {
                 flex-wrap: wrap;
                 justify-content: space-between;
                 gap: 0 !important;
+                margin: -80px 0 0 60px;
+                background: var(--color-interface-background-primary);
 
                 > legend {
                     font-size: var(--body-fd-xx-lg-font-size);
                     font-weight: var(--font-weight-bold);
                     color: var(--color-interface-background-quaternary);
+                    background: var(--color-interface-background-primary);
+                    border-top-left-radius: 24px;
+                    border-top-right-radius: 24px;
+                    padding: 20px 0 0 20px;
                 }
 
                 .plain-text-wrapper {
                     flex: 1 1 45%;
                     border-bottom: 1px solid var(--color-interface-border-primary);
                     height: 45px;
+                    padding: 0 10px;
 
                     p {
                         color: var(--color-interface-background-quaternary);
@@ -1698,7 +1735,7 @@ main {
                   border-bottom-right-radius: 24px;
               }
 
-              .drop-down-wrapper select{
+              .drop-down-wrapper select {
                   cursor: pointer;
                   appearance: none;
                   background: url('../icons/dropdown_arrow.svg') no-repeat right 10px center;
@@ -1762,6 +1799,7 @@ main {
                     pointer-events: none;
                     appearance: none;
                     opacity: 1;
+                    background-image: none;
                     
                     &:hover {
                         box-shadow: none;
@@ -2668,13 +2706,13 @@ main {
             }
         }
 
-        .field-error2colresultpanel {
-            margin: 0 10px !important;
-    
-            .field-errorctapanel {
+        .field-error2colresultpanel {    
+            .field-errorctapanel {  
+                margin: -80px 20px 0 !important;
+                width: 95%;
                 grid-column: span 12 !important;
     
-                .field-getccnowlabel {  
+                .field-getccnowlabel {
                     min-height: 150px !important;   
     
                     p {
@@ -2692,6 +2730,7 @@ main {
             }
     
             .field-errorassistancepanel {
+                margin: -80px 20px 0 !important;
                 grid-column: span 12 !important;
                 flex-direction: row;
     
@@ -2949,10 +2988,24 @@ main {
             }
 
             .field-error2colresultpanel {
-                margin: 0 10px;
+                margin-top: -15px;
+
+                .field-errormessagetext2col:has(p) {
+                    padding: 60px 215px 125px 10px;
+                }
+
+                .field-errormessagetextplaceholder2col {
+                    margin: -125px 0 0 -37px;
+
+                    p {
+                        line-height: var(--font-linehight-large);
+                    }
+                }
 
                 .field-errorctapanel {
                     grid-column: span 12;
+                    margin: -80px 20px 0;
+                    width: 90%;
 
                     .field-getccnowlabel {  
                         min-height: 150px;   
@@ -2966,13 +3019,15 @@ main {
                     }
 
                     .field-errorctabutton {
-                        top: -220px;
+                        top: -110px;
                         left: 145px;
                     }
                 }
 
                 .field-errorassistancepanel {
                     grid-column: span 12;
+                    margin: -80px 20px 0;
+                    width: 90%;
 
                     .plain-text-wrapper {
                         flex: 1 1 auto;
