@@ -141,6 +141,64 @@ function preExecution(mobileNumber, cardDigits, globals) {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 const nfObject = new Intl.NumberFormat('hi-IN');
+
+/**
+ * Append paise value for txn in billed or unbilled amount.
+ * @param {string} txnAmt - txnAmunt - billed or unbilled.
+ * @returns {string} - 4300 to 4300.00
+ */
+// eslint-disable-next-line no-unused-vars
+const getAmtWithPaiseValue = (txnAmt) => {
+  let finalAmt = null;
+  const PAISE = '00';
+  const amt = String(txnAmt);
+  if (amt.length > 10) { // unbilled
+    const decimalVal = String(parseFloat(amt).toFixed(2) / 100);
+    const splitInDec = decimalVal.split('.');
+    switch (splitInDec?.length) {
+      case 1:
+        finalAmt = `${decimalVal}.${PAISE}`;
+        break;
+      case 2:
+        if (splitInDec[1]?.length === 1) {
+          finalAmt = `${splitInDec[0]}.${splitInDec[1]}0`;
+        } else {
+          finalAmt = `${splitInDec[0]}.${splitInDec[1]}`;
+        }
+        break;
+      default:
+        finalAmt = `${decimalVal}`;
+        break;
+    }
+  } else { // billed case
+    finalAmt = `${amt}.${PAISE}`;
+  }
+  return finalAmt;
+};
+
+/**
+ * Formats a transaction amount into the Indian Rupee (INR) format with two decimal places.
+ * If the transaction amount starts with '0', it is considered an unbilled amount and is divided by 100
+ * before formatting.
+ * @param {number|string} txnAmt - The transaction amount to be formatted. It can be a number or a string.
+ * @returns {string} The formatted transaction amount in INR currency format with two decimal places.
+ */
+const txnInrFormat = (txnAmt) => {
+  const amt = String(txnAmt).trim();
+  const isUnBilledAmt = amt.startsWith('0');
+
+  const nfInrObj = new Intl.NumberFormat('hi-IN', {
+    minimumFractionDigits: 2, // Minimum number of digits after the decimal
+    maximumFractionDigits: 2, // Maximum number of digits after the decimal
+  });
+
+  const formattedAmt = isUnBilledAmt
+    ? nfInrObj.format(parseFloat(amt) / 100)
+    : nfInrObj.format(parseFloat(amt));
+
+  return formattedAmt;
+};
+
 /**
  * sets the data for the instance of repetable panel
  *
@@ -154,7 +212,9 @@ const setData = (globals, panel, txn, i) => {
   if (currentFormContext.totalSelect === 10 && txn?.aem_Txn_checkBox !== 'on') enabled = false;
   globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: txn?.checkbox || txn?.aem_Txn_checkBox });
   globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { enabled });// set the checbox value
-  const TXN_AMT = `${MISC.rupeesUnicode} ${nfObject.format((txn?.amount || txn?.aem_TxnAmt))}`;
+  // const paiseAppendAmt = getAmtWithPaiseValue((txn?.amount || txn?.aem_TxnAmt));
+  const paiseAppendAmt = txnInrFormat((txn?.amount || txn?.aem_TxnAmt));
+  const TXN_AMT = `${MISC.rupeesUnicode} ${paiseAppendAmt}`;
   globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: TXN_AMT });
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date || txn?.aem_TxnDate });
   globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id || txn?.aem_TxnID });
@@ -631,7 +691,7 @@ const getEmiArrayOption = (globals) => {
     effDate: clearString(el?.aem_TxnDate),
     logicMod: el?.logicMod,
     itemNbr: el?.aem_TxnID,
-    tranAmt: currencyStrToNum(el?.aem_TxnAmt),
+    tranAmt: Number((el?.aem_TxnAmt)?.replace(/[^\d]/g, '')),
     txnDesc: el?.aem_txn_type,
     plan: PLAN,
     originAcct: ORIG_ACCOUNT,
@@ -657,8 +717,7 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
   const DEPT = 'IT';
   const emiConversionArray = getEmiArrayOption(globals);
   const REQ_NBR = String(emiConversionArray?.length === 1) ? ((String(emiConversionArray?.length)).padStart(2, '0')) : (String(emiConversionArray?.length)); // format '01'? or '1'
-  const paiseDecimal = '00';
-  const LOAN_AMOUNT = String(emiConversionArray?.reduce((prev, acc) => prev + acc.tranAmt, 0)) + paiseDecimal;
+  const LOAN_AMOUNT = String(emiConversionArray?.reduce((prev, acc) => prev + acc.tranAmt, 0));
   const eligibiltyResponse = currentFormContext.EligibilityResponse;
   const tenurePlan = globals.functions.exportData().aem_tenureSelectionRepeatablePanel;
   const selectedTenurePlan = tenurePlan?.find((emiPlan) => emiPlan.aem_tenureSelection === '0');
