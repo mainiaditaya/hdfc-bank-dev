@@ -2,7 +2,7 @@ import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
-import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
+// import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 
 const createIpaRequest = (payload, globals) => {
   const ipaRequest = {
@@ -10,9 +10,11 @@ const createIpaRequest = (payload, globals) => {
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
       applRefNumber: payload.APS_APPL_REF_NUM,
       eRefNumber: CURRENT_FORM_CONTEXT.referenceNumber,
-      customerID: SELECTED_CUSTOMER_ID.selectedCustId.customerId,
+      // customerID: SELECTED_CUSTOMER_ID.selectedCustId.customerId,
+      customerID: 50187305,
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
+      productCode: 'FCFL',
     },
   };
   return ipaRequest;
