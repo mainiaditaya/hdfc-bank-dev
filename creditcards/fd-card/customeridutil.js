@@ -7,7 +7,7 @@ import { urlPath } from '../../common/formutils.js';
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
 
-const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
+const createPayload = (mobileNumber, panNumber, dateOfBirth) => {
   const payload = {
     requestString: {
       mobileNumber,
@@ -26,24 +26,46 @@ const custmerIdPayload = (mobileNumber, panNumber, dateOfBirth) => {
  * @param {string} mobileNumber
  * @param {string} pan
  * @param {string} dob
+ * @param {object} response
  * @param {Object} globals
  * @returns {Promise<Object>} A promise that resolves to the JSON response of the customer account details.
  */
-const fetchCustomerId = (mobileNumber, pan, dob, globals) => {
-  const payload = custmerIdPayload(mobileNumber, pan, dob, globals);
-  return fetchJsonResponse(urlPath(FD_ENDPOINTS.customeraccountdetailsdto), payload, 'POST');
+const fetchCustomerId = (mobileNumber, pan, dob, response, globals) => {
+  const payload = createPayload(mobileNumber, pan, dob, globals);
+  payload.requestString.referenceNumber = response.referenceNo;
+  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus), payload, 'POST');
+};
+
+/**
+ *
+ * @name fetchReferenceId
+ * @param {string} mobileNumber
+ * @param {string} pan
+ * @param {string} dob
+ * @param {Object} globals
+ * @returns {Promise<Object>}
+ */
+const fetchReferenceId = (mobileNumber, pan, dob, globals) => {
+  const payload = createPayload(mobileNumber, pan, dob, globals);
+  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetrefidfdcc), payload, 'POST');
 };
 
 const updateData = (globals, customerData, panel) => {
-  globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerId });
+  globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerID });
   globals.functions.setProperty(panel.noofFDs, { value: customerData.eligibleFDCount });
 };
 
+/**
+ *
+ * @name customerIdSuccessHandler
+ * @param {Object} payload
+ * @param {Object} globals
+ */
 const customerIdSuccessHandler = (payload, globals) => {
-  const customerData = payload?.customerDetailsDTO;
+  const customerData = payload?.responseString?.customerDetailsDTO;
   if (!customerData?.length) return;
 
-  CURRENT_FORM_CONTEXT.customerInfo = payload;
+  CURRENT_FORM_CONTEXT.customerInfo = payload?.responseString;
 
   const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
 
@@ -71,12 +93,12 @@ const customerIdClickHandler = (customerIds, globals) => {
     setTimeout(() => {
       selectedCustIndex = customerIds.findIndex((item) => item.multipleCustIDSelect._data.$value === '0');
       const selectedCustId = customerIds[selectedCustIndex].maskedAccNo._data.$_value;
-      SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerId === selectedCustId)?.[0];
+      SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerID === selectedCustId)?.[0];
     }, 50);
   } else {
     selectedCustIndex = customerIds.findIndex((item) => item.multipleCustIDSelect._data.$value === '0');
     const selectedCustId = customerIds[selectedCustIndex].maskedAccNo._data.$_value;
-    SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerId === selectedCustId)?.[0];
+    SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerID === selectedCustId)?.[0];
   }
 };
 
@@ -85,4 +107,5 @@ export {
   customerIdSuccessHandler,
   customerIdClickHandler,
   SELECTED_CUSTOMER_ID,
+  fetchReferenceId,
 };
