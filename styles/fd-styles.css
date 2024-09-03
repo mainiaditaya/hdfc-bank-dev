@@ -256,6 +256,10 @@ main {
             .field-mobilepanel {
                 display: grid;
                 max-width: 368px;
+
+                .field-landinglabel {
+                    min-height: 38px;
+                }
     
                 .field-wrapper {
                     p {
@@ -1200,6 +1204,7 @@ main {
                 letter-spacing: -0.01em;
                 text-align: left;
                 color: var(--color-interface-text-primary);
+                text-transform: lowercase;
             }
         }
   
@@ -1724,6 +1729,12 @@ main {
                 font-size: var(--body-x-sm-font-size);
                 color: var(--color-interface-text-secondary);
                 margin: 25px 0 0;
+            }
+          }
+
+          .field-employmentdetails {
+            .field-employmenttype {
+                margin-bottom: 10px;
             }
           }
   
@@ -2626,6 +2637,16 @@ main {
         .field-multiplecustidpanel:not([data-visible='false']) { display: block !important; }
   
         .field-loginmainpanel {
+            .field-identifierpanel {
+                .field-pandobselection {
+                    display: flex;
+
+                    legend {
+                        margin-top: 3px;
+                    }
+                }
+            }
+
             .field-registeredmobilenumber {
                 margin: -15px 0 0;
                 max-width: 225px;
@@ -3079,8 +3100,9 @@ main {
         .field-mobilepanel {
           .field-landinglabel {
               margin-top: 30px;
+              min-height: auto !important;
           }
-        }
+        }        
     }  
   
     .field-otppanel { padding: 40px 10px 0 !important; 
