@@ -256,8 +256,9 @@ body.semi-form {
                     }
                 }
                 
-                .field-aem-otpresend {
-                    margin-top: -28px !important;
+                .field-aem-otpresend, .field-aem-otpresend2 {
+                    margin: -4px 0 !important;
+                    width: fit-content;
 
                     button{
                         font-size: var(--body-md-font-size);
@@ -279,6 +280,7 @@ body.semi-form {
 
                 .field-aem-otpnumber, .field-aem-otpnumber2 {
                     margin: -14px 0 0 -7px;
+                    position: relative;
                     z-index: 100;
 
                     input { 
@@ -513,9 +515,10 @@ body.semi-form {
                 border-radius: 16px;
 
                 .field-aem-tenureselectionheaderpanel {
+                    display: grid;
                     background-color: var(--color-interface-background-quinary);
                     border-radius: 16px 16px 2px 2px;
-                    padding: 17px 25px;
+                    padding: 17px 25px 10px;
 
                     p { margin: 0; }
                 }
@@ -533,7 +536,10 @@ body.semi-form {
                         }
                     }
 
-                    .field-wrapper { align-self: center; }
+                    .field-wrapper { 
+                        align-self: center; 
+                        display: grid;
+                    }
 
                     p, input:not([type="radio"]) { 
                         margin: 0; padding: 0; 
@@ -687,6 +693,41 @@ body.semi-form {
                 }
             }
         }
+
+        /* Step 4 - Wizard - Success */
+        .field-aem-success {
+            .field-wrapper:not(.field-submitfeedback), input { 
+                text-align: center; 
+                justify-self: center;
+            }
+
+            p, input { 
+                margin: 0; 
+                padding: 0;
+                color: var(--color-interface-text-primary);
+            }
+
+            .field-aem-successresulttextlabel, .field-aem-loanrefnum, .field-aem-loanrefnum p {
+                font-size: var(--body-lg-font-size);
+                font-weight: var(--font-weight-bold);
+            }
+            .field-aem-loanrefnum, .field-aem-amountlabel { margin-top: -13px; }
+            
+            .field-aem-semiamount { margin-top: -16px;
+                
+                input {
+                    font-size: var(--body-xx-lg-font-size);
+                    font-weight: var(--font-weight-extra-bold);
+                    color: var(--color-interface-background-tertiary);
+                    border: none;
+                    pointer-events: none;
+                }
+            }
+
+            .field-aem-amountlabel, .field-aem-amountlabel p, .field-ratinglabel p {
+                font-size: var(--body-sm-font-size);
+            }
+        }
     }
 
     /* Step 2 - Wizard - Choose Transactions */
@@ -732,10 +773,19 @@ body.semi-form {
     }
 
     /* Result Panel */
-    .field-resultpanelsemi {
+    .field-resultpanel {
         /* Error Screen */
         .field-errorresultpanelsemi { 
             text-align: center;
+
+            .field-errormessagetext {
+                background-color: var(--color-interface-background-primary);
+                padding: 30px 0 10px;
+
+                p::before {
+                    display: none;
+                }
+            }
 
             .plain-text-wrapper, .plain-text-wrapper p {
                 color: var(--color-interface-text-primary);
@@ -781,7 +831,11 @@ body.semi-form {
                 .field-wrapper { width: 100%; 
                     p, input { font-size: var(--body-x-sm-font-size); }
                 }
-                .field-resendotplabel { grid-column: span 10; }
+
+                .field-resendotplabel { 
+                    grid-column: span 10; 
+                    width: fit-content;
+                }
 
                 .field-seconds {
                     grid-column: span 1;
@@ -836,7 +890,7 @@ body.semi-form {
                             }
 
                             .field-aem-txnselected {
-                                grid-column: span 3;
+                                grid-column: span 4;
                                 input { margin-left: -16px; }
                             }
 
@@ -869,13 +923,14 @@ body.semi-form {
                                 }
 
                                 .field-aem-txndate {
-                                    grid-column: span 6;
+                                    grid-column: span 9;
                                     margin: -32px 0 0 28px;
                                 }
 
                                 .field-aem-txnamt {
-                                    grid-column: span 6;
-                                    margin: -31px 0 0 -7px;                               
+                                    grid-column: span 3;
+                                    margin: -104px 6px 0;
+                                    input { text-align: right; }                               
                                 }
                             }
                         }
@@ -884,22 +939,24 @@ body.semi-form {
             }
         }
 
-        .field-aem-semiwizard .field-aem-selecttenure {
+        .field-aem-semiwizard .field-aem-selecttenure { display: grid;
+            
             .field-aem-tenureselectionmainpnl{
                 .field-aem-tenureselectionheaderpanel { 
                     display: grid !important;
                     margin-bottom: 10px;
-                    p { font-size: var(--body-sm-font-size) !important; }
+                    p { font-size: var(--body-md-font-size) !important; }
                 }
 
                 .field-aem-tenureselectionrepeatablepanel {
                     padding: 0 0 0 13px;
+                    margin-top: 0;
 
                     > .repeat-wrapper .panel-wrapper:nth-child(1) { padding-top: 11px; }
 
                     > .repeat-wrapper .panel-wrapper {
                         display: grid !important;
-                        label, input { font-size: var(--body-x-sm-font-size) !important; }
+                        label, input { font-size: var(--body-sm-font-size) !important; }
                         .radio-wrapper label { padding-left: 15px; }
                         .field-aem-tenureselection { margin-bottom: 0 !important; }
                     }
@@ -907,6 +964,7 @@ body.semi-form {
             }
             .field-rateofinterestperannumvalue { margin-top: -16px; }
             .field-aem-employeeassistancepanel { padding-top: 10px; }
+            .field-aem-bankassistedtogglelabel { grid-column: span 10; }
             .field-aem-tncbutton { margin: 0 !important; }
         }
 
@@ -923,6 +981,15 @@ body.semi-form {
     .semi-form .field-aem-semiwizard {
         .field-aem-loginpanel .field-aem-countrycode input { width: 337% !important; }
         .field-aem-otppanel .field-otppanel .field-otphelptext { display: block; }
+    }
+}
+
+@media (width <= 415px) {
+    .semi-form .field-aem-semiwizard {
+        .field-billedtxnfragment, .field-unbilledtxnfragment {
+            .field-aem-txndate, .field-aem-txnamt { grid-column: span 6 !important; }
+            .field-aem-txnamt { margin: -30px 6px 0 !important; }
+        }
     }
 }
 
