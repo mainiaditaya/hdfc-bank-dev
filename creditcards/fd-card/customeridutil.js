@@ -51,15 +51,21 @@ const fetchReferenceId = (mobileNumber, pan, dob, globals) => {
 };
 
 const updateData = (globals, customerData, panel) => {
-  globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerId });
+  globals.functions.setProperty(panel.maskedAccNo, { value: customerData.customerID });
   globals.functions.setProperty(panel.noofFDs, { value: customerData.eligibleFDCount });
 };
 
+/**
+ *
+ * @name customerIdSuccessHandler
+ * @param {Object} payload
+ * @param {Object} globals
+ */
 const customerIdSuccessHandler = (payload, globals) => {
-  const customerData = payload?.customerDetailsDTO;
+  const customerData = payload?.responseString?.customerDetailsDTO;
   if (!customerData?.length) return;
 
-  CURRENT_FORM_CONTEXT.customerInfo = payload;
+  CURRENT_FORM_CONTEXT.customerInfo = payload?.responseString;
 
   const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
 
@@ -87,12 +93,12 @@ const customerIdClickHandler = (customerIds, globals) => {
     setTimeout(() => {
       selectedCustIndex = customerIds.findIndex((item) => item.multipleCustIDSelect._data.$value === '0');
       const selectedCustId = customerIds[selectedCustIndex].maskedAccNo._data.$_value;
-      SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerId === selectedCustId)?.[0];
+      SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerID === selectedCustId)?.[0];
     }, 50);
   } else {
     selectedCustIndex = customerIds.findIndex((item) => item.multipleCustIDSelect._data.$value === '0');
     const selectedCustId = customerIds[selectedCustIndex].maskedAccNo._data.$_value;
-    SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerId === selectedCustId)?.[0];
+    SELECTED_CUSTOMER_ID.selectedCustId = CURRENT_FORM_CONTEXT.customerInfo.customerDetailsDTO.filter((item) => item.customerID === selectedCustId)?.[0];
   }
 };
 

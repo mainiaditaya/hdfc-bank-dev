@@ -35,7 +35,7 @@ const updateCreditLimit = (selectedFDsAmt, globals) => {
 
   const totalSelectedAmount = selectedFDsAmt.reduce((acc, val) => acc + val, 0);
   const creditAmt = totalSelectedAmount * 0.9;
-  const actualCreditAmount = Math.min(creditAmt, MAXIMUM_CREDIT_AMOUNT).toFixed(2);
+  const actualCreditAmount = Math.floor(Math.min(creditAmt, MAXIMUM_CREDIT_AMOUNT));
 
   globals.functions.setProperty(creditLimitPanel, {
     value: selectedFDsAmt.length === 0 ? 0 : actualCreditAmount,
@@ -80,7 +80,7 @@ const selectAllFdClickHandler = (globals) => {
 
 const updateData = (globals, fd, panel, index, fdNumberSelectionPanel) => {
   const datMaturity = formatDateDDMMMYYY(fd.datMaturity);
-  const balPrincipal = Number(fd.balPrincipal);
+  const balPrincipal = Number(fd.balTdPrincipal);
   globals.functions.setProperty(panel.fdNumber, { value: fd.fdAccountNo });
   globals.functions.setProperty(panel.selectedFDAmount, { value: balPrincipal });
   globals.functions.setProperty(panel.maturingDate, { value: datMaturity });
