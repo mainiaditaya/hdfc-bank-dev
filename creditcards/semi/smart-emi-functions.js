@@ -361,7 +361,9 @@ const tenureDisplay = (globals) => {
   /* discount */
   const discount = globals.form.aem_semiWizard.aem_selectTenure.discount.$value; ///
   const calcDiscount = ((Number().toFixed(2)) - (Number(discount) / 100));
-  globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.discount, { value: calcDiscount });
+  const roi = parseFloat(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI.$value) + calcDiscount;
+  const roiPercentage = `${roi.toFixed(2)}%`;
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_ROI, { value: roiPercentage });
   /* set data for tenure panel */
   tenureArrayOption?.forEach((option, i) => {
     setDataTenurePanel(globals, tenureRepatablePanel, option, i);
