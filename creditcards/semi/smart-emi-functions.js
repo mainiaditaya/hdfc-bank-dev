@@ -143,40 +143,6 @@ function preExecution(mobileNumber, cardDigits, globals) {
 const nfObject = new Intl.NumberFormat('hi-IN');
 
 /**
- * Append paise value for txn in billed or unbilled amount.
- * @param {string} txnAmt - txnAmunt - billed or unbilled.
- * @returns {string} - 4300 to 4300.00
- */
-// eslint-disable-next-line no-unused-vars
-const getAmtWithPaiseValue = (txnAmt) => {
-  let finalAmt = null;
-  const PAISE = '00';
-  const amt = String(txnAmt);
-  if (amt.length > 10) { // unbilled
-    const decimalVal = String(parseFloat(amt).toFixed(2) / 100);
-    const splitInDec = decimalVal.split('.');
-    switch (splitInDec?.length) {
-      case 1:
-        finalAmt = `${decimalVal}.${PAISE}`;
-        break;
-      case 2:
-        if (splitInDec[1]?.length === 1) {
-          finalAmt = `${splitInDec[0]}.${splitInDec[1]}0`;
-        } else {
-          finalAmt = `${splitInDec[0]}.${splitInDec[1]}`;
-        }
-        break;
-      default:
-        finalAmt = `${decimalVal}`;
-        break;
-    }
-  } else { // billed case
-    finalAmt = `${amt}.${PAISE}`;
-  }
-  return finalAmt;
-};
-
-/**
  * Formats a transaction amount into the Indian Rupee (INR) format with two decimal places.
  * If the transaction amount starts with '0', it is considered an unbilled amount and is divided by 100
  * before formatting.
@@ -212,15 +178,14 @@ const setData = (globals, panel, txn, i) => {
   if (currentFormContext.totalSelect === 10 && txn?.aem_Txn_checkBox !== 'on') enabled = false;
   globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { value: txn?.checkbox || txn?.aem_Txn_checkBox });
   globals.functions.setProperty(panel[i]?.aem_Txn_checkBox, { enabled });// set the checbox value
-  // const paiseAppendAmt = getAmtWithPaiseValue((txn?.amount || txn?.aem_TxnAmt));
   const paiseAppendAmt = txnInrFormat((txn?.amount || txn?.aem_TxnAmt));
   const TXN_AMT = `${MISC.rupeesUnicode} ${paiseAppendAmt}`;
   globals.functions.setProperty(panel[i]?.aem_TxnAmt, { value: TXN_AMT });
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date || txn?.aem_TxnDate });
   globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id || txn?.aem_TxnID });
   globals.functions.setProperty(panel[i]?.aem_TxnName, { value: txn?.name || txn?.aem_TxnName });
-  globals.functions.setProperty(panel[i]?.authCode, { value: txn?.AUTH_CODE || txn?.aem_TxnName });
-  globals.functions.setProperty(panel[i]?.logicMod, { value: txn?.LOGICMOD || txn?.aem_TxnName });
+  globals.functions.setProperty(panel[i]?.authCode, { value: txn?.AUTH_CODE || txn?.authCode });
+  globals.functions.setProperty(panel[i]?.logicMod, { value: txn?.LOGICMOD || txn?.logicMod });
 };
 /*
  * Displays card details by updating the UI with response data.
@@ -403,7 +368,7 @@ const tenureDisplay = (globals) => {
   const tenureRepatablePanel = globals.form.aem_semiWizard.aem_selectTenure.aem_tenureSelectionMainPnl.aem_tenureSelectionRepeatablePanel;
   const semiFormData = globals.functions.exportData().smartemi;
   const selectedTxnList = (semiFormData?.aem_billedTxn?.aem_billedTxnSelection?.concat(semiFormData?.aem_unbilledTxn?.aem_unbilledTxnSection))?.filter((txn) => txn.aem_Txn_checkBox === 'on');
-  const totalAmountOfTxn = selectedTxnList?.reduce((prev, acc) => prev + parseFloat(acc.aem_TxnAmt.replace(/[^\d.-]/g, '')), 0);
+  const totalAmountOfTxn = selectedTxnList?.reduce((prev, acc) => prev + parseFloat((String(acc.aem_TxnAmt)).replace(/[^\d.-]/g, '')), 0);
   // set total amount for the review screen in whatsapp.
   globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.reviewDetailsView.aem_reviewAmount, { value: totalAmountOfTxn });
   const totalAmountSelected = (parseInt(totalAmountOfTxn, 10));
@@ -691,7 +656,7 @@ const getEmiArrayOption = (globals) => {
     effDate: clearString(el?.aem_TxnDate),
     logicMod: el?.logicMod,
     itemNbr: el?.aem_TxnID,
-    tranAmt: Number((el?.aem_TxnAmt)?.replace(/[^\d]/g, '')),
+    tranAmt: Number((String(el?.aem_TxnAmt))?.replace(/[^\d]/g, '')),
     txnDesc: el?.aem_txn_type,
     plan: PLAN,
     originAcct: ORIG_ACCOUNT,
