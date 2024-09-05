@@ -65,19 +65,22 @@ const updateData = (globals, customerData, panel) => {
 const customerIdSuccessHandler = (payload, globals) => {
   const customerData = payload?.responseString?.customerDetailsDTO;
   if (!customerData?.length) return;
-
   CURRENT_FORM_CONTEXT.customerInfo = payload?.responseString;
+  if (customerData?.length === 1) {
+    const [selectedCustId] = customerData;
+    SELECTED_CUSTOMER_ID.selectedCustId = selectedCustId;
+  } else {
+    const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
 
-  const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
-
-  customerData.forEach((custItem, i) => {
-    if (i < customerData.length - 1) {
-      globals.functions.dispatchEvent(panel, 'addItem');
-    }
-    setTimeout(() => {
-      updateData(globals, custItem, panel[i]);
-    }, i * 40);
-  });
+    customerData.forEach((custItem, i) => {
+      if (i < customerData.length - 1) {
+        globals.functions.dispatchEvent(panel, 'addItem');
+      }
+      setTimeout(() => {
+        updateData(globals, custItem, panel[i]);
+      }, i * 40);
+    });
+  }
 };
 
 /**
