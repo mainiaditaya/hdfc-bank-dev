@@ -371,6 +371,16 @@ function checkELigibilityHandler(resPayload1, globals) {
       moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
     }
     response.nextscreen = 'success';
+    // hide the unbilled / unbillled accordian if the response payload of txn is not present
+    if (resPayload?.ccBilledTxnResponse?.responseString.length === 0) {
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment, { visible: false });
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList, { visible: false });
+    }
+    if (resPayload?.ccUnBilledTxnResponse?.responseString?.length === 0) {
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment, { visible: false });
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList, { visible: false });
+    }
+    //
     return response;
   } catch (error) {
     response.nextscreen = 'failure';
