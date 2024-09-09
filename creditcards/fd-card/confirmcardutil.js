@@ -15,4 +15,11 @@ const confirmCardClickHandler = (globals) => {
   }
 };
 
-export default confirmCardClickHandler;
+const knowMoreCardClickHandler = (panel, globals) => {
+  console.log(panel, globals);
+};
+
+export {
+  knowMoreCardClickHandler,
+  confirmCardClickHandler,
+};

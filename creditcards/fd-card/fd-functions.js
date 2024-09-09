@@ -56,7 +56,10 @@ import {
 
 import executeInterface from './executeinterfaceutil.js';
 
-import confirmCardClickHandler from './confirmcardutil.js';
+import {
+  confirmCardClickHandler,
+  knowMoreCardClickHandler,
+} from './confirmcardutil.js';
 
 import {
   ipa,
@@ -102,4 +105,5 @@ export {
   confirmCardClickHandler,
   ipa,
   ipaSuccessHandler,
+  knowMoreCardClickHandler,
 };

@@ -105,8 +105,9 @@ const ipaSuccessHandler = (response, globals) => {
     eligibleCreditLimitAmount,
     selectCardFaciaPanelMultiple,
     selectCardFaciaPanelSingle,
+    // knowMorePopupWrapper,
   } = selectCard;
-
+  // globals.functions.setProperty(knowMorePopupWrapper, { visible: false });
   const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
   globals.functions.setProperty(eligibleCreditLimitAmount, { value: creditLimit.$value });
   if (productDetails.length === 1) {
