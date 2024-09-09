@@ -184,7 +184,7 @@ const fetchRecursiveResponse = async (
       body: payload ? JSON.stringify(payload) : null,
       mode: 'cors',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
         Accept: 'application/json',
       },
     });
