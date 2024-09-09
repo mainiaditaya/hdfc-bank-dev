@@ -4,6 +4,7 @@ import { fetchRecursiveResponse } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
 // import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 
+const IPA_RESPONSE = {};
 const createIpaRequest = (payload, globals) => {
   const ipaRequest = {
     requestString: {
@@ -109,6 +110,7 @@ const ipaSuccessHandler = (response, globals) => {
   } = selectCard;
   // globals.functions.setProperty(knowMorePopupWrapper, { visible: false });
   const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
+  IPA_RESPONSE.productDetails = productDetails;
   globals.functions.setProperty(eligibleCreditLimitAmount, { value: creditLimit.$value });
   if (productDetails.length === 1) {
     globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: false });
@@ -130,4 +132,5 @@ const ipaSuccessHandler = (response, globals) => {
 export {
   ipa,
   ipaSuccessHandler,
+  IPA_RESPONSE,
 };
