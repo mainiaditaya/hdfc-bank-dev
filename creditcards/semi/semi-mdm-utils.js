@@ -100,7 +100,9 @@ const assistedToggleHandler = async (globals) => {
     setSelectOptions(channelOptions, channelDropDown?.$name);
     if (UTM_PARAMS.channel) {
       const findParamChanelValue = channelOptions?.find((el) => clearString(el.value)?.toLocaleLowerCase() === clearString(UTM_PARAMS.channel)?.toLocaleLowerCase());
-      globals.functions.setProperty(channelDropDown, { enum: channelOptions, enumNames: chanelEnumNames, value: findParamChanelValue.value });
+      globals.functions.setProperty(channelDropDown, {
+        enum: channelOptions, enumNames: chanelEnumNames, value: findParamChanelValue.value, enabled: false,
+      });
       await preFillFromUtm(globals);
     } else {
       globals.functions.setProperty(channelDropDown, { enum: channelOptions, enumNames: chanelEnumNames, value: DEF_OPTION[0].value });
