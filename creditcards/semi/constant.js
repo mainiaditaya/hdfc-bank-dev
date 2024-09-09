@@ -1,9 +1,13 @@
 const JOURNEY_NAME = 'SMART_EMI_JOURNEY';
 const PRO_CODE = '009';
-const CHANNEL = 'ADOBE_WEB';
 const ERROR_MSG = {
   mobileError: 'Enter valid mobile number',
 };
+
+const CHANNELS = {
+  adobeWeb: 'ADOBE_WEB',
+  adobeWhatsApp: 'ADOBE_WHATSAPP',
+}
 
 const SEMI_ENDPOINTS = {
   otpGen: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
@@ -1392,7 +1396,7 @@ export {
   SEMI_ENDPOINTS,
   MAX_OTP_RESEND_COUNT,
   CURRENT_FORM_CONTEXT,
-  CHANNEL,
+  CHANNELS,
   PRO_CODE,
   DOM_ELEMENT,
   MISC,

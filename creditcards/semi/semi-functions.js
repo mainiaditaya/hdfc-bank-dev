@@ -14,6 +14,8 @@ import {
   getCCSmartEmi,
   otpTimerV1,
   resendOTPV1,
+  customDispatchEvent,
+  getFlowSuccessPayload
 } from './smart-emi-functions.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
 
@@ -36,4 +38,6 @@ export {
   getCCSmartEmi,
   otpTimerV1,
   resendOTPV1,
+  customDispatchEvent,
+  getFlowSuccessPayload
 };

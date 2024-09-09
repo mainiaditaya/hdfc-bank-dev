@@ -8,6 +8,8 @@ import {
   addOtpFieldValidation,
 } from './semi-dom-utils.js';
 
+const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
+
 /**
    * function sorts the billed / Unbilled Txn  array in descending order based on the amount field
    *
@@ -108,9 +110,27 @@ const validationField = () => {
   addOtpFieldValidation();
 };
 
-setTimeout(() => {
-  validationField();
-}, 5000);
+const getNextMonthDate = (day) => {
+  // Get the current date
+  const date = new Date();
+  // Set the provided day
+  date.setDate(day);
+  // Move to the next month
+  date.setMonth(date.getMonth() + 1);
+  // Extract the day, month, and year
+  const dayPart = date.getDate();
+  const monthPart = date.toLocaleString('en-US', { month: 'short' });
+  const yearPart = date.getFullYear();
+  
+  // Format the date as "dd MMM yyyy"
+  return `${dayPart} ${monthPart} ${yearPart}`;
+}
+
+if(!isNodeEnv) {
+  setTimeout(() => {
+    validationField();
+  }, 5000);  
+}
 
 export {
   numberToText,
@@ -122,4 +142,5 @@ export {
   changeCheckboxToToggle,
   currencyStrToNum,
   validationField,
+  getNextMonthDate
 };
