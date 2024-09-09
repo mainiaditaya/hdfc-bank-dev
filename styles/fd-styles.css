@@ -1613,7 +1613,7 @@ main {
                 }
   
                 .field-fdaccselect { 
-                  margin: 0;
+                  margin: -5px 0 0;
                   grid-column: revert;
                 }
                 
@@ -1823,6 +1823,7 @@ main {
           .field-selectsuitablecardtext p { 
               font-weight: var(--font-weight-medium); 
               color: var(--color-input-text-primary);
+              font-size: var(--body-fd-md-font-size);
           }
   
           .field-eligiblecreditlimitamount {
@@ -1881,6 +1882,32 @@ main {
                   .field-cardtagline { margin-top: -20px; 
                       p { font-size: var(--body-fd-md-font-size); }
                   }
+
+                  .field-cardtagline:has(p:empty) {
+                    display: none;
+                  }
+
+                  .field-cardfeatures1:has(p:empty), .field-cardfeatures2:has(p:empty), .field-cardfeatures3:has(p:empty) {
+                    display: none;
+                  }
+
+                  .field-cardtagline:not(:has(p)), .field-cardselection-display:not(:has(p)) {
+                    font-size: var(--body-fd-md-font-size)
+                  } 
+
+                  .field-cardfeatures1, .field-cardfeatures2, .field-cardfeatures3  {
+                    font-size: var(--body-x-sm-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-background-quaternary);
+                  }    
+                  
+                  .field-cardfeatures2, .field-cardfeatures3  {
+                    margin-top: -15px;
+                  }
+
+                  .field-knowmorelink {
+                    margin: 0;
+                  }
   
                   .field-knowmorelink button {
                       font-size: var(--body-fd-md-font-size);
@@ -1905,7 +1932,7 @@ main {
                           font-size: 14px;
                           font-weight: 400;
                           padding-left: 20px;
-                          color: var(--color-interface-text-primary);
+                          color: var(--color-interface-text-primary);                          
                       }
   
                       input { 
@@ -1920,6 +1947,10 @@ main {
                           font-weight: var(--font-weight-bold);
                           color: var(--color-interface-text-primary);
                           pointer-events: none;
+
+                          &:hover {
+                            box-shadow: none;
+                          }
                       }
                   }
   
