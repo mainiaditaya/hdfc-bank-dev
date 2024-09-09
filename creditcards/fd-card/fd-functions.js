@@ -54,7 +54,14 @@ import {
   selectAllFdClickHandler,
 } from './fddetailsutil.js';
 
+import executeInterface from './executeinterfaceutil.js';
+
 import confirmCardClickHandler from './confirmcardutil.js';
+
+import {
+  ipa,
+  ipaSuccessHandler,
+} from './ipautil.js';
 
 export {
   getOTP,
@@ -90,6 +97,9 @@ export {
   branchCodeHandler,
   dobChangeHandler,
   fathersNameChangeHandler,
+  executeInterface,
   fetchReferenceId,
   confirmCardClickHandler,
+  ipa,
+  ipaSuccessHandler,
 };

@@ -21,6 +21,10 @@ let resendOtpCount = 0;
 currentFormContext.journeyName = JOURNEY_NAME;
 formRuntime.getOtpLoader = displayLoader;
 formRuntime.otpValLoader = displayLoader;
+formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
+formRuntime.executeInterface = (typeof window !== 'undefined') ? displayLoader : false;
+formRuntime.ipa = (typeof window !== 'undefined') ? displayLoader : false;
+formRuntime.aadharInit = (typeof window !== 'undefined') ? displayLoader : false;
 
 const validFDPan = (val) => {
   // FD_CONSTANT.REGEX_PAN?.test(val?.toLocaleUpperCase()); // this one did'nt work properly as expected ,
