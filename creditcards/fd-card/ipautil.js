@@ -1,6 +1,6 @@
-import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
+import { BASEURL, CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
-import { fetchJsonResponse } from '../../common/makeRestAPI.js';
+import { fetchRecursiveResponse } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
 // import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 
@@ -32,7 +32,64 @@ const ipa = (payload, showLoader, hideLoader, globals) => {
   const ipaRequest = createIpaRequest(payload, globals);
   const apiEndPoint = urlPath(FD_ENDPOINTS.ipa);
   if (showLoader) FORM_RUNTIME.ipa();
-  return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
+  const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
+  return fetchRecursiveResponse(apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
+};
+
+const updateData = (globals, productDetail, panel, index) => {
+  const { setProperty } = globals.functions;
+  const {
+    product, joiningFee = '0', renewalFee = '0', cardLine, keyBenefits = [], productCode,
+  } = productDetail;
+
+  const properties = [
+    { element: panel.cardSelection_display, value: product },
+    { element: panel.joiningFeeAmt, value: joiningFee },
+    { element: panel.renewalFeeAmt, value: renewalFee },
+    { element: panel.cardTagline, value: cardLine },
+    { element: panel.cardfeatures1, value: keyBenefits[0] || '' },
+    { element: panel.cardfeatures2, value: keyBenefits[1] || '' },
+    { element: panel.cardfeatures3, value: keyBenefits[2] || '' },
+  ];
+
+  properties.forEach(({ element, value }) => setProperty(element, { value }));
+
+  const imageEl = document.querySelectorAll('.field-cardfaciaimage > picture')[index];
+  const imagePath = `${BASEURL}${productCode}?width=2000&optimize=medium`;
+
+  ['img', 'source'].forEach((tag) => {
+    imageEl.querySelectorAll(tag).forEach((el) => el.setAttribute(tag === 'img' ? 'src' : 'srcset', imagePath));
+  });
+};
+
+const bindSingleCardDetails = (panel, globals, productDetail) => {
+  const { singleCardKeyBenefitsPanel } = panel;
+  const {
+    FeesSingleCard, singleCardBenefitsText1, singleCardBenefitsText2, singleCardBenefitsText3,
+  } = singleCardKeyBenefitsPanel;
+
+  const { setProperty } = globals.functions;
+  const {
+    product, joiningFee = '0', renewalFee = '0', cardLine, keyBenefits = [], productCode,
+  } = productDetail;
+
+  const properties = [
+    { element: panel.singleCardName, value: product },
+    { element: FeesSingleCard.joiningFeeAmt, value: joiningFee },
+    { element: FeesSingleCard.renewalFeeAmt, value: renewalFee },
+    { element: panel.singleCardTitle, value: cardLine },
+    { element: singleCardBenefitsText1, value: keyBenefits[0] || '' },
+    { element: singleCardBenefitsText2, value: keyBenefits[1] || '' },
+    { element: singleCardBenefitsText3, value: keyBenefits[2] || '' },
+  ];
+
+  properties.forEach(({ element, value }) => setProperty(element, { value }));
+
+  const imageEl = document.querySelector('.field-singlecardfacia > picture');
+  const imagePath = `${BASEURL}${productCode}?width=2000&optimize=medium`;
+
+  imageEl.querySelectorAll('img').forEach((img) => img.setAttribute('src', imagePath));
+  imageEl.querySelectorAll('source').forEach((source) => source.setAttribute('srcset', imagePath));
 };
 
 /**
@@ -43,7 +100,31 @@ const ipa = (payload, showLoader, hideLoader, globals) => {
  * @returns {Promise<object>}
  */
 const ipaSuccessHandler = (response, globals) => {
-  console.log(response);
+  const productDetails = response?.productEligibility?.productDetails;
+  const { selectCard, selectFD } = globals.form.fdBasedCreditCardWizard;
+  const {
+    eligibleCreditLimitAmount,
+    selectCardFaciaPanelMultiple,
+    selectCardFaciaPanelSingle,
+  } = selectCard;
+
+  const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
+  globals.functions.setProperty(eligibleCreditLimitAmount, { value: creditLimit.$value });
+  if (productDetails.length === 1) {
+    globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: false });
+    bindSingleCardDetails(selectCardFaciaPanelSingle, globals, productDetails[0]);
+  } else if (productDetails.length > 1) {
+    globals.functions.setProperty(selectCardFaciaPanelSingle, { visible: false });
+
+    productDetails.forEach((productDetail, i) => {
+      if (i < productDetails.length - 1) {
+        globals.functions.dispatchEvent(selectCardFaciaPanelMultiple, 'addItem');
+      }
+      setTimeout(() => {
+        updateData(globals, productDetail, selectCardFaciaPanelMultiple[i], i);
+      }, i * 40);
+    });
+  }
 };
 
 export {
