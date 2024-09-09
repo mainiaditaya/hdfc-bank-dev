@@ -1,11 +1,13 @@
 import {
   createLabelInElement,
+  setSelectOptions,
 } from '../domutils/domutils.js';
 
 import {
   addCardFieldValidation,
   addMobileValidation,
   addOtpFieldValidation,
+  getUrlParamCaseInsensitive,
 } from './semi-dom-utils.js';
 
 const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
@@ -121,15 +123,14 @@ const getNextMonthDate = (day) => {
   const dayPart = date.getDate();
   const monthPart = date.toLocaleString('en-US', { month: 'short' });
   const yearPart = date.getFullYear();
-  
   // Format the date as "dd MMM yyyy"
   return `${dayPart} ${monthPart} ${yearPart}`;
-}
+};
 
-if(!isNodeEnv) {
+if (!isNodeEnv) {
   setTimeout(() => {
     validationField();
-  }, 5000);  
+  }, 1000);
 }
 
 export {
@@ -142,5 +143,7 @@ export {
   changeCheckboxToToggle,
   currencyStrToNum,
   validationField,
-  getNextMonthDate
+  setSelectOptions,
+  getUrlParamCaseInsensitive,
+  getNextMonthDate,
 };

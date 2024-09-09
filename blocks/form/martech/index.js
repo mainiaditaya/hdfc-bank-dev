@@ -46,6 +46,7 @@ let nativeAudiences = [];
 const xdmData = {
 };
 
+// eslint-disable-next-line no-unused-vars
 function resolveSegments() {
   nativeAudiences = [];
   const promises = Object.keys(audiences).reduce((acc, key) => {

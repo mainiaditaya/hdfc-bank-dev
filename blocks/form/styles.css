@@ -358,7 +358,7 @@ main .form .field-otphelptext p {
   margin: 0;
 }
 
-main .field-incorrectotptext {
+main .field-incorrectotptext, main .field-aem-incorrectotptextconfirmation {
   padding: 0 16px;
   border-radius: 8px;
   background: var(--color-interface-error-box-primary);

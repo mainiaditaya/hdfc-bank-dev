@@ -33,8 +33,22 @@ const addOtpFieldValidation = () => {
   [inputField, inputField2].forEach((ip) => ip?.addEventListener('input', () => validateOTPInput(ip)));
 };
 
+/**
+ * Retrieves the value of a query parameter from the URL, case insensitively.
+ * This function searches the current URL's query parameters for a parameter that matches the provided name, ignoring case sensitivity.
+ * @param {string} param - The name of the query parameter to retrieve.
+ * @returns {string|null} The value of the query parameter if found; otherwise, `null`.
+ */
+const getUrlParamCaseInsensitive = (param) => {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const paramEntry = [...urlSearchParams.entries()]
+    .find(([key]) => key.toLowerCase() === param.toLowerCase());
+  return paramEntry ? paramEntry[1] : null;
+};
+
 export {
   addMobileValidation,
   addCardFieldValidation,
   addOtpFieldValidation,
+  getUrlParamCaseInsensitive,
 };

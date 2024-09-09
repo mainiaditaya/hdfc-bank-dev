@@ -11,11 +11,16 @@ import {
   preExecution,
   radioBtnValCommit,
   semiWizardSwitch,
+  assistedToggleHandler,
+  channelDDHandler,
+  branchHandler,
+  dsaHandler,
   getCCSmartEmi,
   otpTimerV1,
   resendOTPV1,
+  tAndCNavigation,
   customDispatchEvent,
-  getFlowSuccessPayload
+  getFlowSuccessPayload,
 } from './smart-emi-functions.js';
 import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
 
@@ -35,9 +40,14 @@ export {
   preExecution,
   radioBtnValCommit,
   semiWizardSwitch,
+  assistedToggleHandler,
+  channelDDHandler,
+  branchHandler,
+  dsaHandler,
   getCCSmartEmi,
   otpTimerV1,
   resendOTPV1,
+  tAndCNavigation,
   customDispatchEvent,
-  getFlowSuccessPayload
+  getFlowSuccessPayload,
 };

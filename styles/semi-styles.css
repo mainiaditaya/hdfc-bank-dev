@@ -199,7 +199,9 @@ body.semi-form {
             .field-aem-countrycode input::placeholder { color: transparent !important; }
         }
 
-        .field-consentpanel {
+        .field-consentpanel { margin-top: 25px;
+            legend {color: var(--color-interface-text-primary); }
+
             p {
                 margin: 0;
                 font-size: var(--body-sm-font-size);
@@ -348,6 +350,7 @@ body.semi-form {
                 margin-top: -11px;
                 background: var(--color-interface-background-primary) !important;
                 color: var(--color-action-text-secondary-default);
+                height: fit-content;
             }
     
             .field-aem-totalselectedtxt {
@@ -358,7 +361,7 @@ body.semi-form {
             .field-aem-totalselectedtxt::before {
                 content: url('../icons/info-icon.svg');
                 align-self: center;
-                margin: 8px 6px 0;
+                margin: 2px 12px 0;
             }
     
             .field-billedtxnfragment .field-aem-choosetransactions, .field-unbilledtxnfragment .field-aem-choosetransactions {
@@ -497,8 +500,6 @@ body.semi-form {
                     }
                 }
             }
-
-            .field-aem-txnselectioncontinue { padding-bottom: 22px; }
         }
 
         /* Step 3 - Wizard - Select Tenure */
@@ -527,12 +528,16 @@ body.semi-form {
                     padding: 0 0 0 25px;
                     margin-top: -20px;
 
-                    .field-aem-tenureselection {
+                    .field-aem-tenureselection { 
+                        width: fit-content;
+                        grid-column: span 1;
+
                         .radio-wrapper label { 
                             padding-left: 35px; 
                             font-size: var(--body-sm-font-size) !important;
                             font-weight: var(--font-weight-regular);
                             color: var(--color-interface-text-primary);
+                            display: none;
                         }
                     }
 
@@ -540,6 +545,8 @@ body.semi-form {
                         align-self: center; 
                         display: grid;
                     }
+
+                    .field-aem-tenureselectionprocessing { grid-column: span 3; }
 
                     p, input:not([type="radio"]) { 
                         margin: 0; padding: 0; 
@@ -596,10 +603,11 @@ body.semi-form {
                 label { margin-left: 5px;}
                 .drop-down-wrapper label { margin-left: 10px; }
 
-                select, select:focus, input, input:focus {
+                select, select:focus, input, input:focus, input:disabled, select:disabled {
                     border-width: 0 0 1px;
                     border-style: solid;
                     border-radius: 0 !important;
+                    background-color: var(--color-interface-background-primary);
                     border-color: transparent transparent var(--color-input-border-default) transparent !important;
                     outline: none !important;
                 }
@@ -683,7 +691,7 @@ body.semi-form {
 
             .field-aem-backlinktenure {
                 text-align: left;
-                margin-top: -35px;
+                margin-top: -35px !important;
 
                 button, button:hover { 
                     width: fit-content;
@@ -781,11 +789,9 @@ body.semi-form {
             .field-errormessagetext {
                 background-color: var(--color-interface-background-primary);
                 padding: 30px 0 10px;
-
-                p::before {
-                    display: none;
-                }
             }
+
+            .field-errormessagetext::before, .field-errormessagetext p::before { display: none; }
 
             .plain-text-wrapper, .plain-text-wrapper p {
                 color: var(--color-interface-text-primary);
@@ -803,6 +809,7 @@ body.semi-form {
     .semi-form {
         .field-aem-semiwizard .field-aem-identifierpanel {
             .field-mobilepanel { display: grid; 
+                .field-aem-mobilenum label { margin-left: -12px; }
                 
                 .field-aem-countrycode { 
                     grid-column: span 1; 
@@ -861,7 +868,14 @@ body.semi-form {
                 .field-aem-transactionsinfopanel {
                     display: grid;
 
-                    .field-aem-eligibletxnlabel { grid-column: span 12; }
+                    .field-aem-eligibletxnlabel { 
+                        grid-column: span 12; 
+                        border-right: transparent;
+                    }
+
+                    .field-aem-eligibletxnlabel, field-aem-eligibletxnlabel p, .field-aem-txnavailable, .field-aem-txnavailable p, .field-aem-totalselectedtxt, .field-aem-totalselectedtxt p {
+                        font-size: 14px;
+                    }
 
                     .field-aem-selecttop10txt {
                         margin-top: 0 !important;
@@ -891,6 +905,7 @@ body.semi-form {
 
                             .field-aem-txnselected {
                                 grid-column: span 4;
+                                line-height: 0;
                                 input { margin-left: -16px; }
                             }
 
@@ -902,7 +917,7 @@ body.semi-form {
                             .field-aem-txnsortdd { display: none; }
 
                             .field-expand-btn { 
-                                margin: -151px -73px 0 !important;
+                                margin: -111px -60px 0 !important;
                                 grid-column: span 10;
                                 justify-self: flex-end;
                              }
@@ -939,33 +954,47 @@ body.semi-form {
             }
         }
 
-        .field-aem-semiwizard .field-aem-selecttenure { display: grid;
+        .field-aem-semiwizard {
+            .wizard-menu-items { font-size: var(--body-x-sm-font-size); }
+
+            .field-aem-selecttenure { display: grid;
             
-            .field-aem-tenureselectionmainpnl{
-                .field-aem-tenureselectionheaderpanel { 
-                    display: grid !important;
-                    margin-bottom: 10px;
-                    p { font-size: var(--body-md-font-size) !important; }
-                }
-
-                .field-aem-tenureselectionrepeatablepanel {
-                    padding: 0 0 0 13px;
-                    margin-top: 0;
-
-                    > .repeat-wrapper .panel-wrapper:nth-child(1) { padding-top: 11px; }
-
-                    > .repeat-wrapper .panel-wrapper {
+                .field-aem-tenureselectionmainpnl{
+                    .field-aem-tenureselectionheaderpanel { 
                         display: grid !important;
-                        label, input { font-size: var(--body-sm-font-size) !important; }
-                        .radio-wrapper label { padding-left: 15px; }
-                        .field-aem-tenureselection { margin-bottom: 0 !important; }
+                        margin-bottom: -10px;
+                        p { font-size: var(--body-x-sm-font-size) !important; }
+                    }
+
+                    .field-aem-tenureselectionrepeatablepanel {
+                        padding: 0 0 0 13px;
+                        margin-top: 0;
+
+                        > .repeat-wrapper .panel-wrapper:nth-child(1) { padding-top: 11px; }
+
+                        > .repeat-wrapper .panel-wrapper {
+                            display: grid !important;
+                            label, input { font-size: var(--body-x-sm-font-size) !important; }
+                            
+                            input[type="radio"] {
+                                width: 18px !important;
+                                height: 18px !important;
+                            }
+                            .radio-wrapper label { padding-left: 15px; }
+                            .field-aem-tenureselection { margin-bottom: 0 !important; }
+                        }
                     }
                 }
+                .field-rateofinterestperannumvalue { margin-top: -16px; }
+                .field-aem-employeeassistancepanel { padding-top: 10px; }
+                .field-aem-bankassistedtogglelabel { grid-column: span 10; }
+                .field-aem-tncbutton { margin: 0 !important; }
             }
-            .field-rateofinterestperannumvalue { margin-top: -16px; }
-            .field-aem-employeeassistancepanel { padding-top: 10px; }
-            .field-aem-bankassistedtogglelabel { grid-column: span 10; }
-            .field-aem-tncbutton { margin: 0 !important; }
+
+            .field-aem-success {
+                .field-wrapper { margin-top: 10px; }
+                .rating.hover { justify-content: center; }
+            }
         }
 
         .field-aem-otppanelconfirmation .field-aem-otppanel2 {
@@ -986,6 +1015,8 @@ body.semi-form {
 
 @media (width <= 415px) {
     .semi-form .field-aem-semiwizard {
+        .field-aem-choosetransactions .field-aem-totalselectedtxt::before { margin: -20px 12px 0; }
+
         .field-billedtxnfragment, .field-unbilledtxnfragment {
             .field-aem-txndate, .field-aem-txnamt { grid-column: span 6 !important; }
             .field-aem-txnamt { margin: -30px 6px 0 !important; }

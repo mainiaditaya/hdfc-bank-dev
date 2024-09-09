@@ -206,9 +206,11 @@ body:not(.semi-form, .fdlien) header {
         }
     }
 
-    .semi-form header { 
-        padding-left: 10px; 
-        .cmp-container { height: 140px; }
+    .semi-form {
+        header { 
+            padding-left: 10px; 
+            .cmp-container { height: 140px; }
+        }
     }
     
     body:not(.semi-form) header{
@@ -255,9 +257,16 @@ body:not(.semi-form, .fdlien) header {
 }
 
 @media (width < 991px) {
-    .semi-form .cmp-container-wrapper {
-        content: '';
-        background-image: url('../icons/bannerTabletSemi.webp');
-        height: 160px;
+    .semi-form {
+        footer .cmp-container div>div { 
+            text-align: left; 
+            padding-left: 10px;
+        }
+
+        .cmp-container-wrapper {
+            content: '';
+            background-image: url('../icons/bannerTabletSemi.webp');
+            height: 160px;
+        }
     }
 }
