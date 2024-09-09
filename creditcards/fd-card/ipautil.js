@@ -14,7 +14,6 @@ const createIpaRequest = (payload, globals) => {
       customerID: '50187305',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
-      productCode: 'ISBU',
     },
   };
   return ipaRequest;
