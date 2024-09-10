@@ -2,6 +2,7 @@ import { getUrlParamCaseInsensitive } from '../../common/formutils.js';
 import { IPA_RESPONSE } from './ipautil.js';
 
 let selectedCardIndex = -1;
+let knowMoreClickedIndex = -1;
 
 /**
  *
@@ -20,22 +21,21 @@ const confirmCardClickHandler = (globals) => {
 
 const setknowMoreBenefitsPanelData = (moreFeatures, knowMoreBenefitsPanel, globals) => {
   if (!moreFeatures?.length) return;
-  const transformedMoreFeatures = moreFeatures.map((feature) => {
-    const mappedBenefits = {};
-    mappedBenefits.cardBenefitstext = feature;
-    return mappedBenefits;
-  });
+  const transformedMoreFeatures = moreFeatures.map((feature) => ({
+    cardBenefitsText: feature,
+  }));
   globals.functions.importData({ items: transformedMoreFeatures }, knowMoreBenefitsPanel.$qualifiedName);
 };
 
-const knowMoreCardClickHandler = (panel, globals) => {
-  console.log(panel, globals);
+const knowMoreCardClickHandler = (globals) => {
   const { knowMoreBenefitsPanel } = globals.form.fdBasedCreditCardWizard.selectCard.knowMorePopupWrapper.viewAllCardBenefitsPanel;
+  const { knowMorePopupWrapper } = globals.form.fdBasedCreditCardWizard.selectCard;
 
-  const clickedCtaIndex = globals.field.$parent.$index;
-  const moreFeatures = IPA_RESPONSE?.productDetails?.[clickedCtaIndex]?.features;
-
+  knowMoreClickedIndex = (IPA_RESPONSE?.productDetails?.length > 1) ? globals.field.$parent.$index : 0;
+  const moreFeatures = IPA_RESPONSE?.productDetails?.[knowMoreClickedIndex]?.features;
   setknowMoreBenefitsPanelData(moreFeatures, knowMoreBenefitsPanel, globals);
+
+  globals.functions.setProperty(knowMorePopupWrapper, { visible: true });
 };
 
 const selectCardBackClickHandler = (globals) => {
@@ -60,9 +60,21 @@ const cardSelectHandler = (cardsPanel, globals) => {
   }
 };
 
+const popupBackClickHandler = (globals) => {
+  const { knowMoreBenefitsPanel } = globals.form.fdBasedCreditCardWizard.selectCard.knowMorePopupWrapper.viewAllCardBenefitsPanel;
+  const { knowMorePopupWrapper } = globals.form.fdBasedCreditCardWizard.selectCard;
+  globals.functions.setProperty(knowMorePopupWrapper, { visible: false });
+  if (knowMoreClickedIndex !== -1) {
+    IPA_RESPONSE.productDetails?.[knowMoreClickedIndex]?.features.slice(0, -1).forEach(() => {
+      globals.functions.dispatchEvent(knowMoreBenefitsPanel, 'removeItem');
+    });
+  }
+};
+
 export {
   knowMoreCardClickHandler,
   confirmCardClickHandler,
   selectCardBackClickHandler,
   cardSelectHandler,
+  popupBackClickHandler,
 };

@@ -61,6 +61,7 @@ import {
   knowMoreCardClickHandler,
   selectCardBackClickHandler,
   cardSelectHandler,
+  popupBackClickHandler,
 } from './confirmcardutil.js';
 
 import {
@@ -110,4 +111,5 @@ export {
   knowMoreCardClickHandler,
   selectCardBackClickHandler,
   cardSelectHandler,
+  popupBackClickHandler,
 };

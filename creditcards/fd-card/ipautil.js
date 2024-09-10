@@ -39,8 +39,17 @@ const ipa = (payload, showLoader, hideLoader, globals) => {
 const updateData = (globals, productDetail, panel, index) => {
   const { setProperty } = globals.functions;
   const {
-    product, joiningFee = '0', renewalFee = '0', cardLine, keyBenefits = [], productCode,
-  } = productDetail;
+    product,
+    joiningFee = '0',
+    renewalFee = '0',
+    cardLine,
+    keyBenefits = [],
+    productCode,
+  } = {
+    ...productDetail,
+    joiningFee: productDetail.joiningFee || '0',
+    renewalFee: productDetail.renewalFee || '0',
+  };
 
   const properties = [
     { element: panel.cardSelection_display, value: product },
@@ -70,8 +79,17 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
 
   const { setProperty } = globals.functions;
   const {
-    product, joiningFee = '0', renewalFee = '0', cardLine, keyBenefits = [], productCode,
-  } = productDetail;
+    product,
+    joiningFee = '0',
+    renewalFee = '0',
+    cardLine,
+    keyBenefits = [],
+    productCode,
+  } = {
+    ...productDetail,
+    joiningFee: productDetail.joiningFee || '0',
+    renewalFee: productDetail.renewalFee || '0',
+  };
 
   const properties = [
     { element: panel.singleCardName, value: product },
@@ -106,26 +124,29 @@ const ipaSuccessHandler = (response, globals) => {
     eligibleCreditLimitAmount,
     selectCardFaciaPanelMultiple,
     selectCardFaciaPanelSingle,
-    // knowMorePopupWrapper,
+    selectCardHeaderPanel,
   } = selectCard;
-  // globals.functions.setProperty(knowMorePopupWrapper, { visible: false });
   const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
+  const productCount = productDetails.length;
   IPA_RESPONSE.productDetails = productDetails;
   globals.functions.setProperty(eligibleCreditLimitAmount, { value: creditLimit.$value });
-  if (productDetails.length === 1) {
+  if (productCount === 1) {
+    globals.functions.setProperty(selectCardHeaderPanel.selectSuitableCardText, { visible: false });
     globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: false });
+    globals.functions.setProperty(selectCardFaciaPanelSingle, { visible: true });
     bindSingleCardDetails(selectCardFaciaPanelSingle, globals, productDetails[0]);
-  } else if (productDetails.length > 1) {
+  } else if (productCount > 1) {
     globals.functions.setProperty(selectCardFaciaPanelSingle, { visible: false });
-
+    globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: true });
     productDetails.forEach((productDetail, i) => {
-      if (i < productDetails.length - 1) {
+      if (i < productCount - 1) {
         globals.functions.dispatchEvent(selectCardFaciaPanelMultiple, 'addItem');
       }
       setTimeout(() => {
         updateData(globals, productDetail, selectCardFaciaPanelMultiple[i], i);
       }, i * 40);
     });
+    globals.functions.setProperty(selectCardFaciaPanelMultiple[0].cardSelection, { value: 0 });
   }
 };
 
