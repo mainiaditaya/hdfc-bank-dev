@@ -20,6 +20,8 @@ const confirmCardClickHandler = (globals) => {
 
 const knowMoreCardClickHandler = (panel, globals) => {
   console.log(panel, globals);
+  const clickedCtaIndex = globals.field.$parent.$index;
+  const moreFeatures = IPA_RESPONSE?.productDetails?.[clickedCtaIndex]?.features;
 };
 
 const selectCardBackClickHandler = (globals) => {
