@@ -18,10 +18,24 @@ const confirmCardClickHandler = (globals) => {
   }
 };
 
+const setknowMoreBenefitsPanelData = (moreFeatures, knowMoreBenefitsPanel, globals) => {
+  if (!moreFeatures?.length) return;
+  const transformedMoreFeatures = moreFeatures.map((feature) => {
+    const mappedBenefits = {};
+    mappedBenefits.cardBenefitstext = feature;
+    return mappedBenefits;
+  });
+  globals.functions.importData({ items: transformedMoreFeatures }, knowMoreBenefitsPanel.$qualifiedName);
+};
+
 const knowMoreCardClickHandler = (panel, globals) => {
   console.log(panel, globals);
+  const { knowMoreBenefitsPanel } = globals.form.fdBasedCreditCardWizard.selectCard.knowMorePopupWrapper.viewAllCardBenefitsPanel;
+
   const clickedCtaIndex = globals.field.$parent.$index;
   const moreFeatures = IPA_RESPONSE?.productDetails?.[clickedCtaIndex]?.features;
+
+  setknowMoreBenefitsPanelData(moreFeatures, knowMoreBenefitsPanel, globals);
 };
 
 const selectCardBackClickHandler = (globals) => {

@@ -112,10 +112,10 @@ const ipaSuccessHandler = (response, globals) => {
   const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
   IPA_RESPONSE.productDetails = productDetails;
   globals.functions.setProperty(eligibleCreditLimitAmount, { value: creditLimit.$value });
-  if (productDetails.length !== 1) {
+  if (productDetails.length === 1) {
     globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: false });
     bindSingleCardDetails(selectCardFaciaPanelSingle, globals, productDetails[0]);
-  } else if (productDetails.length > 10) {
+  } else if (productDetails.length > 1) {
     globals.functions.setProperty(selectCardFaciaPanelSingle, { visible: false });
 
     productDetails.forEach((productDetail, i) => {

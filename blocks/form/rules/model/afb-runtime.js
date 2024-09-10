@@ -199,10 +199,12 @@ class DataValue {
     $_value;
     $_type;
     $_fields = [];
-    constructor($_name, $_value, $_type = typeof $_value) {
+    parent;
+    constructor($_name, $_value, $_type = typeof $_value, parent) {
         this.$_name = $_name;
         this.$_value = $_value;
         this.$_type = $_type;
+        this.parent = parent;
     }
     valueOf() {
         return this.$_value;
@@ -239,6 +241,9 @@ class DataValue {
     get $isDataGroup() {
         return false;
     }
+    $addDataNode(name, value, override = false) {
+        throw 'add Data Node is called on a data value';
+    }
 }
 const value = Symbol('NullValue');
 class NullDataValueClass extends DataValue {
@@ -269,25 +274,25 @@ class NullDataValueClass extends DataValue {
 const NullDataValue = new NullDataValueClass();
 class DataGroup extends DataValue {
     $_items;
-    createEntry(key, value) {
-        const t = value instanceof Array ? 'array' : typeof value;
+    createEntry(key, value, parent) {
+        const t = Array.isArray(value) ? 'array' : typeof value;
         if (typeof value === 'object' && value != null) {
-            return new DataGroup(key, value, t);
+            return new DataGroup(key, value, t, parent);
         }
         else {
-            return new DataValue(key, value, t);
+            return new DataValue(key, value, t, parent);
         }
     }
-    constructor(_name, _value, _type = typeof _value) {
-        super(_name, _value, _type);
+    constructor(_name, _value, _type = typeof _value, parent) {
+        super(_name, _value, _type, parent);
         if (_value instanceof Array) {
             this.$_items = _value.map((value, index) => {
-                return this.createEntry(index, value);
+                return this.createEntry(index, value, this);
             });
         }
         else {
             this.$_items = Object.fromEntries(Object.entries(_value).map(([key, value]) => {
-                return [key, this.createEntry(key, value)];
+                return [key, this.createEntry(key, value, this)];
             }));
         }
     }
@@ -309,7 +314,7 @@ class DataGroup extends DataValue {
         return Object.entries(this.$_items).length;
     }
     $convertToDataValue() {
-        return new DataValue(this.$name, this.$value, this.$type);
+        return new DataValue(this.$name, this.$value, this.$type, this.parent);
     }
     $addDataNode(name, value, override = false) {
         if (value !== NullDataValue) {
@@ -325,6 +330,7 @@ class DataGroup extends DataValue {
             else {
                 this.$_items[name] = value;
             }
+            value.parent = this;
         }
     }
     $removeDataNode(name) {
@@ -1465,7 +1471,7 @@ class BaseNode {
         }
         return [];
     }
-    _bindToDataModel(contextualDataModel) {
+    bindToDataModel(contextualDataModel) {
         if (this.fieldType === 'form' || this.id === '$form') {
             this._data = contextualDataModel;
             return;
@@ -1527,6 +1533,7 @@ class BaseNode {
             _data?.$bindToField(this);
             this._data = _data;
         }
+        return this._data;
     }
     _data;
     getDataNode() {
@@ -1566,7 +1573,7 @@ class BaseNode {
                 dataNode = parent.getDataNode();
                 parent = parent.parent;
             } while (dataNode === undefined);
-            this._bindToDataModel(dataNode);
+            this.bindToDataModel(dataNode);
         }
     }
     _applyUpdates(propNames, updates) {
@@ -2167,12 +2174,36 @@ class Container extends Scriptable {
     dispatch(action) {
         super.dispatch(action);
     }
-    importData(contextualDataModel) {
-        this._bindToDataModel(contextualDataModel);
-        const dataNode = this.getDataNode() || contextualDataModel;
-        this.syncDataAndFormModel(dataNode);
+    importData(dataModel) {
+        if (typeof this._data !== 'undefined' && this.type === 'array' && Array.isArray(dataModel.items)) {
+            const dataGroup = new DataGroup(this._data.$name, dataModel.items, this._data.$type, this._data.parent);
+            try {
+                this._data.parent?.$addDataNode(dataGroup.$name, dataGroup, true);
+            }
+            catch (e) {
+                this.form.logger.error(`unable to setItems for ${this.qualifiedName} : ${e}`);
+                return;
+            }
+            this._data = dataGroup;
+            const result = this.syncDataAndFormModel(dataGroup);
+            const newLength = this.items.length;
+            result.added.forEach((item) => {
+                this.notifyDependents(propertyChange('items', item.getState(), null));
+                item.dispatch(new Initialize());
+            });
+            for (let i = 0; i < newLength; i += 1) {
+                this._children[i].dispatch(new ExecuteRule());
+            }
+            result.removed.forEach((item) => {
+                this.notifyDependents(propertyChange('items', null, item.getState()));
+            });
+        }
     }
     syncDataAndFormModel(contextualDataModel) {
+        const result = {
+            added: [],
+            removed: []
+        };
         if (contextualDataModel?.$type === 'array' && this._itemTemplate != null) {
             const dataLength = contextualDataModel?.$value.length;
             const itemsLength = this._children.length;
@@ -2182,19 +2213,26 @@ class Container extends Scriptable {
             const items2Remove = Math.min(itemsLength - dataLength, itemsLength - minItems);
             while (items2Add > 0) {
                 items2Add--;
-                const child = this._addChild(this._itemTemplate);
+                const child = this._addChild(this._itemTemplate, this.items.length, true);
                 child._initialize('create');
+                result.added.push(child);
             }
             if (items2Remove > 0) {
-                this._children.splice(dataLength, items2Remove);
                 for (let i = 0; i < items2Remove; i++) {
                     this._childrenReference.pop();
+                    this._children.pop();
                 }
+                result.removed.push(...this._children);
             }
         }
         this._children.forEach(x => {
-            x.importData(contextualDataModel);
+            let dataModel = x.bindToDataModel(contextualDataModel);
+            if (x.isContainer && !dataModel) {
+                dataModel = contextualDataModel;
+            }
+            x.syncDataAndFormModel(dataModel);
         });
+        return result;
     }
     get activeChild() {
         return this._activeChild;
@@ -2653,6 +2691,10 @@ class FunctionRuntimeImpl {
                                     const args = [target];
                                     return FunctionRuntimeImpl.getInstance().getFunctions().validate._func.call(undefined, args, data, interpreter);
                                 },
+                                importData: (inputData, qualifiedName) => {
+                                    const args = [inputData, qualifiedName];
+                                    return FunctionRuntimeImpl.getInstance().getFunctions().importData._func.call(undefined, args, data, interpreter);
+                                },
                                 exportData: () => {
                                     return FunctionRuntimeImpl.getInstance().getFunctions().exportData._func.call(undefined, args, data, interpreter);
                                 },
@@ -2676,7 +2718,7 @@ class FunctionRuntimeImpl {
                                         interpreter.globals.form.resolveQualifiedName(fieldIdentifier)?.markAsInvalid(validationMessage);
                                     }
                                 },
-                                dispatchEvent: (target, eventName, payload) => {
+                                 dispatchEvent: (target, eventName, payload) => {
                                     const args = [target, eventName, payload];
                                     return FunctionRuntimeImpl.getInstance().getFunctions().dispatchEvent._func.call(undefined, args, data, interpreter);
                                 }
@@ -2771,8 +2813,18 @@ class FunctionRuntimeImpl {
             importData: {
                 _func: (args, data, interpreter) => {
                     const inputData = args[0];
-                    if (typeof inputData === 'object' && inputData !== null) {
+                    const qualifiedName = args[1];
+                    if (typeof inputData === 'object' && inputData !== null && !qualifiedName) {
                         interpreter.globals.form.importData(inputData);
+                    }
+                    else {
+                        const field = interpreter.globals.form.resolveQualifiedName(qualifiedName);
+                        if (field?.isContainer) {
+                            field.importData(inputData, qualifiedName);
+                        }
+                        else {
+                            interpreter.globals.form.logger.error('Invalid argument passed in importData. A container is expected');
+                        }
                     }
                     return {};
                 },
@@ -2980,7 +3032,7 @@ class Form extends Container {
             }
         }
         this._ids = IdGenerator();
-        this._bindToDataModel(new DataGroup('$form', {}));
+        this.bindToDataModel(new DataGroup('$form', {}));
         this._initialize(mode);
         if (mode === 'create') {
             this.queueEvent(new FormLoad());
@@ -3010,7 +3062,7 @@ class Form extends Container {
         return this._jsonModel.action;
     }
     importData(dataModel) {
-        this._bindToDataModel(new DataGroup('$form', dataModel));
+        this.bindToDataModel(new DataGroup('$form', dataModel));
         this.syncDataAndFormModel(this.getDataNode());
         this._eventQueue.runPendingQueue();
     }
@@ -3366,7 +3418,7 @@ class Fieldset extends Container {
         return super.items;
     }
     get value() {
-        return null;
+        return this.getDataNode()?.$value;
     }
     get fieldType() {
         return 'panel';
@@ -4051,9 +4103,7 @@ class Field extends Scriptable {
         }
         return this.valid ? [] : [new ValidationError(this.id, [this._jsonModel.errorMessage])];
     }
-    importData(contextualDataModel) {
-        this._bindToDataModel(contextualDataModel);
-        const dataNode = this.getDataNode();
+    syncDataAndFormModel(dataNode) {
         if (dataNode !== undefined && dataNode !== NullDataValue && dataNode.$value !== this._jsonModel.value) {
             const changeAction = propertyChange('value', dataNode.$value, this._jsonModel.value);
             this._jsonModel.value = dataNode.$value;
@@ -4226,9 +4276,7 @@ class FileUpload extends Field {
         const filesInfo = await processFiles(val instanceof Array ? val : [val]);
         return filesInfo;
     }
-    importData(dataModel) {
-        this._bindToDataModel(dataModel);
-        const dataNode = this.getDataNode();
+    syncDataAndFormModel(dataNode) {
         if (dataNode !== undefined && dataNode !== NullDataValue) {
             const value = dataNode?.$value;
             if (value != null) {
@@ -4415,7 +4463,10 @@ class FormFieldFactoryImpl {
                     fieldType: child.fieldType,
                     type: 'array',
                     name: child.name,
-                    dataRef: child.dataRef
+                    dataRef: child.dataRef,
+                    events: {
+                        'custom:setProperty': '$event.payload'
+                    }
                 },
                 ...{
                     'items': [newChild]
@@ -4485,7 +4536,7 @@ const restoreFormInstance = (formModel, data = null, { logLevel } = defaultOptio
     try {
         const form = new Form({ ...formModel }, FormFieldFactory, new RuleEngine(), new EventQueue(new Logger(logLevel)), logLevel, 'restore');
         if (data) {
-            form._bindToDataModel(new DataGroup('$form', data));
+            form.bindToDataModel(new DataGroup('$form', data));
             form.syncDataAndFormModel(form.getDataNode());
         }
         form.getEventQueue().empty();
