@@ -1866,17 +1866,22 @@ main {
                   .panel-wrapper {
                       padding: 24px;
                       border: solid 1px var(--color-interface-border-secondary);
-                      border-radius: 16px;
-                  }
+                      border-radius: 16px;                      
+                }
   
                   .radio-wrapper.field-cardselection {
                       flex-direction: row-reverse;
   
                       label {
-                          font-size: var(--body-fd-x-lg-font-size) !important;
-                          font-weight: var(--font-weight-bold) !important;
-                          color: var(--color-interface-text-primary) !important;
+                          display: none;                          
                       }
+                  }
+
+                  .field-cardselection-display {
+                        font-size: var(--body-fd-x-lg-font-size) !important;
+                        font-weight: var(--font-weight-bold) !important;
+                        color: var(--color-interface-text-primary) !important;
+                        margin-top: -50px;
                   }
   
                   .field-cardtagline { margin-top: -20px; 
@@ -1899,10 +1904,23 @@ main {
                     font-size: var(--body-x-sm-font-size);
                     font-weight: var(--font-weight-regular);
                     color: var(--color-interface-background-quaternary);
+                    padding-left: 25px;
                   }    
                   
                   .field-cardfeatures2, .field-cardfeatures3  {
                     margin-top: -15px;
+                  }
+
+                  .field-cardfeatures1 {
+                    background: url('/content/dam/fd-lien/moneybank.svg') no-repeat;
+                  }
+
+                  .field-cardfeatures2 {
+                    background: url('/content/dam/fd-lien/shieldtick.svg') no-repeat;
+                  }
+
+                  .field-cardfeatures3 {
+                    background: url('/content/dam/fd-lien/folderopen.svg') no-repeat;
                   }
 
                   .field-knowmorelink {
