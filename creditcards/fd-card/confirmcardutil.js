@@ -1,8 +1,10 @@
 import { getUrlParamCaseInsensitive } from '../../common/formutils.js';
 import { IPA_RESPONSE } from './ipautil.js';
 
-let selectedCardIndex = -1;
-let knowMoreClickedIndex = -1;
+const confirmCardState = {
+  selectedCardIndex: -1,
+  knowMoreClickedIndex: -1,
+};
 
 /**
  *
@@ -31,8 +33,8 @@ const knowMoreCardClickHandler = (globals) => {
   const { knowMoreBenefitsPanel } = globals.form.fdBasedCreditCardWizard.selectCard.knowMorePopupWrapper.viewAllCardBenefitsPanel;
   const { knowMorePopupWrapper } = globals.form.fdBasedCreditCardWizard.selectCard;
 
-  knowMoreClickedIndex = (IPA_RESPONSE?.productDetails?.length > 1) ? globals.field.$parent.$index : 0;
-  const moreFeatures = IPA_RESPONSE?.productDetails?.[knowMoreClickedIndex]?.features;
+  confirmCardState.knowMoreClickedIndex = (IPA_RESPONSE?.productDetails?.length > 1) ? globals.field.$parent.$index : 0;
+  const moreFeatures = IPA_RESPONSE?.productDetails?.[confirmCardState.knowMoreClickedIndex]?.features;
   setknowMoreBenefitsPanelData(moreFeatures, knowMoreBenefitsPanel, globals);
 
   globals.functions.setProperty(knowMorePopupWrapper, { visible: true });
@@ -40,7 +42,7 @@ const knowMoreCardClickHandler = (globals) => {
 
 const selectCardBackClickHandler = (globals) => {
   const { selectCardFaciaPanelMultiple } = globals.form.fdBasedCreditCardWizard.selectCard;
-  selectedCardIndex = -1;
+  confirmCardState.selectedCardIndex = -1;
   if (IPA_RESPONSE.productDetails.length > 1) {
     IPA_RESPONSE.productDetails.slice(0, -1).forEach(() => {
       globals.functions.dispatchEvent(selectCardFaciaPanelMultiple, 'removeItem');
@@ -50,13 +52,13 @@ const selectCardBackClickHandler = (globals) => {
 };
 
 const cardSelectHandler = (cardsPanel, globals) => {
-  if (selectedCardIndex !== -1) {
-    globals.functions.setProperty(cardsPanel[selectedCardIndex].cardSelection, { value: undefined });
+  if (confirmCardState.selectedCardIndex !== -1) {
+    globals.functions.setProperty(cardsPanel[confirmCardState.selectedCardIndex].cardSelection, { value: undefined });
     setTimeout(() => {
-      selectedCardIndex = cardsPanel.findIndex((item) => item.cardSelection._data.$value === '0');
+      confirmCardState.selectedCardIndex = cardsPanel.findIndex((item) => item.cardSelection._data.$value === '0');
     }, 50);
   } else {
-    selectedCardIndex = cardsPanel.findIndex((item) => item.cardSelection._data.$value === '0');
+    confirmCardState.selectedCardIndex = cardsPanel.findIndex((item) => item.cardSelection._data.$value === '0');
   }
 };
 
@@ -64,8 +66,8 @@ const popupBackClickHandler = (globals) => {
   const { knowMoreBenefitsPanel } = globals.form.fdBasedCreditCardWizard.selectCard.knowMorePopupWrapper.viewAllCardBenefitsPanel;
   const { knowMorePopupWrapper } = globals.form.fdBasedCreditCardWizard.selectCard;
   globals.functions.setProperty(knowMorePopupWrapper, { visible: false });
-  if (knowMoreClickedIndex !== -1) {
-    IPA_RESPONSE.productDetails?.[knowMoreClickedIndex]?.features.slice(0, -1).forEach(() => {
+  if (confirmCardState.knowMoreClickedIndex !== -1) {
+    IPA_RESPONSE.productDetails?.[confirmCardState.knowMoreClickedIndex]?.features.slice(0, -1).forEach(() => {
       globals.functions.dispatchEvent(knowMoreBenefitsPanel, 'removeItem');
     });
   }
