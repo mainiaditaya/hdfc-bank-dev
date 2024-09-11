@@ -139,7 +139,7 @@ const bindCustomerDetails = (globals) => {
   * start
   */
 
-  customerInfo.currentAddress = 'North Oakwood North|test addres, rwqrrweq, werewrwer||560102|Bengaluru|Karnataka';
+  customerInfo.currentAddress = 'North Oakwood North|North||560102|Bengaluru|Karnataka';
 
   /*
   * Hardcoded value for address parsing development
