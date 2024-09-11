@@ -9,8 +9,10 @@ const createExecuteInterfaceRequest = (payload, globals) => {
     customerInfo, journeyID, customerAddress,
   } = CURRENT_FORM_CONTEXT;
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
-  const { personalDetails, addressDetails } = reviewDetailsView;
-
+  const {
+    personalDetails, addressDetails, employeeAssistance, employmentDetails,
+  } = reviewDetailsView;
+  const { employeeAssistancePanel } = employeeAssistance;
   const addressEditFlag = addressDetails?.mailingAddressToggle?.$value !== 'on';
 
   function getAddress(source) {
@@ -49,18 +51,18 @@ const createExecuteInterfaceRequest = (payload, globals) => {
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag || CURRENT_FORM_CONTEXT?.editFlags?.addressEdit ? 'Y' : 'N',
-      annualIncomeOrItrAmount: '',
+      annualIncomeOrItrAmount: reviewDetailsView.employmentDetails.annualIncome._data.$_value || '',
       annualItr: '',
       applyingBranch: 'N',
       apsDobEditFlag: customerInfo?.datBirthCust ? 'N' : 'Y',
       apsEmailEditFlag,
       authMode: '',
       bankEmployee: 'N',
-      branchCity: '',
-      branchName: '',
+      branchCity: employeeAssistancePanel.branchCity._data.$_value || '',
+      branchName: employeeAssistancePanel.branchName._data.$_value || '',
       CCAD_Relationship_number: '',
       cardsData: '',
-      channel: '',
+      channel: employeeAssistancePanel.channel._data.$_value || '',
       channelSource: '',
       communicationAddress1: communicationAddress?.line1,
       communicationAddress2: communicationAddress?.line2,
@@ -76,14 +78,14 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
       departmentOrEmpCode: '',
       designation: '',
-      dsaValue: '',
-      dseCode: '',
+      dsaValue: employeeAssistancePanel.dsaName._data.$_value || '',
+      dseCode: employeeAssistancePanel.dsaCode._data.$_value,
       eReferenceNumber: CURRENT_FORM_CONTEXT.referenceNumber,
       filler6: '',
       firstName: customerInfo.customerFirstName,
       fullName: customerInfo?.customerFullName,
-      // gender: personalDetails.gender._data.$_value,
-      gender: '1',
+      gender: personalDetails.gender._data.$_value,
+      // gender: '1',
       isManualFlow: 'false',
       journeyFlag: 'ETB',
       journeyID,
@@ -91,14 +93,14 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       lastName: customerInfo.customerLastName,
       leadClosures: '',
       leadGenerater: '',
-      lc2: '',
+      lc2: employeeAssistancePanel.lc2Code._data.$_value || '',
       middleName: customerInfo.customerMiddleName,
       mobileEditFlag: 'N',
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
       monthlyincome: '',
       nameEditFlag: personalDetails?.fathersFullName?.$value?.length > 0 ? 'Y' : 'N',
       nameOnCard,
-      occupation: '1',
+      occupation: employmentDetails.employmentType._data.$_value || '1',
       officialEmailId: '',
       officeAddress1: '',
       officeAddress2: '',
@@ -121,7 +123,7 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       productCode: '',
       resPhoneEditFlag: 'N',
       selfConfirmation: 'Y',
-      smCode: '',
+      smCode: employeeAssistancePanel.smCode._data.$_value || '',
       timeInfo: new Date().toISOString(),
     },
   };

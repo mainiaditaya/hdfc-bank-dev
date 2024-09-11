@@ -93,7 +93,7 @@ const bindEmployeeAssistanceField = async (globals) => {
  * @param {Object} globals - The global context object containing various information.
  */
 const bindCustomerDetails = (globals) => {
-  // if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  if (!CUSTOMER_DATA_BINDING_CHECK) return;
   CURRENT_FORM_CONTEXT.editFlags = {
     nameOnCard: true,
     addressEdit: false,
@@ -111,7 +111,7 @@ const bindCustomerDetails = (globals) => {
   bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-  const genderMap = { Male: '0', Female: '1', Others: '3' };
+  const genderMap = { Male: '1', Female: '2', Others: 'T' };
   const occupationMap = {
     salaried: '1',
     'self employed': '2',
