@@ -111,7 +111,7 @@ const bindCustomerDetails = (globals) => {
   bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-  const genderMap = { Male: '1', Female: '2', Others: 'T' };
+  const genderMap = { Male: '1', Female: '2', Others: '3' };
   const occupationMap = {
     salaried: '1',
     'self employed': '2',
