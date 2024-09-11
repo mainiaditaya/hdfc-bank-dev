@@ -1866,7 +1866,8 @@ main {
                   .panel-wrapper {
                       padding: 24px;
                       border: solid 1px var(--color-interface-border-secondary);
-                      border-radius: 16px;                      
+                      border-radius: 16px;
+                      position: relative;                  
                 }
   
                   .radio-wrapper.field-cardselection {
@@ -1881,7 +1882,9 @@ main {
                         font-size: var(--body-fd-x-lg-font-size) !important;
                         font-weight: var(--font-weight-bold) !important;
                         color: var(--color-interface-text-primary) !important;
-                        margin-top: -50px;
+                        position: absolute;
+                        left: 25px;
+                        top: 18px;
                   }
   
                   .field-cardtagline { margin-top: -20px; 
@@ -1943,6 +1946,12 @@ main {
                       border: solid 1px;
                       grid-template-columns: auto 89px;
                       background-color: var(--color-interface-background-quinary);
+                      
+                      &::after {
+                        content: '';
+                        display: block;
+                        clear: both;
+                      }
   
                       label {
                           align-content: center;
@@ -1984,84 +1993,83 @@ main {
   
                       input { height: 32px !important; }
                   }
-              }
-  
-              .field-viewallcardbenefitspanel::backdrop {
-                  background-color: rgb(0 0 0 / 50%);
-              }
+              }              
+          }
 
-              .field-knowmorepopupwrapper {
-                border: none !important;
-                border-radius: 0 !important;
-                position: fixed;
-                z-index: 99999;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
+          /* Know More Popup */
+          .field-viewallcardbenefitspanel::backdrop {
+            background-color: rgb(0 0 0 / 50%);
+          }
 
-                /* display: grid; */
-                display: none;
-                background-color: var(--color-interface-popup-background);
-  
-                .field-viewallcardbenefitspanel {
-                  border: none !important;
-                  background-color: var(--color-interface-background-primary);
-                  border-radius: 8px;
-                  padding: 10px 12px;
-                  max-width: 608px;
-                  width: 100%;
-                  position: absolute;
-                  top: 2%;
-                  justify-self: center;
-                  text-align: center;
-                  box-sizing: border-box;
-  
-                  .field-backlinkcardbenefits {
-                    button {
-                      max-width: 100% !important;
-                      border-radius: 6px;
-                      background: var(--color-interface-background-quinary);
-                      color: var(--color-interface-background-quaternary);
-                      text-align: left;
-                      padding: 0 0 0 20px;
-                      font-size: var(--body-fd-x-lg-font-size);
-                      font-weight: var(--font-weight-medium);
-  
-                      &::before {
-                        content: '';
-                        background: url('../icons/left-arrow.png') no-repeat;
-                        padding: 0 0 0 20px;
-                        vertical-align: middle;
-                      }
-  
-                      &::after {
-                        content: unset !important;
-                      }
-  
-                      &:hover {
-                        background: var(--color-interface-background-quinary) !important;
-                      }
-                    }
+          .field-knowmorepopupwrapper {
+            border: none !important;
+            border-radius: 0 !important;
+            position: fixed;
+            z-index: 99999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            display: grid;
+            background-color: var(--color-interface-popup-background);
+
+            .field-viewallcardbenefitspanel {
+              border: none !important;
+              background-color: var(--color-interface-background-primary);
+              border-radius: 8px;
+              padding: 10px 12px;
+              max-width: 608px;
+              width: 100%;
+              position: absolute;
+              top: 2%;
+              justify-self: center;
+              text-align: center;
+              box-sizing: border-box;
+
+              .field-backlinkcardbenefits {
+                button {
+                  max-width: 100% !important;
+                  border-radius: 6px;
+                  background: var(--color-interface-background-quinary);
+                  color: var(--color-interface-background-quaternary);
+                  text-align: left;
+                  padding: 0 0 0 20px;
+                  font-size: var(--body-fd-x-lg-font-size) !important;
+                  font-weight: var(--font-weight-medium);
+
+                  &::before {
+                    content: '';
+                    background: url('../icons/left-arrow.png') no-repeat;
+                    padding: 0 0 0 20px;
+                    vertical-align: sub;
                   }
-  
-                  .field-cardbenefitstext {
-                      text-align: left;
-  
-                      p {
-                        font-size: var(--body-fd-md-font-size);
-                        color: var(--color-input-text-primary);
-                        line-height: var(--font-linehight-large);
-                        margin: 0;
-                      }
-  
-                      b {
-                        color: var(--color-input-text-default);
-                      }
+
+                  &::after {
+                    content: unset !important;
+                  }
+
+                  &:hover {
+                    background: var(--color-interface-background-quinary) !important;
                   }
                 }
               }
+
+              .field-cardbenefitstext {
+                  text-align: left;
+
+                  p {
+                    font-size: var(--body-fd-md-font-size);
+                    color: var(--color-input-text-primary);
+                    line-height: var(--font-linehight-large);
+                    margin: 0;
+                  }
+
+                  b {
+                    color: var(--color-input-text-default);
+                  }
+              }
+            }
           }
   
           /* Single Card */
@@ -2151,6 +2159,7 @@ main {
   
           .field-selectcardtnc {
               margin-top: 5px;
+              position: relative;
   
               legend {
                   font-weight: var(--font-weight-bold);
@@ -2172,6 +2181,27 @@ main {
                       margin: 0;
                       color: var(--color-action-text-secondary-default);
                   }
+              }
+
+              .field-confirmcardtnc1, .field-confirmcardtnc2, .field-confirmcardtnc3 {
+                .field-description {
+                    position: absolute;
+                    top: 40px;
+                    left: 35px;
+                }
+              }
+
+              .field-confirmcardtnc2 {
+                .field-description {
+                    top: 85px;
+                }
+              }
+
+              .field-confirmcardtnc3 {
+                .field-description {
+                    top: 110px;
+                    left: 30%;
+                }
               }
           }
       }
@@ -2776,6 +2806,47 @@ main {
             }
         }
 
+        .field-selectcard {
+            .field-selectcardfaciapanelmultiple {
+                margin-top: 25px;
+
+                .repeat-wrapper {
+                    .field-cardselection-display {
+                        margin-top: 0 !important;
+                    }
+
+                    .field-cardtagline {
+                        margin-top: -15px !important;
+                    }
+                }
+            }
+
+            .field-selectcardtnc {
+                .field-confirmcardtnc1 {
+                    .field-description {
+                        top: 65px !important;
+                    }                    
+                }
+
+                .field-confirmcardtnc2 {
+                    .field-description {
+                        top: 110px !important;
+                    }                    
+                }
+
+                .field-confirmcardtnc3 {
+                    .field-description {
+                        top: 130px !important;
+                        left: 47% !important;
+                    }                    
+                }
+            }
+
+            .field-selectidentifier {
+                width: 27%;
+            }
+        }
+
         .field-error2colresultpanel {    
             .field-errorctapanel {  
                 margin: -80px 20px 0 !important;
@@ -3291,7 +3362,60 @@ main {
        .field-basicdetails .field-detailssectionlabel1 p, .field-cardsforyoutitle p {
             margin-bottom: 15px !important;
         }
-    }
+
+        .field-selectcard {
+            .field-selectcardfaciapanelmultiple {
+                margin-top: 25px;
+
+                .repeat-wrapper {
+                    overflow-x: scroll !important;
+                    width: 27%;
+
+                    .field-cardselection-display {
+                        margin-top: 5px !important;
+                    }
+
+                    .field-cardtagline {
+                        margin-top: 20px !important;
+                        margin-bottom: 10px !important;
+                    }
+
+                    .field-cardfeatures2, .field-cardfeatures3 {
+                        margin-top: 0 !important;
+                    }
+                }
+            }
+
+            .field-selectcardtnc {
+                width: 27%;
+
+                .field-confirmcardtnc1 {
+                    .field-description {
+                        top: 85px !important;
+                    }                    
+                }
+
+                .field-confirmcardtnc2 {
+                    .field-description {
+                        top: 150px !important;
+                    }                    
+                }
+
+                .field-confirmcardtnc3 {
+                    .field-description {
+                        top: 190px !important;
+                        left: 35px !important;
+                    }                    
+                }
+            }
+
+            .field-selectidentifier {
+                width: 27%;
+            }
+        }
+    }   
+
+    
   
     .fdlien .field-selectkycoptionspanel div[class*='field-identityverificationtext'] { margin-top: 0 !important; }
 
