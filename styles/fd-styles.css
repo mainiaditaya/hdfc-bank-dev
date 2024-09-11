@@ -1946,12 +1946,6 @@ main {
                       border: solid 1px;
                       grid-template-columns: auto 89px;
                       background-color: var(--color-interface-background-quinary);
-                      
-                      &::after {
-                        content: '';
-                        display: block;
-                        clear: both;
-                      }
   
                       label {
                           align-content: center;
@@ -2488,6 +2482,31 @@ main {
     }
 
     .field-currentresidenceaddressdeclaration { margin-top: 0 !important; }
+  }
+
+  /* Terms & Condtion Address Declaration Panel */
+
+  .field-tncaadhaarnomobmatchlabel {
+        p {
+            margin-bottom: 0 !important;
+
+            p {
+                font-size: var(--body-fd-xx-lg-font-size) !important;
+                font-weight: var(--font-weight-bold);
+                color: var(--color-interface-background-quaternary) !important;
+            }
+        }
+        
+  }
+
+  .field-tncaadhaarnomobmatch {    
+    margin-top: 0 !important;
+    width: 88%;
+
+    label {
+        font-size: var(--body-fd-sm-font-size) !important;
+        font-weight: var(--font-weight-regular) !important; 
+    }
   }
 
   /* Aadhar Consent Popup */
