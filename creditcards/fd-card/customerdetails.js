@@ -7,11 +7,14 @@ import {
   urlPath,
   getUrlParamCaseInsensitive,
   ageValidator,
+  parseCustomerAddress,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
 import {
   FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
+  MAX_ADDRESS_LENGTH,
+  MIN_ADDRESS_LENGTH,
 } from './constant.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
@@ -90,7 +93,19 @@ const bindEmployeeAssistanceField = async (globals) => {
  * @param {Object} globals - The global context object containing various information.
  */
 const bindCustomerDetails = (globals) => {
-  if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  // if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  CURRENT_FORM_CONTEXT.editFlags = {
+    nameOnCard: true,
+    addressEdit: false,
+  };
+  CURRENT_FORM_CONTEXT.customerAddress = {
+    addressLine1: '',
+    addressLine2: '',
+    addressLine3: '',
+    city: '',
+    pincode: '',
+    state: '',
+  };
   CUSTOMER_DATA_BINDING_CHECK = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   bindEmployeeAssistanceField(globals);
@@ -118,7 +133,50 @@ const bindCustomerDetails = (globals) => {
     const formattedPan = customerInfo.refCustItNum.replace(/([A-Za-z])(\d)|(\d)([A-Za-z])/g, '$1$3 $2$4');
     if (formattedPan !== '') setFormValue(personalDetails.panNumberPersonalDetails, formattedPan);
   }
-  setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.currentAddress);
+
+  /*
+  * Hardcoded value for address parsing development
+  * start
+  */
+
+  // customerInfo.currentAddress = '233 North Oakwood 1232-21 North| test addres 123, rwqrrweq, werewrwer||560102|Bengaluru|Karnataka';
+
+  /*
+  * Hardcoded value for address parsing development
+  * end
+  */
+
+  const [address = '', cityDetails = ''] = customerInfo.currentAddress.split('||');
+  const [pincode = '', city = '', state = ''] = cityDetails.split('|');
+  const cleanAddress = address.replace(/\|/g, ' ');
+
+  let formattedCustomerAddress = '';
+  let parsedAddress = [];
+
+  if (cleanAddress.length > MAX_ADDRESS_LENGTH) {
+    parsedAddress = parseCustomerAddress(cleanAddress);
+  } else if (cleanAddress.length < MIN_ADDRESS_LENGTH) {
+    const addressArray = cleanAddress.trim().split(' ');
+    parsedAddress = [
+      addressArray.slice(0, -1).join(' '),
+      addressArray.slice(-1)[0],
+    ];
+  }
+
+  if (parsedAddress.length) {
+    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = parsedAddress;
+    Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
+    formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
+    CURRENT_FORM_CONTEXT.editFlags.addressEdit = true;
+  } else {
+    formattedCustomerAddress = `${cleanAddress}, ${pincode}, ${city}, ${state}`;
+    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address.split('|');
+    Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
+  }
+
+  Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { city, pincode, state });
+
+  setFormValue(addressDetails.prefilledMailingAdddress, formattedCustomerAddress);
   const emailIDUtil = formUtil(globals, personalDetails.emailID);
   emailIDUtil.setValue(customerInfo.refCustEmail, { attrChange: true, value: false });
   if (customerInfo.currentAddress.length === 0) {
@@ -136,7 +194,7 @@ const bindCustomerDetails = (globals) => {
 
     globals.functions.setProperty(personalDetails.nameOnCard, { visible: false });
     globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: true });
-
+    CURRENT_FORM_CONTEXT.editFlags.nameOnCard = false;
     if (hasNoMiddleOrLastName) {
       globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
     }
@@ -293,7 +351,7 @@ const fathersNameChangeHandler = (globals) => {
 
   globals.functions.setProperty(personalDetails.nameOnCard, { visible: nameOnCardVisible });
   globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: !nameOnCardVisible });
-
+  CURRENT_FORM_CONTEXT.editFlags.nameOnCard = nameOnCardVisible;
   if (nameOnCardVisible) {
     formUtil(globals, personalDetails.nameOnCard).setValue(customerFullName, { attrChange: true, value: false, disable: true });
   } else {

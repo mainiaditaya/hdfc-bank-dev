@@ -2,34 +2,58 @@ import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { JOURNEY_NAME, FD_ENDPOINTS } from './constant.js';
+import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 
 const createExecuteInterfaceRequest = (payload, globals) => {
-  const { customerInfo, journeyID } = CURRENT_FORM_CONTEXT;
+  const {
+    customerInfo, journeyID, customerAddress,
+  } = CURRENT_FORM_CONTEXT;
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const { personalDetails, addressDetails } = reviewDetailsView;
-  let communicationAddress1 = customerInfo?.communicationAddress1;
-  let communicationAddress2 = customerInfo?.communicationAddress2;
-  let communicationAddress3 = customerInfo?.communicationAddress3;
-  let communicationCity = customerInfo?.communicationCity;
-  let communicationState = customerInfo?.communicationState;
-  let comCityZip = customerInfo?.comCityZip;
-  const addressEditFlag = addressDetails?.mailingAddressToggle?.$value === 'on' ? 'N' : 'Y';
-  if (addressEditFlag === 'Y') {
-    communicationAddress1 = addressDetails.newCurentAddressPanel.newCurrentAddressLine1.$value || '';
-    communicationAddress2 = addressDetails.newCurentAddressPanel.newCurrentAddressLine2.$value || '';
-    communicationAddress3 = addressDetails.newCurentAddressPanel.newCurrentAddressLine3.$value || '';
-    communicationCity = addressDetails.newCurentAddressPanel.newCurentAddressCity.$value;
-    communicationState = addressDetails.newCurentAddressPanel.newCurentAddressState.$value;
-    comCityZip = addressDetails.newCurentAddressPanel.newCurentAddressPin.$value;
+
+  const addressEditFlag = addressDetails?.mailingAddressToggle?.$value !== 'on';
+
+  function getAddress(source) {
+    return {
+      line1: source?.addressLine1 || '',
+      line2: source?.addressLine2 || '',
+      line3: source?.addressLine3 || '',
+      city: source?.city || '',
+      state: source?.state || '',
+      zip: source?.pincode || source?.comCityZip || '',
+    };
+  }
+
+  let communicationAddress = getAddress(customerAddress);
+  const permanentAddress = getAddress(customerAddress);
+
+  if (addressEditFlag) {
+    const newAddressPanel = addressDetails.newCurentAddressPanel;
+    communicationAddress = {
+      line1: newAddressPanel.newCurrentAddressLine1.$value || '',
+      line2: newAddressPanel.newCurrentAddressLine2.$value || '',
+      line3: newAddressPanel.newCurrentAddressLine3.$value || '',
+      city: newAddressPanel.newCurentAddressCity.$value,
+      state: newAddressPanel.newCurentAddressState.$value,
+      zip: newAddressPanel.newCurentAddressPin.$value,
+    };
+  }
+  let apsEmailEditFlag = 'N';
+  if (customerInfo?.refCustEmail !== personalDetails.emailID.$value) {
+    apsEmailEditFlag = 'Y';
+  }
+  let nameOnCard = personalDetails.nameOnCard?.$value?.toUpperCase();
+  if (!CURRENT_FORM_CONTEXT?.editFlags?.nameOnCard) {
+    nameOnCard = personalDetails.nameOnCardDD?.$value?.toUpperCase();
   }
   const request = {
     requestString: {
-      addressEditFlag,
+      addressEditFlag: addressEditFlag || CURRENT_FORM_CONTEXT?.editFlags?.addressEdit ? 'Y' : 'N',
       annualIncomeOrItrAmount: '',
       annualItr: '',
       applyingBranch: 'N',
-      apsDobEditFlag: 'N',
-      apsEmailEditFlag: 'N',
+      apsDobEditFlag: customerInfo?.datBirthCust ? 'N' : 'Y',
+      apsEmailEditFlag,
       authMode: '',
       bankEmployee: 'N',
       branchCity: '',
@@ -38,17 +62,17 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       cardsData: '',
       channel: '',
       channelSource: '',
-      communicationAddress1: communicationAddress1 || 'Address line 1',
-      communicationAddress2: communicationAddress2 || 'Address line 2',
-      communicationAddress3: communicationAddress3 || 'Address line 3',
-      communicationCity: communicationCity || 'Bengaluru',
-      communicationState: communicationState || 'Karnataka',
+      communicationAddress1: communicationAddress?.line1,
+      communicationAddress2: communicationAddress?.line2,
+      communicationAddress3: communicationAddress?.line3,
+      communicationCity: communicationAddress?.city,
+      communicationState: communicationAddress?.state,
       comAddressType: '2',
-      comCityZip: comCityZip || '560102',
+      comCityZip: communicationAddress?.zip,
       comResidenceType: '2',
       companyName: '',
-      // customerID: SELECTED_CUSTOMER_ID.selectedCustId.customerId,
-      customerID: '',
+      customerID: SELECTED_CUSTOMER_ID?.selectedCustId?.customerID,
+      // customerID: '',
       dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
       departmentOrEmpCode: '',
       designation: '',
@@ -58,6 +82,7 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       filler6: '',
       firstName: customerInfo.customerFirstName,
       fullName: customerInfo?.customerFullName,
+      // gender: personalDetails.gender._data.$_value,
       gender: '1',
       isManualFlow: 'false',
       journeyFlag: 'ETB',
@@ -72,9 +97,9 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
       monthlyincome: '',
       nameEditFlag: personalDetails?.fathersFullName?.$value?.length > 0 ? 'Y' : 'N',
-      nameOnCard: 'RANJIT SO VIJAY',
+      nameOnCard,
       occupation: '1',
-      officialEmailId: 'deepak.bisht@hdfcbank.com',
+      officialEmailId: '',
       officeAddress1: '',
       officeAddress2: '',
       officeAddress3: '',
@@ -82,15 +107,15 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       officeState: '',
       officeZipCode: '',
       panCheckFlag: 'Y',
-      panEditFlag: 'N',
+      panEditFlag: customerInfo?.refCustItNum ? 'N' : 'Y',
       panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),
-      permanentAddress1: 'I THINK LODHA FLAT NO 93',
-      permanentAddress2: 'COURTYARD MUMBAI',
-      permanentAddress3: '',
+      permanentAddress1: permanentAddress?.line1,
+      permanentAddress2: permanentAddress?.line2,
+      permanentAddress3: permanentAddress?.line3,
+      permanentCity: permanentAddress?.city,
+      permanentState: permanentAddress?.state,
+      permanentZipCode: permanentAddress?.zip,
       perAddressType: '2',
-      permanentCity: 'Mumbai',
-      permanentState: 'MAHARASHTRA',
-      permanentZipCode: '400042',
       perfiosTxnID: '',
       personalEmailId: personalDetails?.emailID.$value,
       productCode: '',
