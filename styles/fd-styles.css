@@ -1867,7 +1867,8 @@ main {
                       padding: 24px;
                       border: solid 1px var(--color-interface-border-secondary);
                       border-radius: 16px;
-                      position: relative;                  
+                      position: relative;
+                      display: flex;            
                 }
   
                   .radio-wrapper.field-cardselection {
