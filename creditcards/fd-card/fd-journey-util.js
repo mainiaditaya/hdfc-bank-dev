@@ -1,9 +1,10 @@
 import { FD_ENDPOINTS, JOURNEY_NAME } from './constant.js';
-import { CHANNEL } from '../../common/constants.js';
+import { CHANNEL, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import createJourneyId from '../../common/journey-utils.js';
 import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { moveWizardView } from '../domutils/domutils.js';
+import { journeyResponseHandlerUtil } from './common-journeyutil.js';
 /**
    * @name invokeJourneyDropOff to log on success and error call backs of api calls
    * @param {state} state
@@ -35,6 +36,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
   };
   const url = urlPath(FD_ENDPOINTS.journeyDropOff);
   const method = 'POST';
+
   // return globals.functions.exportData().queryParams.leadId ? fetchJsonResponse(url, journeyJSONObj, method) : null;
   return journeyJSONObj.RequestPayload.formData.journeyID ? fetchJsonResponse(url, journeyJSONObj, method) : null;
 };
@@ -53,8 +55,21 @@ const errorScreenHandler = () => {
   console.log('hide loader');
 };
 
+/**
+ * @name journeyResponseHandler
+ * @param {object} payload.
+ */
+const journeyResponseHandler = (payload, globals) => {
+  CURRENT_FORM_CONTEXT.leadProfile = journeyResponseHandlerUtil(String(payload.leadProfileId), CURRENT_FORM_CONTEXT)?.leadProfile;
+  // eslint-disable-next-line no-restricted-globals
+  self.leadProfileId = payload.leadProfileId;
+  globals.functions.setProperty(globals.form.runtime.leadid, { value: payload.leadProfileId });
+  console.log(payload.leadProfileId);
+};
+
 export {
   invokeJourneyDropOff,
   fdWizardSwitch,
   errorScreenHandler,
+  journeyResponseHandler,
 };

@@ -12,6 +12,7 @@ import {
 import {
   invokeJourneyDropOff,
   fdWizardSwitch,
+  journeyResponseHandler,
 } from './fd-journey-util.js';
 
 import {
@@ -31,6 +32,8 @@ import {
 } from '../../common/functions.js';
 
 import createJourneyId from '../../common/journey-utils.js';
+
+import docUploadClickHandler from './docuploadutil.js';
 
 import {
   addGaps,
@@ -112,4 +115,6 @@ export {
   selectCardBackClickHandler,
   cardSelectHandler,
   popupBackClickHandler,
+  docUploadClickHandler,
+  journeyResponseHandler,
 };
