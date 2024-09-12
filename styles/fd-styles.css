@@ -1888,12 +1888,10 @@ main {
                         top: 18px;
                   }
   
-                  .field-cardtagline { margin-top: -20px; 
+                  .field-cardtagline {
+                      min-height: 11px;
+                      margin-bottom: 20px;
                       p { font-size: var(--body-fd-md-font-size); }
-                  }
-
-                  .field-cardtagline:has(p:empty) {
-                    display: none;
                   }
 
                   .field-cardfeatures1:has(p:empty), .field-cardfeatures2:has(p:empty), .field-cardfeatures3:has(p:empty) {
@@ -1945,7 +1943,8 @@ main {
                       input { 
                           width: 89px; 
                           height: 36px !important;
-                          padding: 0;
+                          text-align: right;
+                          padding-right: 20px;
                           margin: 0;
                           border-radius: 0 12px 12px 0 !important;
                           border: none;
@@ -2817,10 +2816,6 @@ main {
                 .repeat-wrapper {
                     .field-cardselection-display {
                         margin-top: 0 !important;
-                    }
-
-                    .field-cardtagline {
-                        margin-top: -15px !important;
                     }
                 }
             }
