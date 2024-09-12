@@ -1868,7 +1868,7 @@ main {
                       border: solid 1px var(--color-interface-border-secondary);
                       border-radius: 16px;
                       position: relative;
-                      display: flex;            
+                      display: flow;            
                 }
   
                   .radio-wrapper.field-cardselection {
@@ -1909,27 +1909,12 @@ main {
                     font-weight: var(--font-weight-regular);
                     color: var(--color-interface-background-quaternary);
                     padding-left: 25px;
-                  }    
-                  
-                  .field-cardfeatures2, .field-cardfeatures3  {
-                    margin-top: -15px;
                   }
 
-                  .field-cardfeatures1 {
-                    background: url('/content/dam/fd-lien/moneybank.svg') no-repeat;
-                  }
-
-                  .field-cardfeatures2 {
-                    background: url('/content/dam/fd-lien/shieldtick.svg') no-repeat;
-                  }
-
-                  .field-cardfeatures3 {
-                    background: url('/content/dam/fd-lien/folderopen.svg') no-repeat;
-                  }
-
-                  .field-knowmorelink {
-                    margin: 0;
-                  }
+                  .field-cardfeatures1 { background: url('/content/dam/fd-lien/moneybank.svg') no-repeat; }
+                  .field-cardfeatures2 { background: url('/content/dam/fd-lien/shieldtick.svg') no-repeat;}
+                  .field-cardfeatures3 { background: url('/content/dam/fd-lien/folderopen.svg') no-repeat; }
+                  .field-knowmorelink { margin: 0; }
   
                   .field-knowmorelink button {
                       font-size: var(--body-fd-md-font-size);
@@ -1982,7 +1967,6 @@ main {
                   }
   
                   .field-renewalfeeamt {
-                      margin-top: -24px;
                       border-radius: 0 0 8px 8px;
                       border-color: transparent var(--color-action-background-primary-disabled) var(--color-action-background-primary-disabled);
   
