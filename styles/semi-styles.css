@@ -17,9 +17,9 @@ body.semi-form {
     main .form form { padding-top: 10px !important; }
 }
 
-.semi-form:has(.field-aem-txtselectionpopupwrapper[data-visible="true"], .field-aem-tnctenurewrapper[data-visible="true"]) { overflow: hidden; }
+.semi-form:has(.field-aem-txtselectionpopupwrapper[data-visible="true"], .field-aem-tnctenurewrapper[data-visible="true"], .field-landingconfirmationpopup[data-visible="true"], .field-aem-wrongotppopupwrapper[data-visible="true"], .field-aem-wrongotppopupwrapper2[data-visible="true"]) { overflow: hidden; }
 
-.field-aem-txtselectionpopupwrapper, .field-aem-tnctenurewrapper {
+.field-aem-txtselectionpopupwrapper, .field-aem-tnctenurewrapper, .field-landingconfirmationpopup, .field-aem-wrongotppopupwrapper, .field-aem-wrongotppopupwrapper2 {
   position: fixed;
   top: 0;
   right: 0;
@@ -27,7 +27,7 @@ body.semi-form {
   left: 0;
   background: var(--color-interface-popup-background);
 
-  .field-aem-txtselectionpopup, .field-aem-tnctenure {
+  .field-aem-txtselectionpopup, .field-aem-tnctenure, .field-doyouwishtocontinue, .field-aem-wrongotppopup {
       margin: auto !important;
       position: fixed;
       top: 0;
@@ -185,8 +185,11 @@ body.semi-form {
                 margin-left: -35px;
             }
 
-            .field-aem-cardno input, .field-aem-cardno input:hover, .field-aem-cardno input:focus-visible {
-                padding-left: 22px;
+            .field-aem-cardno {
+                input, input:hover, input:focus-visible {
+                    padding-left: 22px;
+                }
+                .field-description p { font-size: var(--body-x-sm-font-size); }
             }
         }
         .field-aem-mobilenum label { margin-left: -35px; }
@@ -212,10 +215,97 @@ body.semi-form {
             }
         }
 
+        .field-landingconfirmationpopup {
+            position: fixed;
+            z-index: 99999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            display: grid;
+            background-color: var(--color-interface-popup-background);
+
+            .field-doyouwishtocontinue {
+                padding: 10px 12px;
+                height: fit-content;
+                max-width: 608px;
+                text-align: center;
+
+                p, input { 
+                    color: var(--color-interface-background-tertiary);
+                    font-size: var(--body-md-font-size);
+                    font-weight: var(--font-weight-bold);
+                    margin: 0;
+                }
+
+                .field-confirmationpopupimage img { height: 168px; }
+
+                .field-err-popup-text { 
+                    border-bottom: solid 1px var(--color-interface-text-secondary); 
+                    padding-bottom: 10px;
+                    margin-top: -28px;
+                }
+
+                .button-wrapper { 
+                    height: fit-content; 
+                    margin-top: -16px;
+                }
+
+                button, button:hover {
+                    background-color: var(--color-interface-background-primary) !important;
+                    color: var(--color-interface-background-tertiary) !important;
+                    padding: 0 20px;
+                    height: fit-content;
+                }
+
+                .field-err-popup-buttonconfirm button { text-align: left; }
+                .field-cross-btn button { text-align: right; }
+            }
+        }
+
         /* Step 1 - Wizard - OTP Screen */
         .field-aem-otppanel, .field-aem-otppanelconfirmation {
             max-width: 400px;
             margin: 0 auto;
+
+            .field-aem-wrongotppopupwrapper {
+                position: fixed;
+                z-index: 99999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                display: grid;
+                background-color: var(--color-interface-popup-background);
+
+                .field-aem-wrongotppopup, .plain-text-wrapper, p, input {
+                    margin: 0;
+                    padding: 0 16px;
+                    max-height: fit-content;
+                    max-width: 608px;
+                    text-align: center;
+                    color: var(--color-interface-background-tertiary);
+                    font-size: var(--body-md-font-size);
+                    font-weight: var(--font-weight-bold);
+
+                    p, input { padding: 0; }
+
+                    .field-wrongotppopupimg img {
+                        height: 151px;
+                        width: 142px;
+                    }
+
+                    .field-aem-wrongotppopupbtn { border-top: 1px solid var(--color-interface-text-secondary);
+
+                        button, button:hover {
+                            background-color: var(--color-interface-background-primary) !important;
+                            color: var(--color-interface-background-tertiary) !important;
+                        }
+                    }
+                }
+            }
 
             .field-aem-otpicon, .field-aem-otpicon2 {
                 margin: 0 auto -25px;
@@ -689,15 +779,64 @@ body.semi-form {
                 }
             }
 
+            .field-aem-tandcmad {
+                margin: -20px 0 0;
+
+                label {
+                    font-size: var(--body-sm-font-size) !important;
+                    margin: 0 0 0 12px;
+                }
+            }
+
             .field-aem-backlinktenure {
                 text-align: left;
-                margin-top: -35px !important;
+                margin-top: -13px !important;
 
                 button, button:hover { 
                     width: fit-content;
                     background-color: var(--color-interface-background-primary) !important;
                     color: var(--color-action-background-primary-default);
                     text-decoration: underline;
+                }
+            }
+
+            .field-aem-wrongotppopupwrapper2 {
+                position: fixed;
+                z-index: 99999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                display: grid;
+                background-color: var(--color-interface-popup-background);
+
+                .field-aem-wrongotppopup2, .plain-text-wrapper, p, input {
+                    background-color: var(--color-interface-background-primary);
+                    margin: auto;
+                    padding: 0 16px;
+                    height: fit-content;
+                    max-width: 608px;
+                    text-align: center;
+                    color: var(--color-interface-background-tertiary);
+                    font-size: var(--body-md-font-size);
+                    font-weight: var(--font-weight-bold);
+                    border-radius: 16px;
+
+                    p, input { padding: 0; }
+
+                    .field-otperroricon2 img {
+                        height: 151px;
+                        width: 142px;
+                    }
+
+                    .field-aem-wrongotppopupbtn2 { border-top: 1px solid var(--color-interface-text-secondary);
+
+                        button, button:hover {
+                            background-color: var(--color-interface-background-primary) !important;
+                            color: var(--color-interface-background-tertiary) !important;
+                        }
+                    }
                 }
             }
         }
@@ -743,6 +882,7 @@ body.semi-form {
     .field-aem-semiwizard:has(.field-aem-choosetransactions.current-wizard-step) { padding-left: 50px !important; }
 
     .field-aem-semicreditcarddisplay {
+        position: relative;
         padding-top: 10px;
 
         .field-aem-semicreditcardcontent {
@@ -777,6 +917,23 @@ body.semi-form {
                 height: 131px;
                 grid-column: none;
             }
+        }
+
+        .field-cardfaciacardno, .field-cardfaciacardno p {
+            right: 38px;
+            top: 34px;
+        }
+
+        .field-cardfaciacardname, .field-cardfaciacardname p {
+            right: 40px;
+            top: 40px;
+        }
+
+        .field-cardfaciacardno, .field-cardfaciacardno p, .field-cardfaciacardname, .field-cardfaciacardname p {
+            position: absolute;
+            width: max-content;
+            font-size: 7px;
+            font-weight: var(--font-weight-bold);
         }
     }
 
@@ -859,6 +1016,20 @@ body.semi-form {
         .field-aem-semicreditcarddisplay {
             .field-aem-cardfacia img { height: 94%; }
             .field-aem-semicreditcardcontent { padding: 13px 0; }
+
+            .field-cardfaciacardno, .field-cardfaciacardno p {
+                right: auto;
+                top: auto;
+                bottom: 47px;
+                left: 8px;
+            }
+    
+            .field-cardfaciacardname, .field-cardfaciacardname p {
+                right: auto;
+                top: auto;
+                bottom: 37px;
+                left: 8px;
+            }
         }
 
         .field-aem-semiwizard:has(.field-aem-choosetransactions.current-wizard-step) {
