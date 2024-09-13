@@ -47,7 +47,7 @@ const addressDeclarationProceedHandler = (globals) => {
 const aadhaarConsent = async (globals) => {
   try {
     if (typeof window !== 'undefined') {
-      const openModal = (await import('../../../blocks/modal/modal.js')).default;
+      const openModal = (await import('../../blocks/modal/modal.js')).default;
       const { aadharLangChange } = await import('./cc.js');
       const contentDomName = 'aadharConsentPopup';
       const btnWrapClassName = 'button-wrapper';
@@ -64,7 +64,6 @@ const aadhaarConsent = async (globals) => {
       config?.content?.addEventListener('modalTriggerValue', async (event) => {
         const receivedData = event.detail;
         if (receivedData?.aadharConsentAgree) {
-          await Promise.resolve(sendAnalytics('i agree', { errorCode: '0000', errorMessage: 'Success' }, 'JOURNEYSTATE', globals));
           globals.functions.setProperty(globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel.ckycDetailsContinueETBPanel.triggerAadharAPI, { value: 1 });
         }
       });
