@@ -994,6 +994,27 @@ main {
                 }
             }
 
+            .number-wrapper {
+                margin-top: 20px;
+
+                label {
+                    font-size: var(--body-fd-sm-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-text-secondary);
+                }
+
+                input {
+                    border: none;
+                    font-size: var(--body-fd-lg-font-size);
+                    font-weight: var(--font-weight-medium);
+                    color: var(--color-interface-background-quaternary);
+
+                    &:hover {
+                        box-shadow: none;
+                    }
+                }
+            }
+
             .field-tqselectedfds {
                 display: flex;
 
@@ -2341,6 +2362,7 @@ main {
             font-size: var(--body-fd-md-font-size);
             font-weight: var(--font-weight-bold);
             width: 60%;
+            min-height: 45px;
 
             .file-description {
                 position: relative;
@@ -2383,7 +2405,25 @@ main {
         }
       }
 
-      .file-wrapper.file-error {        
+      .file-wrapper.file-error { 
+        position: relative;
+
+        .files-list {
+            text-align: center;
+            position: absolute;
+            left: 20%;
+            top: 15%;
+            background: var(--color-interface-error-box-primary);
+            font-size: var(--body-fd-md-font-size);
+            font-weight: var(--font-weight-bold);
+            width: 60%;
+            min-height: 45px;
+        } 
+
+        .field-description {
+            margin: 10px 0;
+        }
+
         .file-drag-area {
             border: 1px dashed var(--color-input-border-error);
             background: var(--color-interface-error-box-primary);

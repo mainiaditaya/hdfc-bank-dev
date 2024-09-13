@@ -117,16 +117,33 @@ const fileUploadUIHandler = () => {
   const fileInputs = document.querySelectorAll('input[type="file"]');
 
   fileInputs.forEach((fileInput) => {
+    // Check if the current file input has a file selected
     if (fileInput.files.length > 0) {
-      const parentDiv = fileInput.closest('.file-wrapper');
-      parentDiv.classList.add('file-uploaded');
+      const file = fileInput.files[0];
+      const parentDiv = fileInput.closest('.field-addressprooffile');
       const fileList = parentDiv.querySelector('.files-list');
-      if (fileList) {
-        fileList.textContent = fileInput.files[0].name;
-      }
       const uploadButton = parentDiv.querySelector('.file-attachButton');
-      if (uploadButton) {
-        uploadButton.textContent = 'Re-Upload';
+
+      const validFileTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+
+      if (validFileTypes.includes(file.type)) {
+        parentDiv.classList.add('file-uploaded');
+        parentDiv.classList.remove('file-error');
+
+        if (fileList) {
+          fileList.textContent = file.name;
+        }
+
+        if (uploadButton) {
+          uploadButton.textContent = 'Re-upload';
+        }
+      } else {
+        parentDiv.classList.add('file-error');
+        parentDiv.classList.remove('file-uploaded');
+
+        if (uploadButton) {
+          uploadButton.textContent = 'Upload';
+        }
       }
     }
   });
