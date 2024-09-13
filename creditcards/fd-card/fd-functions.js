@@ -29,6 +29,7 @@ import {
 import {
   redirect,
   validatePan,
+  idcomRedirection,
 } from '../../common/functions.js';
 
 import createJourneyId from '../../common/journey-utils.js';
@@ -37,6 +38,8 @@ import {
   docUploadClickHandler,
   fileUploadUIHandler,
 } from './docuploadutil.js';
+
+import { invokeJourneyDropOffUpdate } from './common-journeyutil.js';
 
 import {
   addGaps,
@@ -74,6 +77,8 @@ import {
   ipa,
   ipaSuccessHandler,
 } from './ipautil.js';
+
+import { idcomm, idcomSuccessHandler } from './idcomutil.js';
 
 export {
   getOTP,
@@ -121,4 +126,8 @@ export {
   docUploadClickHandler,
   fileUploadUIHandler,
   journeyResponseHandler,
+  invokeJourneyDropOffUpdate,
+  idcomRedirection,
+  idcomm,
+  idcomSuccessHandler,
 };
