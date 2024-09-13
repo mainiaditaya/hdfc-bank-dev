@@ -34,7 +34,11 @@ import {
 
 import createJourneyId from '../../common/journey-utils.js';
 
-import docUploadClickHandler from './docuploadutil.js';
+import {
+  docUploadClickHandler,
+  fileUploadUIHandler,
+} from './docuploadutil.js';
+
 import { invokeJourneyDropOffUpdate } from './common-journeyutil.js';
 
 import {
@@ -120,6 +124,7 @@ export {
   cardSelectHandler,
   popupBackClickHandler,
   docUploadClickHandler,
+  fileUploadUIHandler,
   journeyResponseHandler,
   invokeJourneyDropOffUpdate,
   idcomRedirection,

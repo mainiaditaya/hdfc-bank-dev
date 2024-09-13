@@ -109,4 +109,30 @@ const docUploadClickHandler = async (globals) => {
   }
 };
 
-export default docUploadClickHandler;
+/**
+ * fileUploadUIHandler
+ * @param {object} globals - The global object containing necessary globals form data
+ */
+const fileUploadUIHandler = () => {
+  const fileInputs = document.querySelectorAll('input[type="file"]');
+
+  fileInputs.forEach((fileInput) => {
+    if (fileInput.files.length > 0) {
+      const parentDiv = fileInput.closest('.file-wrapper');
+      parentDiv.classList.add('file-uploaded');
+      const fileList = parentDiv.querySelector('.files-list');
+      if (fileList) {
+        fileList.textContent = fileInput.files[0].name;
+      }
+      const uploadButton = parentDiv.querySelector('.file-attachButton');
+      if (uploadButton) {
+        uploadButton.textContent = 'Re-Upload';
+      }
+    }
+  });
+};
+
+export {
+  fileUploadUIHandler,
+  docUploadClickHandler,
+};
