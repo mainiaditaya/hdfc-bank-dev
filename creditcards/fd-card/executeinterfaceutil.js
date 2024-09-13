@@ -51,7 +51,7 @@ const createExecuteInterfaceRequest = (payload, globals) => {
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag || CURRENT_FORM_CONTEXT?.editFlags?.addressEdit ? 'Y' : 'N',
-      annualIncomeOrItrAmount: reviewDetailsView.employmentDetails.annualIncome._data.$_value || '',
+      annualIncomeOrItrAmount: String(reviewDetailsView?.employmentDetails?.annualIncome?._data?.$_value) || '',
       annualItr: '',
       applyingBranch: 'N',
       apsDobEditFlag: customerInfo?.datBirthCust ? 'N' : 'Y',
@@ -85,7 +85,6 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       firstName: customerInfo.customerFirstName,
       fullName: customerInfo?.customerFullName,
       gender: personalDetails.gender._data.$_value,
-      // gender: '1',
       isManualFlow: 'false',
       journeyFlag: 'ETB',
       journeyID,

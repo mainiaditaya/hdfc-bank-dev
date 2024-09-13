@@ -164,10 +164,10 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   const jsonObj = {
     requestString: {
       dateOfBirth: clearString(dob.$value) || '',
-      mobileNumber: FD_CONSTANT.MODE === 'dev' ? '7212637450' : mobileNumber.$value,
-      panNumber: FD_CONSTANT.MODE === 'dev' ? 'VQGXT6669P' : panValue || '',
-      // mobileNumber: mobileNumber.$value,
-      // panNumber: panValue || '',
+      // mobileNumber: FD_CONSTANT.MODE === 'dev' ? '7212637450' : mobileNumber.$value,
+      // panNumber: FD_CONSTANT.MODE === 'dev' ? 'VQGXT6669P' : panValue || '',
+      mobileNumber: mobileNumber.$value,
+      panNumber: panValue || '',
       journeyID: globals.form.runtime.journeyId.$value,
       journeyName: globals.form.runtime.journeyName.$value || CURRENT_FORM_CONTEXT.journeyName,
       identifierValue: panValue || dob.$value,
@@ -177,10 +177,10 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   const path = urlPath(FD_ENDPOINTS.otpGen);
   formRuntime?.getOtpLoader();
 
-  if (FD_CONSTANT.MODE === 'dev') {
-    globals.functions.setProperty(mobileNumber, { value: '7212637450' });
-    globals.functions.setProperty(pan, { value: 'VQGXT6669P' });
-  }
+  // if (FD_CONSTANT.MODE === 'dev') {
+  //   globals.functions.setProperty(mobileNumber, { value: '7212637450' });
+  //   globals.functions.setProperty(pan, { value: 'VQGXT6669P' });
+  // }
 
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
@@ -278,11 +278,11 @@ const pincodeChangeHandler = (pincode, globals) => {
   pinCodeMasterCheck(globals, newCurentAddressCity, newCurentAddressState, newCurentAddressPin, pincode);
 };
 
-setTimeout(() => {
-  if (document && FD_CONSTANT.MODE === 'dev') {
-    document.querySelector('.field-getotpbutton button').removeAttribute('disabled');
-  }
-}, 2000);
+// setTimeout(() => {
+//   if (document && FD_CONSTANT.MODE === 'dev') {
+//     document.querySelector('.field-getotpbutton button').removeAttribute('disabled');
+//   }
+// }, 2000);
 
 export {
   validateLogin,

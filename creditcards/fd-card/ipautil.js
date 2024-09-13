@@ -1,6 +1,6 @@
 import { BASEURL, CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
-import { fetchJsonResponse, fetchRecursiveResponse } from '../../common/makeRestAPI.js';
+import { fetchRecursiveResponse } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
 // import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 
@@ -33,9 +33,9 @@ const ipa = (payload, showLoader, hideLoader, globals) => {
   const ipaRequest = createIpaRequest(payload, globals);
   const apiEndPoint = urlPath(FD_ENDPOINTS.ipa);
   if (showLoader) FORM_RUNTIME.ipa();
-  // const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
-  // return fetchRecursiveResponse(apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
-  return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
+  const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
+  return fetchRecursiveResponse(apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
+  // return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
 };
 
 const updateData = (globals, productDetail, panel, index) => {
@@ -122,12 +122,14 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
 const ipaSuccessHandler = (response, globals) => {
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
   const productDetails = response?.productEligibility?.productDetails;
-  const { selectCard, selectFD } = globals.form.fdBasedCreditCardWizard;
+  const { selectCard, selectFD, basicDetails } = globals.form.fdBasedCreditCardWizard;
   const {
     eligibleCreditLimitAmount,
     selectCardFaciaPanelMultiple,
     selectCardFaciaPanelSingle,
     selectCardHeaderPanel,
+    continueToIDCOM,
+    selectIdentifier,
   } = selectCard;
   const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
   const productCount = productDetails.length;
@@ -150,6 +152,13 @@ const ipaSuccessHandler = (response, globals) => {
       }, i * 40);
     });
     globals.functions.setProperty(selectCardFaciaPanelMultiple[0].cardSelection, { value: 0 });
+  }
+  if (!CURRENT_FORM_CONTEXT.customerIdentityChange && basicDetails.reviewDetailsView.addressDetails.mailingAddressToggle._data.$_value === 'on') {
+    globals.functions.setProperty(selectIdentifier, { visible: false });
+    globals.functions.setProperty(continueToIDCOM, { visible: true });
+  } else {
+    globals.functions.setProperty(selectIdentifier, { visible: true });
+    globals.functions.setProperty(continueToIDCOM, { visible: false });
   }
 };
 

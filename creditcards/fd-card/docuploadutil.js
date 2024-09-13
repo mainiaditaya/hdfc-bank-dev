@@ -5,7 +5,7 @@ import {
   hideLoaderGif,
   chainedFetchAsyncCall,
 } from '../../common/makeRestAPI.js';
-import { urlPath, generateUUID, moveWizardView } from '../../common/formutils.js';
+import { urlPath, generateUUID } from '../../common/formutils.js';
 import { ENDPOINTS, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 /**
  * Creates a FormData payload for document upload.
@@ -61,7 +61,6 @@ const createDocPayload = async ({ docValue, docType, fileId }, mobileNumber) => 
  * @param {object} globals - The global object containing necessary globals form data
  */
 const docUploadClickHandler = async (globals) => {
-  // idcomm(globals);
   const {
     docUploadPanel,
     uploadAddressProof,
@@ -97,13 +96,11 @@ const docUploadClickHandler = async (globals) => {
 
     if (responses.every((response) => response.value?.errorCode === '0000')) {
       return invokeJourneyDropOffUpdate('DOCUMENT_UPLOAD_SUCCESS', mobileNumber, leadProfileId, journeyId, globals);
-      // const response = await invokeJourneyDropOffUpdate('DOCUMENT_UPLOAD_SUCCESS', mobileNumber, leadProfileId, journeyId, globals);
-      // idcomm(globals);
-      // console.log(dropOffUpdateResponse);
     }
     throw new Error('File upload failed');
   } catch (error) {
     console.error(error);
+    throw new Error('File upload failed');
   } finally {
     hideLoaderGif();
   }

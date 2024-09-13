@@ -13,27 +13,30 @@ const confirmCardState = {
  * @param {Object} globals - The global context object containing various information.
  */
 const confirmCardClickHandler = (globals) => {
-  CURRENT_FORM_CONTEXT.customerIdentityChange = true;
+  // CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';
-  const { fdBasedCreditCardWizard, docUploadFlow } = globals.form;
+  const {
+    fdBasedCreditCardWizard,
+    docUploadFlow,
+    selectKYCOptionsPanel,
+  } = globals.form;
   const { addressDetails, employeeAssistance } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
   const { aadharBiometricVerification } = globals.form.selectKYCOptionsPanel.selectKYCMethodOption1;
   const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC') || '';
   if ((addressDetails.mailingAddressToggle._data.$_value === 'off' || inPersonBioKYC.toLowerCase() === 'yes')
   && employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions._data.$_value === '0') {
     globals.functions.setProperty(aadharBiometricVerification, { value: '0' });
-  } else if (addressDetails.mailingAddressToggle._data.$_value === 'on' && CURRENT_FORM_CONTEXT.customerIdentityChange) {
+  }
+  if (addressDetails.mailingAddressToggle._data.$_value === 'on' && CURRENT_FORM_CONTEXT.customerIdentityChange) {
     globals.functions.setProperty(docUploadFlow, { visible: true });
     globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: true });
     globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: false });
     globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
     CURRENT_FORM_CONTEXT.addressDocUploadFlag = true;
-  } else if (addressDetails.mailingAddressToggle._data.$_value === 'on' && !CURRENT_FORM_CONTEXT.customerIdentityChange) {
-    // call idcomm();
-  } else if (addressDetails.mailingAddressToggle._data.$_value === 'off' && !CURRENT_FORM_CONTEXT.customerIdentityChange) {
-    // show select kyc screen
-  } else if (addressDetails.mailingAddressToggle._data.$_value === 'off' && CURRENT_FORM_CONTEXT.customerIdentityChange) {
-    // show select kyc screen
+  } else if (addressDetails.mailingAddressToggle._data.$_value === 'off') {
+    globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
+    globals.functions.setProperty(selectKYCOptionsPanel, { visible: true });
+    CURRENT_FORM_CONTEXT.addressDocUploadFlag = true;
   }
 };
 

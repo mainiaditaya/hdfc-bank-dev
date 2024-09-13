@@ -80,6 +80,11 @@ import {
 
 import { idcomm, idcomSuccessHandler } from './idcomutil.js';
 
+import {
+  kycProceedClickHandler,
+  addressDeclarationProceedHandler,
+} from './kycUtil.js';
+
 export {
   getOTP,
   otpTimer,
@@ -130,4 +135,6 @@ export {
   idcomRedirection,
   idcomm,
   idcomSuccessHandler,
+  kycProceedClickHandler,
+  addressDeclarationProceedHandler,
 };

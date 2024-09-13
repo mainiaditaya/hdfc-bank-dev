@@ -94,6 +94,7 @@ const bindEmployeeAssistanceField = async (globals) => {
  */
 const bindCustomerDetails = (globals) => {
   if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   CURRENT_FORM_CONTEXT.editFlags = {
     nameOnCard: true,
     addressEdit: false,
