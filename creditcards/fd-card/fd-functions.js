@@ -33,7 +33,10 @@ import {
 
 import createJourneyId from '../../common/journey-utils.js';
 
-import docUploadClickHandler from './docuploadutil.js';
+import {
+  docUploadClickHandler,
+  fileUploadUIHandler,
+} from './docuploadutil.js';
 
 import {
   addGaps,
@@ -116,5 +119,6 @@ export {
   cardSelectHandler,
   popupBackClickHandler,
   docUploadClickHandler,
+  fileUploadUIHandler,
   journeyResponseHandler,
 };
