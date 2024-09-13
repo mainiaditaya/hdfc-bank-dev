@@ -34,24 +34,6 @@ const fetchCustomerId = (mobileNumber, pan, dob, response, globals) => {
   const payload = createPayload(mobileNumber, pan, dob, globals);
   payload.requestString.referenceNumber = response.referenceNo;
   return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus), payload, 'POST');
-
-  /*
-  *
-  * Start
-  *
-  */
-
-  // const { fdBasedCreditCardWizard, docUploadFlow, multipleCustIDPanel } = globals.form;
-  // globals.functions.setProperty(docUploadFlow, { visible: true });
-  // globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: true });
-  // globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
-  // globals.functions.setProperty(multipleCustIDPanel, { visible: false });
-
-  /*
-  *
-  * End
-  *
-  */
 };
 
 /**

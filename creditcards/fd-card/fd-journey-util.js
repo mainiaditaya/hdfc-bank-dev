@@ -61,8 +61,6 @@ const errorScreenHandler = () => {
  */
 const journeyResponseHandler = (payload, globals) => {
   CURRENT_FORM_CONTEXT.leadProfile = journeyResponseHandlerUtil(String(payload.leadProfileId), CURRENT_FORM_CONTEXT)?.leadProfile;
-  // eslint-disable-next-line no-restricted-globals
-  self.leadProfileId = payload.leadProfileId;
   globals.functions.setProperty(globals.form.runtime.leadid, { value: payload.leadProfileId });
   console.log(payload.leadProfileId);
 };
