@@ -1,6 +1,6 @@
 import { FD_ENDPOINTS, JOURNEY_NAME } from './constant.js';
 import { CHANNEL, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import createJourneyId from '../../common/journey-utils.js';
+import { createJourneyId } from '../../common/journey-utils.js';
 import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { moveWizardView } from '../domutils/domutils.js';

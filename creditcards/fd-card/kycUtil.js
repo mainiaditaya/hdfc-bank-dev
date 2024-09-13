@@ -4,15 +4,19 @@ const KYC_STATE = {
   selectedKyc: '',
 };
 const kycProceedClickHandler = (selectedKyc, globals) => {
-  const { addressDeclarationPanel } = globals.form;
+  const {
+    addressDeclarationPanel,
+    aadharConsent,
+  } = globals.form;
+  KYC_STATE.selectedKyc = selectedKyc;
   switch (selectedKyc) {
     case 'BIOMETRIC':
       // biometric flow
       globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD, { visible: true });
-      KYC_STATE.selectedKyc = selectedKyc;
       break;
     case 'AADHAAR':
       // aadhaar vkyc flow
+      globals.functions.setProperty(aadharConsent, { visible: true });
       break;
     case 'OVD':
       // ovd flow
@@ -37,6 +41,36 @@ const addressDeclarationProceedHandler = (globals) => {
     globals.functions.setProperty(resultPanel, { visible: true });
     globals.functions.setProperty(resultPanel.successResultPanel, { visible: true });
     globals.functions.setProperty(resultPanel.successResultPanel.vkycConfirmationPanel, { visible: false });
+  }
+};
+
+const aadhaarConsent = async (globals) => {
+  try {
+    if (typeof window !== 'undefined') {
+      const openModal = (await import('../../../blocks/modal/modal.js')).default;
+      const { aadharLangChange } = await import('./cc.js');
+      const contentDomName = 'aadharConsentPopup';
+      const btnWrapClassName = 'button-wrapper';
+      const config = {
+        content: document.querySelector(`[name = ${contentDomName}]`),
+        actionWrapClass: btnWrapClassName,
+        reqConsentAgree: true,
+      };
+      if (typeof formRuntime.aadharConfig === 'undefined') {
+        formRuntime.aadharConfig = config;
+      }
+      await openModal(formRuntime.aadharConfig);
+      aadharLangChange(formRuntime.aadharConfig?.content, 'English');
+      config?.content?.addEventListener('modalTriggerValue', async (event) => {
+        const receivedData = event.detail;
+        if (receivedData?.aadharConsentAgree) {
+          await Promise.resolve(sendAnalytics('i agree', { errorCode: '0000', errorMessage: 'Success' }, 'JOURNEYSTATE', globals));
+          globals.functions.setProperty(globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel.ckycDetailsContinueETBPanel.triggerAadharAPI, { value: 1 });
+        }
+      });
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 

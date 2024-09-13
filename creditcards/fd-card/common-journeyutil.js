@@ -1,6 +1,6 @@
 import { CHANNEL, ENDPOINTS } from '../../common/constants.js';
 import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
-import createJourneyId from '../../common/journey-utils.js';
+import { createJourneyId } from '../../common/journey-utils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 /**
    * @name invokeJourneyDropOff to log on success and error call backs of api calls

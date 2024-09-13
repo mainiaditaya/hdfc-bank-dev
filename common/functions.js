@@ -20,7 +20,7 @@ import {
 } from './makeRestAPI.js';
 
 import * as CONSTANT from './constants.js';
-import createJourneyId from './journey-utils.js';
+import { createJourneyId } from './journey-utils.js';
 
 const {
   ENDPOINTS,

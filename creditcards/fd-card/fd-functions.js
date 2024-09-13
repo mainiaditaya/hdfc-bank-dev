@@ -32,7 +32,7 @@ import {
   idcomRedirection,
 } from '../../common/functions.js';
 
-import createJourneyId from '../../common/journey-utils.js';
+import { createJourneyId } from '../../common/journey-utils.js';
 
 import {
   docUploadClickHandler,
