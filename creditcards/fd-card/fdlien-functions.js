@@ -10,15 +10,14 @@ import {
 import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
 import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
-import createJourneyId from '../../common/journey-utils.js';
 import { addGaps } from './fd-dom-functions.js';
 
-const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
+const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
 
 let resendOtpCount = 0;
 // Initialize all Fd Card Journey Context Variables & formRuntime variables.
-currentFormContext.journeyName = JOURNEY_NAME;
+CURRENT_FORM_CONTEXT.journeyName = JOURNEY_NAME;
 formRuntime.getOtpLoader = displayLoader;
 formRuntime.otpValLoader = displayLoader;
 formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
@@ -157,9 +156,10 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   } else {
     globals.functions.setProperty(otpPanel.secondsPanel, { visible: false });
   }
-  currentFormContext.action = 'getOTP';
-  currentFormContext.journeyID = globals.form.runtime.journeyId.$value;
-  currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
+  CURRENT_FORM_CONTEXT.action = 'getOTP';
+  // eslint-disable-next-line no-restricted-globals
+  CURRENT_FORM_CONTEXT.journeyID = globals.form.runtime.journeyId.$value;
+  CURRENT_FORM_CONTEXT.leadIdParam = globals.functions.exportData().queryParams;
   const panValue = (pan.$value)?.replace(/\s+/g, '');
   const jsonObj = {
     requestString: {
@@ -169,7 +169,7 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
       mobileNumber: mobileNumber.$value,
       panNumber: panValue || '',
       journeyID: globals.form.runtime.journeyId.$value,
-      journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
+      journeyName: globals.form.runtime.journeyName.$value || CURRENT_FORM_CONTEXT.journeyName,
       identifierValue: panValue || dob.$value,
       identifierName: panValue ? 'PAN' : 'DOB',
     },
@@ -181,6 +181,7 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   //   globals.functions.setProperty(mobileNumber, { value: '7212637450' });
   //   globals.functions.setProperty(pan, { value: 'VQGXT6669P' });
   // }
+
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
 
@@ -217,7 +218,7 @@ const resendOTP = async (globals) => {
 const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
   addGaps('.field-pannumberpersonaldetails input');
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
-  currentFormContext.referenceNumber = referenceNumber;
+  CURRENT_FORM_CONTEXT.referenceNumber = referenceNumber;
   const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
   const jsonObj = {
     requestString: {
@@ -226,8 +227,8 @@ const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
       dateOfBirth: clearString(dob.$value) || '',
       panNumber: panValue || '',
       channelSource: '',
-      journeyID: currentFormContext.journeyID,
-      journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
+      journeyID: CURRENT_FORM_CONTEXT.journeyID,
+      journeyName: globals.form.runtime.journeyName.$value || CURRENT_FORM_CONTEXT.journeyName,
       dedupeFlag: 'N',
       referenceNumber: referenceNumber ?? '',
     },
@@ -292,7 +293,6 @@ export {
   resendOTP,
   customSetFocus,
   reloadPage,
-  createJourneyId,
   pincodeChangeHandler,
   validFDPan,
 };

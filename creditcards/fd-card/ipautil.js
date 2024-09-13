@@ -29,11 +29,13 @@ const createIpaRequest = (payload, globals) => {
  * @returns {Promise<object>} A promise that resolves to the response of the IPA request.
  */
 const ipa = (payload, showLoader, hideLoader, globals) => {
+  CURRENT_FORM_CONTEXT.executeInterfaceResponse = payload;
   const ipaRequest = createIpaRequest(payload, globals);
   const apiEndPoint = urlPath(FD_ENDPOINTS.ipa);
   if (showLoader) FORM_RUNTIME.ipa();
   const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
   return fetchRecursiveResponse(apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
+  // return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
 };
 
 const updateData = (globals, productDetail, panel, index) => {
@@ -118,13 +120,16 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  * @returns {Promise<object>}
  */
 const ipaSuccessHandler = (response, globals) => {
+  CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
   const productDetails = response?.productEligibility?.productDetails;
-  const { selectCard, selectFD } = globals.form.fdBasedCreditCardWizard;
+  const { selectCard, selectFD, basicDetails } = globals.form.fdBasedCreditCardWizard;
   const {
     eligibleCreditLimitAmount,
     selectCardFaciaPanelMultiple,
     selectCardFaciaPanelSingle,
     selectCardHeaderPanel,
+    continueToIDCOM,
+    selectIdentifier,
   } = selectCard;
   const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
   const productCount = productDetails.length;
@@ -147,6 +152,13 @@ const ipaSuccessHandler = (response, globals) => {
       }, i * 40);
     });
     globals.functions.setProperty(selectCardFaciaPanelMultiple[0].cardSelection, { value: 0 });
+  }
+  if (!CURRENT_FORM_CONTEXT.customerIdentityChange && basicDetails.reviewDetailsView.addressDetails.mailingAddressToggle._data.$_value === 'on') {
+    globals.functions.setProperty(selectIdentifier, { visible: false });
+    globals.functions.setProperty(continueToIDCOM, { visible: true });
+  } else {
+    globals.functions.setProperty(selectIdentifier, { visible: true });
+    globals.functions.setProperty(continueToIDCOM, { visible: false });
   }
 };
 

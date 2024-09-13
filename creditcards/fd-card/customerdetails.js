@@ -94,6 +94,7 @@ const bindEmployeeAssistanceField = async (globals) => {
  */
 const bindCustomerDetails = (globals) => {
   if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   CURRENT_FORM_CONTEXT.editFlags = {
     nameOnCard: true,
     addressEdit: false,
@@ -110,6 +111,8 @@ const bindCustomerDetails = (globals) => {
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
+  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
+  if (!customerInfo.datBirthCust || !customerInfo.refCustItNum || !customerInfo.genderDescription) CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const genderMap = { Male: '1', Female: '2', Others: '3' };
   const occupationMap = {
@@ -333,6 +336,7 @@ const dobChangeHandler = (globals) => {
 */
 const fathersNameChangeHandler = (globals) => {
   const { customerInfo } = CURRENT_FORM_CONTEXT;
+  CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   const { personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
   const fathersNameArr = personalDetails.fathersFullName._data.$_value?.toUpperCase()?.split(' ') || [];
 
