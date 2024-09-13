@@ -901,38 +901,44 @@ main {
                 padding: 20px;
                 min-height: 300px;
 
-                .field-refnumlabel {
+                .field-referencenumber {                    
                     background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
                     width: 72px;
                     height: 72px;
-                    padding-left: 80px;
-                    text-wrap: nowrap;
 
-                    p {
+                    label {
+                        margin: 30px 0 0 80px;
+                        text-wrap: nowrap;
                         font-size: var(--body-fd-md-font-size);
                         font-weight: var(--font-weight-regular);
                     }
-                }
 
-                .field-referencenumber {
-                    margin: -65px 0 0 83px;
-
-                    p {
+                    input {
+                        border: none;
+                        margin: 30px 0 0 75px;
                         font-size: var(--body-fd-xx-lg-font-size);
                         font-weight: var(--font-weight-bold);
                         color: var(--color-interface-background-quaternary);
-                    }                    
+                        width: auto;
+
+                        &:hover{
+                            box-shadow: none;
+                        }
+                    }
                 }
 
                 .field-referencenumbertagline {
-                    margin-top: -30px;
-
                     p {
                         font-size: var(--body-fd-md-font-size);
                         font-weight: var(--font-weight-regular);
                     }
                 }
             }
+
+            .field-vkycconfirmationpanel[data-visible="false"]:has(~ .field-refnumpanel) + .field-refnumpanel {
+                min-height: auto;
+            }
+              
 
           .field-successresulttextlabel {
               text-align: left;
@@ -3048,19 +3054,7 @@ main {
                 }
             }
 
-            .field-referencenumber {
-                margin: -65px 0 0 83px;
-
-                p {
-                    font-size: var(--body-fd-xx-lg-font-size);
-                    font-weight: var(--font-weight-bold);
-                    color: var(--color-interface-background-quaternary);
-                }                    
-            }
-
             .field-referencenumbertagline {
-                margin-top: -30px;
-
                 p {
                     font-size: var(--body-fd-md-font-size);
                     font-weight: var(--font-weight-regular);
@@ -3587,17 +3581,6 @@ main {
             margin: 50px 10px 20px !important;
             width: 95% !important;
             min-height: 460px !important;
-
-
-            .field-referencenumber {
-                margin: -50px 0 0 83px !important;
-
-                p {
-                    font-size: var(--body-fd-xx-lg-font-size);
-                    font-weight: var(--font-weight-bold);
-                    color: var(--color-interface-background-quaternary);
-                }                    
-            }
 
             .field-referencenumbertagline {
                 margin-top: 35px !important;
