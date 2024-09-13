@@ -7,7 +7,6 @@ import {
 } from '../../common/makeRestAPI.js';
 import { urlPath, generateUUID, moveWizardView } from '../../common/formutils.js';
 import { ENDPOINTS, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import idcomm from './idcomutil.js';
 /**
  * Creates a FormData payload for document upload.
  *
@@ -62,52 +61,52 @@ const createDocPayload = async ({ docValue, docType, fileId }, mobileNumber) => 
  * @param {object} globals - The global object containing necessary globals form data
  */
 const docUploadClickHandler = async (globals) => {
-  idcomm(globals);
-  // const {
-  //   docUploadPanel,
-  //   uploadAddressProof,
-  // } = globals.form.docUploadFlow;
-  // const identityDocType = docUploadPanel.docUploadDropdown.$value;
-  // const addressDocType = uploadAddressProof.docTypeDropdown.$value;
-  // const mobileNumber = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
-  // const formContextCallbackData = globals.functions.exportData()?.CURRENT_FORM_CONTEXT || CURRENT_FORM_CONTEXT;
-  // const leadProfileId = globals.functions.exportData().leadProifileId || globals.form.runtime.leadProifileId.$value || '';
-  // const journeyId = formContextCallbackData.journeyID;
-  // const apiEndPoint = urlPath(ENDPOINTS.docUpload);
-  // const method = 'POST';
+  // idcomm(globals);
+  const {
+    docUploadPanel,
+    uploadAddressProof,
+  } = globals.form.docUploadFlow;
+  const identityDocType = docUploadPanel.docUploadDropdown.$value;
+  const addressDocType = uploadAddressProof.docTypeDropdown.$value;
+  const mobileNumber = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
+  const formContextCallbackData = globals.functions.exportData()?.CURRENT_FORM_CONTEXT || CURRENT_FORM_CONTEXT;
+  const leadProfileId = globals.functions.exportData().leadProifileId || globals.form.runtime.leadProifileId.$value || '';
+  const journeyId = formContextCallbackData.journeyID;
+  const apiEndPoint = urlPath(ENDPOINTS.docUpload);
+  const method = 'POST';
 
-  // const documents = [
-  //   ...(CURRENT_FORM_CONTEXT?.identityDocUploadFlag ? [
-  //     { docValue: docUploadPanel?.DocUploadFront, docType: identityDocType, fileId: '1_FS' },
-  //     { docValue: docUploadPanel?.DocUploadBack, docType: identityDocType, fileId: '1_BS' },
-  //   ] : []),
-  //   ...(CURRENT_FORM_CONTEXT?.addressDocUploadFlag ? [
-  //     { docValue: uploadAddressProof?.addressProofFile, docType: addressDocType, fileId: '1_AD' },
-  //   ] : []),
-  // ];
+  const documents = [
+    ...(CURRENT_FORM_CONTEXT?.identityDocUploadFlag ? [
+      { docValue: docUploadPanel?.DocUploadFront, docType: identityDocType, fileId: '1_FS' },
+      { docValue: docUploadPanel?.DocUploadBack, docType: identityDocType, fileId: '1_BS' },
+    ] : []),
+    ...(CURRENT_FORM_CONTEXT?.addressDocUploadFlag ? [
+      { docValue: uploadAddressProof?.addressProofFile, docType: addressDocType, fileId: '1_AD' },
+    ] : []),
+  ];
 
-  // try {
-  //   displayLoader();
+  try {
+    displayLoader();
 
-  //   const payloads = await Promise.all(
-  //     documents.map((doc) => createDocPayload(doc, mobileNumber)),
-  //   );
-  //   if (payloads.some((payload) => !payload)) throw new Error('Error in File');
+    const payloads = await Promise.all(
+      documents.map((doc) => createDocPayload(doc, mobileNumber)),
+    );
+    if (payloads.some((payload) => !payload)) throw new Error('Error in File');
 
-  //   const responses = await chainedFetchAsyncCall(apiEndPoint, method, payloads, 'formData');
+    const responses = await chainedFetchAsyncCall(apiEndPoint, method, payloads, 'formData');
 
-  //   if (responses.every((response) => response.value?.errorCode === '0000')) {
-  //     // return invokeJourneyDropOffUpdate('DOCUMENT_UPLOAD_SUCCESS', mobileNumber, leadProfileId, journeyId, globals);
-  //     const response = await invokeJourneyDropOffUpdate('DOCUMENT_UPLOAD_SUCCESS', mobileNumber, leadProfileId, journeyId, globals);
-  //     idcomm(globals);
-  //     // console.log(dropOffUpdateResponse);
-  //   }
-  //   throw new Error('File upload failed');
-  // } catch (error) {
-  //   console.error(error);
-  // } finally {
-  //   hideLoaderGif();
-  // }
+    if (responses.every((response) => response.value?.errorCode === '0000')) {
+      return invokeJourneyDropOffUpdate('DOCUMENT_UPLOAD_SUCCESS', mobileNumber, leadProfileId, journeyId, globals);
+      // const response = await invokeJourneyDropOffUpdate('DOCUMENT_UPLOAD_SUCCESS', mobileNumber, leadProfileId, journeyId, globals);
+      // idcomm(globals);
+      // console.log(dropOffUpdateResponse);
+    }
+    throw new Error('File upload failed');
+  } catch (error) {
+    console.error(error);
+  } finally {
+    hideLoaderGif();
+  }
 };
 
 export default docUploadClickHandler;
