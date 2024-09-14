@@ -9,10 +9,12 @@ import {
   reloadPage,
   pincodeChangeHandler,
 } from './fdlien-functions.js';
+
 import {
   invokeJourneyDropOff,
   fdWizardSwitch,
   journeyResponseHandler,
+  invokeJourneyDropOffUpdate,
 } from './fd-journey-util.js';
 
 import {
@@ -38,8 +40,6 @@ import {
   docUploadClickHandler,
   fileUploadUIHandler,
 } from './docuploadutil.js';
-
-import { invokeJourneyDropOffUpdate } from './common-journeyutil.js';
 
 import {
   addGaps,

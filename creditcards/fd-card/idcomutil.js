@@ -9,11 +9,11 @@ import { fetchJsonResponse } from '../../common/makeRestAPI.js';
  */
 const createIdComRequestObj = (globals) => {
   const { addressDetails, personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
-  const scope = addressDetails.mailingAddressToggle._data.$_value === 'on' ? 'AACC' : 'ADOBE_PACC';
+  const scope = addressDetails.mailingAddressToggle._data.$_value === 'on' ? 'AACC_FDCC' : 'ADOBE_FDCC';
   const idComObj = {
     requestString: {
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber._data.$_value,
-      ProductCode: 'CORPCC' || CURRENT_FORM_CONTEXT.selectedProductCode,
+      ProductCode: 'CCPREISS',
       PANNo: personalDetails.panNumberPersonalDetails._data.$_value.replace(/\s+/g, ''),
       userAgent: navigator.userAgent,
       journeyID: CURRENT_FORM_CONTEXT.journeyID,

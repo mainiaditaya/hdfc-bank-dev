@@ -1,5 +1,5 @@
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
-import { invokeJourneyDropOffUpdate } from './common-journeyutil.js';
+import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
 import {
   displayLoader,
   hideLoaderGif,
