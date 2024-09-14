@@ -1,5 +1,5 @@
 import { FD_ENDPOINTS, JOURNEY_NAME } from './constant.js';
-import { CHANNEL, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
+import { CHANNEL, CURRENT_FORM_CONTEXT, ENDPOINTS } from '../../common/constants.js';
 import createJourneyId from '../../common/journey-utils.js';
 import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
@@ -62,7 +62,45 @@ const errorScreenHandler = () => {
 const journeyResponseHandler = (payload, globals) => {
   CURRENT_FORM_CONTEXT.leadProfile = journeyResponseHandlerUtil(String(payload.leadProfileId), CURRENT_FORM_CONTEXT)?.leadProfile;
   globals.functions.setProperty(globals.form.runtime.leadid, { value: payload.leadProfileId });
-  console.log(payload.leadProfileId);
+};
+
+/**
+   * @name invokeJourneyDropOffUpdate
+   * @param {string} state
+   * @param {string} mobileNumber
+   * @param {string} leadProfileId
+   * @param {string} journeyId
+   * @param {Object} globals - globals variables object containing form configurations.
+   * @return {PROMISE}
+   */
+const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
+  const module = await import('../../common/constants.js');
+  const currentFormContext = module.CURRENT_FORM_CONTEXT;
+  const sanitizedFormData = santizedFormDataWithContext(globals, currentFormContext);
+  const journeyJSONObj = {
+    RequestPayload: {
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : '',
+      leadProfile: {
+        mobileNumber,
+        leadProfileId: leadProfileId?.toString(),
+      },
+      formData: {
+        channel: CHANNEL,
+        journeyName: currentFormContext.journeyName,
+        journeyID: journeyId,
+        journeyStateInfo: [
+          {
+            state,
+            stateInfo: JSON.stringify(sanitizedFormData),
+            timeinfo: new Date().toISOString(),
+          },
+        ],
+      },
+    },
+  };
+  const url = urlPath(ENDPOINTS.journeyDropOffUpdate);
+  const method = 'POST';
+  return fetchJsonResponse(url, journeyJSONObj, method);
 };
 
 export {
@@ -70,4 +108,5 @@ export {
   fdWizardSwitch,
   errorScreenHandler,
   journeyResponseHandler,
+  invokeJourneyDropOffUpdate,
 };
