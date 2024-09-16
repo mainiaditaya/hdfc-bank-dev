@@ -40,6 +40,7 @@ import { createJourneyId } from '../../common/journey-utils.js';
 import {
   docUploadClickHandler,
   fileUploadUIHandler,
+  docUploadBiometricHandler,
 } from './docuploadutil.js';
 
 import {
@@ -141,4 +142,5 @@ export {
   addressDeclarationProceedHandler,
   aadhaarConsent,
   aadharInit,
+  docUploadBiometricHandler,
 };

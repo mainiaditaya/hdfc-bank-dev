@@ -5,7 +5,7 @@ import {
   fetchRecursiveResponse,
 } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
-// import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
+import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 
 const IPA_RESPONSE = {};
 const createIpaRequest = (payload, globals) => {
@@ -14,8 +14,8 @@ const createIpaRequest = (payload, globals) => {
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
       applRefNumber: payload.APS_APPL_REF_NUM,
       eRefNumber: CURRENT_FORM_CONTEXT.referenceNumber,
-      // customerID: SELECTED_CUSTOMER_ID.selectedCustId.customerId,
-      customerID: '50187305',
+      customerID: SELECTED_CUSTOMER_ID?.selectedCustId?.customerID,
+      // customerID: '50187305',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
     },
@@ -123,6 +123,7 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  * @returns {Promise<object>}
  */
 const ipaSuccessHandler = (response, globals) => {
+  // CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
   const productDetails = response?.productEligibility?.productDetails;
   const { selectCard, selectFD, basicDetails } = globals.form.fdBasedCreditCardWizard;
