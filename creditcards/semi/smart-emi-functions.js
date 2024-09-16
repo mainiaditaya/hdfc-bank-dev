@@ -238,6 +238,9 @@ const cardDisplay = (globals, response) => {
   const creditCardDisplay = globals.form.aem_semicreditCardDisplay;
   globals.functions.setProperty(creditCardDisplay, { visible: true });
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: `Dear ${response?.cardHolderName}` });
+  globals.functions.setProperty(creditCardDisplay.cardFaciaCardName, { innerText: `${response?.address.name}` });
+  globals.functions.setProperty(creditCardDisplay.cardFaciaCardNo, { innerText: `${(("x".repeat(response?.blockCode.cardNumber.length-4)) + response?.blockCode.cardNumber.slice(-4))}` });
+ 
   // eslint-disable-next-line radix
   const totalAmt = nfObject.format(parseInt(response.responseString.creditLimit) - Math.round(parseInt(response?.blockCode?.bbvlogn_card_outst) / 100));
   const TOTAL_OUTSTANDING_AMT = `${MISC.rupeesUnicode} ${totalAmt}`;
