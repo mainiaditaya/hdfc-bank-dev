@@ -1,10 +1,12 @@
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
+import { confirmCardState } from './confirmcardutil.js';
 import { JOURNEY_NAME, FD_ENDPOINTS } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
+import { IPA_RESPONSE } from './ipautil.js';
 
-const createExecuteInterfaceRequest = (payload, globals) => {
+const createExecuteInterfaceRequest = (source, globals) => {
   const {
     customerInfo, journeyID, customerAddress,
   } = CURRENT_FORM_CONTEXT;
@@ -15,14 +17,14 @@ const createExecuteInterfaceRequest = (payload, globals) => {
   const { employeeAssistancePanel } = employeeAssistance;
   const addressEditFlag = addressDetails?.mailingAddressToggle?.$value !== 'on';
 
-  function getAddress(source) {
+  function getAddress(addressSource) {
     return {
-      line1: source?.addressLine1 || '',
-      line2: source?.addressLine2 || '',
-      line3: source?.addressLine3 || '',
-      city: source?.city || '',
-      state: source?.state || '',
-      zip: source?.pincode || source?.comCityZip || '',
+      line1: addressSource?.addressLine1 || '',
+      line2: addressSource?.addressLine2 || '',
+      line3: addressSource?.addressLine3 || '',
+      city: addressSource?.city || '',
+      state: addressSource?.state || '',
+      zip: addressSource?.pincode || addressSource?.comCityZip || '',
     };
   }
 
@@ -47,6 +49,9 @@ const createExecuteInterfaceRequest = (payload, globals) => {
   let nameOnCard = personalDetails.nameOnCard?.$value?.toUpperCase();
   if (!CURRENT_FORM_CONTEXT?.editFlags?.nameOnCard) {
     nameOnCard = personalDetails.nameOnCardDD?.$value?.toUpperCase();
+  }
+  if (source === 'confirmcard') {
+    CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';
   }
   const request = {
     requestString: {
@@ -119,7 +124,7 @@ const createExecuteInterfaceRequest = (payload, globals) => {
       perAddressType: '2',
       perfiosTxnID: '',
       personalEmailId: personalDetails?.emailID.$value,
-      productCode: '',
+      productCode: source === 'confirmcard' ? CURRENT_FORM_CONTEXT?.selectedProductCode : '',
       resPhoneEditFlag: 'N',
       selfConfirmation: 'Y',
       smCode: employeeAssistancePanel.smCode._data.$_value || '',
@@ -134,11 +139,12 @@ const createExecuteInterfaceRequest = (payload, globals) => {
  * @param {object} payload - The payload for the interface request.
  * @param {boolean} showLoader - Whether to show a loader while the request is in progress.
  * @param {boolean} hideLoader - Whether to hide the loader after the request is complete.
+ * @param {string} source
  * @param {object} globals - The global context object.
  * @returns {Promise<object>} A promise that resolves to the response of the interface request.
  */
-const executeInterface = (payload, showLoader, hideLoader, globals) => {
-  const executeInterfaceRequest = createExecuteInterfaceRequest(payload, globals);
+const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
+  const executeInterfaceRequest = createExecuteInterfaceRequest(source, globals);
   CURRENT_FORM_CONTEXT.executeInterfaceRequest = executeInterfaceRequest;
   Object.keys(executeInterfaceRequest).forEach((key) => {
     if (executeInterfaceRequest[key] === undefined) {

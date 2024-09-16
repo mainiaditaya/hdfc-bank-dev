@@ -1,6 +1,7 @@
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { aadharLangChange } from '../domutils/domutils.js';
 import { DOM_ELEMENT } from './constant.js';
+import finalDap from './finaldaputils.js';
 
 const KYC_STATE = {
   selectedKyc: '',
@@ -8,20 +9,16 @@ const KYC_STATE = {
 const kycProceedClickHandler = (selectedKyc, globals) => {
   const {
     addressDeclarationPanel,
-    aadharConsent,
     docUploadFlow,
   } = globals.form;
   KYC_STATE.selectedKyc = selectedKyc;
   switch (selectedKyc) {
     case 'BIOMETRIC':
-      // biometric flow
+      CURRENT_FORM_CONTEXT.selectedKyc = 'biokyc';
       globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD, { visible: true });
       break;
-    case 'AADHAAR':
-      // aadhaar vkyc flow
-      globals.functions.setProperty(aadharConsent, { visible: true });
-      break;
     case 'OVD':
+      CURRENT_FORM_CONTEXT.selectedKyc = 'ovd';
       globals.functions.setProperty(docUploadFlow, { visible: true });
       globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: CURRENT_FORM_CONTEXT.customerIdentityChange });
       globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: true });
@@ -33,7 +30,7 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
 };
 
 const addressDeclarationProceedHandler = (globals) => {
-  const { addressDeclarationPanel, docUploadFlow, resultPanel } = globals.form;
+  const { addressDeclarationPanel, docUploadFlow } = globals.form;
   if (CURRENT_FORM_CONTEXT.customerIdentityChange && KYC_STATE.selectedKyc === 'BIOMETRIC') {
     const { docUploadPanel, uploadAddressProof } = docUploadFlow;
     globals.functions.setProperty(addressDeclarationPanel, { visible: false });
@@ -43,15 +40,13 @@ const addressDeclarationProceedHandler = (globals) => {
     return;
   }
   if (!CURRENT_FORM_CONTEXT.customerIdentityChange && KYC_STATE.selectedKyc === 'BIOMETRIC') {
-    // call final dap
-    globals.functions.setProperty(addressDeclarationPanel, { visible: false });
-    globals.functions.setProperty(resultPanel, { visible: true });
-    globals.functions.setProperty(resultPanel.successResultPanel, { visible: true });
-    globals.functions.setProperty(resultPanel.successResultPanel.vkycConfirmationPanel, { visible: false });
+    finalDap(false, globals);
   }
 };
 
 const aadhaarConsent = async (globals) => {
+  KYC_STATE.selectedKyc = 'AADHAAR';
+  CURRENT_FORM_CONTEXT.selectedKyc = 'biokyc';
   const { addressDeclarationPanel, selectKYCOptionsPanel } = globals.form;
   try {
     if (typeof window !== 'undefined') {
@@ -84,4 +79,5 @@ export {
   kycProceedClickHandler,
   addressDeclarationProceedHandler,
   aadhaarConsent,
+  KYC_STATE,
 };

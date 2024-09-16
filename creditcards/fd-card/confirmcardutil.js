@@ -98,4 +98,5 @@ export {
   selectCardBackClickHandler,
   cardSelectHandler,
   popupBackClickHandler,
+  confirmCardState,
 };

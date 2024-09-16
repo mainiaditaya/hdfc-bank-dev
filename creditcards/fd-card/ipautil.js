@@ -1,6 +1,9 @@
 import { BASEURL, CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
-import { fetchRecursiveResponse } from '../../common/makeRestAPI.js';
+import {
+  // fetchJsonResponse,
+  fetchRecursiveResponse,
+} from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
 // import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 
