@@ -149,6 +149,7 @@ const maskedMobNum = (mobileNo, globals) => {
  * @return {PROMISE}
  */
 const getOTP = (mobileNumber, pan, dob, globals) => {
+  CURRENT_FORM_CONTEXT.journeyType = 'ETB';
   const { otpPanel } = globals.form.otpPanelWrapper.otpPanel;
   if (resendOtpCount < FD_CONSTANT.MAX_OTP_RESEND_COUNT) {
     globals.functions.setProperty(otpPanel.secondsPanel, { visible: true });
@@ -164,8 +165,8 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   const jsonObj = {
     requestString: {
       dateOfBirth: clearString(dob.$value) || '',
-      // mobileNumber: FD_CONSTANT.MODE === 'dev' ? '7212637450' : mobileNumber.$value,
-      // panNumber: FD_CONSTANT.MODE === 'dev' ? 'VQGXT6669P' : panValue || '',
+      // mobileNumber: FD_CONSTANT.MODE === 'dev' ? '7666220352' : mobileNumber.$value,
+      // panNumber: FD_CONSTANT.MODE === 'dev' ? 'AJLPA2422K' : panValue || '',
       mobileNumber: mobileNumber.$value,
       panNumber: panValue || '',
       journeyID: globals.form.runtime.journeyId.$value,
@@ -178,8 +179,8 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   formRuntime?.getOtpLoader();
 
   // if (FD_CONSTANT.MODE === 'dev') {
-  //   globals.functions.setProperty(mobileNumber, { value: '7212637450' });
-  //   globals.functions.setProperty(pan, { value: 'VQGXT6669P' });
+  //   globals.functions.setProperty(mobileNumber, { value: '7666220352' });
+  //   globals.functions.setProperty(pan, { value: 'AJLPA2422K' });
   // }
 
   return fetchJsonResponse(path, jsonObj, 'POST', true);

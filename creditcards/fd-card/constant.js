@@ -42,6 +42,14 @@ const NAME_ON_CARD_LENGTH = 19;
 const MAX_ADDRESS_LENGTH = 90;
 const MIN_ADDRESS_LENGTH = 30;
 
+const DOM_ELEMENT = {
+  selectKyc: {
+    aadharModalContent: 'aadharConsentPopup',
+    modalBtnWrapper: 'button-wrapper',
+    defaultLanguage: 'English',
+  },
+};
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,
@@ -55,4 +63,5 @@ export {
   NAME_ON_CARD_LENGTH,
   MAX_ADDRESS_LENGTH,
   MIN_ADDRESS_LENGTH,
+  DOM_ELEMENT,
 };

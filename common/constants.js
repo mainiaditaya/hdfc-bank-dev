@@ -17,6 +17,10 @@ const ENDPOINTS = {
   otpValFetchAssetDemog: '/content/hdfc_haf/api/otpvaldemogV4.json',
   panValNameMatch: '/content/hdfc_forms_common_v2/api/panValNameMatch.json',
   docUpload: '/content/hdfc_etb_wo_pacc/api/documentUpload.json',
+  aadhaarCallBack: {
+    CORPORATE_CARD_JOURNEY: '/content/hdfc_etb_wo_pacc/api/aadharCallback.json',
+    EXISTING_CC_BASED_FDLIEN_JOURNEY: '/content/hdfc_hafcards/api/aadhaarCallback.json',
+  },
 };
 
 const DEAD_PAN_STATUS = ['D', 'ED', 'X', 'F'];

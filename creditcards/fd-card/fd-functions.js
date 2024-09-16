@@ -9,10 +9,12 @@ import {
   reloadPage,
   pincodeChangeHandler,
 } from './fdlien-functions.js';
+
 import {
   invokeJourneyDropOff,
   fdWizardSwitch,
   journeyResponseHandler,
+  invokeJourneyDropOffUpdate,
 } from './fd-journey-util.js';
 
 import {
@@ -30,16 +32,15 @@ import {
   redirect,
   validatePan,
   idcomRedirection,
+  aadharInit,
 } from '../../common/functions.js';
 
-import createJourneyId from '../../common/journey-utils.js';
+import { createJourneyId } from '../../common/journey-utils.js';
 
 import {
   docUploadClickHandler,
   fileUploadUIHandler,
 } from './docuploadutil.js';
-
-import { invokeJourneyDropOffUpdate } from './common-journeyutil.js';
 
 import {
   addGaps,
@@ -83,6 +84,7 @@ import { idcomm, idcomSuccessHandler } from './idcomutil.js';
 import {
   kycProceedClickHandler,
   addressDeclarationProceedHandler,
+  aadhaarConsent,
 } from './kycUtil.js';
 
 export {
@@ -137,4 +139,6 @@ export {
   idcomSuccessHandler,
   kycProceedClickHandler,
   addressDeclarationProceedHandler,
+  aadhaarConsent,
+  aadharInit,
 };
