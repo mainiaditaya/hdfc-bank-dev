@@ -3,6 +3,7 @@ import { urlPath } from '../../common/formutils.js';
 import { restAPICall } from '../../common/makeRestAPI.js';
 import { invokeJourneyDropOffUpdate } from '../corporate-creditcard/journey-utils.js';
 import { FD_ENDPOINTS } from './constant.js';
+import finalPagePanelVisibility from './thankyouutil.js';
 
 /**
  * Creates a DAP request object based on the provided global data.
@@ -34,10 +35,10 @@ const createDapRequestObj = (globals) => {
 };
 
 const finalDap = (userRedirected, globals) => {
-  const { addressDeclarationPanel, resultPanel, fdBasedCreditCardWizard } = globals.form;
-  const { successResultPanel, errorResultPanel } = resultPanel;
+  const { resultPanel, fdBasedCreditCardWizard } = globals.form;
+  const { successResultPanel } = resultPanel;
 
-  const { vkycConfirmationPanel, refNumPanel } = successResultPanel;
+  const { vkycConfirmationPanel } = successResultPanel;
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsexecutefinaldap);
   const payload = createDapRequestObj(globals);
   const formData = globals.functions.exportData();
@@ -55,19 +56,13 @@ const finalDap = (userRedirected, globals) => {
         CURRENT_FORM_CONTEXT.action = 'confirmation';
         await Promise.resolve(invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_SUCCESS', mobileNumber, leadProfileId, journeyId, globals));
         if (!userRedirected) {
-          globals.functions.setProperty(addressDeclarationPanel, { visible: false });
-          globals.functions.setProperty(resultPanel, { visible: true });
-          globals.functions.setProperty(successResultPanel, { visible: true });
           globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
-          globals.functions.setProperty(refNumPanel.referenceNumber, { value: CURRENT_FORM_CONTEXT.ARN_NUM });
+          finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.ARN_NUM, globals);
         }
       } else {
         invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_FAILURE', mobileNumber, leadProfileId, journeyId, globals);
         if (!userRedirected) {
-          globals.functions.setProperty(addressDeclarationPanel, { visible: false });
-          globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
-          globals.functions.setProperty(resultPanel, { visible: true });
-          globals.functions.setProperty(errorResultPanel, { visible: true });
+          finalPagePanelVisibility('error', '', globals);
         }
       }
     },

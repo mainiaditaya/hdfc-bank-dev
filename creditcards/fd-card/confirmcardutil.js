@@ -13,13 +13,19 @@ const confirmCardState = {
  * @param {Object} globals - The global context object containing various information.
  */
 const confirmCardClickHandler = (globals) => {
-  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';
   const {
     fdBasedCreditCardWizard,
     docUploadFlow,
     selectKYCOptionsPanel,
   } = globals.form;
+  if (CURRENT_FORM_CONTEXT.customerIdentityChange) {
+    globals.functions.setProperty(docUploadFlow.docUploadConfirm, { visible: true });
+    globals.functions.setProperty(docUploadFlow.docUploadBiometric, { visible: false });
+  } else {
+    globals.functions.setProperty(docUploadFlow.docUploadConfirm, { visible: false });
+    globals.functions.setProperty(docUploadFlow.docUploadBiometric, { visible: true });
+  }
   const { addressDetails, employeeAssistance } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
   const { aadharBiometricVerification } = globals.form.selectKYCOptionsPanel.selectKYCMethodOption1;
   const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC') || '';
