@@ -260,7 +260,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
     },
   };
 
-  const path = urlPath(ENDPOINTS.aadharInit);
+  const path = urlPath(ENDPOINTS.aadhaarInit?.[currentFormContext.journeyName]);
   const response = fetchJsonResponse(path, jsonObj, 'POST');
   response
     .then((res) => {

@@ -31,6 +31,7 @@ const FD_ENDPOINTS = {
   ipa: '/content/hdfc_hafcards/api/hdfccardsipa.json',
   hdfccardsgetrefidfdcc: '/content/hdfc_hafcards/api/hdfccardsgetrefidfdcc.json',
   hdfccardsgetfdeligibilitystatus: '/content/hdfc_hafcards/api/hdfccardsgetfdeligibilitystatus.json',
+  hdfccardsexecutefinaldap: '/content/hdfc_hafcards/api/hdfccardsexecutefinaldap.json',
 };
 
 const OTP_TIMER = 30;

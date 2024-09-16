@@ -21,6 +21,10 @@ const ENDPOINTS = {
     CORPORATE_CARD_JOURNEY: '/content/hdfc_etb_wo_pacc/api/aadharCallback.json',
     EXISTING_CC_BASED_FDLIEN_JOURNEY: '/content/hdfc_hafcards/api/aadhaarCallback.json',
   },
+  aadhaarInit: {
+    CORPORATE_CARD_JOURNEY: '/content/hdfc_haf/api/aadhaarInit.json',
+    EXISTING_CC_BASED_FDLIEN_JOURNEY: '/content/hdfc_hafcards/api/hdfccardsaadharauthenticationinit.json',
+  },
 };
 
 const DEAD_PAN_STATUS = ['D', 'ED', 'X', 'F'];
