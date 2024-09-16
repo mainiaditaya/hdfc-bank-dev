@@ -662,8 +662,8 @@ main {
             }
         }
 
-        .field-errormessagetextplaceholder2col {
-            margin: -120px 0 0;
+        .field-errormessagetextplaceholder2 {
+            margin: -160px 0 0;
 
             p {
                 font-size: var(--body-fd-xx-lg-font-size);
@@ -676,7 +676,7 @@ main {
 
         .field-errorctapanel {
             grid-column: span 3;
-            margin: -80px 0 0 60px;
+            margin: -90px 0 0 60px;
 
             .field-getccnowlabel {                
                 background: var(--color-interface-error-cta-background) url('../icons/error_cta_icon.svg') no-repeat;
@@ -720,7 +720,7 @@ main {
                 flex-wrap: wrap;
                 justify-content: space-between;
                 gap: 0 !important;
-                margin: -80px 0 0 60px;
+                margin: -90px 0 0 60px;
                 background: var(--color-interface-background-primary);
 
                 > legend {
@@ -811,7 +811,9 @@ main {
                 }
             }
             
-            
+            .field-errortagtext {
+                margin: -35px 0 40px 50px;
+            }
         }
   
       .button-wrapper.field-ntberrorpage, .button-wrapper.field-tryagainbuttonerrorpanel{
@@ -915,7 +917,7 @@ main {
 
                     input {
                         border: none;
-                        margin: 30px 0 0 75px;
+                        margin: 20px 0 0 75px;
                         font-size: var(--body-fd-xx-lg-font-size);
                         font-weight: var(--font-weight-bold);
                         color: var(--color-interface-background-quaternary);
@@ -1472,9 +1474,9 @@ main {
                       border: none;
                       pointer-events: none;
                       margin-top: 2px;
-                      margin-left: -8px;
+                      margin-left: 0;
                       padding: 0;
-                      width: 25px;
+                      width: 20px;
                       height: 50px !important;
   
                       &:hover {
@@ -1486,6 +1488,12 @@ main {
                   input[type="number"]:hover::-webkit-outer-spin-button {
                             display: none;
                   }
+              }
+
+              .field-selectedfdnummax {
+                input[type="number"] {
+                    margin-left: -16px;
+                }
               }
   
               .field-selectedfdbreak {
@@ -2937,6 +2945,10 @@ main {
                     margin-bottom: 10px;
                 }
             }
+
+            .field-errortagtext {
+                margin: 0 0 0 30px !important;
+            }
         }
     }
   
@@ -3004,7 +3016,7 @@ main {
 
         .field-vkycconfirmationpanel {
             padding: 25px;
-            margin: 70px 20px 0 !important;
+            margin: 50px 20px 0 !important;
             top: 21% !important;
             left: 20px;
             width: 90% !important;
@@ -3032,6 +3044,10 @@ main {
             }
         }
 
+        .field-vkycconfirmationpanel[data-visible="false"]:has(~ .field-refnumpanel) + .field-refnumpanel {
+            min-height: auto !important;
+        }
+
         .field-refnumpanel {
             margin: -70px 20px 0 !important;
             width: 95% !important;
@@ -3039,7 +3055,7 @@ main {
             border: 1px solid var(--color-interface-border-secondary);
             border-radius: 24px;
             padding: 20px;
-            min-height: 380px !important;
+            min-height: 390px !important;
 
             .field-refnumlabel {
                 background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
@@ -3173,7 +3189,7 @@ main {
                     padding: 60px 215px 125px 10px;
                 }
 
-                .field-errormessagetextplaceholder2col {
+                .field-errormessagetextplaceholder2 {
                     margin: -125px 0 0 -37px;
 
                     p {
@@ -3219,6 +3235,10 @@ main {
                         border-bottom: 1px solid var(--color-interface-border-primary);
                         margin-bottom: 10px;
                     }
+                }
+
+                .field-errortagtext {
+                    margin: 0 0 0 30px;
                 }
             }
         }
@@ -3575,16 +3595,27 @@ main {
                 position: unset !important;
                 width: 100%;
             }
+        }  
+        
+        .field-vkycconfirmationpanel[data-visible="false"]:has(~ .field-refnumpanel) + .field-refnumpanel {
+            min-height: auto !important;
         }
 
         .field-refnumpanel {
             margin: 50px 10px 20px !important;
             width: 95% !important;
-            min-height: 460px !important;
+            min-height: 470px !important;
+
+            .field-referencenumber {
+                input {
+                    width: 290px !important;
+                }                
+            }
 
             .field-referencenumbertagline {
-                margin-top: 35px !important;
-                border-bottom: 1px dashed var(--color-interface-border-secondary);
+                margin-top: 15px !important;
+                padding-top: 10px;
+                border-top: 1px dashed var(--color-interface-border-secondary);
                 padding-bottom: 10px;
 
                 p {
