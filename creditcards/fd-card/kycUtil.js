@@ -1,4 +1,6 @@
-import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
+import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
+import { aadharLangChange } from '../domutils/domutils.js';
+import { DOM_ELEMENT } from './constant.js';
 
 const KYC_STATE = {
   selectedKyc: '',
@@ -7,6 +9,7 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
   const {
     addressDeclarationPanel,
     aadharConsent,
+    docUploadFlow,
   } = globals.form;
   KYC_STATE.selectedKyc = selectedKyc;
   switch (selectedKyc) {
@@ -19,7 +22,11 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
       globals.functions.setProperty(aadharConsent, { visible: true });
       break;
     case 'OVD':
-      // ovd flow
+      globals.functions.setProperty(docUploadFlow, { visible: true });
+      globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: CURRENT_FORM_CONTEXT.customerIdentityChange });
+      globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: true });
+      CURRENT_FORM_CONTEXT.identityDocUploadFlag = true;
+      CURRENT_FORM_CONTEXT.addressDocUploadFlag = !!CURRENT_FORM_CONTEXT?.customerIdentityChange;
       break;
     default:
   }
@@ -45,26 +52,26 @@ const addressDeclarationProceedHandler = (globals) => {
 };
 
 const aadhaarConsent = async (globals) => {
+  const { addressDeclarationPanel, selectKYCOptionsPanel } = globals.form;
   try {
     if (typeof window !== 'undefined') {
       const openModal = (await import('../../blocks/modal/modal.js')).default;
-      const { aadharLangChange } = await import('./cc.js');
-      const contentDomName = 'aadharConsentPopup';
-      const btnWrapClassName = 'button-wrapper';
       const config = {
-        content: document.querySelector(`[name = ${contentDomName}]`),
-        actionWrapClass: btnWrapClassName,
+        content: document.querySelector(`[name = ${DOM_ELEMENT.selectKyc.aadharModalContent}]`),
+        actionWrapClass: DOM_ELEMENT.selectKyc.modalBtnWrapper,
         reqConsentAgree: true,
       };
-      if (typeof formRuntime.aadharConfig === 'undefined') {
-        formRuntime.aadharConfig = config;
+      if (typeof FORM_RUNTIME.aadharConfig === 'undefined') {
+        FORM_RUNTIME.aadharConfig = config;
       }
-      await openModal(formRuntime.aadharConfig);
-      aadharLangChange(formRuntime.aadharConfig?.content, 'English');
-      config?.content?.addEventListener('modalTriggerValue', async (event) => {
+      await openModal(FORM_RUNTIME.aadharConfig);
+      aadharLangChange(FORM_RUNTIME.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage);
+      config?.content?.addEventListener('modalTriggerValue', (event) => {
         const receivedData = event.detail;
         if (receivedData?.aadharConsentAgree) {
-          globals.functions.setProperty(globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel.ckycDetailsContinueETBPanel.triggerAadharAPI, { value: 1 });
+          globals.functions.setProperty(selectKYCOptionsPanel.triggerAadharAPI, { value: 1 });
+          globals.functions.setProperty(addressDeclarationPanel, { visible: true });
+          globals.functions.setProperty(addressDeclarationPanel.aadhaarAddressDeclaration, { visible: true });
         }
       });
     }
@@ -76,4 +83,5 @@ const aadhaarConsent = async (globals) => {
 export {
   kycProceedClickHandler,
   addressDeclarationProceedHandler,
+  aadhaarConsent,
 };

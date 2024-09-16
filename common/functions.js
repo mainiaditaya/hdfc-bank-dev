@@ -198,14 +198,14 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
         journey_key: currentFormContext.journeyID,
         service_code: 'XX2571ER',
       },
-      existingCustomer: currentFormContext.journeyType === 'NTB' ? 'N' : 'Y',
+      existingCustomer: currentFormContext?.journeyType === 'NTB' ? 'N' : 'Y',
       data_otp_gen: {
         UID_NO: '',
       },
       data_app: {
         journey_id: currentFormContext.journeyID,
         lead_profile_id: globals?.form.runtime.leadProifileId.$value,
-        callback: urlPath(ENDPOINTS.aadharCallback),
+        callback: urlPath(ENDPOINTS.aadhaarCallBack?.[currentFormContext.journeyName]),
         lead_profile: {
           leadProfileId: globals?.form.runtime.leadProifileId.$value,
           mobileNumber: mobileNumber.$value,

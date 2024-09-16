@@ -139,6 +139,7 @@ const createExecuteInterfaceRequest = (payload, globals) => {
  */
 const executeInterface = (payload, showLoader, hideLoader, globals) => {
   const executeInterfaceRequest = createExecuteInterfaceRequest(payload, globals);
+  CURRENT_FORM_CONTEXT.executeInterfaceRequest = executeInterfaceRequest;
   Object.keys(executeInterfaceRequest).forEach((key) => {
     if (executeInterfaceRequest[key] === undefined) {
       executeInterfaceRequest[key] = '';

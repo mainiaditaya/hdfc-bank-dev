@@ -32,6 +32,7 @@ import {
   redirect,
   validatePan,
   idcomRedirection,
+  aadharInit,
 } from '../../common/functions.js';
 
 import { createJourneyId } from '../../common/journey-utils.js';
@@ -83,6 +84,7 @@ import { idcomm, idcomSuccessHandler } from './idcomutil.js';
 import {
   kycProceedClickHandler,
   addressDeclarationProceedHandler,
+  aadhaarConsent,
 } from './kycUtil.js';
 
 export {
@@ -137,4 +139,6 @@ export {
   idcomSuccessHandler,
   kycProceedClickHandler,
   addressDeclarationProceedHandler,
+  aadhaarConsent,
+  aadharInit,
 };
