@@ -12,7 +12,7 @@ const createIdComRequestObj = (globals) => {
   const scope = addressDetails.mailingAddressToggle._data.$_value === 'on' ? 'AACC_FDCC' : 'ADOBE_FDCC';
   const idComObj = {
     requestString: {
-      mobileNumber: `91${globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber._data.$_value}`,
+      mobileNumber: `${globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber._data.$_value}`,
       ProductCode: 'CCPREISS',
       // PANNo: personalDetails.panNumberPersonalDetails._data.$_value.replace(/\s+/g, ''),
       PANNo: 'AJLPA2422K',
