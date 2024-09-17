@@ -23,5 +23,3 @@ export const formIdPathMapping = {
   '/content/forms/af/hdfc_haf/cards/fdlien/forms/fdlien-dev': '../../../creditcards/fd-card/fd-functions.js', // fd
   '/content/forms/af/hdfc_haf/cards/semi/forms/semi': '../../../creditcards/semi/semi-functions.js', // semi
 };
-
-export const semitcRedirectURI = 'https://www.hdfcbank.com/personal/useful-links/privacy';

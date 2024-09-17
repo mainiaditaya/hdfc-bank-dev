@@ -236,12 +236,14 @@ const setData = (globals, panel, txn, i) => {
  */
 const cardDisplay = (globals, response) => {
   const creditCardDisplay = globals.form.aem_semicreditCardDisplay;
-  const maskLength = Number.isNaN(response?.blockCode?.length) ? 0 : (response.blockCode.length - 4);
-  const lastFourDigits = Number.isNaN(response?.blockCode.cardNumber) ? '' : response?.blockCode.cardNumber.slice(-4);
+  const nCardNumber = 4;
+  const cardNumberLength = Number.isNaN(response?.blockCode.cardNumber.length) ? 0 : response.blockCode.cardNumber.length;
+  const lastNDigits = (cardNumberLength % nCardNumber === 0) ? response?.blockCode.cardNumber.slice(-nCardNumber) : response?.blockCode.cardNumber.slice(-(cardNumberLength % nCardNumber));
+  const cardDigits = `${'X'.repeat(nCardNumber)}-`.repeat(Math.round(cardNumberLength / nCardNumber) - 1) + lastNDigits;
   globals.functions.setProperty(creditCardDisplay, { visible: true });
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: `Dear ${response?.cardHolderName}` });
-  globals.functions.setProperty(creditCardDisplay.cardFaciaCardName, { innerText: `${response?.address.name}` });
-  globals.functions.setProperty(creditCardDisplay.cardFaciaCardNo, { innerText: `${(('x'.repeat(maskLength)) + lastFourDigits)}` });
+  globals.functions.setProperty(creditCardDisplay.cardFaciaCardName, { value: `${response?.address.name}` });
+  globals.functions.setProperty(creditCardDisplay.cardFaciaCardNo, { value: `${cardDigits}` });
   // eslint-disable-next-line radix
   const totalAmt = nfObject.format(parseInt(response.responseString.creditLimit) - Math.round(parseInt(response?.blockCode?.bbvlogn_card_outst) / 100));
   const TOTAL_OUTSTANDING_AMT = `${MISC.rupeesUnicode} ${totalAmt}`;
