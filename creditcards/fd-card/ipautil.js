@@ -123,9 +123,8 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  * @returns {Promise<object>}
  */
 const ipaSuccessHandler = (response, globals) => {
-  // CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
-  const productDetails = response?.productEligibility?.productDetails;
+  const productDetails = response?.productEligibility?.productDetails || [];
   const { selectCard, selectFD, basicDetails } = globals.form.fdBasedCreditCardWizard;
   const {
     eligibleCreditLimitAmount,
@@ -138,32 +137,35 @@ const ipaSuccessHandler = (response, globals) => {
   const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
   const productCount = productDetails.length;
   IPA_RESPONSE.productDetails = productDetails;
+
   globals.functions.setProperty(eligibleCreditLimitAmount, { value: creditLimit.$value });
-  if (productCount === 1) {
-    globals.functions.setProperty(selectCardHeaderPanel.selectSuitableCardText, { visible: false });
-    globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: false });
-    globals.functions.setProperty(selectCardFaciaPanelSingle, { visible: true });
+
+  const isSingleProduct = productCount === 1;
+  const isMultipleProducts = productCount > 1;
+
+  globals.functions.setProperty(selectCardHeaderPanel.selectSuitableCardText, { visible: !isSingleProduct });
+  globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: isMultipleProducts });
+  globals.functions.setProperty(selectCardFaciaPanelSingle, { visible: isSingleProduct });
+
+  if (isSingleProduct) {
     bindSingleCardDetails(selectCardFaciaPanelSingle, globals, productDetails[0]);
-  } else if (productCount > 1) {
-    globals.functions.setProperty(selectCardFaciaPanelSingle, { visible: false });
-    globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: true });
+  } else if (isMultipleProducts) {
     productDetails.forEach((productDetail, i) => {
-      if (i < productCount - 1) {
-        globals.functions.dispatchEvent(selectCardFaciaPanelMultiple, 'addItem');
-      }
-      setTimeout(() => {
-        updateData(globals, productDetail, selectCardFaciaPanelMultiple[i], i);
-      }, i * 40);
+      if (i < productCount - 1) globals.functions.dispatchEvent(selectCardFaciaPanelMultiple, 'addItem');
+      setTimeout(() => updateData(globals, productDetail, selectCardFaciaPanelMultiple[i], i), i * 40);
     });
     globals.functions.setProperty(selectCardFaciaPanelMultiple[0].cardSelection, { value: 0 });
   }
-  if (!CURRENT_FORM_CONTEXT.customerIdentityChange && basicDetails.reviewDetailsView.addressDetails.mailingAddressToggle._data.$_value === 'on') {
-    globals.functions.setProperty(selectIdentifier, { visible: false });
-    globals.functions.setProperty(continueToIDCOM, { visible: true });
-  } else {
-    globals.functions.setProperty(selectIdentifier, { visible: true });
-    globals.functions.setProperty(continueToIDCOM, { visible: false });
+
+  if (productCount === 0) {
+    globals.functions.setProperty(selectCardFaciaPanelSingle, { visible: false });
+    globals.functions.setProperty(selectCardFaciaPanelMultiple, { visible: false });
   }
+
+  const addressToggleOn = basicDetails.reviewDetailsView.addressDetails.mailingAddressToggle._data.$_value === 'on';
+  const customerChanged = CURRENT_FORM_CONTEXT.customerIdentityChange;
+  globals.functions.setProperty(selectIdentifier, { visible: customerChanged || !addressToggleOn });
+  globals.functions.setProperty(continueToIDCOM, { visible: !customerChanged && addressToggleOn });
 };
 
 export {
