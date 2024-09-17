@@ -55,7 +55,8 @@ const linkToPopupToggle = (hyperLink, popupOverlay, popupContent, closeBtn = fal
   }
   if (redirectBtn) {
     document.querySelector(redirectBtn).addEventListener('click', () => {
-      window.open(semitcRedirectURI, '_blank').focus();
+      // window.open(semitcRedirectURI, '_blank').focus();
+      console.log('Clicked');
     });
   }
 };
