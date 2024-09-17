@@ -7,6 +7,7 @@ import {
   addCardFieldValidation,
   addMobileValidation,
   addOtpFieldValidation,
+  linkToPopupToggle,
   getUrlParamCaseInsensitive,
 } from './semi-dom-utils.js';
 
@@ -110,6 +111,7 @@ const validationField = () => {
   addMobileValidation();
   addCardFieldValidation();
   addOtpFieldValidation();
+  linkToPopupToggle('.field-disclaimer-text a', '.field-landingconfirmationpopup', '.field-doyouwishtocontinue', '.field-cross-btn button', '.field-err-popup-buttonconfirm button');
 };
 
 const getNextMonthDate = (day) => {
