@@ -909,10 +909,11 @@ main {
                     height: 72px;
 
                     label {
-                        margin: 30px 0 0 80px;
+                        margin: 10px 0 0 85px;
                         text-wrap: nowrap;
                         font-size: var(--body-fd-md-font-size);
                         font-weight: var(--font-weight-regular);
+                        color: var(--color-interface-text-secondary);
                     }
 
                     input {
@@ -925,6 +926,10 @@ main {
 
                         &:hover{
                             box-shadow: none;
+                        }
+
+                        &:disabled {
+                            background: var(--color-interface-background-primary);
                         }
                     }
                 }
@@ -980,6 +985,12 @@ main {
                 }
             }
 
+            .field-tqnameoncard {
+                label {
+                    margin-left: 10px;
+                }
+            }
+
             .text-wrapper {
                 padding-top: 20px;
 
@@ -998,6 +1009,10 @@ main {
 
                     &:hover {
                         box-shadow: none;
+                    }
+
+                    &:disabled {
+                        background: var(--color-interface-background-primary);
                     }
                 }
             }
@@ -1019,6 +1034,10 @@ main {
 
                     &:hover {
                         box-shadow: none;
+                    }
+
+                    &:disabled {
+                        background: var(--color-interface-background-primary);
                     }
                 }
             }
@@ -1817,6 +1836,14 @@ main {
                       font-weight: var(--font-weight-regular);
                       color: var(--color-interface-text-primary);
                   }
+              }
+              
+              .field-newcurentaddresspanel {
+                input[type="text"] {
+                    &:disabled {
+                        background: var(--color-interface-background-primary);
+                    }
+                }
               }
           }
   
