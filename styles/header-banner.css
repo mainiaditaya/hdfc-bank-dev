@@ -72,6 +72,7 @@ header {
                 picture {
                     img {
                         margin-top: 10px;
+                        cursor: pointer;
                     }
                 }
             }
@@ -123,7 +124,7 @@ header {
     padding: 0 !important;
     border-bottom: none !important;
     content: url('../icons/header_banner_desktop.webp');
-    max-width: fit-content !important;
+    max-width: fit-content !important
 }
 
 /***** mobile large ********/
@@ -131,7 +132,6 @@ header {
     .cmp-container-wrapper {
         content: url('../icons/header_banner_smMobile.webp');
         width: 100%;
-        max-width: 100% !important;
     }
 
     div>div>p {

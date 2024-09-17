@@ -12,6 +12,7 @@ const {
   addDisableClass,
   createLabelInElement,
   decorateStepper,
+  attachRedirectOnClick,
 } = DOM_API; // DOM_MANIPULATE_CODE_FUNCTION
 
 const { BASEURL } = CONSTANT;
@@ -280,15 +281,23 @@ const removeUndefinedKeys = (jsonObj) => {
    * * @param {object} currentFormContext - additional data variables object containing form configurations.
    * @returns {object} -Object containing only defined values.
    */
-const santizedFormDataWithContext = (globaObj, currentFormContext) => {
-  const formData = globaObj.functions.exportData();
-  formData.currentFormContext = currentFormContext;
-  const {
-    data, analytics, queryParams, ...formDataPayload
-  } = formData;
-  removeUndefinedKeys(formDataPayload);
-  removeUndefinedKeys(formDataPayload?.form);
-  return JSON.parse(JSON.stringify(formDataPayload));
+const santizedFormDataWithContext = (globals, currentFormContext) => {
+  try {
+    const formData = (Object.prototype.hasOwnProperty.call(globals, 'form') && Object.prototype.hasOwnProperty.call(globals, 'functions')) ? globals.functions.exportData() : globals;
+    formData.currentFormContext = currentFormContext;
+    if (formData.form) {
+      const {
+        data, analytics, queryParams, ...formDataPayload
+      } = formData;
+      removeUndefinedKeys(formDataPayload);
+      removeUndefinedKeys(formDataPayload?.form);
+      return JSON.parse(JSON.stringify(formDataPayload));
+    }
+    return formData;
+  } catch (ex) {
+    console.error(ex);
+    return null;
+  }
 };
 
 /**
@@ -413,4 +422,5 @@ export {
   createLabelInElement,
   decorateStepper,
   ageValidator,
+  attachRedirectOnClick,
 };

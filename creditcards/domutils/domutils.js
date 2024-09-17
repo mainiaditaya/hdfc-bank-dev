@@ -194,6 +194,73 @@ function decorateStepper() {
   });
 }
 
+/**
+ * Displays a loading indicator by adding a 'preloader' class to the body container.
+ * Optionally sets a loading text as a custom attribute.
+ *
+ * @param {string} [loadingText] - The text to display as a loading message.
+ */
+const displayLoader = (loadingText) => {
+  const bodyContainer = document?.querySelector('.appear');
+  bodyContainer?.classList?.add('preloader');
+  if (loadingText) {
+    bodyContainer.setAttribute('loader-text', loadingText);
+  }
+};
+
+/**
+ * Hides the loading indicator by removing the 'preloader' class from the body container.
+ * Removes the loading text attribute if it exists.
+ */
+const hideLoaderGif = () => {
+  const bodyContainer = document?.querySelector('.appear');
+  bodyContainer?.classList?.remove('preloader');
+  if (bodyContainer.hasAttribute('loader-text')) {
+    bodyContainer.removeAttribute('loader-text');
+  }
+};
+
+/**
+ * Sets the maximum allowable date for an input field to today's date.
+ * @param {string} inputName - The name attribute of the input field to be validated.
+ */
+const setMaxDateToToday = (inputName) => {
+  const calendarEl = document.querySelector(`[name= ${inputName}]`);
+  calendarEl?.setAttribute('max', new Date()?.toISOString()?.split('T')?.[0]);
+};
+
+/**
+ * Filters out non-numeric characters,spaces and special characters from the input value.
+ * This function binds an 'input' event listener to the input field identified by the given name attribute.
+ *
+ * @param {string} inputName - The name attribute value of the input field to be validated.
+ * @returns {void}
+ */
+const restrictToAlphabetsNoSpaces = (inputName) => {
+  const inputField = document.querySelector(`[name= ${inputName}]`);
+  inputField.addEventListener('input', (e) => {
+    const input = e.target;
+    input.value = input.value.replace(/(?![A-Z])[`!@#$%^&*_=[\]{};':"\\|,.<>/?~0-9()+-_ ]/g, ''); // Replace non-numeric characters with an empty string
+  });
+};
+
+/**
+ * Attaches a click handler to an element that redirects to a specified URL.
+ *
+ * @param {string} selector - The CSS selector for the element to make clickable.
+ * @param {string} url - The URL to navigate to when the element is clicked.
+ * @param {string} [target='_blank'] - The target window or tab for the URL (e.g., '_blank', '_self').
+ */
+const attachRedirectOnClick = (selector, url, target = '_blank') => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.addEventListener('click', (event) => {
+      event.preventDefault();
+      window?.open(url, target);
+    });
+  }
+};
+
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -203,4 +270,9 @@ export {
   addDisableClass,
   createLabelInElement,
   decorateStepper,
+  displayLoader,
+  hideLoaderGif,
+  setMaxDateToToday,
+  restrictToAlphabetsNoSpaces,
+  attachRedirectOnClick,
 };

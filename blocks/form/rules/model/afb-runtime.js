@@ -164,19 +164,20 @@ const isCaptcha = function (item) {
     return fieldType === 'captcha';
 };
 function deepClone(obj, idGenerator) {
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
     let result;
-    if (obj instanceof Array) {
-        result = [];
-        result = obj.map(x => deepClone(x, idGenerator));
-    }
-    else if (typeof obj === 'object' && obj !== null) {
+    if (Array.isArray(obj)) {
+        result = new Array(obj.length);
+        for (let i = 0; i < obj.length; i++) {
+            result[i] = deepClone(obj[i], idGenerator);
+        }
+    } else {
         result = {};
-        Object.entries(obj).forEach(([key, value]) => {
-            result[key] = deepClone(value, idGenerator);
-        });
-    }
-    else {
-        result = obj;
+        for (const key of Object.keys(obj)) {
+            result[key] = deepClone(obj[key], idGenerator);
+        }
     }
     if (idGenerator && result && result.id) {
         result.id = idGenerator();
@@ -210,11 +211,13 @@ class DataValue {
     get $name() {
         return this.$_name;
     }
-    get $value() {
+
+    get disabled() {
         const enabled = this.$_fields.find(x => x.enabled !== false);
-        if (!enabled && this.$_fields.length) {
-            return undefined;
-        }
+        return (!enabled && this.$_fields.length);
+    }
+
+    get $value() {
         return this.$_value;
     }
     setValue(typedValue, originalValue, fromField) {
@@ -292,17 +295,23 @@ class DataGroup extends DataValue {
         }
     }
     get $value() {
-        const enabled = this.$_fields.find(x => x.enabled !== false);
-        if (!enabled && this.$_fields.length) {
-            return this.$type === 'array' ? [] : {};
-        }
-        else if (this.$type === 'array') {
-            return Object.values(this.$_items).filter(x => typeof x !== 'undefined').map(x => x.$value);
-        }
-        else {
-            return Object.fromEntries(Object.values(this.$_items).filter(x => typeof x !== 'undefined').map(x => {
-                return [x.$name, x.$value];
-            }));
+        const items = Object.values(this.$_items);
+        if (this.$type === 'array') {
+            const result = [];
+            for (const item of items) {
+                if (item !== undefined && !item.disabled) {
+                    result.push(item.$value);
+                }
+            }
+            return result;
+        } else {
+            const result = {};
+            for (const item of items) {
+                if (item !== undefined && !item.disabled) {
+                    result[item.$name] = item.$value;
+                }
+            }
+            return result;
         }
     }
     get $length() {
@@ -2217,13 +2226,13 @@ class Container extends Scriptable {
         }
     }
     get enabled() {
-        if (this.parent?.enabled !== undefined) {
-            return !this.parent?.enabled ? false : this._jsonModel.enabled;
+        const parentEnabled = this.parent?.enabled;
+        if (parentEnabled !== undefined) {
+            return parentEnabled ? this._jsonModel.enabled : false;
         }
-        else {
-            return this._jsonModel.enabled;
-        }
+        return this._jsonModel.enabled;
     }
+
     set enabled(e) {
         this._setProperty('enabled', e, true, this.notifyChildren);
     }
@@ -3571,13 +3580,13 @@ class Field extends Scriptable {
         this._setProperty('readOnly', e);
     }
     get enabled() {
-        if (this.parent.enabled !== undefined) {
-            return this.parent.enabled === false ? false : this._jsonModel.enabled;
+        const parentEnabled = this.parent?.enabled;
+        if (parentEnabled !== undefined) {
+            return parentEnabled ? this._jsonModel.enabled : false;
         }
-        else {
-            return this._jsonModel.enabled;
-        }
+        return this._jsonModel.enabled;
     }
+
     set enabled(e) {
         this._setProperty('enabled', e);
     }
