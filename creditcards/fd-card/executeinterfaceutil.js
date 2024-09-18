@@ -56,7 +56,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag || CURRENT_FORM_CONTEXT?.editFlags?.addressEdit ? 'Y' : 'N',
-      annualIncomeOrItrAmount: String(reviewDetailsView?.employmentDetails?.annualIncome?._data?.$_value) || '',
+      annualIncomeOrItrAmount: String(employmentDetails?.annualIncome?._data?.$_value) || '',
       annualItr: '',
       applyingBranch: 'N',
       apsDobEditFlag: customerInfo?.datBirthCust ? 'N' : 'Y',
@@ -114,7 +114,8 @@ const createExecuteInterfaceRequest = (source, globals) => {
       officeZipCode: '',
       panCheckFlag: 'Y',
       panEditFlag: customerInfo?.refCustItNum ? 'N' : 'Y',
-      panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),
+      // panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),AJLPA2422K
+      panNumber: 'AJLPA2422K',
       permanentAddress1: permanentAddress?.line1,
       permanentAddress2: permanentAddress?.line2,
       permanentAddress3: permanentAddress?.line3,
