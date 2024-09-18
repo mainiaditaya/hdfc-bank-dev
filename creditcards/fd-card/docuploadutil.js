@@ -7,6 +7,7 @@ import {
 } from '../../common/makeRestAPI.js';
 import { urlPath, generateUUID } from '../../common/formutils.js';
 import { ENDPOINTS, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
+import finalPagePanelVisibility from './thankyouutil.js';
 /**
  * Creates a FormData payload for document upload.
  *
@@ -19,15 +20,14 @@ import { ENDPOINTS, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
  */
 const createDocPayload = async ({ docValue, docType, fileId }, mobileNumber) => {
   try {
-    CURRENT_FORM_CONTEXT.executeInterfaceResponse = {
-      applicationRefNumber: '24I12D00449470W1',
-    };
-    CURRENT_FORM_CONTEXT.eRefNumber = 'AD20240912112637';
+    // CURRENT_FORM_CONTEXT.executeInterfaceResponse = {
+    //   applicationRefNumber: '24I12D00449470W1',
+    // };
+    // CURRENT_FORM_CONTEXT.eRefNumber = 'AD20240912112637';
     const {
       journeyName,
       journeyID,
       eRefNumber,
-      executeInterfaceResponse: { applicationRefNumber },
     } = CURRENT_FORM_CONTEXT;
     const file = docValue?.$value?.data;
     const fileBinary = file;
@@ -40,7 +40,7 @@ const createDocPayload = async ({ docValue, docType, fileId }, mobileNumber) => 
       docuemntType: docType,
       journeyID,
       requestNumber: eRefNumber,
-      applicationRefNo: applicationRefNumber,
+      applicationRefNo: CURRENT_FORM_CONTEXT.executeInterfaceResponse.APS_APPL_REF_NUM,
       journeyName,
       mobileNumber,
       userAgent,
@@ -146,7 +146,15 @@ const fileUploadUIHandler = () => {
   });
 };
 
+const docUploadBiometricHandler = (globals) => {
+  const { vkycConfirmationPanel } = globals.form.resultPanel.successResultPanel;
+  globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
+
+  finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.executeInterfaceResponse.APS_APPL_REF_NUM, globals);
+};
+
 export {
   fileUploadUIHandler,
   docUploadClickHandler,
+  docUploadBiometricHandler,
 };
