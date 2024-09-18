@@ -89,6 +89,8 @@ import {
   aadhaarConsent,
 } from './kycUtil.js';
 
+setTimeout(() => import('./fd-delayedutils.js'), 2000);
+
 export {
   getOTP,
   otpTimer,
