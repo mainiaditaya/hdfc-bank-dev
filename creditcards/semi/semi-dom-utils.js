@@ -40,23 +40,27 @@ const addOtpFieldValidation = () => {
   */
 const linkToPopupToggle = (hyperLink, popupOverlay, popupContent, closeBtn = false, redirectBtn = false) => {
   const links = document.querySelectorAll(hyperLink);
+  let redirectionLink = '';
   [...links].forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
       document.querySelector(popupOverlay).setAttribute('data-visible', 'true');
       document.querySelector(popupContent).setAttribute('data-visible', 'true');
+      redirectionLink = link.getAttribute('href');
     });
   });
+
   if (closeBtn) {
-    document.querySelector(closeBtn).addEventListener('click', () => {
+    document.querySelector(closeBtn).addEventListener('click', (event) => {
+      event.preventDefault();
       document.querySelector(popupOverlay).setAttribute('data-visible', 'false');
       document.querySelector(popupContent).setAttribute('data-visible', 'false');
     });
   }
   if (redirectBtn) {
-    document.querySelector(redirectBtn).addEventListener('click', () => {
-      // window.open(semitcRedirectURI, '_blank').focus();
-      console.log('Clicked');
+    document.querySelector(redirectBtn).addEventListener('click', (event) => {
+      event.preventDefault();
+      window.open(redirectionLink, '_blank').focus();
     });
   }
 };
