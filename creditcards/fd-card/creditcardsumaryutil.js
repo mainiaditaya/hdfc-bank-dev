@@ -5,7 +5,7 @@ const creditCardSummary = (globals) => {
   globals.functions.setProperty(successResultPanel.tqSummarySection.tqNameOnCard, { value: formData.nameOnCard });
   const fdNumberSelection = formData.FDlienCard?.fdNumberSelection || [];
   const formattedFDs = fdNumberSelection.map((fd) => (
-    { selectedFDNumber: fd.fdNumber }
+    { selectedFDNum: fd.fdNumber }
   ));
   globals.functions.importData({ items: formattedFDs }, successResultPanel.tqSummarySection.tqSelectedFDs.selectedFdsRepeatable.$qualifiedName);
 };
