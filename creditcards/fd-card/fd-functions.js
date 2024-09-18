@@ -8,6 +8,7 @@ import {
   customSetFocus,
   reloadPage,
   pincodeChangeHandler,
+  checkModeFd,
 } from './fdlien-functions.js';
 
 import {
@@ -143,4 +144,5 @@ export {
   aadhaarConsent,
   aadharInit,
   docUploadBiometricHandler,
+  checkModeFd,
 };
