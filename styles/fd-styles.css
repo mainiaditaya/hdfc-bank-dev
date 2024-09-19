@@ -1053,9 +1053,33 @@ main {
                 }
 
                 .field-selectedfdsrepeatable {
-                    border: 1px solid var(--color-action-border-primary-disabled);
-                    border-radius: 8px;
-                    cursor: default;
+                    margin-left: 10px;
+                    display: flex;
+                    flex-flow: nowrap;
+
+                    .repeat-wrapper {
+                        gap: 0;
+                        display: flex;
+                    }
+
+                    fieldset.panel-wrapper {                        
+                        border: 1px solid var(--color-action-border-primary-disabled);
+                        border-radius: 8px;
+                        cursor: default;
+
+                        .field-selectedfdnum:not(p){                            
+                            font-size: var(--body-fd-lg-font-size);
+                            font-weight: var(--font-weight-medium);
+                            color: var(--color-interface-text-primary);
+                            text-align: center;
+                        }
+
+                        .field-selectedfdnum p{                            
+                            font-size: var(--body-fd-lg-font-size);
+                            font-weight: var(--font-weight-medium);
+                            color: var(--color-interface-text-primary);
+                        }
+                    }
                 }
             }
 
