@@ -1591,7 +1591,7 @@ main {
                     padding: 0;
                     text-align: center;
                     margin: 0;
-                    height: 51px !important;
+                    height: 49px !important;
                     border-radius: 0 12px 12px 0 !important;
                     border: none;
                     background: var(--color-interface-background-quinary);
@@ -1813,6 +1813,10 @@ main {
           }
   
           .field-reviewdetailsview {
+              .field-invalid:has(.field-description) { 
+                .field-description { margin-top: 10px; }
+              }
+
               fieldset.hdfc-accordian {
                   padding: 15px 0;
                   border: 1px solid var(--color-interface-border-primary);
