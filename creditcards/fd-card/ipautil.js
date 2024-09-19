@@ -150,8 +150,9 @@ const ipaSuccessHandler = (response, globals) => {
   if (isSingleProduct) {
     bindSingleCardDetails(selectCardFaciaPanelSingle, globals, productDetails[0]);
   } else if (isMultipleProducts) {
-    productDetails.forEach((productDetail, i) => {
-      if (i < productCount - 1) globals.functions.dispatchEvent(selectCardFaciaPanelMultiple, 'addItem');
+    const topThreeProducts = productDetails.slice(0, 3);
+    topThreeProducts.forEach((productDetail, i) => {
+      if (i < topThreeProducts.length - 1) globals.functions.dispatchEvent(selectCardFaciaPanelMultiple, 'addItem');
       setTimeout(() => updateData(globals, productDetail, selectCardFaciaPanelMultiple[i], i), i * 40);
     });
     globals.functions.setProperty(selectCardFaciaPanelMultiple[0].cardSelection, { value: 0 });
