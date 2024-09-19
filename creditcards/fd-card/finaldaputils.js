@@ -4,6 +4,7 @@ import { restAPICall } from '../../common/makeRestAPI.js';
 import { invokeJourneyDropOffUpdate } from '../corporate-creditcard/journey-utils.js';
 import { FD_ENDPOINTS } from './constant.js';
 import finalPagePanelVisibility from './thankyouutil.js';
+import creditCardSummary from './creditcardsumaryutil.js';
 
 /**
  * Creates a DAP request object based on the provided global data.
@@ -58,6 +59,7 @@ const finalDap = (userRedirected, globals) => {
         if (!userRedirected) {
           globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
           finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.ARN_NUM, globals);
+          creditCardSummary(globals);
         }
       } else {
         invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_FAILURE', mobileNumber, leadProfileId, journeyId, globals);
