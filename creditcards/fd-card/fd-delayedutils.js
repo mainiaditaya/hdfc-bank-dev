@@ -1,6 +1,6 @@
-import { ENDPOINTS } from '../../common/constants.js';
+import { CURRENT_FORM_CONTEXT, ENDPOINTS } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
-import { displayLoader, hideLoaderGif } from '../domutils/domutils.js';
+import { displayLoader, hideLoaderGif, setArnNumberInResult } from '../domutils/domutils.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
 // import { invokeJourneyDropOffByParam } from './common-journeyutil.js';
 
@@ -19,10 +19,18 @@ const delayedUtilState = {
 };
 
 const fdCardBoardingSuccess = async (data, stateInfoData) => {
-  const {
-    executeInterfaceReqObj, aadharOtpValData, finalDapRequest, finalDapResponse,
-  } = data;
-
+  // const {
+  //   executeInterfaceRequest, aadharOtpValData, finalDapRequest, finalDapResponse,
+  // } = data;
+  const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
+  const leadProfileId = stateInfoData.leadProifileId;
+  const journeyId = stateInfoData.currentFormContext.journeyID;
+  const resultPanel = document.getElementsByName('resultPanel')?.[0];
+  const successPanel = document.getElementsByName('successResultPanel')?.[0];
+  debugger;
+  resultPanel.setAttribute('data-visible', true);
+  successPanel.setAttribute('data-visible', true);
+  setArnNumberInResult(window.ARN_NUM);
   invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 
@@ -63,16 +71,17 @@ const finalDapFetchRes = async () => {
   const { finalDapConst } = delayedUtilState;
   const eventHandler = {
     successMethod: (data) => {
-      console.log(data);
+      console.log(JSON.parse(data.stateInfo));
       const {
         currentFormContext: {
-          executeInterfaceRequest, finalDapRequest, finalDapResponse,
+          executeInterfaceRequest,
         }, aadhaar_otp_val_data: aadharOtpValData,
       } = JSON.parse(data.stateInfo);
       hideLoaderGif();
-      // successPannelMethod({
-      //   executeInterfaceReqObj, aadharOtpValData, finalDapRequest, finalDapResponse,
-      // }, JSON.parse(data.stateInfo));
+      const { finalDapRequest, finalDapResponse } = window;
+      fdCardBoardingSuccess({
+        executeInterfaceRequest, aadharOtpValData, finalDapRequest, finalDapResponse,
+      }, JSON.parse(data.stateInfo));
     },
     errorMethod: (err, lastStateData) => {
       console.log(err);
@@ -114,7 +123,7 @@ const pageRedirected = () => {
     setTimeout(() => {
       displayLoader();
       finalDapFetchRes();
-    }, 2000);
+    }, 20000);
   }
 };
 

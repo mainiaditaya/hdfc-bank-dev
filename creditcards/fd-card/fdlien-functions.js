@@ -11,6 +11,7 @@ import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
 import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { addGaps } from './fd-dom-functions.js';
+import { executeInterfacePostRedirect } from './executeinterfaceutil.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
@@ -295,7 +296,8 @@ const checkModeFd = (globals) => {
     globals.functions.setProperty(bannerImagePanel, { visible: false });
     globals.functions.setProperty(loginMainPanel, { visible: false });
     if (idcomVisit) {
-      console.log(idcomVisit);
+      const userRedirected = true;
+      executeInterfacePostRedirect('idCom', userRedirected, globals);
     }
   }
 };

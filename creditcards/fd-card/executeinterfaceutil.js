@@ -1,9 +1,11 @@
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
-import { fetchJsonResponse } from '../../common/makeRestAPI.js';
+import { fetchJsonResponse, restAPICall } from '../../common/makeRestAPI.js';
 import { confirmCardState } from './confirmcardutil.js';
 import { JOURNEY_NAME, FD_ENDPOINTS } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
+import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
+import finalDap from './finaldaputils.js';
 import { IPA_RESPONSE } from './ipautil.js';
 
 const createExecuteInterfaceRequest = (source, globals) => {
@@ -157,4 +159,42 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
   return fetchJsonResponse(apiEndPoint, executeInterfaceRequest, 'POST', hideLoader);
 };
 
-export default executeInterface;
+/**
+ * Executes an interface post request with the appropriate authentication mode based on the response.
+ *
+ * @param {object} source - The source object (unused in the current implementation).
+ * @param {object} globals - An object containing global variables and functions.
+ */
+const executeInterfacePostRedirect = async (source, userRedirected, globals) => {
+  const formCallBackContext = globals.functions.exportData()?.currentFormContext;
+  const requestObj = formCallBackContext?.executeInterfaceRequest;
+  requestObj.requestString.productCode = requestObj.requestString.productCode || 'FCFL';
+
+  if (source === 'idCom') {
+    requestObj.requestString.authMode = 'IDCOM';
+  }
+  const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
+  const eventHandlers = {
+    successCallBack: (response) => {
+      if (response?.ExecuteInterfaceResponse?.APS_ERROR_CODE === '0000') {
+        CURRENT_FORM_CONTEXT.jwtToken = response.Id_token_jwt;
+        finalDap(userRedirected, globals);
+      } else {
+        const formContextCallbackData = globals.functions.exportData()?.currentFormContext;
+        const mobileNumber = globals.functions.exportData().form.login.registeredMobileNumber;
+        const leadProfileId = globals.functions.exportData().leadProifileId;
+        const journeyId = formContextCallbackData.journeyID;
+        invokeJourneyDropOffUpdate('POST_EXECUTEINTERFACE_FAILURE', mobileNumber, leadProfileId, journeyId, globals);
+      }
+    },
+    errorCallBack: (response) => {
+      console.error(response);
+    },
+  };
+  restAPICall('', 'POST', requestObj, apiEndPoint, eventHandlers.successCallBack, eventHandlers.errorCallBack);
+};
+
+export {
+  executeInterface,
+  executeInterfacePostRedirect,
+};

@@ -66,7 +66,10 @@ import {
   selectAllFdClickHandler,
 } from './fddetailsutil.js';
 
-import executeInterface from './executeinterfaceutil.js';
+import {
+  executeInterface,
+  executeInterfacePostRedirect,
+} from './executeinterfaceutil.js';
 
 import {
   confirmCardClickHandler,
@@ -147,4 +150,5 @@ export {
   aadharInit,
   docUploadBiometricHandler,
   checkModeFd,
+  executeInterfacePostRedirect,
 };

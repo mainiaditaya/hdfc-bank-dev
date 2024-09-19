@@ -11,7 +11,7 @@ import finalPagePanelVisibility from './thankyouutil.js';
  * @returns {Object} - The DAP request object.
  */
 const createDapRequestObj = (globals) => {
-  const formContextCallbackData = globals.functions.exportData()?.CURRENT_FORM_CONTEXT || CURRENT_FORM_CONTEXT;
+  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const finalDapPayload = {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
@@ -28,7 +28,7 @@ const createDapRequestObj = (globals) => {
       journeyName: formContextCallbackData?.journeyName || CURRENT_FORM_CONTEXT?.journeyName,
       filler7: '',
       filler1: '',
-      biometricStatus: formContextCallbackData?.selectedKyc,
+      biometricStatus: formContextCallbackData?.selectedKyc ?? '',
     },
   };
   return finalDapPayload;
@@ -49,12 +49,19 @@ const finalDap = (userRedirected, globals) => {
   const eventHandlers = {
     successCallBack: async (response) => {
       if (response?.ExecuteFinalDAPResponse?.APS_ERROR_CODE === '0000') {
+        debugger;
         CURRENT_FORM_CONTEXT.finalDapRequest = JSON.parse(JSON.stringify(payload));
         CURRENT_FORM_CONTEXT.finalDapResponse = response?.ExecuteFinalDAPResponse;
         CURRENT_FORM_CONTEXT.VKYC_URL = response?.ExecuteFinalDAPResponse?.vkycUrl;
         CURRENT_FORM_CONTEXT.ARN_NUM = response?.ExecuteFinalDAPResponse?.APS_APPL_REF_NUM;
         CURRENT_FORM_CONTEXT.action = 'confirmation';
-        await Promise.resolve(invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_SUCCESS', mobileNumber, leadProfileId, journeyId, globals));
+        window.finalDapRequest = JSON.parse(JSON.stringify(payload));
+        window.finalDapResponse = response?.ExecuteFinalDAPResponse;
+        window.VKYC_URL = response?.ExecuteFinalDAPResponse?.vkycUrl;
+        window.ARN_NUM = response?.ExecuteFinalDAPResponse?.APS_APPL_REF_NUM;
+        window.action = 'confirmation';
+        const dropoffResponse = await Promise.resolve(invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_SUCCESS', mobileNumber, leadProfileId, journeyId, globals));
+        console.log(dropoffResponse);
         if (!userRedirected) {
           globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
           finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.ARN_NUM, globals);
