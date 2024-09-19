@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: http://hdfc-dev-04.adobecqms.net/bin/franklin.delivery/aemsites/hdfc-bank/corp-cug
+    url: https://applyonlinedev.hdfcbank.com/
     type: "markup"
-    suffix: ".html"
+    suffix: ".md.html"
