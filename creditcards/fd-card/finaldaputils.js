@@ -61,6 +61,7 @@ const finalDap = (userRedirected, globals) => {
         window.ARN_NUM = response?.ExecuteFinalDAPResponse?.APS_APPL_REF_NUM;
         window.action = 'confirmation';
         const dropoffResponse = await Promise.resolve(invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_SUCCESS', mobileNumber, leadProfileId, journeyId, globals));
+        await import('./fd-delayedutils.js');
         console.log(dropoffResponse);
         if (!userRedirected) {
           globals.functions.setProperty(vkycConfirmationPanel, { visible: false });

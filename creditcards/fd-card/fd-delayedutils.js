@@ -123,7 +123,7 @@ const pageRedirected = () => {
     setTimeout(() => {
       displayLoader();
       finalDapFetchRes();
-    }, 20000);
+    }, 5000);
   }
 };
 
