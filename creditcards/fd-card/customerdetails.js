@@ -63,19 +63,22 @@ const bindEmployeeAssistanceField = async (globals) => {
     if (!response) return;
 
     const dropDownSelectField = employeeAssistancePanel.channel;
-    const options = [{ label: 'Website Download', value: 'Website Download' }];
+    const channelOptions = ['Website Download'];
+    const options = channelOptions.map((channel) => ({ label: channel, value: channel }));
     let matchedChannel = options[0].value;
-
     response.forEach((item) => {
       const channel = item.CHANNELS;
-      options.push({ label: channel, value: channel });
-      if (defaultChannel?.toLowerCase() === channel.toLowerCase()) {
+      const normalizedChannel = channel.toLowerCase();
+      if (!channelOptions.some((opt) => opt.toLowerCase() === normalizedChannel)) {
+        options.push({ label: channel, value: channel });
+        channelOptions.push(channel);
+      }
+      if (defaultChannel?.toLowerCase() === normalizedChannel) {
         matchedChannel = channel;
       }
     });
-
     setSelectOptions(options, 'channel');
-    globals.functions.setProperty(dropDownSelectField, { enum: options, value: matchedChannel });
+    globals.functions.setProperty(dropDownSelectField, { enum: channelOptions, value: matchedChannel });
 
     const changeDataAttrObj = { attrChange: true, value: false };
     ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {

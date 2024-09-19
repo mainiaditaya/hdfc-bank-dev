@@ -909,10 +909,11 @@ main {
                     height: 72px;
 
                     label {
-                        margin: 30px 0 0 80px;
+                        margin: 10px 0 0 85px;
                         text-wrap: nowrap;
                         font-size: var(--body-fd-md-font-size);
                         font-weight: var(--font-weight-regular);
+                        color: var(--color-interface-text-secondary);
                     }
 
                     input {
@@ -925,6 +926,10 @@ main {
 
                         &:hover{
                             box-shadow: none;
+                        }
+
+                        &:disabled {
+                            background: var(--color-interface-background-primary);
                         }
                     }
                 }
@@ -980,6 +985,12 @@ main {
                 }
             }
 
+            .field-tqnameoncard {
+                label {
+                    margin-left: 10px;
+                }
+            }
+
             .text-wrapper {
                 padding-top: 20px;
 
@@ -998,6 +1009,10 @@ main {
 
                     &:hover {
                         box-shadow: none;
+                    }
+
+                    &:disabled {
+                        background: var(--color-interface-background-primary);
                     }
                 }
             }
@@ -1020,6 +1035,10 @@ main {
                     &:hover {
                         box-shadow: none;
                     }
+
+                    &:disabled {
+                        background: var(--color-interface-background-primary);
+                    }
                 }
             }
 
@@ -1033,13 +1052,36 @@ main {
                     margin-left: 10px;
                 }
 
-                .plain-text-wrapper {
-                    border: 1px solid var(--color-action-border-primary-disabled);
-                    border-radius: 8px;
-                    cursor: default;
+                .field-selectedfdsrepeatable {
+                    margin-left: 10px;
+                    display: flex;
+                    flex-flow: nowrap;
 
-                    &:nth-child(2) {
-                        margin-left: 10px;
+                    .repeat-wrapper {
+                        display: flex;
+                        flex-wrap: nowrap;
+                        gap: 10px;
+                    }
+
+                    fieldset.panel-wrapper {                        
+                        border: 1px solid var(--color-action-border-primary-disabled);
+                        border-radius: 8px;
+                        cursor: default;
+                        flex: 0 0 auto;
+                        width: auto;
+
+                        .field-selectedfdnum:not(p){                            
+                            font-size: var(--body-fd-lg-font-size);
+                            font-weight: var(--font-weight-medium);
+                            color: var(--color-interface-text-primary);
+                            text-align: center;
+                        }
+
+                        .field-selectedfdnum p{                            
+                            font-size: var(--body-fd-lg-font-size);
+                            font-weight: var(--font-weight-medium);
+                            color: var(--color-interface-text-primary);
+                        }
                     }
                 }
             }
@@ -1476,7 +1518,7 @@ main {
                       margin-top: 2px;
                       margin-left: 0;
                       padding: 0;
-                      width: 20px;
+                      width: 25px;
                       height: 50px !important;
   
                       &:hover {
@@ -1821,6 +1863,14 @@ main {
                       font-weight: var(--font-weight-regular);
                       color: var(--color-interface-text-primary);
                   }
+              }
+              
+              .field-newcurentaddresspanel {
+                input[type="text"] {
+                    &:disabled {
+                        background: var(--color-interface-background-primary);
+                    }
+                }
               }
           }
   
@@ -2297,6 +2347,10 @@ main {
         background-color: transparent;
         color: transparent;
         margin: 0;
+      }
+
+      .field-officiallyvaliddocumentsmethod {
+        margin-top: 30px;
       }
   }
 
