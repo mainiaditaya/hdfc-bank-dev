@@ -1058,14 +1058,17 @@ main {
                     flex-flow: nowrap;
 
                     .repeat-wrapper {
-                        gap: 0;
                         display: flex;
+                        flex-wrap: nowrap;
+                        gap: 10px;
                     }
 
                     fieldset.panel-wrapper {                        
                         border: 1px solid var(--color-action-border-primary-disabled);
                         border-radius: 8px;
                         cursor: default;
+                        flex: 0 0 auto;
+                        width: auto;
 
                         .field-selectedfdnum:not(p){                            
                             font-size: var(--body-fd-lg-font-size);
