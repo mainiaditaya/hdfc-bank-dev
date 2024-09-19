@@ -1,4 +1,4 @@
-import { CURRENT_FORM_CONTEXT, ENDPOINTS } from '../../common/constants.js';
+import { ENDPOINTS } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import { displayLoader, hideLoaderGif, setArnNumberInResult } from '../domutils/domutils.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
@@ -30,7 +30,7 @@ const fdCardBoardingSuccess = async (data, stateInfoData) => {
   debugger;
   resultPanel.setAttribute('data-visible', true);
   successPanel.setAttribute('data-visible', true);
-  setArnNumberInResult(window.ARN_NUM);
+  setArnNumberInResult(stateInfoData.currentFormContext.ARN_NUM);
   invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 

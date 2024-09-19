@@ -42,27 +42,18 @@ const finalDap = (userRedirected, globals) => {
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsexecutefinaldap);
   const payload = createDapRequestObj(globals);
   const formData = globals.functions.exportData();
-  const formContextCallbackData = formData?.CURRENT_FORM_CONTEXT || CURRENT_FORM_CONTEXT;
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
-  const journeyId = formContextCallbackData?.journeyID;
+  const { journeyId } = formData;
   const eventHandlers = {
     successCallBack: async (response) => {
       if (response?.ExecuteFinalDAPResponse?.APS_ERROR_CODE === '0000') {
-        debugger;
         CURRENT_FORM_CONTEXT.finalDapRequest = JSON.parse(JSON.stringify(payload));
         CURRENT_FORM_CONTEXT.finalDapResponse = response?.ExecuteFinalDAPResponse;
         CURRENT_FORM_CONTEXT.VKYC_URL = response?.ExecuteFinalDAPResponse?.vkycUrl;
         CURRENT_FORM_CONTEXT.ARN_NUM = response?.ExecuteFinalDAPResponse?.APS_APPL_REF_NUM;
         CURRENT_FORM_CONTEXT.action = 'confirmation';
-        window.finalDapRequest = JSON.parse(JSON.stringify(payload));
-        window.finalDapResponse = response?.ExecuteFinalDAPResponse;
-        window.VKYC_URL = response?.ExecuteFinalDAPResponse?.vkycUrl;
-        window.ARN_NUM = response?.ExecuteFinalDAPResponse?.APS_APPL_REF_NUM;
-        window.action = 'confirmation';
-        const dropoffResponse = await Promise.resolve(invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_SUCCESS', mobileNumber, leadProfileId, journeyId, globals));
-        // await import('./fd-delayedutils.js');
-        console.log(dropoffResponse);
+        await Promise.resolve(invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_SUCCESS', mobileNumber, leadProfileId, journeyId, globals));
         if (!userRedirected) {
           globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
           finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.ARN_NUM, globals);
