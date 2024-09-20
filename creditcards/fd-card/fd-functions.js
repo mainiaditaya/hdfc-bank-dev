@@ -8,6 +8,7 @@ import {
   customSetFocus,
   reloadPage,
   pincodeChangeHandler,
+  checkModeFd,
 } from './fdlien-functions.js';
 
 import {
@@ -65,7 +66,10 @@ import {
   selectAllFdClickHandler,
 } from './fddetailsutil.js';
 
-import executeInterface from './executeinterfaceutil.js';
+import {
+  executeInterface,
+  executeInterfacePostRedirect,
+} from './executeinterfaceutil.js';
 
 import {
   confirmCardClickHandler,
@@ -87,6 +91,8 @@ import {
   addressDeclarationProceedHandler,
   aadhaarConsent,
 } from './kycUtil.js';
+
+setTimeout(() => import('./fd-delayedutils.js'), 2000);
 
 export {
   getOTP,
@@ -143,4 +149,6 @@ export {
   aadhaarConsent,
   aadharInit,
   docUploadBiometricHandler,
+  checkModeFd,
+  executeInterfacePostRedirect,
 };

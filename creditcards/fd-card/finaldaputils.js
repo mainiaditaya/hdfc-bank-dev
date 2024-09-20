@@ -12,7 +12,7 @@ import creditCardSummary from './creditcardsumaryutil.js';
  * @returns {Object} - The DAP request object.
  */
 const createDapRequestObj = (globals) => {
-  const formContextCallbackData = globals.functions.exportData()?.CURRENT_FORM_CONTEXT || CURRENT_FORM_CONTEXT;
+  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const finalDapPayload = {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
@@ -29,7 +29,7 @@ const createDapRequestObj = (globals) => {
       journeyName: formContextCallbackData?.journeyName || CURRENT_FORM_CONTEXT?.journeyName,
       filler7: '',
       filler1: '',
-      biometricStatus: formContextCallbackData?.selectedKyc,
+      biometricStatus: formContextCallbackData?.selectedKyc ?? '',
     },
   };
   return finalDapPayload;
@@ -43,10 +43,9 @@ const finalDap = (userRedirected, globals) => {
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsexecutefinaldap);
   const payload = createDapRequestObj(globals);
   const formData = globals.functions.exportData();
-  const formContextCallbackData = formData?.CURRENT_FORM_CONTEXT || CURRENT_FORM_CONTEXT;
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
-  const journeyId = formContextCallbackData?.journeyID;
+  const { journeyId } = formData;
   const eventHandlers = {
     successCallBack: async (response) => {
       if (response?.ExecuteFinalDAPResponse?.APS_ERROR_CODE === '0000') {
