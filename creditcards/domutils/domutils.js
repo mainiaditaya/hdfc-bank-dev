@@ -352,13 +352,10 @@ export function imageClickable(selector, url, target) {
   }
 }
 
-const setArnNumberInResult = (arnNumRef, nameOfArnRefPanel, classNamefieldArnNo) => {
-  const arnRefNumPanel = document.querySelector(`[name= ${nameOfArnRefPanel}]`);
-  const arnNumberElement = arnRefNumPanel.querySelector(classNamefieldArnNo);
-  if (arnNumberElement) {
-    // Manipulate the content of the <p> tag inside '.field-newarnnumber'
-    arnNumberElement.querySelector('p').textContent = arnNumRef;
-  }
+const setArnNumberInResult = (arnNumRef, arnNumberPanel, arnNumberFieldName) => {
+  const arnRefNumPanel = document.querySelector(`[name= ${arnNumberPanel}]`);
+  const arnNumberElement = arnRefNumPanel.querySelector(`[name= ${arnNumberFieldName}]`);
+  arnNumberElement.value = arnNumRef;
 };
 
 export {

@@ -19,18 +19,14 @@ const delayedUtilState = {
 };
 
 const fdCardBoardingSuccess = async (data, stateInfoData) => {
-  // const {
-  //   executeInterfaceRequest, aadharOtpValData, finalDapRequest, finalDapResponse,
-  // } = data;
   const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
   const leadProfileId = stateInfoData.leadProifileId;
   const journeyId = stateInfoData.currentFormContext.journeyID;
   const resultPanel = document.getElementsByName('resultPanel')?.[0];
   const successPanel = document.getElementsByName('successResultPanel')?.[0];
-  debugger;
   resultPanel.setAttribute('data-visible', true);
   successPanel.setAttribute('data-visible', true);
-  setArnNumberInResult(stateInfoData.currentFormContext.ARN_NUM);
+  setArnNumberInResult(stateInfoData.currentFormContext.ARN_NUM, 'refNumPanel', 'referenceNumber');
   invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 
@@ -75,10 +71,11 @@ const finalDapFetchRes = async () => {
       const {
         currentFormContext: {
           executeInterfaceRequest,
+          finalDapRequest,
+          finalDapResponse,
         }, aadhaar_otp_val_data: aadharOtpValData,
       } = JSON.parse(data.stateInfo);
       hideLoaderGif();
-      const { finalDapRequest, finalDapResponse } = window;
       fdCardBoardingSuccess({
         executeInterfaceRequest, aadharOtpValData, finalDapRequest, finalDapResponse,
       }, JSON.parse(data.stateInfo));

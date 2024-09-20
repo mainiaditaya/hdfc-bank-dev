@@ -123,6 +123,7 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  * @returns {Promise<object>}
  */
 const ipaSuccessHandler = (response, globals) => {
+  CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
   const productDetails = response?.productEligibility?.productDetails || [];
   const { selectCard, selectFD, basicDetails } = globals.form.fdBasedCreditCardWizard;
