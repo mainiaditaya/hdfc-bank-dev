@@ -8,7 +8,10 @@ import { fetchJsonResponse } from '../../common/makeRestAPI.js';
  * @returns {Object} - The IdCom request object.
  */
 const createIdComRequestObj = (globals) => {
-  const { addressDetails, personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const {
+    addressDetails,
+    //  personalDetails
+  } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
   const scope = addressDetails.mailingAddressToggle._data.$_value === 'on' ? 'AACC_FDCC' : 'ADOBE_FDCC';
   const idComObj = {
     requestString: {

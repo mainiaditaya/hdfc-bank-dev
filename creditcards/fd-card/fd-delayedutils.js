@@ -30,6 +30,17 @@ const fdCardBoardingSuccess = async (data, stateInfoData) => {
   invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 
+const fdCardBoardingFailure = (err, stateInfoData) => {
+  const errorPannel = document.getElementsByName('errorResultPanel')?.[0];
+  const resultPanel = document.getElementsByName('resultPanel')?.[0];
+  resultPanel.setAttribute('data-visible', true);
+  errorPannel.setAttribute('data-visible', true);
+  const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
+  const leadProfileId = stateInfoData.leadProifileId;
+  const journeyId = stateInfoData.currentFormContext.journeyID;
+  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_FAILURE', mobileNumber, leadProfileId, journeyId, stateInfoData);
+};
+
 const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
   const journeyJSONObj = {
     RequestPayload: {
@@ -67,7 +78,6 @@ const finalDapFetchRes = async () => {
   const { finalDapConst } = delayedUtilState;
   const eventHandler = {
     successMethod: (data) => {
-      console.log(JSON.parse(data.stateInfo));
       const {
         currentFormContext: {
           executeInterfaceRequest,
@@ -83,7 +93,7 @@ const finalDapFetchRes = async () => {
     errorMethod: (err, lastStateData) => {
       console.log(err);
       hideLoaderGif();
-      // errorPannelMethod(err, lastStateData);
+      fdCardBoardingFailure(err, lastStateData);
     },
   };
   try {
