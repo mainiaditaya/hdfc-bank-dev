@@ -1,8 +1,8 @@
 import { BASEURL, CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import {
-  // fetchJsonResponse,
-  fetchRecursiveResponse,
+  fetchJsonResponse,
+  // fetchRecursiveResponse,
 } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
@@ -36,9 +36,9 @@ const ipa = (payload, showLoader, hideLoader, globals) => {
   const ipaRequest = createIpaRequest(payload, globals);
   const apiEndPoint = urlPath(FD_ENDPOINTS.ipa);
   if (showLoader) FORM_RUNTIME.ipa();
-  const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
-  return fetchRecursiveResponse(apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
-  // return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
+  // const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
+  // return fetchRecursiveResponse(apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
+  return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
 };
 
 const updateData = (globals, productDetail, panel, index) => {
@@ -123,7 +123,7 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  * @returns {Promise<object>}
  */
 const ipaSuccessHandler = (response, globals) => {
-  CURRENT_FORM_CONTEXT.customerIdentityChange = true;
+  // CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
   const productDetails = response?.productEligibility?.productDetails || [];
   const { selectCard, selectFD, basicDetails } = globals.form.fdBasedCreditCardWizard;

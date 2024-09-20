@@ -31,7 +31,7 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
 
 const addressDeclarationProceedHandler = (globals) => {
   const { addressDeclarationPanel, docUploadFlow } = globals.form;
-  if (CURRENT_FORM_CONTEXT.customerIdentityChange && KYC_STATE.selectedKyc === 'BIOMETRIC') {
+  if (CURRENT_FORM_CONTEXT.customerIdentityChange && KYC_STATE?.selectedKyc === 'BIOMETRIC') {
     const { docUploadPanel, uploadAddressProof } = docUploadFlow;
     globals.functions.setProperty(addressDeclarationPanel, { visible: false });
     globals.functions.setProperty(docUploadFlow, { visible: true });
@@ -39,7 +39,7 @@ const addressDeclarationProceedHandler = (globals) => {
     globals.functions.setProperty(uploadAddressProof, { visible: true });
     return;
   }
-  if (!CURRENT_FORM_CONTEXT.customerIdentityChange && KYC_STATE.selectedKyc === 'BIOMETRIC') {
+  if (!CURRENT_FORM_CONTEXT.customerIdentityChange && KYC_STATE?.selectedKyc === 'BIOMETRIC') {
     finalDap(false, globals);
   }
 };

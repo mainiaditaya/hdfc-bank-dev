@@ -20,7 +20,7 @@ const createIdComRequestObj = (globals) => {
       // PANNo: personalDetails.panNumberPersonalDetails._data.$_value.replace(/\s+/g, ''),
       PANNo: 'AJLPA2422K',
       userAgent: navigator.userAgent,
-      journeyID: CURRENT_FORM_CONTEXT.journeyID,
+      journeyID: CURRENT_FORM_CONTEXT?.journeyID || globals.functions.exportData()?.currentFormContext?.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
       scope,
     },

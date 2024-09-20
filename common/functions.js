@@ -191,7 +191,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
         leadProfileId: globals?.form.runtime.leadProifileId.$value,
         additionalParam1: '',
         additionalParam2: '',
-        identifierValue: pan.$value || dob.$value,
+        identifierValue: pan?.$value?.replace(/\s+/g, '') || dob.$value,
         identifierName: pan.$value ? 'PAN' : 'DOB',
       },
       auth: {

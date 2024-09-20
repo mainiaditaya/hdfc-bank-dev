@@ -13,6 +13,7 @@ import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { addGaps } from './fd-dom-functions.js';
 import { executeInterfacePostRedirect } from './executeinterfaceutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
+import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
@@ -289,6 +290,8 @@ const checkModeFd = (globals) => {
   const formData = globals.functions.exportData();
   const idcomVisit = formData?.queryParams?.authmode;
   const aadhaarVisit = formData?.queryParams?.visitType;
+  const { addressDeclarationPanel } = globals.form;
+
   if (idcomVisit || aadhaarVisit) {
     const {
       bannerImagePanel,
@@ -300,6 +303,59 @@ const checkModeFd = (globals) => {
     if (idcomVisit) {
       const userRedirected = true;
       executeInterfacePostRedirect('idCom', userRedirected, globals);
+    } else if (aadhaarVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message && formData?.aadhaar_otp_val_data?.message?.toLowerCase() === 'aadhaar otp validate success') {
+      try {
+        const {
+          result: {
+            Address1, Address2, Address3, City, State, Zipcode,
+          },
+        } = formData.aadhaar_otp_val_data;
+        const {
+          executeInterfaceRequest: {
+            requestString: {
+              communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip,
+            },
+          },
+        } = formData.currentFormContext;
+        const {
+          aadhaarAddressDeclaration,
+          currentResidenceAddressBiometricOVD,
+          currentAddressDeclarationAadhar,
+          TnCAadhaarNoMobMatchLabel,
+          TnCAadhaarNoMobMatch,
+          proceedFromAddressDeclarationIdcom,
+          proceedFromAddressDeclaration,
+        } = addressDeclarationPanel;
+        const aadharAddress = [Address1, Address2, Address3, City, State, Zipcode]?.filter(Boolean)?.join(', ');
+        const communicationAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip]?.filter(Boolean)?.join(', ');
+        globals.functions.setProperty(aadhaarAddressDeclaration, { value: aadharAddress });
+        globals.functions.setProperty(currentAddressDeclarationAadhar.currentResidenceAddressAadhaar, { value: communicationAddress });
+        globals.functions.setProperty(currentResidenceAddressBiometricOVD.currentResAddressBiometricOVD, { value: communicationAddress });
+        globals.functions.setProperty(addressDeclarationPanel, { visible: true });
+        globals.functions.setProperty(aadhaarAddressDeclaration, { visible: true });
+        formData.currentFormContext.mobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'y';
+        globals.functions.setProperty(proceedFromAddressDeclarationIdcom, { visible: true });
+        globals.functions.setProperty(proceedFromAddressDeclaration, { visible: false });
+        if (formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'n') {
+          globals.functions.setProperty(TnCAadhaarNoMobMatchLabel, { visible: true });
+          globals.functions.setProperty(TnCAadhaarNoMobMatch, { visible: true });
+        }
+        invokeJourneyDropOffUpdate(
+          'AADHAAR_REDIRECTION_SUCCESS',
+          formData.loginPanel.mobilePanel.registeredMobileNumber,
+          formData.runtime.leadProifileId,
+          formData.runtime.leadProifileId.journeyId,
+          globals,
+        );
+      } catch (ex) {
+        invokeJourneyDropOffUpdate(
+          'AADHAAR_REDIRECTION_FAILURE',
+          formData.loginPanel.mobilePanel.registeredMobileNumber,
+          formData.runtime.leadProifileId,
+          formData.runtime.leadProifileId.journeyId,
+          globals,
+        );
+      }
     }
   }
 };
