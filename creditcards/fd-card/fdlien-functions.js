@@ -11,6 +11,8 @@ import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
 import { displayLoader, fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { addGaps } from './fd-dom-functions.js';
+import { executeInterfacePostRedirect } from './executeinterfaceutil.js';
+import creditCardSummary from './creditcardsumaryutil.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
@@ -279,6 +281,29 @@ const pincodeChangeHandler = (pincode, globals) => {
   pinCodeMasterCheck(globals, newCurentAddressCity, newCurentAddressState, newCurentAddressPin, pincode);
 };
 
+/**
+ * @name checkModeFd
+ * @param {object} globals
+ */
+const checkModeFd = (globals) => {
+  const formData = globals.functions.exportData();
+  const idcomVisit = formData?.queryParams?.authmode;
+  const aadhaarVisit = formData?.queryParams?.visitType;
+  if (idcomVisit || aadhaarVisit) {
+    const {
+      bannerImagePanel,
+      loginMainPanel,
+    } = globals.form;
+    globals.functions.setProperty(bannerImagePanel, { visible: false });
+    globals.functions.setProperty(loginMainPanel, { visible: false });
+    creditCardSummary(globals);
+    if (idcomVisit) {
+      const userRedirected = true;
+      executeInterfacePostRedirect('idCom', userRedirected, globals);
+    }
+  }
+};
+
 // setTimeout(() => {
 //   if (document && FD_CONSTANT.MODE === 'dev') {
 //     document.querySelector('.field-getotpbutton button').removeAttribute('disabled');
@@ -296,4 +321,5 @@ export {
   reloadPage,
   pincodeChangeHandler,
   validFDPan,
+  checkModeFd,
 };
