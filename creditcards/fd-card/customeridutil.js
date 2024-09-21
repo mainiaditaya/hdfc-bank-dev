@@ -15,7 +15,7 @@ const createPayload = (mobileNumber, panNumber, dateOfBirth, jwtToken) => {
       panNumber: panNumber ? panNumber.replace(/\s+/g, '') : '',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
-      // jwtToken,
+      jwtToken,
     },
   };
   return payload;

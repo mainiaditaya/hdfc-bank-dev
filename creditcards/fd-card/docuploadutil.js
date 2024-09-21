@@ -8,6 +8,7 @@ import {
 import { urlPath, generateUUID } from '../../common/formutils.js';
 import { ENDPOINTS, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import finalPagePanelVisibility from './thankyouutil.js';
+import creditCardSummary from './creditcardsumaryutil.js';
 /**
  * Creates a FormData payload for document upload.
  *
@@ -149,7 +150,7 @@ const fileUploadUIHandler = () => {
 const docUploadBiometricHandler = (globals) => {
   const { vkycConfirmationPanel } = globals.form.resultPanel.successResultPanel;
   globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
-
+  creditCardSummary(globals);
   finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.executeInterfaceResponse.APS_APPL_REF_NUM, globals);
 };
 
