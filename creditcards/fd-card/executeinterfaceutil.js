@@ -48,9 +48,9 @@ const createExecuteInterfaceRequest = (source, globals) => {
   if (customerInfo?.refCustEmail !== personalDetails.emailID.$value) {
     apsEmailEditFlag = 'Y';
   }
-  let nameOnCard = personalDetails.nameOnCard?.$value?.toUpperCase();
+  let nameOnCard = personalDetails.nameOnCard?.$value?.toUpperCase()?.replace(/\s+/g, ' ');
   if (!CURRENT_FORM_CONTEXT?.editFlags?.nameOnCard) {
-    nameOnCard = personalDetails.nameOnCardDD?.$value?.toUpperCase();
+    nameOnCard = personalDetails.nameOnCardDD?.$value?.toUpperCase()?.replace(/\s+/g, ' ');
   }
   if (source === 'confirmcard') {
     CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';

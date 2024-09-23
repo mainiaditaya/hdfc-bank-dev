@@ -1,5 +1,5 @@
 import { BASEURL, CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
-import { urlPath } from '../../common/formutils.js';
+import { applicableCards, extractJSONFromHTMLString, urlPath } from '../../common/formutils.js';
 import {
   // fetchJsonResponse,
   fetchRecursiveResponse,
@@ -9,6 +9,15 @@ import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 
 const IPA_RESPONSE = {};
 const createIpaRequest = (payload, globals) => {
+  const employmentTypeMap = {
+    1: 'others',
+    2: 'selfEmployed',
+  };
+  const applicableCreditLimit = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.selectFDDetailsPanel.creditLimit._data.$_value;
+  const selectedEmploymentType = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employmentDetails.employmentType._data.$_value;
+  const htmlString = globals.form.ipaNullGrid._jsonModel.value;
+  const defaultProductObj = extractJSONFromHTMLString(htmlString);
+  const applicableCardsArr = applicableCards(employmentTypeMap, selectedEmploymentType, defaultProductObj, applicableCreditLimit);
   const ipaRequest = {
     requestString: {
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
@@ -17,6 +26,7 @@ const createIpaRequest = (payload, globals) => {
       customerID: SELECTED_CUSTOMER_ID?.selectedCustId?.customerID,
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
+      productCode: applicableCardsArr.join(','),
     },
   };
   return ipaRequest;
@@ -122,9 +132,10 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  * @returns {Promise<object>}
  */
 const ipaSuccessHandler = (response, globals) => {
-  CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
-  const productDetails = response?.productEligibility?.productDetails || [];
+  const productDetails = response?.productEligibility?.productDetails?.length
+    ? response.productEligibility.productDetails
+    : response?.productEligibility?.defaultProducts ?? [];
   const { selectCard, selectFD, basicDetails } = globals.form.fdBasedCreditCardWizard;
   const {
     eligibleCreditLimitAmount,

@@ -8,17 +8,20 @@ const creditCardSummary = (globals) => {
   const formData = exportData();
   const selectedCreditCard = CURRENT_FORM_CONTEXT?.selectedCreditCard || formData?.currentFormContext?.selectedCreditCard || {};
 
-  const { nameOnCard, eligibleCreditLimitAmount, FDlienCard = {} } = formData;
+  const { eligibleCreditLimitAmount, FDlienCard = {} } = formData;
   const { annualFee = 0 } = selectedCreditCard;
   const fdNumberSelection = FDlienCard.fdNumberSelection || [];
-
+  const nameOnCard = formData?.nameOnCard ? formData?.nameOnCard : formData?.currentFormContext?.executeInterfaceRequest?.requestString?.nameOnCard;
   setProperty(tqSummarySection.tqNameOnCard, { value: nameOnCard });
   setProperty(tqSummarySection.tqAnnualCCFee, { value: String(annualFee) });
   setProperty(tqSummarySection.tqCreditLimit, { value: eligibleCreditLimitAmount });
 
-  const formattedFDs = fdNumberSelection.map((fd) => ({
-    selectedFDNum: fd?.fdNumber?.toString(),
-  }));
+  const formattedFDs = fdNumberSelection.reduce((acc, fd) => {
+    if (fd.fdAccSelect === 'on') {
+      acc.push({ selectedFDNum: fd?.fdNumber?.toString() });
+    }
+    return acc;
+  }, []);
 
   importData({ items: formattedFDs }, tqSummarySection.tqSelectedFDs.selectedFdsRepeatable.$qualifiedName);
 };
