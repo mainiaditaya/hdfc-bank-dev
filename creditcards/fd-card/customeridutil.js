@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { FD_ENDPOINTS } from './constant.js';
-import { fetchJsonResponse } from '../../common/makeRestAPI.js';
-import { urlPath } from '../../common/formutils.js';
+import { fetchJsonResponse, fetchRecursiveResponse } from '../../common/makeRestAPI.js';
+import { replaceNullWithEmptyString, urlPath } from '../../common/formutils.js';
 
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
@@ -34,7 +34,11 @@ const createPayload = (mobileNumber, panNumber, dateOfBirth, jwtToken) => {
 const fetchCustomerId = (mobileNumber, pan, dob, response) => {
   const payload = createPayload(mobileNumber, pan, dob, response?.jwtToken);
   payload.requestString.referenceNumber = response.referenceNo;
-  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus), payload, 'POST');
+  const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus);
+  const duration = 60;
+  const timer = 10;
+  const fieldName = ['status'];
+  return fetchRecursiveResponse('customerId', apiEndPoint, payload, 'POST', duration, timer, fieldName, true);
 };
 
 /**
@@ -48,7 +52,7 @@ const fetchCustomerId = (mobileNumber, pan, dob, response) => {
  */
 const fetchReferenceId = (mobileNumber, pan, dob, jwtToken) => {
   const payload = createPayload(mobileNumber, pan, dob, jwtToken);
-  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetrefidfdcc), payload, 'POST');
+  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetrefidfdcc), payload, 'POST', false);
 };
 
 const updateData = (globals, customerData, panel) => {
@@ -66,7 +70,7 @@ const updateData = (globals, customerData, panel) => {
 const customerIdSuccessHandler = (payload, globals) => {
   const customerData = payload?.responseString?.customerDetailsDTO;
   if (!customerData?.length) return;
-  CURRENT_FORM_CONTEXT.customerInfo = payload?.responseString;
+  CURRENT_FORM_CONTEXT.customerInfo = replaceNullWithEmptyString(payload?.responseString);
   if (customerData?.length === 1) {
     const [selectedCustId] = customerData;
     SELECTED_CUSTOMER_ID.selectedCustId = selectedCustId;

@@ -43,6 +43,14 @@ const NAME_ON_CARD_LENGTH = 19;
 const MAX_ADDRESS_LENGTH = 90;
 const MIN_ADDRESS_LENGTH = 30;
 
+const IDCOM = {
+  productCode: 'CCPREISS',
+  scope: {
+    addressNotChanged: 'AACC_FDCC',
+    addressChanged: 'ADOBE_FDCC',
+  },
+};
+
 const DOM_ELEMENT = {
   selectKyc: {
     aadharModalContent: 'aadharConsentPopup',
@@ -65,4 +73,5 @@ export {
   MAX_ADDRESS_LENGTH,
   MIN_ADDRESS_LENGTH,
   DOM_ELEMENT,
+  IDCOM,
 };

@@ -145,7 +145,8 @@ const bindCustomerDetails = (globals) => {
   * start
   */
 
-  customerInfo.currentAddress = 'North Oakwood North|North||560102|Bengaluru|Karnataka';
+  customerInfo.customerFirstName = 'Kuna';
+  customerInfo.currentAddress = 'qwertyuioq e wq eq we|e qwe qwe wqe | qweqwe wqe||Bengaluru|Karnataka|560103';
 
   /*
   * Hardcoded value for address parsing development
@@ -153,7 +154,7 @@ const bindCustomerDetails = (globals) => {
   */
 
   const [address = '', cityDetails = ''] = customerInfo.currentAddress.split('||');
-  const [pincode = '', city = '', state = ''] = cityDetails.split('|');
+  const [city = '', state = '', pincode = ''] = cityDetails.split('|');
   const cleanAddress = address.replace(/\|/g, ' ');
 
   let formattedCustomerAddress = '';
@@ -175,7 +176,7 @@ const bindCustomerDetails = (globals) => {
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
     CURRENT_FORM_CONTEXT.editFlags.addressEdit = true;
   } else {
-    formattedCustomerAddress = `${cleanAddress}, ${pincode}, ${city}, ${state}`;
+    formattedCustomerAddress = `${cleanAddress}, ${city}, ${state}, ${pincode}`;
     const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address.split('|');
     Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
   }

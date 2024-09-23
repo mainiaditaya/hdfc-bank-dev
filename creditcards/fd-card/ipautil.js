@@ -1,8 +1,8 @@
 import { BASEURL, CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import {
-  fetchJsonResponse,
-  // fetchRecursiveResponse,
+  // fetchJsonResponse,
+  fetchRecursiveResponse,
 } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
@@ -15,7 +15,6 @@ const createIpaRequest = (payload, globals) => {
       applRefNumber: payload.APS_APPL_REF_NUM,
       eRefNumber: CURRENT_FORM_CONTEXT.referenceNumber,
       customerID: SELECTED_CUSTOMER_ID?.selectedCustId?.customerID,
-      // customerID: '50187305',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
     },
@@ -36,9 +35,9 @@ const ipa = (payload, showLoader, hideLoader, globals) => {
   const ipaRequest = createIpaRequest(payload, globals);
   const apiEndPoint = urlPath(FD_ENDPOINTS.ipa);
   if (showLoader) FORM_RUNTIME.ipa();
-  // const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
-  // return fetchRecursiveResponse(apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
-  return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
+  const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
+  return fetchRecursiveResponse('ipa', apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
+  // return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
 };
 
 const updateData = (globals, productDetail, panel, index) => {

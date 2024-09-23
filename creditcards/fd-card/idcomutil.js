@@ -1,6 +1,7 @@
 import { CURRENT_FORM_CONTEXT, ENDPOINTS } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
+import { IDCOM } from './constant.js';
 
 /**
  * Creates an IdCom request object based on the provided global data.
@@ -10,15 +11,15 @@ import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 const createIdComRequestObj = (globals) => {
   const {
     addressDetails,
-    //  personalDetails
+    personalDetails,
   } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
-  const scope = addressDetails.mailingAddressToggle._data.$_value === 'on' ? 'AACC_FDCC' : 'ADOBE_FDCC';
+  const scope = addressDetails.mailingAddressToggle._data.$_value === 'on' ? IDCOM.scope.addressNotChanged : IDCOM.scope.addressChanged;
   const idComObj = {
     requestString: {
       mobileNumber: `${globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber._data.$_value}`,
-      ProductCode: 'CCPREISS',
-      // PANNo: personalDetails.panNumberPersonalDetails._data.$_value.replace(/\s+/g, ''),
-      PANNo: 'AJLPA2422K',
+      ProductCode: IDCOM.productCode,
+      PANNo: personalDetails.panNumberPersonalDetails._data.$_value.replace(/\s+/g, ''),
+      // PANNo: 'AJLPA2422K',
       userAgent: navigator.userAgent,
       journeyID: CURRENT_FORM_CONTEXT?.journeyID || globals.functions.exportData()?.currentFormContext?.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
@@ -41,9 +42,6 @@ const idcomm = async (globals) => {
   const idComRequest = createIdComRequestObj(globals);
   const apiEndPoint = urlPath(ENDPOINTS.fetchAuthCode);
   return fetchJsonResponse(apiEndPoint, idComRequest, 'POST');
-  // const response = await fetchJsonResponse(apiEndPoint, idComRequest, 'POST');
-  // console.log(response);
-  // window.location.href = response.redirectUrl;
 };
 
 const idcomSuccessHandler = async (authCode, redirectUrl) => new Promise((resolve) => {

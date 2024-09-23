@@ -81,7 +81,6 @@ const createExecuteInterfaceRequest = (source, globals) => {
       comResidenceType: '2',
       companyName: '',
       customerID: SELECTED_CUSTOMER_ID?.selectedCustId?.customerID,
-      // customerID: '',
       dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
       departmentOrEmpCode: '',
       designation: '',
@@ -116,8 +115,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
       officeZipCode: '',
       panCheckFlag: 'Y',
       panEditFlag: customerInfo?.refCustItNum ? 'N' : 'Y',
-      // panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),AJLPA2422K
-      panNumber: 'AJLPA2422K',
+      panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),
       permanentAddress1: permanentAddress?.line1,
       permanentAddress2: permanentAddress?.line2,
       permanentAddress3: permanentAddress?.line3,

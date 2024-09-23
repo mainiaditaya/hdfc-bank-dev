@@ -69,7 +69,7 @@ const docUploadClickHandler = async (globals) => {
   const identityDocType = docUploadPanel.docUploadDropdown.$value;
   const addressDocType = uploadAddressProof.docTypeDropdown.$value;
   const mobileNumber = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
-  const formContextCallbackData = globals.functions.exportData()?.CURRENT_FORM_CONTEXT || CURRENT_FORM_CONTEXT;
+  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const leadProfileId = globals.functions.exportData().leadProifileId || globals.form.runtime.leadProifileId.$value || '';
   const journeyId = formContextCallbackData.journeyID;
   const apiEndPoint = urlPath(ENDPOINTS.docUpload);

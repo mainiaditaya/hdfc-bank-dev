@@ -1,8 +1,6 @@
-import { ENDPOINTS } from '../../common/constants.js';
-import { urlPath } from '../../common/formutils.js';
 import { displayLoader, hideLoaderGif, setArnNumberInResult } from '../domutils/domutils.js';
+import { invokeJourneyDropOffByJourneyId } from './common-journeyutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
-// import { invokeJourneyDropOffByParam } from './common-journeyutil.js';
 
 const delayedUtilState = {
   visitType: '',
@@ -41,35 +39,6 @@ const fdCardBoardingFailure = (err, stateInfoData) => {
   invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_FAILURE', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 
-const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
-  const journeyJSONObj = {
-    RequestPayload: {
-      leadProfile: {
-      },
-      journeyInfo: {
-        journeyID,
-      },
-    },
-  };
-  const url = urlPath(ENDPOINTS.journeyDropOffParam);
-  const method = 'POST';
-  try {
-    const res = await fetch(url, {
-      method,
-      body: JSON.stringify(journeyJSONObj),
-      mode: 'cors',
-      headers: {
-        'Content-type': 'text/plain',
-        Accept: 'application/json',
-      },
-    });
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
 /**
  * @name finalDapFetchRes - recursive async action call maker untill it reaches the finaldap response.
  * @returns {void} error method or succes method based on the criteria of finalDapResponse reach or max limit reach.
@@ -91,13 +60,12 @@ const finalDapFetchRes = async () => {
       }, JSON.parse(data.stateInfo));
     },
     errorMethod: (err, lastStateData) => {
-      console.log(err);
       hideLoaderGif();
       fdCardBoardingFailure(err, lastStateData);
     },
   };
   try {
-    const data = await invokeJourneyDropOffByParam('', '', delayedUtilState.journeyId);
+    const data = await invokeJourneyDropOffByJourneyId(delayedUtilState.journeyId);
     const journeyDropOffParamLast = data?.formData?.journeyStateInfo?.[data.formData.journeyStateInfo.length - 1];
     finalDapConst.journeyParamState = journeyDropOffParamLast?.state;
     finalDapConst.journeyParamStateInfo = journeyDropOffParamLast?.stateInfo;
@@ -108,7 +76,6 @@ const finalDapFetchRes = async () => {
     const err = 'Bad response';
     throw err;
   } catch (error) {
-    // "FINAL_DAP_FAILURE"
     finalDapConst.promiseCount += 1;
     const errorCase = (finalDapConst.journeyParamState === 'CUSTOMER_FINAL_DAP_FAILURE' || finalDapConst.promiseCount >= finalDapConst.affordCount);
     const stateInfoData = finalDapConst.journeyParamStateInfo;
@@ -120,15 +87,9 @@ const finalDapFetchRes = async () => {
 };
 
 const pageRedirected = () => {
-  if (delayedUtilState.aadharRedirect) {
-    console.log(delayedUtilState.aadharRedirect);
-  }
   if (delayedUtilState.idComRedirect) {
-    /**
-     * finaldapResponse starts for ETB - address change scenario.
-     */
+    displayLoader();
     setTimeout(() => {
-      displayLoader();
       finalDapFetchRes();
     }, 5000);
   }
