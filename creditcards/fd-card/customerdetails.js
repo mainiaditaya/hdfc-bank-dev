@@ -14,7 +14,6 @@ import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
 import {
   FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
-  MAX_ADDRESS_LENGTH,
   MIN_ADDRESS_LENGTH,
 } from './constant.js';
 
