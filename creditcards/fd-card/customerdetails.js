@@ -123,7 +123,6 @@ const bindCustomerDetails = (globals) => {
 
   // customerInfo.customerFirstName = '';
   customerInfo.customerFullName = '';
-  customerInfo.currentAddress = 'qwertyuioq e wq eq we|e qwe qwe wqe | qweqwe wqe||Bengaluru|Karnataka|560103';
 
   /*
 * Hardcoded value for address parsing development
@@ -163,14 +162,14 @@ const bindCustomerDetails = (globals) => {
   let formattedCustomerAddress = '';
   let parsedAddress = [];
 
-  if (cleanAddress.length > MAX_ADDRESS_LENGTH) {
-    parsedAddress = parseCustomerAddress(cleanAddress);
-  } else if (cleanAddress.length < MIN_ADDRESS_LENGTH) {
+  if (cleanAddress.length < MIN_ADDRESS_LENGTH) {
     const addressArray = cleanAddress.trim().split(' ');
     parsedAddress = [
       addressArray.slice(0, -1).join(' '),
       addressArray.slice(-1)[0],
     ];
+  } else {
+    parsedAddress = parseCustomerAddress(cleanAddress);
   }
 
   if (parsedAddress.length) {
