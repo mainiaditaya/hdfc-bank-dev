@@ -565,6 +565,32 @@ const fetchFiller4 = (mobileMatch, kycStatus, journeyType) => {
   }
   return filler4Value;
 };
+const extractJSONFromHTMLString = (htmlString) => {
+  let jsonString = htmlString.replace(/<\/?p>/g, '');
+  jsonString = jsonString
+    .replace(/&quot;/g, '"')
+    .replace(/\\n/g, '');
+  try {
+    const jsonObject = JSON.parse(jsonString);
+    return jsonObject;
+  } catch (error) {
+    console.error('Invalid JSON string', error);
+    return null;
+  }
+};
+
+function applicableCards(employmentTypeMap, employmentType, cardMap, applicableCreditLimit) {
+  const employmentCategory = employmentTypeMap[employmentType];
+
+  const cardData = cardMap[employmentCategory];
+
+  const matchingCard = cardData.find((entry) => {
+    const [minLimit, maxLimit] = entry.creditLimit.split('-').map(Number);
+    return applicableCreditLimit >= minLimit && applicableCreditLimit <= maxLimit;
+  });
+
+  return matchingCard ? matchingCard.card : [];
+}
 
 export {
   urlPath,
@@ -597,4 +623,6 @@ export {
   getUrlParamCaseInsensitive,
   replaceNullWithEmptyString,
   fetchFiller4,
+  extractJSONFromHTMLString,
+  applicableCards,
 };
