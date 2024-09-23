@@ -529,6 +529,36 @@ const getUrlParamCaseInsensitive = (param) => {
   return paramEntry ? paramEntry[1] : null;
 };
 
+const replaceNullWithEmptyString = (obj) => {
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === null) {
+      obj[key] = '';
+    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+      replaceNullWithEmptyString(obj[key]);
+    }
+  });
+  return obj;
+};
+
+const fetchFiller4 = (mobileMatch, kycStatus, journeyType) => {
+  let filler4Value = null;
+  switch (kycStatus) {
+    case 'aadhaar':
+      // eslint-disable-next-line no-nested-ternary
+      filler4Value = (journeyType === 'NTB') ? `VKYC${getCurrentDateAndTime(3)}` : ((journeyType === 'ETB') && mobileMatch) ? `NVKYC${getCurrentDateAndTime(3)}` : `VKYC${getCurrentDateAndTime(3)}`;
+      break;
+    case 'bioKYC':
+      filler4Value = 'bioKYC';
+      break;
+    case 'OVD':
+      filler4Value = 'OVD';
+      break;
+    default:
+      filler4Value = null;
+  }
+  return filler4Value;
+};
+
 export {
   urlPath,
   maskNumber,
@@ -558,4 +588,6 @@ export {
   formatDateDDMMMYYY,
   pinCodeMasterCheck,
   getUrlParamCaseInsensitive,
+  replaceNullWithEmptyString,
+  fetchFiller4,
 };

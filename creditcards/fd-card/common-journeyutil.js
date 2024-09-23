@@ -75,8 +75,37 @@ const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyI
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
 
+const invokeJourneyDropOffByJourneyId = async (journeyID) => {
+  const journeyJSONObj = {
+    RequestPayload: {
+      leadProfile: {
+      },
+      journeyInfo: {
+        journeyID,
+      },
+    },
+  };
+  const url = urlPath(ENDPOINTS.journeyDropOffParam);
+  const method = 'POST';
+  try {
+    const res = await fetch(url, {
+      method,
+      body: JSON.stringify(journeyJSONObj),
+      mode: 'cors',
+      headers: {
+        'Content-type': 'text/plain',
+        Accept: 'application/json',
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 export {
   invokeJourneyDropOff,
   journeyResponseHandlerUtil,
   invokeJourneyDropOffByParam,
+  invokeJourneyDropOffByJourneyId,
 };

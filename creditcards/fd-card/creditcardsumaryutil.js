@@ -13,7 +13,7 @@ const creditCardSummary = (globals) => {
   const fdNumberSelection = FDlienCard.fdNumberSelection || [];
 
   setProperty(tqSummarySection.tqNameOnCard, { value: nameOnCard });
-  setProperty(tqSummarySection.tqAnnualCCFee, { value: Number(annualFee) });
+  setProperty(tqSummarySection.tqAnnualCCFee, { value: String(annualFee) });
   setProperty(tqSummarySection.tqCreditLimit, { value: eligibleCreditLimitAmount });
 
   const formattedFDs = fdNumberSelection.map((fd) => ({

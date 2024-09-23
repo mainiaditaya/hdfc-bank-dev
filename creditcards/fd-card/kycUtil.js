@@ -18,7 +18,7 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
       globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD, { visible: true });
       break;
     case 'OVD':
-      CURRENT_FORM_CONTEXT.selectedKyc = 'ovd';
+      CURRENT_FORM_CONTEXT.selectedKyc = 'OVD';
       globals.functions.setProperty(docUploadFlow, { visible: true });
       globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: CURRENT_FORM_CONTEXT.customerIdentityChange });
       globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: true });
@@ -31,7 +31,8 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
 
 const addressDeclarationProceedHandler = (globals) => {
   const { addressDeclarationPanel, docUploadFlow } = globals.form;
-  if (CURRENT_FORM_CONTEXT.customerIdentityChange && KYC_STATE.selectedKyc === 'BIOMETRIC') {
+  const currentFormContext = CURRENT_FORM_CONTEXT?.journeyID ? CURRENT_FORM_CONTEXT : globals.functions.exportData()?.currentFormContext;
+  if (currentFormContext.customerIdentityChange && (currentFormContext?.selectedKyc === 'biokyc' || currentFormContext?.selectedKyc === 'aadhaar')) {
     const { docUploadPanel, uploadAddressProof } = docUploadFlow;
     globals.functions.setProperty(addressDeclarationPanel, { visible: false });
     globals.functions.setProperty(docUploadFlow, { visible: true });
@@ -39,14 +40,14 @@ const addressDeclarationProceedHandler = (globals) => {
     globals.functions.setProperty(uploadAddressProof, { visible: true });
     return;
   }
-  if (!CURRENT_FORM_CONTEXT.customerIdentityChange && KYC_STATE.selectedKyc === 'BIOMETRIC') {
+  if (!currentFormContext.customerIdentityChange && KYC_STATE?.selectedKyc === 'BIOMETRIC') {
     finalDap(false, globals);
   }
 };
 
 const aadhaarConsent = async (globals) => {
   KYC_STATE.selectedKyc = 'AADHAAR';
-  CURRENT_FORM_CONTEXT.selectedKyc = 'biokyc';
+  CURRENT_FORM_CONTEXT.selectedKyc = 'aadhaar';
   const { addressDeclarationPanel, selectKYCOptionsPanel } = globals.form;
   try {
     if (typeof window !== 'undefined') {

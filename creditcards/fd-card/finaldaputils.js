@@ -1,5 +1,5 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import { urlPath } from '../../common/formutils.js';
+import { fetchFiller4, getCurrentDateAndTime, urlPath } from '../../common/formutils.js';
 import { restAPICall } from '../../common/makeRestAPI.js';
 import { invokeJourneyDropOffUpdate } from '../corporate-creditcard/journey-utils.js';
 import { FD_ENDPOINTS } from './constant.js';
@@ -12,8 +12,21 @@ import creditCardSummary from './creditcardsumaryutil.js';
  * @returns {Object} - The DAP request object.
  */
 const createDapRequestObj = (globals) => {
-  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
-  const finalDapPayload = {
+  const exportData = globals.functions.exportData() || {};
+  const formContextCallbackData = exportData.currentFormContext || CURRENT_FORM_CONTEXT;
+  const formData = exportData.formData || {};
+  const aadhaarData = formData.aadhaar_otp_val_data?.result || {};
+  const ekycSuccess = formData.currentFormContext?.mobileMatch
+    ? `${aadhaarData.ADVRefrenceKey}X${aadhaarData.RRN}`
+    : '';
+
+  const VKYCConsent = fetchFiller4(
+    formData.currentFormContext?.mobileMatch,
+    formContextCallbackData?.selectedKyc,
+    'ETB',
+  );
+
+  return {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
       eRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_E_REF_NUM,
@@ -29,10 +42,12 @@ const createDapRequestObj = (globals) => {
       journeyName: formContextCallbackData?.journeyName || CURRENT_FORM_CONTEXT?.journeyName,
       filler7: '',
       filler1: '',
-      biometricStatus: formContextCallbackData?.selectedKyc ?? '',
+      biometricStatus: formContextCallbackData?.selectedKyc || '',
+      ekycConsent: `${getCurrentDateAndTime(3)}YEnglishxeng1x0`,
+      ekycSuccess,
+      VKYCConsent,
     },
   };
-  return finalDapPayload;
 };
 
 const finalDap = (userRedirected, globals) => {
