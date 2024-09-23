@@ -396,8 +396,10 @@ const splitName = (fullName) => {
   if (fullName) {
     const parts = fullName.split(' ');
     name.firstName = sanitizeName(parts.shift()) || '';
-    name.lastName = sanitizeName(parts.pop()) || '';
-    name.middleName = parts.length > 0 ? sanitizeName(parts[0]) : '';
+    if (parts.length > 1) {
+      name.lastName = sanitizeName(parts.pop()) || '';
+      name.middleName = parts.length > 0 ? sanitizeName(parts[0]) : '';
+    }
   }
   return name;
 };
