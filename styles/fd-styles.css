@@ -1167,16 +1167,22 @@ main {
                     }
 
                     &:nth-of-type(-n+7) button.active {
+                        color: var(--color-interface-background-primary);
+                        border-radius: 5px;
                         transform: scaleY(1.2);
                         background: var(--color-interface-feedback-notlikelyrating) !important;
                     }
 
                     &:nth-of-type(8) button.active {
+                        color: var(--color-interface-background-primary);
+                        border-radius: 5px;
                         transform: scaleY(1.2);
                         background: var(--color-interface-feedback-mayberating) !important;
                     }
 
                     &:nth-of-type(10) button.active {
+                        color: var(--color-interface-background-primary);
+                        border-radius: 5px;
                         transform: scaleY(1.2);
                         background: var(--color-interface-feedback-verylikelyrating) !important;
                     }
@@ -1498,7 +1504,7 @@ main {
         }
   
         .field-fdselectioninfo {
-            margin-top: -21px;
+            margin-top: 25px;
 
             .field-selectfddetailspanel {
                 gap: 9px !important;
@@ -1614,7 +1620,7 @@ main {
                     padding: 0;
                     text-align: center;
                     margin: 0;
-                    height: 49px !important;
+                    height: 50px !important;
                     border-radius: 0 12px 12px 0 !important;
                     border: none;
                     background: var(--color-interface-background-quinary);
@@ -2671,7 +2677,22 @@ main {
         }
     }
 
-    .field-currentresidenceaddressdeclaration { margin-top: 0 !important; }
+    .field-currentresidenceaddressdeclaration { 
+        margin-top: 0 !important; 
+        flex-wrap: wrap;
+
+        input[type="checkbox"] {
+            flex: none;
+        }
+
+        label {
+            flex: 1 1 80%;
+        }
+
+        .field-description {
+            margin-top: 5px;
+        }
+    }
   }
 
   /* Terms & Condtion Address Declaration Panel */
@@ -2692,11 +2713,21 @@ main {
   .field-tncaadhaarnomobmatch {    
     margin-top: 0 !important;
     width: 88%;
+    flex-wrap: wrap;
 
-    label {
-        font-size: var(--body-fd-sm-font-size) !important;
-        font-weight: var(--font-weight-regular) !important; 
-    }
+        input[type="checkbox"] {
+            flex: none !important;
+        }
+
+        label {
+            font-size: var(--body-fd-sm-font-size) !important;
+            font-weight: var(--font-weight-regular) !important; 
+            flex: 1 1 85% !important;
+
+            p {
+                font-size: var(--body-fd-sm-font-size) !important;
+            }
+        }
   }
 
   /* Aadhar Consent Popup */
