@@ -1166,6 +1166,21 @@ main {
                         }
                     }
 
+                    &:nth-of-type(-n+7) button.active {
+                        transform: scaleY(1.2);
+                        background: var(--color-interface-feedback-notlikelyrating) !important;
+                    }
+
+                    &:nth-of-type(8) button.active {
+                        transform: scaleY(1.2);
+                        background: var(--color-interface-feedback-mayberating) !important;
+                    }
+
+                    &:nth-of-type(10) button.active {
+                        transform: scaleY(1.2);
+                        background: var(--color-interface-feedback-verylikelyrating) !important;
+                    }
+
                     &:nth-of-type(-n+7) button:hover {
                         background: var(--color-interface-feedback-notlikelyrating) !important;
                     }
@@ -2592,6 +2607,25 @@ main {
       border-radius: 24px;
       padding: 32px;
     }
+
+    .field-currentresidenceaddressbiometricovd {
+        .field-currentresaddressbiometricovddeclaration {
+            flex-wrap: wrap;
+
+            input[type="checkbox"] {
+                flex: none;
+            } 
+
+            label {
+                flex: 1 1 30%;
+            }
+
+            .field-description {
+                flex-basis: 100%;
+                margin-top: 5px;
+            }
+        }
+    } 
 
     .field-aadhaaraddresslabel, .field-currentresidenceaddressaadhaarlabel, .field-currentresaddressbiometricovdlabel {
       display: flex;

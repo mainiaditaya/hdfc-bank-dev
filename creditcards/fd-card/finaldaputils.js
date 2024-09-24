@@ -3,7 +3,7 @@ import { fetchFiller4, getCurrentDateAndTime, urlPath } from '../../common/formu
 import { restAPICall } from '../../common/makeRestAPI.js';
 import { invokeJourneyDropOffUpdate } from '../corporate-creditcard/journey-utils.js';
 import { FD_ENDPOINTS } from './constant.js';
-import finalPagePanelVisibility from './thankyouutil.js';
+import { finalPagePanelVisibility } from './thankyouutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
 
 /**

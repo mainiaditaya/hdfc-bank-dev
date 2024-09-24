@@ -16,4 +16,18 @@ const finalPagePanelVisibility = (formStatus, arn, globals) => {
   }
 };
 
-export default finalPagePanelVisibility;
+const ratingButtonUI = () => {
+  document.querySelectorAll('.field-ratingbuttons .button').forEach((button) => {
+    button.addEventListener('click', function ratingClick() {
+      document.querySelectorAll('.field-ratingbuttons .button').forEach((btn) => {
+        btn.classList.remove('active');
+      });
+      this.classList.add('active');
+    });
+  });
+};
+
+export {
+  finalPagePanelVisibility,
+  ratingButtonUI,
+};

@@ -92,6 +92,8 @@ import {
   aadhaarConsent,
 } from './kycUtil.js';
 
+import { ratingButtonUI } from './thankyouutil.js';
+
 setTimeout(() => import('./fd-delayedutils.js'), 2000);
 
 export {
@@ -151,4 +153,5 @@ export {
   docUploadBiometricHandler,
   checkModeFd,
   executeInterfacePostRedirect,
+  ratingButtonUI,
 };
