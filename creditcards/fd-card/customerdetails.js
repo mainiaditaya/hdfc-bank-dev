@@ -120,8 +120,8 @@ const bindCustomerDetails = (globals) => {
   * start
   */
 
-  // customerInfo.customerFirstName = '';
-  customerInfo.customerFullName = '';
+  customerInfo.customerFirstName = 'Kunal';
+  customerInfo.customerFullName = 'Kunal';
 
   /*
 * Hardcoded value for address parsing development
