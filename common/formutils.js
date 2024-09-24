@@ -139,6 +139,24 @@ const getTimeStamp = (currentTime) => {
 };
 
 /**
+ * Gets a formatted timestamp from the provided current time without seconds.
+ *
+ * @param {Date} currentTime The current time to generate the timestamp from.
+ * @returns {string} The formatted timestamp in 'YYYYMMDDHHmm' format.
+ */
+const getTimeStampNoSeconds = (currentTime) => {
+  // Function to pad single digit numbers with leading zero
+  const pad = (number) => ((number < 10) ? `0${number}` : number);
+  // Format the datetime as desired
+  const formattedDatetime = currentTime.getFullYear()
+    + pad(currentTime.getMonth() + 1)
+    + pad(currentTime.getDate())
+    + pad(currentTime.getHours())
+    + pad(currentTime.getMinutes());
+  return formattedDatetime;
+};
+
+/**
  * Converts a date string from 'YYYYMMDD' format to a localized date string.
  * @param {string} date - The date string in 'YYYYMMDD' format.
  * @returns {string} The formatted date string in 'MMM DD, YYYY' format.
@@ -295,7 +313,6 @@ const santizedFormDataWithContext = (globals, currentFormContext) => {
     }
     return formData;
   } catch (ex) {
-    console.error(ex);
     return null;
   }
 };
@@ -395,6 +412,18 @@ const ageValidator = (minAge, maxAge, dobValue) => {
   const ageBtwMinMax = (age >= minAge && age <= maxAge);
   return ageBtwMinMax;
 };
+/**
+ * Creates a deep copy of the given blueprint object.
+ *
+ * This function returns a new object that is a deep copy of the blueprint object,
+ * ensuring that nested objects are also copied rather than referenced.
+ *
+ * @param {Object} blueprint - The blueprint object to copy.
+ * @returns {Object} A deep copy of the blueprint object.
+ */
+function createDeepCopyFromBlueprint(blueprint) {
+  return JSON.parse(JSON.stringify(blueprint));
+}
 
 export {
   urlPath,
@@ -402,6 +431,7 @@ export {
   clearString,
   formUtil,
   getTimeStamp,
+  getTimeStampNoSeconds,
   convertDateToMmmDdYyyy,
   setDataAttributeOnClosestAncestor,
   convertDateToDdMmYyyy,
@@ -423,4 +453,5 @@ export {
   decorateStepper,
   ageValidator,
   attachRedirectOnClick,
+  createDeepCopyFromBlueprint,
 };

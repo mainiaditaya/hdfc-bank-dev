@@ -17,6 +17,8 @@ import {
   fetchJsonResponse, hideLoaderGif,
 } from './makeRestAPI.js';
 
+import { initRestAPIDataSecurityServiceES6 } from './apiDataSecurity.js';
+
 import * as CONSTANT from './constants.js';
 import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
 
@@ -197,7 +199,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
   };
 
   const path = urlPath(ENDPOINTS.aadharInit);
-  const response = fetchJsonResponse(path, jsonObj, 'POST');
+  const response = fetchJsonResponse(path, btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj)))), 'POST');
   response
     .then((res) => {
       // var aadharValidationForm = "<form action=" + res.RedirectUrl + " method='post'></form>";
@@ -320,4 +322,5 @@ export {
   getFullName,
   onWizardInit,
   days,
+  initRestAPIDataSecurityServiceES6,
 };

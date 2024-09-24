@@ -132,6 +132,7 @@ fieldset fieldset {
   background: var(--color-interface-background-quinary);
   padding: 20px;
   border-radius: 10px;
+  display: block;
 
   .field-cardimage {
     position: relative;
@@ -146,19 +147,25 @@ fieldset fieldset {
 
   .cardNameText {
     position: absolute;
-    bottom: 115px;
+    top: 145px;
     left: 45px;
     font-size: var(--body-x-sm-font-size);
     font-weight: var(--font-weight-medium);
-    color: var(--color-interface-background-primary)
+    color: var(--color-interface-background-primary);
   }
 
   .field-nameoncarddropdown {
     display: flex;
     flex-direction: column-reverse;
-    label { margin: 13px; }
+    margin-top: 30px;
 
-    select { margin: 0; }
+    label {
+      margin: 13px;
+    }
+
+    select {
+      margin: 0;
+    }
   }
 }
 

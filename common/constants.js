@@ -1,6 +1,6 @@
 // declare COMMON_CONSTANTS for all forms only.
 // impoted as CONSTANT key name in all files
-const BASEURL = 'https://applyonlinedev.hdfcbank.com';
+const BASEURL = 'https://hdfc-dev-04.adobecqms.net';
 const CHANNEL = 'ADOBE_WEBFORMS';
 const ENDPOINTS = {
   aadharCallback: '/content/hdfc_etb_wo_pacc/api/aadharCallback.json',
@@ -38,8 +38,11 @@ const ID_COM = {
     },
     casa_cc: 'PADC',
     only_cc: 'OYCC',
+    casa_asset_cc: 'PADC',
   },
 };
+
+const ENV = 'dev';
 
 export {
   BASEURL,
@@ -49,4 +52,5 @@ export {
   CURRENT_FORM_CONTEXT,
   FORM_RUNTIME,
   ID_COM,
+  ENV,
 };

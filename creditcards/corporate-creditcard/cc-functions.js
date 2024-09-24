@@ -2,7 +2,6 @@
 import {
   formRuntime,
   journeyResponseHandler,
-  sendAnalytics,
   resendOTP,
   customSetFocus,
   validateLogin,
@@ -21,6 +20,7 @@ import {
   otpValidation,
   getFormContext,
   getWrappedFormContext,
+  firstLastNameValidation,
 } from './corporate-creditcardFunctions.js';
 
 import {
@@ -58,7 +58,10 @@ import {
   days,
   getFullName,
   onWizardInit,
+  initRestAPIDataSecurityServiceES6,
 } from '../../common/functions.js';
+
+import { sendAnalytics } from './analytics.js';
 
 export {
   finalDap,
@@ -108,4 +111,6 @@ export {
   getWrappedFormContext,
   onWizardInit,
   crmResponseHandler,
+  firstLastNameValidation,
+  initRestAPIDataSecurityServiceES6,
 };

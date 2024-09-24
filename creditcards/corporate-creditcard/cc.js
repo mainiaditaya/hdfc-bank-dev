@@ -6,7 +6,7 @@ import * as DOM_API from '../domutils/domutils.js';
 import { invokeJourneyDropOffUpdate } from './journey-utils.js';
 import { urlPath } from '../../common/formutils.js';
 import { ENDPOINTS } from '../../common/constants.js';
-import { sendPageloadEvent } from '../../common/analytics.js';
+import { sendPageloadEvent, sendAnalytics } from './analytics.js';
 
 const { displayLoader, hideLoaderGif, moveWizardView } = DOM_API;
 
@@ -231,6 +231,8 @@ const successPannelMethod = async (data, stateInfoData) => {
       currentFormContext.isVideoKyc = true;
       vkycConfirmText.setAttribute('data-visible', true);
       offerLink.setAttribute('data-visible', false);
+      vkycCameraConfirmation.setAttribute('data-visible', true);
+      vkycCameraPannelInstruction.setAttribute('data-visible', true);
     }
   }
   if (journeyName === 'NTB' && (kycStatus === 'aadhaar')) {
@@ -254,7 +256,7 @@ const visitTypeParam = searchParam.get('visitType');
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
 const aadharRedirect = visitTypeParam && (visitTypeParam === 'EKYC_AUTH');
-const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'CreditCard')); // debit card or credit card flow
+const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'CreditCard') || (authModeParam === 'NetBanking')); // debit card or credit card or netbanking flow
 
 /**
  * @name invokeJourneyDropOffByParam
@@ -372,6 +374,7 @@ const pageRedirected = (aadhar, idCom) => {
     }, 2000);
   }
 };
+
 pageRedirected(aadharRedirect, idComRedirect);
 
 /**
@@ -386,3 +389,19 @@ pageRedirected(aadharRedirect, idComRedirect);
  * @param {string[]} inputNames - An array of input field names to be restricted.
  */
 [yourDetails.firstName, yourDetails.middleName, yourDetails.lastName].forEach((inputField) => DOM_API.restrictToAlphabetsNoSpaces(inputField));
+
+const onPageLoadAnalytics = async () => {
+  const journeyData = {};
+  // eslint-disable-next-line no-underscore-dangle, no-undef
+  journeyData.journeyId = myForm.resolveQualifiedName('$form.runtime.journeyId')._data.$_value;
+  journeyData.journeyName = 'CORPORATE_CARD_JOURNEY';
+  const queryString = window.location.search.toLowerCase();
+  const urlParams = new URLSearchParams(queryString);
+  const paramAuthMode = urlParams.get('authmode');
+  const paramVisitType = urlParams.get('visittype');
+  if (!paramAuthMode && !paramVisitType) sendAnalytics('page load-Identify yourself', {}, 'CRM_LEAD_SUCCESS', journeyData);
+};
+
+setTimeout(() => {
+  onPageLoadAnalytics();
+}, 3900);

@@ -21,6 +21,8 @@ import {
   FORM_RUNTIME as formRuntime,
 } from '../../common/constants.js';
 
+import { sendAnalytics } from './analytics.js';
+
 const GENDER_MAP = {
   M: '1',
   F: '2',
@@ -177,7 +179,7 @@ const createExecuteInterfaceRequestObj = (globals) => {
       officeCity: employmentDetails.officeAddressCity.$value,
       officeZipCode: employmentDetails.officeAddressPincode.$value,
       officeState: employmentDetails.officeAddressState.$value,
-      productCode: '',
+      productCode: currentFormContext?.crmLeadResponse?.productCode,
       leadClosures: globals.functions.exportData()?.form?.leadClosures || globals.functions.exportData()?.currentFormContext?.crmLeadResponse?.leadClosures || currentFormContext?.crmLeadResponse?.leadClosures,
       leadGenerater: globals.functions.exportData()?.form?.leadGenerator || globals.functions.exportData()?.currentFormContext?.crmLeadResponse?.leadGenerator || currentFormContext?.crmLeadResponse?.leadGenerator,
       applyingBranch: 'N',
@@ -262,9 +264,12 @@ const executeInterfaceApiFinal = (globals) => {
 /**
  * @name executeInterfaceResponseHandler
  * @param {object} resPayload
+
+ * @param {object} globals
  */
-const executeInterfaceResponseHandler = (resPayload) => {
+const executeInterfaceResponseHandler = (resPayload, globals) => {
   currentFormContext.executeInterfaceResPayload = resPayload;
+  sendAnalytics('get this card', resPayload, 'CUSTOMER_CARD_SELECTED', globals);
 };
 
 /**

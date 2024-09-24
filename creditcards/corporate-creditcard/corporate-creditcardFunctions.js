@@ -9,7 +9,6 @@ import {
   formUtil,
   urlPath,
   clearString,
-  santizedFormDataWithContext,
   ageValidator,
   removeSpecialCharacters,
   parseCustomerAddress,
@@ -18,7 +17,7 @@ import {
   createLabelInElement,
   decorateStepper,
   aadharLangChange,
-  getTimeStamp,
+  getTimeStampNoSeconds,
 } from '../../common/formutils.js';
 import {
   restAPICall,
@@ -26,10 +25,12 @@ import {
   getJsonResponse,
   fetchJsonResponse,
 } from '../../common/makeRestAPI.js';
-import { sendAnalyticsEvent } from '../../common/analytics.js';
+import { sendAnalytics } from './analytics.js';
 import * as CONSTANT from '../../common/constants.js';
 import * as CC_CONSTANT from './constant.js';
 import { executeInterfacePostRedirect } from './executeinterfaceutils.js';
+
+setTimeout(() => import('./cc.js'), 1200);
 
 const {
   ENDPOINTS,
@@ -608,16 +609,6 @@ const prefillForm = (globals) => {
 };
 
 /**
-* sendAnalytics
-* @param {string} payload
-* @param {object} globals
-*/
-// eslint-disable-next-line no-unused-vars
-function sendAnalytics(payload, globals) {
-  sendAnalyticsEvent(payload, santizedFormDataWithContext(globals), currentFormContext);
-}
-
-/**
  * @name resendOTP
  * @param {Object} globals - The global object containing necessary data for DAP request.
  */
@@ -764,6 +755,7 @@ const setNameOnCard = (name, globals) => globals.functions.setProperty(globals.f
  */
 const aadharConsent123 = async (globals) => {
   try {
+    await Promise.resolve(sendAnalytics('kyc continue', { errorCode: '0000', errorMessage: 'Success' }, 'CUSTOMER_AADHAAR_INIT', globals));
     if (typeof window !== 'undefined') {
       const openModal = (await import('../../blocks/modal/modal.js')).default;
       const config = {
@@ -775,10 +767,11 @@ const aadharConsent123 = async (globals) => {
         formRuntime.aadharConfig = config;
       }
       await openModal(formRuntime.aadharConfig);
-      aadharLangChange(formRuntime.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage);
-      config?.content?.addEventListener('modalTriggerValue', (event) => {
+      aadharLangChange(formRuntime.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage, currentFormContext);
+      config?.content?.addEventListener('modalTriggerValue', async (event) => {
         const receivedData = event.detail;
         if (receivedData?.aadharConsentAgree) {
+          await Promise.resolve(sendAnalytics('i agree', { errorCode: '0000', errorMessage: 'Success' }, 'JOURNEYSTATE', globals));
           globals.functions.setProperty(globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel.ckycDetailsContinueETBPanel.triggerAadharAPI, { value: 1 });
         }
       });
@@ -842,7 +835,7 @@ function checkMode(globals) {
         globals,
       );
     }
-  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard')) { // debit card or credit card flow
+  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard') || (idcomVisit === 'NetBanking')) { // debit card or credit card or net banking flow
     const resultPanel = formUtil(globals, globals.form.resultPanel);
     resultPanel.visible(false);
     globals.functions.setProperty(globals.form.otpPanel, { visible: false });
@@ -944,7 +937,7 @@ function getOTP(mobileNumber, pan, dob, globals) {
  * @return {PROMISE}
  */
 function otpValidation(mobileNumber, pan, dob, otpNumber) {
-  const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
+  const referenceNumber = `AD${getTimeStampNoSeconds(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   const jsonObj = {
     requestString: {
@@ -983,11 +976,31 @@ function getWrappedFormContext() {
   return formContext;
 }
 
+/**
+* @name firstLastNameValidation - validate first name and last name in personal details
+* @param {string} firstName
+* @param {string} lastName
+* @param {object} globals
+*/
+const firstLastNameValidation = (fn, ln, globals) => {
+  const invalidMsg = {
+    fName: 'Please enter a valid First Name',
+    lName: 'Please enter a valid Last Name',
+  };
+  const MAX_LENGTH = 23;
+  const MIN_LENGTH = 3;
+  if (fn && (!((fn?.length <= MAX_LENGTH) && (fn?.length > MIN_LENGTH)))) {
+    globals.functions.markFieldAsInvalid('$form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.firstName', invalidMsg.fName, { useQualifiedName: true });
+  }
+  if (ln && (!((ln?.length <= MAX_LENGTH) && (ln?.length > MIN_LENGTH)))) {
+    globals.functions.markFieldAsInvalid('$form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.lastName', invalidMsg.lName, { useQualifiedName: true });
+  }
+};
+
 export {
   formRuntime,
   journeyResponseHandler,
   createJourneyId,
-  sendAnalytics,
   resendOTP,
   customSetFocus,
   validateLogin,
@@ -1006,4 +1019,5 @@ export {
   otpValidation,
   getFormContext,
   getWrappedFormContext,
+  firstLastNameValidation,
 };

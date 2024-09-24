@@ -123,14 +123,14 @@ header {
 .cmp-container-wrapper {
     padding: 0 !important;
     border-bottom: none !important;
-    content: url('../icons/header_banner_desktop.webp');
-    max-width: fit-content !important
+    content: url('../icons/header_banner_1400x200.webp');
+    width: 100%;
 }
 
 /***** mobile large ********/
 @media (320px <=width <=480px) {
     .cmp-container-wrapper {
-        content: url('../icons/header_banner_smMobile.webp');
+        content: url('../icons/header_banner_320x120.webp');
         width: 100%;
     }
 
@@ -168,7 +168,7 @@ header {
 
 @media (481px <=width <=768px) {
     .cmp-container-wrapper {
-        content: url('../icons/header_banner_mobile.webp');
+        content: url('../icons/header_banner_440x140.webp');
         width: 100%;
         max-width: 100% !important;
     }
@@ -207,7 +207,7 @@ header {
 /******* Tablet *******/
 @media (769px <=width <=991px) {
     .cmp-container-wrapper {
-        content: url('../icons/header_banner_tab.webp');
+        content: url('../icons/header_banner_768x160.webp');
         width: 100%;
         max-width: 100% !important;
     }
