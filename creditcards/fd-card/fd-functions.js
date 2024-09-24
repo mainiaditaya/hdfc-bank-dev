@@ -26,6 +26,7 @@ import {
   branchCodeHandler,
   dobChangeHandler,
   fathersNameChangeHandler,
+  fullNameChangeHandler,
 } from './customerdetails.js';
 
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
@@ -154,4 +155,5 @@ export {
   checkModeFd,
   executeInterfacePostRedirect,
   ratingButtonUI,
+  fullNameChangeHandler,
 };

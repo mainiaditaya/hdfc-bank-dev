@@ -79,13 +79,13 @@ const selectAllFdClickHandler = (globals) => {
 };
 
 const updateData = (globals, fd, panel, index, fdNumberSelectionPanel) => {
-  const datMaturity = formatDateDDMMMYYY(fd.datMaturity);
-  const balPrincipal = Number(fd.balTdPrincipal);
-  globals.functions.setProperty(panel.fdNumber, { value: fd.codAcctNo });
-  globals.functions.setProperty(panel.selectedFDAmount, { value: balPrincipal });
-  globals.functions.setProperty(panel.maturingDate, { value: datMaturity });
+  const datMaturity = formatDateDDMMMYYY(fd?.datMaturity);
+  const balPrincipal = Number(fd?.balTdPrincipal);
+  globals.functions.setProperty(panel?.fdNumber, { value: fd?.fdAccountNo });
+  globals.functions.setProperty(panel?.selectedFDAmount, { value: balPrincipal });
+  globals.functions.setProperty(panel?.maturingDate, { value: datMaturity });
   if (index === 0) {
-    globals.functions.setProperty(panel.fdAccSelect, { value: 'on' });
+    globals.functions.setProperty(panel?.fdAccSelect, { value: 'on' });
     fdSelectHandler(globals, fdNumberSelectionPanel);
   }
 };

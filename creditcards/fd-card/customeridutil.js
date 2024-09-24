@@ -35,7 +35,7 @@ const fetchCustomerId = (mobileNumber, pan, dob, response) => {
   const payload = createPayload(mobileNumber, pan, dob, response?.jwtToken);
   payload.requestString.referenceNumber = response.referenceNo;
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus);
-  const duration = 60;
+  const duration = 50;
   const timer = 10;
   const fieldName = ['status'];
   return fetchRecursiveResponse('customerId', apiEndPoint, payload, 'POST', duration, timer, fieldName, true);
