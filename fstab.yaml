@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: https://hdfc-dev-04.adobecqms.net/bin/franklin.delivery/aemsites/hdfc-bank/pathcheck
+    url: https://applyonlinedev.hdfcbank.com
     type: "markup"
-    suffix: ".html"
+    suffix: "md.html"
