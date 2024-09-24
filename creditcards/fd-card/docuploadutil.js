@@ -7,7 +7,7 @@ import {
 } from '../../common/makeRestAPI.js';
 import { urlPath, generateUUID } from '../../common/formutils.js';
 import { ENDPOINTS, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import finalPagePanelVisibility from './thankyouutil.js';
+import { finalPagePanelVisibility } from './thankyouutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
 /**
  * Creates a FormData payload for document upload.
