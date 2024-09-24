@@ -17,9 +17,9 @@ body.semi-form {
     main .form form { padding-top: 10px !important; }
 }
 
-.semi-form:has(.field-aem-txtselectionpopupwrapper[data-visible="true"], .field-aem-tnctenurewrapper[data-visible="true"], .field-landingconfirmationpopup[data-visible="true"], .field-aem-wrongotppopupwrapper[data-visible="true"], .field-aem-wrongotppopupwrapper2[data-visible="true"]) { overflow: hidden; }
+.semi-form:has(.field-aem-txtselectionpopupwrapper[data-visible="true"], .field-aem-tnctenurewrapper[data-visible="true"], .field-landingconfirmationpopup[data-visible="true"], .field-aem-wrongotppopupwrapper[data-visible="true"], .field-aem-wrongotppopupwrapper2[data-visible="true"], .field-aem-txnssummarypopupwrapper[data-visible="true"]) { overflow: hidden; }
 
-.field-aem-txtselectionpopupwrapper, .field-aem-tnctenurewrapper, .field-landingconfirmationpopup, .field-aem-wrongotppopupwrapper, .field-aem-wrongotppopupwrapper2 {
+.field-aem-txtselectionpopupwrapper, .field-aem-tnctenurewrapper, .field-landingconfirmationpopup, .field-aem-wrongotppopupwrapper, .field-aem-wrongotppopupwrapper2, .field-aem-txnssummarypopupwrapper {
   position: fixed;
   top: 0;
   right: 0;
@@ -27,7 +27,7 @@ body.semi-form {
   left: 0;
   background: var(--color-interface-popup-background);
 
-  .field-aem-txtselectionpopup, .field-aem-tnctenure, .field-doyouwishtocontinue, .field-aem-wrongotppopup {
+  .field-aem-txtselectionpopup, .field-aem-tnctenure, .field-doyouwishtocontinue, .field-aem-wrongotppopup, .field-aem-txnssummarypopup {
       margin: auto !important;
       position: fixed;
       top: 0;
@@ -432,6 +432,57 @@ body.semi-form {
 
         /* Step 2 - Wizard - Choose Transactions */
         .field-aem-choosetransactions {
+            .field-aem-txnssummarytext p {
+                font-size: var(--body-sm-font-size);
+                color: var(--color-interface-text-primary);
+                margin: 0;
+            }
+
+            .field-aem-txnssummarypopupwrapper {
+                position: fixed;
+                z-index: 99999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                display: grid;
+                background-color: var(--color-interface-popup-background);
+
+                .field-aem-txnssummarypopup { padding: 25px 16px 10px; }
+
+                .field-aem-txnssummarypopup, .plain-text-wrapper, p, input {
+                    margin: 0;
+                    max-height: fit-content;
+                    max-width: 608px;
+                    text-align: center;
+                    color: var(--color-interface-background-tertiary);
+                    font-size: var(--body-md-font-size);
+                    font-weight: var(--font-weight-bold);
+
+                    p, input { padding: 0; }
+
+                    .field-aem-txnssummaryicon img {
+                        height: 151px;
+                        width: 142px;
+                    }
+
+                    div[class*='field-aem-txnssummarytext'] p {
+                        color: var(--color-interface-text-primary);
+                        margin-top: -8px;
+                    }
+
+                    .field-aem-txnssummaryok { 
+                        border-top: 1px solid var(--color-interface-text-secondary);
+
+                        button, button:hover {
+                            background-color: var(--color-interface-background-primary) !important;
+                            color: var(--color-interface-background-tertiary) !important;
+                        }
+                    }
+                }
+
+                p { text-align: left; }
+            }
             .field-aem-eligibletxnlabel, .field-aem-txnavailable { border-right: solid 1px var(--color-interface-border-secondary); }
 
             .field-aem-eligibletxnlabel, field-aem-eligibletxnlabel p, .field-aem-txnavailable, .field-aem-txnavailable p, .field-aem-totalselectedtxt, .field-aem-totalselectedtxt p {
@@ -1047,6 +1098,10 @@ body.semi-form {
             padding-left: 0 !important;
 
             .field-aem-choosetransactions {
+                .field-aem-txnssummarypopupwrapper {
+                    div[class*='field-aem-txnssummarytext'] p { margin-top: 10px; }
+                }
+
                 .field-aem-transactionsinfopanel {
                     display: grid;
 

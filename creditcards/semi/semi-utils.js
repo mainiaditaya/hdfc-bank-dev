@@ -112,6 +112,7 @@ const validationField = () => {
   addCardFieldValidation();
   addOtpFieldValidation();
   linkToPopupToggle('.field-disclaimer-text a', '.field-landingconfirmationpopup', '.field-doyouwishtocontinue', '.field-cross-btn button', '.field-err-popup-buttonconfirm button');
+  linkToPopupToggle('.field-aem-txnssummarytext a', '.field-aem-txnssummarypopupwrapper', '.field-aem-txnssummarypopup', '.field-aem-txnssummaryok');
 };
 
 const getNextMonthDate = (day) => {
