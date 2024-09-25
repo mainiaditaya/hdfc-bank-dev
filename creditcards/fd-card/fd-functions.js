@@ -95,6 +95,8 @@ import {
 
 import { ratingButtonUI } from './thankyouutil.js';
 
+import { hideLoaderGif } from '../domutils/domutils.js';
+
 setTimeout(() => import('./fd-delayedutils.js'), 2000);
 
 export {
@@ -156,4 +158,5 @@ export {
   executeInterfacePostRedirect,
   ratingButtonUI,
   fullNameChangeHandler,
+  hideLoaderGif,
 };
