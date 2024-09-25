@@ -282,7 +282,7 @@ const removeSpecialCharacters = (str, allowedChars) => {
   const regex = new RegExp(`[^a-zA-Z0-9,${escapedAllowedChars.replace('-', '\\-')}]`, 'g');
 
   // Remove special characters from the input string using the regex pattern
-  return str.replace(regex, '');
+  return str?.replace(regex, '');
 };
 
 /**
@@ -536,17 +536,6 @@ const getUrlParamCaseInsensitive = (param) => {
   return paramEntry ? paramEntry[1] : null;
 };
 
-const replaceNullWithEmptyString = (obj) => {
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] === null) {
-      obj[key] = '';
-    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-      replaceNullWithEmptyString(obj[key]);
-    }
-  });
-  return obj;
-};
-
 const fetchFiller4 = (mobileMatch, kycStatus, journeyType) => {
   let filler4Value = null;
   switch (kycStatus) {
@@ -621,7 +610,6 @@ export {
   formatDateDDMMMYYY,
   pinCodeMasterCheck,
   getUrlParamCaseInsensitive,
-  replaceNullWithEmptyString,
   fetchFiller4,
   extractJSONFromHTMLString,
   applicableCards,
