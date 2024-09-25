@@ -91,10 +91,10 @@ async function encryptDataES6(data) {
  * Initialization in browsers where ES6 is supported
  * @param {object} globals - globals form object
  */
-function initRestAPIDataSecurityServiceES6() {
+function initRestAPIDataSecurityServiceES6(globals) {
   // eslint-disable-next-line max-len
-  const publicKeyPemContent = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoAatblmEzZTQOT732FU38hiT9vCvGK12+pUD3yENyHXjk7oN1uWPlpItm5OAcsPZt52WznDkpOb/AxLBeJKFYZPvOk75lo6ZAA1qyJEOekQru5XQUtpMzsC9w96T2zTYQQ4HUwMNXmYkWIVo4Ek/KCfX2yklRHxwm3Pqj93vJkUmoddLctXArddtm75HUjtYzf5jecQCGk//pyjTDJEswMpg3oXNiI2F1PnDUiKdQBE7+a1s5KB7CAKKYQLFNN48kjiOdDutMByjZxW0elPs9ETVU+NVNQ6ru9vKQYzvR/2YD7NNSHPUCpdexIpfiYeWrxUNgpHLM2qfXTOvn6UztQIDAQAB';
-  // globals.functions.exportData().data.dataSecurityPublicKey;
+  // const publicKeyPemContent = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoAatblmEzZTQOT732FU38hiT9vCvGK12+pUD3yENyHXjk7oN1uWPlpItm5OAcsPZt52WznDkpOb/AxLBeJKFYZPvOk75lo6ZAA1qyJEOekQru5XQUtpMzsC9w96T2zTYQQ4HUwMNXmYkWIVo4Ek/KCfX2yklRHxwm3Pqj93vJkUmoddLctXArddtm75HUjtYzf5jecQCGk//pyjTDJEswMpg3oXNiI2F1PnDUiKdQBE7+a1s5KB7CAKKYQLFNN48kjiOdDutMByjZxW0elPs9ETVU+NVNQ6ru9vKQYzvR/2YD7NNSHPUCpdexIpfiYeWrxUNgpHLM2qfXTOvn6UztQIDAQAB';
+  const publicKeyPemContent = globals.functions.exportData().data.dataSecurityPublicKey;
   // Base64 decode
   const binaryDerString = atob(publicKeyPemContent);
   // convert from a binary string to an ArrayBuffer
@@ -158,7 +158,7 @@ async function decryptDataES6(encData, secret) {
     return null; // Ensure the function always returns a value
   }
 }
-initRestAPIDataSecurityServiceES6();
+//initRestAPIDataSecurityServiceES6(globals);
 export {
   getDataEncRequestHeaders,
   invokeRestAPIWithDataSecurity,
