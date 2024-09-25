@@ -158,7 +158,7 @@ async function decryptDataES6(encData, secret) {
     return null; // Ensure the function always returns a value
   }
 }
-//initRestAPIDataSecurityServiceES6(globals);
+// initRestAPIDataSecurityServiceES6(globals);
 export {
   getDataEncRequestHeaders,
   invokeRestAPIWithDataSecurity,

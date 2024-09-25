@@ -191,6 +191,31 @@ async function getJsonResponse(url, payload, method = 'POST') {
 }
 
 /**
+ * Sends an HTTP request without encryption and returns the parsed JSON response.
+ *
+ * @param {string} url - The endpoint URL to send the request.
+ * @param {Object} [payload] - The request payload to send (optional).
+ * @param {string} [method='POST'] - The HTTP method to use (default is 'POST').
+ * @returns {Promise<Object>} - A promise that resolves to the parsed JSON response.
+ * @throws {Error} - Throws an error if the request fails.
+ */
+async function getJsonWithoutEncrypt(url, payload, method = 'POST') {
+  return fetch(url, {
+    method,
+    body: payload ? JSON.stringify(payload) : null,
+    mode: 'cors',
+    headers: {
+      'Content-type': 'text/plain',
+      Accept: 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      throw err;
+    });
+}
+
+/**
  * Makes a REST API call with the provided parameters.
  *
  * @param {object} globals - The global object containing necessary globals form data.
@@ -257,6 +282,7 @@ const chainedFetchAsyncCall = async (apiUrl, method, payloadArray, payloadType) 
 export {
   restAPICall,
   getJsonResponse,
+  getJsonWithoutEncrypt,
   displayLoader,
   hideLoaderGif,
   fetchJsonResponse,
