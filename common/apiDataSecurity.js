@@ -91,7 +91,7 @@ async function encryptDataES6(data) {
  * Initialization in browsers where ES6 is supported
  * @param {object} globals - globals form object
  */
-function initRestAPIDataSecurityServiceES6() {
+async function initRestAPIDataSecurityServiceES6() {
   // eslint-disable-next-line max-len
   const publicKeyPemContent = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAocLO0ZabqWBbhb/cpaHTZf53LfEymcRMuAHRpUh3yhwPROgY2u3FTEsFJSKdQAbA4205njlXq3A1ICCd1ZrEQBA7Vc60eL0suO/0Qu5U/8vtYNCPsvMX+Pd7cUcMMM6JmLxacvlThOwAxc0ChSrFhlGRHQFZbg44y0Xy0B2bvxOnEjSAtV7kLjht/EKkiPXc3wptsLEMu2qK34Djucp5AllsbxJdWFogHTcJ1vizxAge9KwxA/2GSKYr5c9Wt8EAn7kqC0t43vnhtZuhgShJEbeV7VgF2GXGQBCxbbDravhltrGI+YKnAEd/RK0P0SJx+BXR7TcEv7zDg1QgXqfTewIDAQAB';
   // const publicKeyPemContent = globals.functions.exportData().data.dataSecurityPublicKey;
@@ -128,6 +128,7 @@ function initRestAPIDataSecurityServiceES6() {
       }); // Export symmetric key
     }); // Generate symmetric key
   }); // Import asymmetric public key
+  return Promise.resolve(true);
 }
 
 /**
@@ -158,7 +159,7 @@ async function decryptDataES6(encData, secret) {
     return null; // Ensure the function always returns a value
   }
 }
-initRestAPIDataSecurityServiceES6();
+// initRestAPIDataSecurityServiceES6();
 export {
   getDataEncRequestHeaders,
   invokeRestAPIWithDataSecurity,
