@@ -790,7 +790,7 @@ const aadharConsent123 = async (globals) => {
  * @return {PROMISE}
  */
 function checkMode(globals) {
-  //initRestAPIDataSecurityServiceES6(globals);
+  initRestAPIDataSecurityServiceES6(globals);
   const formData = globals.functions.exportData();
   const idcomVisit = formData?.queryParams?.authmode; // "DebitCard"
   const aadharVisit = formData?.queryParams?.visitType; // "EKYC_AUTH
