@@ -52,7 +52,6 @@ async function fetchJsonResponse(url, payload, method, loader = false) {
           return res.json();
         });
     }
-    await initRestAPIDataSecurityServiceES6();
     const responseObj = await invokeRestAPIWithDataSecurity(payload);
     const response = await fetch(url, {
       method,

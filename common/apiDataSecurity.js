@@ -54,40 +54,6 @@ function getDataEncRequestHeaders(encDataPack) {
 }
 
 /**
-     * Encrypts data
-     */
-async function encryptDataES6(data) {
-  const dataStr = JSON.stringify(data);
-  const secret = restAPIDataSecurityServiceContext.crypto.getRandomValues(new Uint8Array(restAPIDataSecurityServiceContext.secretLength));
-  const dataBuf = stringToArrayBuffer(dataStr);
-
-  const dataEncBuf = await restAPIDataSecurityServiceContext.crypto.subtle.encrypt({
-    name: restAPIDataSecurityServiceContext.symmetricAlgo,
-    iv: secret,
-    tagLength: restAPIDataSecurityServiceContext.secretTagLength,
-  }, restAPIDataSecurityServiceContext.symmetricKey, dataBuf);
-
-  const dataEnc = btoa(arrayBufferToString(dataEncBuf));
-
-  const encSecretBuf = await restAPIDataSecurityServiceContext.crypto.subtle.encrypt({
-    name: restAPIDataSecurityServiceContext.aSymmetricAlgo,
-    hash: {
-      name: restAPIDataSecurityServiceContext.digestAlgo,
-    },
-  }, restAPIDataSecurityServiceContext.aSymmetricPublicKey, secret);
-
-  const encSecret = btoa(arrayBufferToString(encSecretBuf));
-
-  return {
-    dataEnc,
-    secret,
-    secretEnc: encSecret,
-    keyEnc: restAPIDataSecurityServiceContext.encSymmetricKey,
-    requestHeader: getDataEncRequestHeaders(restAPIDataSecurityServiceContext.encSymmetricKey, encSecret),
-  };
-}
-
-/**
  * Initialization in browsers where ES6 is supported
  * @param {object} globals - globals form object
  */
@@ -146,6 +112,41 @@ function initRestAPIDataSecurityServiceES6() {
         reject(error);
       });
   });
+}
+
+/**
+     * Encrypts data
+     */
+async function encryptDataES6(data) {
+  await initRestAPIDataSecurityServiceES6();
+  const dataStr = JSON.stringify(data);
+  const secret = restAPIDataSecurityServiceContext.crypto.getRandomValues(new Uint8Array(restAPIDataSecurityServiceContext.secretLength));
+  const dataBuf = stringToArrayBuffer(dataStr);
+
+  const dataEncBuf = await restAPIDataSecurityServiceContext.crypto.subtle.encrypt({
+    name: restAPIDataSecurityServiceContext.symmetricAlgo,
+    iv: secret,
+    tagLength: restAPIDataSecurityServiceContext.secretTagLength,
+  }, restAPIDataSecurityServiceContext.symmetricKey, dataBuf);
+
+  const dataEnc = btoa(arrayBufferToString(dataEncBuf));
+
+  const encSecretBuf = await restAPIDataSecurityServiceContext.crypto.subtle.encrypt({
+    name: restAPIDataSecurityServiceContext.aSymmetricAlgo,
+    hash: {
+      name: restAPIDataSecurityServiceContext.digestAlgo,
+    },
+  }, restAPIDataSecurityServiceContext.aSymmetricPublicKey, secret);
+
+  const encSecret = btoa(arrayBufferToString(encSecretBuf));
+
+  return {
+    dataEnc,
+    secret,
+    secretEnc: encSecret,
+    keyEnc: restAPIDataSecurityServiceContext.encSymmetricKey,
+    requestHeader: getDataEncRequestHeaders(restAPIDataSecurityServiceContext.encSymmetricKey, encSecret),
+  };
 }
 
 /**
