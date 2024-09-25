@@ -536,17 +536,6 @@ const getUrlParamCaseInsensitive = (param) => {
   return paramEntry ? paramEntry[1] : null;
 };
 
-const replaceNullWithEmptyString = (obj) => {
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] === null) {
-      obj[key] = '';
-    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-      replaceNullWithEmptyString(obj[key]);
-    }
-  });
-  return obj;
-};
-
 const fetchFiller4 = (mobileMatch, kycStatus, journeyType) => {
   let filler4Value = null;
   switch (kycStatus) {
@@ -621,7 +610,6 @@ export {
   formatDateDDMMMYYY,
   pinCodeMasterCheck,
   getUrlParamCaseInsensitive,
-  replaceNullWithEmptyString,
   fetchFiller4,
   extractJSONFromHTMLString,
   applicableCards,
