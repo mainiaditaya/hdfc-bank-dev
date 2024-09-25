@@ -1494,6 +1494,7 @@ main {
       .field-creditlimitmax p {
           font-weight: var(--font-weight-regular);
           font-size: var(--body-fd-sm-font-size);
+          margin-top: -13px;
       }
   
       .field-creditlimitmax { text-align: end; }
@@ -1739,7 +1740,7 @@ main {
                     border-bottom-left-radius: 8px;
                     border-bottom-right-radius: 8px;
                     background: var(--color-interface-background-quinary);                  
-                    border-top: 1px dashed var(--color-interface-border-primary);
+                    border-top: 1px dashed var(--color-interface-border-secondary);
   
                     label {
                         width: 90%;
@@ -2167,11 +2168,16 @@ main {
 
               .field-cardbenefitstext {
                   text-align: left;
+                  font-size: var(--body-fd-md-font-size);
+                  color: var(--color-input-text-primary);
+                  line-height: var(--font-linehight-large);
+                  font-weight: var(--font-weight-regular);
 
                   p {
                     font-size: var(--body-fd-md-font-size);
                     color: var(--color-input-text-primary);
                     line-height: var(--font-linehight-large);
+                    font-weight: var(--font-weight-regular);
                     margin: 0;
                   }
 
@@ -2660,6 +2666,15 @@ main {
       }
     }
 
+    .field-currentresidenceaddressbiometricovdconfirmation {
+        margin-top: -15px;
+
+        legend {
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }        
+    }
+
     .checkbox-wrapper {
         label { font-size: var(--body-fd-sm-font-size); 
         margin-left: 10px; }
@@ -3128,6 +3143,10 @@ main {
                 margin: 0 0 0 30px !important;
             }
         }
+    }
+
+    .field-multiplecustidrepeatable {
+        .field-maskedaccno { margin-top: -22px !important; }
     }
   
     .fdlien .field-fdbasedcreditcardwizard { left: 2%; }
