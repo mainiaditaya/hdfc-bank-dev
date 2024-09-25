@@ -21,10 +21,6 @@ import creditCardSummary from './creditcardsumaryutil.js';
  */
 const createDocPayload = async ({ docValue, docType, fileId }, mobileNumber) => {
   try {
-    // CURRENT_FORM_CONTEXT.executeInterfaceResponse = {
-    //   applicationRefNumber: '24I12D00449470W1',
-    // };
-    // CURRENT_FORM_CONTEXT.eRefNumber = 'AD20240912112637';
     const {
       journeyName,
       journeyID,
