@@ -282,7 +282,7 @@ const removeSpecialCharacters = (str, allowedChars) => {
   const regex = new RegExp(`[^a-zA-Z0-9,${escapedAllowedChars.replace('-', '\\-')}]`, 'g');
 
   // Remove special characters from the input string using the regex pattern
-  return str.replace(regex, '');
+  return str?.replace(regex, '');
 };
 
 /**

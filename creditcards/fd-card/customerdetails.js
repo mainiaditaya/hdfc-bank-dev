@@ -225,7 +225,7 @@ const bindCustomerDetails = (globals) => {
  */
 const validateEmailID = async (email, globals) => {
   const url = urlPath(FD_ENDPOINTS.emailId);
-  const invalidMsg = 'Please enter valid email id...';
+  const invalidMsg = 'Please enter a valid Email ID';
   const payload = {
     email,
   };
@@ -233,9 +233,9 @@ const validateEmailID = async (email, globals) => {
   try {
     const emailValid = await getJsonResponse(url, payload, method);
     if (emailValid === true) {
-      console.log(email, globals, invalidMsg);
-    } else {
-      console.log(email);
+      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { valid: true });
+    } else if (email !== '') {
+      globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID', invalidMsg, { useQualifiedName: true });
     }
   } catch (error) {
     console.error(error, 'error in emailValid');
