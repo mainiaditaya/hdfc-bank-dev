@@ -7,6 +7,7 @@ import {
   ageValidator,
   parseCustomerAddress,
   splitName,
+  parseName,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
@@ -115,18 +116,11 @@ const bindCustomerDetails = (globals) => {
   bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
 
-  /*
-  * Hardcoded value for address parsing development
-  * start
-  */
-
-  customerInfo.customerFirstName = 'Kunal';
-  customerInfo.customerFullName = 'Kunal';
-
-  /*
-* Hardcoded value for address parsing development
-* end
-*/
+  const { firstName, middleName, lastName } = parseName(customerInfo.customerFullName);
+  customerInfo.customerFirstName = firstName;
+  customerInfo.customerMiddleName = middleName;
+  customerInfo.customerLastName = lastName;
+  customerInfo.customerFullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ');
 
   CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   if (!customerInfo.datBirthCust || !customerInfo.refCustItNum || !customerInfo.genderDescription) CURRENT_FORM_CONTEXT.customerIdentityChange = true;
