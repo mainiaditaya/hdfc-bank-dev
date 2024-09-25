@@ -30,7 +30,6 @@ import { sendAnalytics } from './analytics.js';
 import * as CONSTANT from '../../common/constants.js';
 import * as CC_CONSTANT from './constant.js';
 import { executeInterfacePostRedirect } from './executeinterfaceutils.js';
-import { initRestAPIDataSecurityServiceES6 } from '../../common/apiDataSecurity.js';
 
 setTimeout(() => import('./cc.js'), 1200);
 
@@ -790,7 +789,6 @@ const aadharConsent123 = async (globals) => {
  * @return {PROMISE}
  */
 function checkMode(globals) {
-  initRestAPIDataSecurityServiceES6(globals);
   const formData = globals.functions.exportData();
   const idcomVisit = formData?.queryParams?.authmode; // "DebitCard"
   const aadharVisit = formData?.queryParams?.visitType; // "EKYC_AUTH
