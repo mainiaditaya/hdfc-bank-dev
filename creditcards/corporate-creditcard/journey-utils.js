@@ -131,7 +131,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   // sendSubmitClickEvent(mobileNumber, linkName, sanitizedFormData);
   const url = urlPath(ENDPOINTS.journeyDropOffUpdate);
   const method = 'POST';
-  return fetchJsonResponse(url, btoa(unescape(encodeURIComponent(journeyJSONObj))), method);
+  return fetchJsonResponse(url, btoa(unescape(encodeURIComponent(JSON.stringify(journeyJSONObj)))), method);
 };
 
 /**
