@@ -2,7 +2,7 @@
  * Displays a loader with optional loading text.
  * @param {string} loadingText - The loading text to display (optional).
  */
-import { decryptDataES6, invokeRestAPIWithDataSecurity } from './apiDataSecurity.js';
+import { decryptDataES6, initRestAPIDataSecurityServiceES6, invokeRestAPIWithDataSecurity } from './apiDataSecurity.js';
 
 import { ENV as env } from './constants.js';
 
@@ -52,7 +52,7 @@ async function fetchJsonResponse(url, payload, method, loader = false) {
           return res.json();
         });
     }
-
+    await initRestAPIDataSecurityServiceES6();
     const responseObj = await invokeRestAPIWithDataSecurity(payload);
     const response = await fetch(url, {
       method,
