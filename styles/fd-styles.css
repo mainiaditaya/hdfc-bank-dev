@@ -1060,7 +1060,7 @@ main {
 
                     .repeat-wrapper {
                         display: flex;
-                        flex-wrap: nowrap;
+                        flex-wrap: wrap;
                         gap: 10px;
                     }
 
@@ -1069,9 +1069,10 @@ main {
                         border-radius: 8px;
                         cursor: default;
                         flex: 0 1 auto;
-                        width: auto;
-                        max-width: calc(33.33% - 20px);
-                        box-sizing: border-box;
+                            width: auto;
+                            max-width: calc(33.33% - 20px);
+                            box-sizing: border-box;
+                            display: inherit;
 
                         .field-selectedfdnum:not(p){                            
                             font-size: var(--body-fd-lg-font-size);
@@ -1545,7 +1546,7 @@ main {
                       margin-top: 2px;
                       margin-left: 0;
                       padding: 0;
-                      width: 25px;
+                      width: 35px;
                       height: 50px !important;
   
                       &:hover {
