@@ -247,10 +247,10 @@ const successPannelMethod = async (data, stateInfoData) => {
   const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
   const leadProfileId = stateInfoData.leadProifileId;
   const journeyId = stateInfoData.currentFormContext.journeyID;
-  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
+  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 
-// post-redirect-aadhar-or-idcom
+// post-redirect-aadhar-or-idcom.
 const searchParam = new URLSearchParams(window.location.search);
 const visitTypeParam = searchParam.get('visitType');
 const authModeParam = searchParam.get('authmode');
