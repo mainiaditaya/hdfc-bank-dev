@@ -385,7 +385,7 @@ const getCurrentDateAndTime = (dobFormatNo) => {
  * @param {String} name - The name token.
  * @returns {String} sanitized name - removes special chars, spaces.
  */
-const sanitizeName = (name) => name.replace(/[^a-zA-Z]/g, '');
+const sanitizeName = (name) => name.replace(/[^a-zA-Z\s]/g, '');
 
 /**
  * Splits a full name into its components: first name, middle name, and last name.
@@ -407,6 +407,19 @@ const splitName = (fullName) => {
     }
   }
   return name;
+};
+
+const parseName = (fullName) => {
+  const [firstName = '', middleName = '', lastName = ''] = sanitizeName(fullName).trim().split(/\s+/).slice(0, 3);
+  let combinedName = `${firstName}${middleName ? ` ${middleName}` : ''}${lastName ? ` ${lastName}` : ''}`;
+  if (combinedName.length <= 30) {
+    return { firstName, middleName, lastName };
+  }
+  combinedName = `${firstName} ${lastName}`;
+  if (combinedName.length > 30) {
+    return { firstName, middleName: '', lastName: `${lastName.charAt(0)}` };
+  }
+  return { firstName, middleName: '', lastName };
 };
 
 /**
@@ -613,4 +626,6 @@ export {
   fetchFiller4,
   extractJSONFromHTMLString,
   applicableCards,
+  parseName,
+  sanitizeName,
 };

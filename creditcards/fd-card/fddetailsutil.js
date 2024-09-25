@@ -1,7 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-import { formatDateDDMMMYYY, formUtil } from '../../common/formutils.js';
+import {
+  formatDateDDMMMYYY, formUtil, sanitizeName,
+} from '../../common/formutils.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { MAXIMUM_CREDIT_AMOUNT } from './constant.js';
+import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 
 /**
  * @name resetFDSelection
@@ -105,6 +108,7 @@ const customerIdProceedHandler = (globals) => {
   if (selectedCustIdFds.length > 0) {
     const fdSelectionInfoPanel = fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
     const fdNumberSelectionPanel = fdSelectionInfoPanel.fdNumberSelection;
+    const { selectFDDetailsPanel } = fdSelectionInfoPanel;
     selectedCustIdFds.forEach((fd, i) => {
       if (i < selectedCustIdFds.length - 1) {
         globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
@@ -113,6 +117,8 @@ const customerIdProceedHandler = (globals) => {
         updateData(globals, fd, fdNumberSelectionPanel[i], i, fdNumberSelectionPanel);
       }, i * 40);
     });
+    const { customerInfo } = CURRENT_FORM_CONTEXT;
+    globals.functions.setProperty(selectFDDetailsPanel.customerName, { value: sanitizeName(customerInfo?.customerFullName?.split(' ')?.[0]) });
     globals.functions.setProperty(fdSelectionInfoPanel.selectedFDPanel.selectedFDNum, '0');
     globals.functions.setProperty(fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax, selectedCustIdFds.length.toString());
   } else {
