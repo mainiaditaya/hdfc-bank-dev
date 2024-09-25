@@ -91,44 +91,61 @@ async function encryptDataES6(data) {
  * Initialization in browsers where ES6 is supported
  * @param {object} globals - globals form object
  */
-async function initRestAPIDataSecurityServiceES6() {
-  // eslint-disable-next-line max-len
-  const publicKeyPemContent = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAocLO0ZabqWBbhb/cpaHTZf53LfEymcRMuAHRpUh3yhwPROgY2u3FTEsFJSKdQAbA4205njlXq3A1ICCd1ZrEQBA7Vc60eL0suO/0Qu5U/8vtYNCPsvMX+Pd7cUcMMM6JmLxacvlThOwAxc0ChSrFhlGRHQFZbg44y0Xy0B2bvxOnEjSAtV7kLjht/EKkiPXc3wptsLEMu2qK34Djucp5AllsbxJdWFogHTcJ1vizxAge9KwxA/2GSKYr5c9Wt8EAn7kqC0t43vnhtZuhgShJEbeV7VgF2GXGQBCxbbDravhltrGI+YKnAEd/RK0P0SJx+BXR7TcEv7zDg1QgXqfTewIDAQAB';
-  // const publicKeyPemContent = globals.functions.exportData().data.dataSecurityPublicKey;
-  // Base64 decode
-  const binaryDerString = atob(publicKeyPemContent);
-  // convert from a binary string to an ArrayBuffer
-  const binaryDer = stringToArrayBuffer(binaryDerString);
-  // Import asymmetric public key
-  restAPIDataSecurityServiceContext.crypto.subtle.importKey('spki', binaryDer, {
-    name: restAPIDataSecurityServiceContext.aSymmetricAlgo,
-    hash: restAPIDataSecurityServiceContext.digestAlgo,
-  }, true, ['encrypt']).then((publicKey) => {
-    restAPIDataSecurityServiceContext.aSymmetricPublicKey = publicKey;
-    // Creates the symmteric key
-    restAPIDataSecurityServiceContext.crypto.subtle.generateKey({
-      name: restAPIDataSecurityServiceContext.symmetricAlgo,
-      length: restAPIDataSecurityServiceContext.symmetricKeyLength,
-    }, true, ['encrypt', 'decrypt']).then((symKey) => {
-      restAPIDataSecurityServiceContext.symmetricKey = symKey;
-      // Export the symmetric key for further use
-      restAPIDataSecurityServiceContext.crypto.subtle.exportKey('raw', restAPIDataSecurityServiceContext.symmetricKey).then((symKeyData) => {
+function initRestAPIDataSecurityServiceES6() {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-next-line max-len
+    const publicKeyPemContent = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAocLO0ZabqWBbhb/cpaHTZf53LfEymcRMuAHRpUh3yhwPROgY2u3FTEsFJSKdQAbA4205njlXq3A1ICCd1ZrEQBA7Vc60eL0suO/0Qu5U/8vtYNCPsvMX+Pd7cUcMMM6JmLxacvlThOwAxc0ChSrFhlGRHQFZbg44y0Xy0B2bvxOnEjSAtV7kLjht/EKkiPXc3wptsLEMu2qK34Djucp5AllsbxJdWFogHTcJ1vizxAge9KwxA/2GSKYr5c9Wt8EAn7kqC0t43vnhtZuhgShJEbeV7VgF2GXGQBCxbbDravhltrGI+YKnAEd/RK0P0SJx+BXR7TcEv7zDg1QgXqfTewIDAQAB';
+
+    // Base64 decode
+    const binaryDerString = atob(publicKeyPemContent);
+    // Convert from a binary string to an ArrayBuffer
+    const binaryDer = stringToArrayBuffer(binaryDerString);
+
+    // Import asymmetric public key
+    restAPIDataSecurityServiceContext.crypto.subtle.importKey('spki', binaryDer, {
+      name: restAPIDataSecurityServiceContext.aSymmetricAlgo,
+      hash: restAPIDataSecurityServiceContext.digestAlgo,
+    }, true, ['encrypt'])
+      .then((publicKey) => {
+        restAPIDataSecurityServiceContext.aSymmetricPublicKey = publicKey;
+
+        // Generate the symmetric key
+        return restAPIDataSecurityServiceContext.crypto.subtle.generateKey({
+          name: restAPIDataSecurityServiceContext.symmetricAlgo,
+          length: restAPIDataSecurityServiceContext.symmetricKeyLength,
+        }, true, ['encrypt', 'decrypt']);
+      })
+      .then((symKey) => {
+        restAPIDataSecurityServiceContext.symmetricKey = symKey;
+
+        // Export the symmetric key for further use
+        return restAPIDataSecurityServiceContext.crypto.subtle.exportKey('raw', restAPIDataSecurityServiceContext.symmetricKey);
+      })
+      .then((symKeyData) => {
         const symmetricKeyData = symKeyData;
-        // Encrypting the symmetric key with assymetric key
-        restAPIDataSecurityServiceContext.crypto.subtle.encrypt({
+
+        // Encrypting the symmetric key with asymmetric key
+        return restAPIDataSecurityServiceContext.crypto.subtle.encrypt({
           name: restAPIDataSecurityServiceContext.aSymmetricAlgo,
           hash: {
             name: restAPIDataSecurityServiceContext.digestAlgo,
           },
-        }, restAPIDataSecurityServiceContext.aSymmetricPublicKey, symmetricKeyData).then((encSymmetricKeyBuf) => {
-          restAPIDataSecurityServiceContext.encSymmetricKey = btoa(arrayBufferToString(encSymmetricKeyBuf));
-          // Mark the initialization status
-          restAPIDataSecurityServiceContext.initStatus = true;
-        }); // Encrypt symmetric key with asymmetric public key
-      }); // Export symmetric key
-    }); // Generate symmetric key
-  }); // Import asymmetric public key
-  return Promise.resolve(true);
+        }, restAPIDataSecurityServiceContext.aSymmetricPublicKey, symmetricKeyData);
+      })
+      .then((encSymmetricKeyBuf) => {
+        restAPIDataSecurityServiceContext.encSymmetricKey = btoa(arrayBufferToString(encSymmetricKeyBuf));
+
+        // Mark the initialization status
+        restAPIDataSecurityServiceContext.initStatus = true;
+
+        // Resolve the promise after successful initialization
+        resolve();
+      })
+      .catch((error) => {
+        // Handle any errors that occur during the process
+        reject(error);
+      });
+  });
 }
 
 /**
