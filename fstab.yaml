@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: https://applyonlinedev.hdfcbank.com/
+    url: https://hdfc-dev-04.adobecqms.net/
     type: "markup"
     suffix: ".md.html"
