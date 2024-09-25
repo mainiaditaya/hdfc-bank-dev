@@ -98,18 +98,27 @@ const updateData = (globals, fd, panel, index, fdNumberSelectionPanel) => {
 const customerIdProceedHandler = (globals) => {
   const { selectedCustId } = SELECTED_CUSTOMER_ID;
   const selectedCustIdFds = selectedCustId?.listFDSummary || [];
-  const fdSelectionInfoPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
-  const fdNumberSelectionPanel = fdSelectionInfoPanel.fdNumberSelection;
-  selectedCustIdFds.forEach((fd, i) => {
-    if (i < selectedCustIdFds.length - 1) {
-      globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
-    }
-    setTimeout(() => {
-      updateData(globals, fd, fdNumberSelectionPanel[i], i, fdNumberSelectionPanel);
-    }, i * 40);
-  });
-  globals.functions.setProperty(fdSelectionInfoPanel.selectedFDPanel.selectedFDNum, '0');
-  globals.functions.setProperty(fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax, selectedCustIdFds.length.toString());
+  const {
+    fdBasedCreditCardWizard,
+    resultPanel,
+  } = globals.form;
+  if (selectedCustIdFds.length > 0) {
+    const fdSelectionInfoPanel = fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
+    const fdNumberSelectionPanel = fdSelectionInfoPanel.fdNumberSelection;
+    selectedCustIdFds.forEach((fd, i) => {
+      if (i < selectedCustIdFds.length - 1) {
+        globals.functions.dispatchEvent(fdNumberSelectionPanel, 'addItem');
+      }
+      setTimeout(() => {
+        updateData(globals, fd, fdNumberSelectionPanel[i], i, fdNumberSelectionPanel);
+      }, i * 40);
+    });
+    globals.functions.setProperty(fdSelectionInfoPanel.selectedFDPanel.selectedFDNum, '0');
+    globals.functions.setProperty(fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax, selectedCustIdFds.length.toString());
+  } else {
+    globals.functions.setProperty(resultPanel, { visible: true });
+    globals.functions.setProperty(resultPanel.errorResultPanel, { visible: true });
+  }
 };
 
 export {
