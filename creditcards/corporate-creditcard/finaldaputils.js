@@ -136,7 +136,7 @@ const throughDomSetArnNum = (arnNumRef, mobileNumber, leadProfileId, journeyId, 
   if (arnNumberElement) {
     // Manipulate the content of the <p> tag inside '.field-newarnnumber'
     arnNumberElement.querySelector('p').textContent = arnNumRef;
-    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, globals);
+    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', mobileNumber, leadProfileId, journeyId, globals);
   } else {
     invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_FAILURE', mobileNumber, leadProfileId, journeyId, globals);
   }
