@@ -11,7 +11,10 @@ const creditCardSummary = (globals) => {
   const { eligibleCreditLimitAmount, FDlienCard = {} } = formData;
   const { annualFee = 0 } = selectedCreditCard;
   const fdNumberSelection = FDlienCard.fdNumberSelection || [];
-  const nameOnCard = formData?.nameOnCard ? formData?.nameOnCard : formData?.currentFormContext?.executeInterfaceRequest?.requestString?.nameOnCard;
+  const nameOnCard = formData?.nameOnCard
+  || formData?.currentFormContext?.executeInterfaceRequest?.requestString?.nameOnCard
+  || formData?.FDlienCard?.nameOnCard
+  || '';
   setProperty(tqSummarySection.tqNameOnCard, { value: nameOnCard });
   setProperty(tqSummarySection.tqAnnualCCFee, { value: String(annualFee) });
   setProperty(tqSummarySection.tqCreditLimit, { value: eligibleCreditLimitAmount });
