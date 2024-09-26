@@ -51,9 +51,7 @@ const createDapRequestObj = (globals) => {
 
 const finalDap = (userRedirected, globals) => {
   const { resultPanel, fdBasedCreditCardWizard } = globals.form;
-  const { successResultPanel } = resultPanel;
 
-  const { vkycConfirmationPanel } = successResultPanel;
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsexecutefinaldap);
   const payload = createDapRequestObj(globals);
   const formData = globals.functions.exportData();
@@ -70,12 +68,8 @@ const finalDap = (userRedirected, globals) => {
         CURRENT_FORM_CONTEXT.action = 'confirmation';
         await Promise.resolve(invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_SUCCESS', mobileNumber, leadProfileId, journeyId, globals));
         if (!userRedirected) {
-          globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
           finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.ARN_NUM, globals);
           creditCardSummary(globals);
-        } else if (response?.ExecuteFinalDAPResponse?.vkycUrl !== '') {
-          CURRENT_FORM_CONTEXT.VKYC_URL = response?.ExecuteFinalDAPResponse?.vkycUrl;
-          globals.functions.setProperty(vkycConfirmationPanel, { visible: true });
         }
       } else {
         invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_FAILURE', mobileNumber, leadProfileId, journeyId, globals);
