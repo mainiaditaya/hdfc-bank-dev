@@ -15,9 +15,9 @@ const createDapRequestObj = (globals) => {
   const formData = globals.functions.exportData() || {};
   const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const aadhaarData = formData.aadhaar_otp_val_data?.result || {};
-  const ekycSuccess = formData.currentFormContext?.mobileMatch
-    ? ''
-    : `${aadhaarData.ADVRefrenceKey}X${aadhaarData.RRN}`;
+  const ekycSuccess = (!formData.currentFormContext?.mobileMatch && aadhaarData?.ADVRefrenceKey !== undefined)
+    ? `${aadhaarData.ADVRefrenceKey}X${aadhaarData.RRN}`
+    : '';
 
   const VKYCConsent = fetchFiller4(
     formData.currentFormContext?.mobileMatch,
