@@ -67,6 +67,7 @@ const OCCUPATION_MAP = {
   housewife: '4',
   retired: '5',
 };
+const ALLOWED_CHARACTERS = '/ -,';
 
 export {
   JOURNEY_NAME,
@@ -85,4 +86,5 @@ export {
   IDCOM,
   GENDER_MAP,
   OCCUPATION_MAP,
+  ALLOWED_CHARACTERS,
 };

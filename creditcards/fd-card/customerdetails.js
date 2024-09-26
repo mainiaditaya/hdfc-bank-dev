@@ -8,6 +8,7 @@ import {
   parseCustomerAddress,
   splitName,
   parseName,
+  removeSpecialCharacters,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
@@ -16,6 +17,7 @@ import {
   MIN_ADDRESS_LENGTH,
   GENDER_MAP,
   OCCUPATION_MAP,
+  ALLOWED_CHARACTERS,
 } from './constant.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
@@ -142,7 +144,7 @@ const bindCustomerDetails = (globals) => {
 
   const [address = '', cityDetails = ''] = customerInfo.currentAddress.split('||');
   const [city = '', state = '', pincode = ''] = cityDetails.split('|');
-  const cleanAddress = address.replace(/\|/g, ' ');
+  const cleanAddress = removeSpecialCharacters(address.replace(/\|/g, ' '), ALLOWED_CHARACTERS);
 
   let formattedCustomerAddress = '';
   let parsedAddress = [];
@@ -201,7 +203,7 @@ const bindCustomerDetails = (globals) => {
   const personaldetails = document.querySelector('.field-personaldetails');
   setTimeout(() => {
     addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
-  }, 10);
+  }, 100);
 };
 
 /**
