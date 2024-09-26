@@ -290,6 +290,7 @@ function inputDecorator(field, element) {
       input.setAttribute('display-value', field.displayValue ?? '');
       input.type = 'text';
       input.value = field.displayValue ?? '';
+      input.addEventListener('touchstart', () => { input.type = field.type; }); // in mobile devices the input type needs to be toggled before focus
       input.addEventListener('focus', () => handleFocus(input, field));
       input.addEventListener('blur', () => handleFocusOut(input));
     } else if (input.type !== 'file') {
@@ -426,8 +427,16 @@ function isDocumentBasedForm(formDef) {
 }
 
 function cleanUp(content) {
-  const formDef = content.replaceAll('^(([^<>()\\\\[\\\\]\\\\\\\\.,;:\\\\s@\\"]+(\\\\.[^<>()\\\\[\\\\]\\\\\\\\.,;:\\\\s@\\"]+)*)|(\\".+\\"))@((\\\\[[0-9]{1,3}\\\\.[0-9]{1,3}\\\\.[0-9]{1,3}\\\\.[0-9]{1,3}])|(([a-zA-Z\\\\-0-9]+\\\\.)\\+[a-zA-Z]{2,}))$', '');
-  return formDef?.replace(/\x83\n|\n|\s\s+/g, '');
+  // replace backslashes that are not followed by valid json escape characters
+  return content.replace(/\\/g, (match, offset, string) => {
+    const prevChar = string[offset - 1];
+    const nextChar = string[offset + 1];
+    const validEscapeChars = ['b', 'f', 'n', 'r', 't', '"', '\\'];
+    if (validEscapeChars.includes(nextChar) || prevChar === '\\') {
+      return match;
+    }
+    return '';
+  });
 }
 
 export default async function decorate(block) {

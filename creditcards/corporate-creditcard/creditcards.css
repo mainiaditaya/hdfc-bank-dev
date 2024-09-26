@@ -1,0 +1,63 @@
+@import url('../../styles/color-palette.css');
+
+main {
+  form {
+    .field-corporatecardwizardview {
+      .field-yourdetailspanel {
+        .field-yourdetailspage {
+          .field-personaldetails {
+            input[disabled],
+            select[disabled] {
+              background-color: inherit;
+              color: var(--color-interface-text-primary) !important;
+              opacity: 1 !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.personaldetails-disabled,
+.employmentdetails-disabled {
+  .wrapper-disabled {
+    pointer-events: none !important;
+
+    .field-label {
+      color: var(--color-interface-text-secondary) !important;
+      font-size: var(--body-sm-font-size) !important;
+      font-weight: var(--font-weight-regular) !important;
+      line-height: var(--font-linehight-regular) !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      pointer-events: none !important;
+      transform: none !important;
+    }
+
+    input[type='text'],
+    input[type='email'] {
+      border: 0;
+      color: var(--color-interface-text-primary);
+      font-size: var(--body-md-font-size);
+      font-weight: var(--font-weight-bold);
+      line-height: var(--font-linehight-medium);
+      margin: 0;
+      margin-top: 10px;
+      padding: 0;
+      pointer-events: none;
+    }
+
+    select {
+      appearance: none;
+      border: none !important;
+      color: var(--color-interface-text-primary);
+      font-size: var(--body-md-font-size);
+      font-weight: var(--font-weight-bold);
+      line-height: var(--font-linehight-medium);
+      margin: 10px 0 0;
+      padding: 0 !important;
+      pointer-events: none !important;
+    }
+  }
+}
