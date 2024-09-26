@@ -12,13 +12,12 @@ import creditCardSummary from './creditcardsumaryutil.js';
  * @returns {Object} - The DAP request object.
  */
 const createDapRequestObj = (globals) => {
-  const exportData = globals.functions.exportData() || {};
-  const formContextCallbackData = exportData.currentFormContext || CURRENT_FORM_CONTEXT;
-  const formData = exportData.formData || {};
+  const formData = globals.functions.exportData() || {};
+  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const aadhaarData = formData.aadhaar_otp_val_data?.result || {};
   const ekycSuccess = formData.currentFormContext?.mobileMatch
-    ? `${aadhaarData.ADVRefrenceKey}X${aadhaarData.RRN}`
-    : '';
+    ? ''
+    : `${aadhaarData.ADVRefrenceKey}X${aadhaarData.RRN}`;
 
   const VKYCConsent = fetchFiller4(
     formData.currentFormContext?.mobileMatch,
@@ -74,6 +73,9 @@ const finalDap = (userRedirected, globals) => {
           globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
           finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.ARN_NUM, globals);
           creditCardSummary(globals);
+        } else if (response?.ExecuteFinalDAPResponse?.vkycUrl !== '') {
+          CURRENT_FORM_CONTEXT.VKYC_URL = response?.ExecuteFinalDAPResponse?.vkycUrl;
+          globals.functions.setProperty(vkycConfirmationPanel, { visible: true });
         }
       } else {
         invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_FAILURE', mobileNumber, leadProfileId, journeyId, globals);
