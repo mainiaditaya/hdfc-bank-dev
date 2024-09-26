@@ -1060,7 +1060,7 @@ main {
 
                     .repeat-wrapper {
                         display: flex;
-                        flex-wrap: nowrap;
+                        flex-wrap: wrap;
                         gap: 10px;
                     }
 
@@ -1069,9 +1069,10 @@ main {
                         border-radius: 8px;
                         cursor: default;
                         flex: 0 1 auto;
-                        width: auto;
-                        max-width: calc(33.33% - 20px);
-                        box-sizing: border-box;
+                            width: auto;
+                            max-width: calc(33.33% - 20px);
+                            box-sizing: border-box;
+                            display: inherit;
 
                         .field-selectedfdnum:not(p){                            
                             font-size: var(--body-fd-lg-font-size);
@@ -1494,6 +1495,7 @@ main {
       .field-creditlimitmax p {
           font-weight: var(--font-weight-regular);
           font-size: var(--body-fd-sm-font-size);
+          margin-top: -13px;
       }
   
       .field-creditlimitmax { text-align: end; }
@@ -1544,7 +1546,7 @@ main {
                       margin-top: 2px;
                       margin-left: 0;
                       padding: 0;
-                      width: 25px;
+                      width: 35px;
                       height: 50px !important;
   
                       &:hover {
@@ -1739,7 +1741,7 @@ main {
                     border-bottom-left-radius: 8px;
                     border-bottom-right-radius: 8px;
                     background: var(--color-interface-background-quinary);                  
-                    border-top: 1px dashed var(--color-interface-border-primary);
+                    border-top: 1px dashed var(--color-interface-border-secondary);
   
                     label {
                         width: 90%;
@@ -2167,11 +2169,16 @@ main {
 
               .field-cardbenefitstext {
                   text-align: left;
+                  font-size: var(--body-fd-md-font-size);
+                  color: var(--color-input-text-primary);
+                  line-height: var(--font-linehight-large);
+                  font-weight: var(--font-weight-regular);
 
                   p {
                     font-size: var(--body-fd-md-font-size);
                     color: var(--color-input-text-primary);
                     line-height: var(--font-linehight-large);
+                    font-weight: var(--font-weight-regular);
                     margin: 0;
                   }
 
@@ -2660,6 +2667,15 @@ main {
       }
     }
 
+    .field-currentresidenceaddressbiometricovdconfirmation {
+        margin-top: -15px;
+
+        legend {
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }        
+    }
+
     .checkbox-wrapper {
         label { font-size: var(--body-fd-sm-font-size); 
         margin-left: 10px; }
@@ -3128,6 +3144,10 @@ main {
                 margin: 0 0 0 30px !important;
             }
         }
+    }
+
+    .field-multiplecustidrepeatable {
+        .field-maskedaccno { margin-top: -22px !important; }
     }
   
     .fdlien .field-fdbasedcreditcardwizard { left: 2%; }
