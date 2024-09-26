@@ -18,7 +18,7 @@
 * the terms of the Adobe license agreement accompanying it.
 *************************************************************************/
 
-import { propertyChange, ExecuteRule, Initialize, RemoveItem, FormLoad, FieldChanged, ValidationComplete, Change, Valid, Invalid, SubmitSuccess, CustomEvent, SubmitError, SubmitFailure, Submit, RemoveInstance, AddInstance, Reset, AddItem, Click } from './afb-events.js';
+import { propertyChange, ExecuteRule, Initialize, RemoveItem, Change, FormLoad, FieldChanged, ValidationComplete, Valid, Invalid, SubmitSuccess, CustomEvent, SubmitError, SubmitFailure, Submit, RemoveInstance, AddInstance, Reset, AddItem, Click } from './afb-events.js';
 import Formula from '../formula/index.js';
 import { format, parseDefaultDate, datetimeToNumber, parseDateSkeleton, formatDate, numberToDatetime } from './afb-formatters.min.js';
 
@@ -164,19 +164,20 @@ const isCaptcha = function (item) {
     return fieldType === 'captcha';
 };
 function deepClone(obj, idGenerator) {
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
     let result;
-    if (obj instanceof Array) {
-        result = [];
-        result = obj.map(x => deepClone(x, idGenerator));
-    }
-    else if (typeof obj === 'object' && obj !== null) {
+    if (Array.isArray(obj)) {
+        result = new Array(obj.length);
+        for (let i = 0; i < obj.length; i++) {
+            result[i] = deepClone(obj[i], idGenerator);
+        }
+    } else {
         result = {};
-        Object.entries(obj).forEach(([key, value]) => {
-            result[key] = deepClone(value, idGenerator);
-        });
-    }
-    else {
-        result = obj;
+        for (const key of Object.keys(obj)) {
+            result[key] = deepClone(obj[key], idGenerator);
+        }
     }
     if (idGenerator && result && result.id) {
         result.id = idGenerator();
@@ -210,11 +211,13 @@ class DataValue {
     get $name() {
         return this.$_name;
     }
-    get $value() {
+
+    get disabled() {
         const enabled = this.$_fields.find(x => x.enabled !== false);
-        if (!enabled && this.$_fields.length) {
-            return undefined;
-        }
+        return (!enabled && this.$_fields.length);
+    }
+
+    get $value() {
         return this.$_value;
     }
     setValue(typedValue, originalValue, fromField) {
@@ -292,17 +295,23 @@ class DataGroup extends DataValue {
         }
     }
     get $value() {
-        const enabled = this.$_fields.find(x => x.enabled !== false);
-        if (!enabled && this.$_fields.length) {
-            return this.$type === 'array' ? [] : {};
-        }
-        else if (this.$type === 'array') {
-            return Object.values(this.$_items).filter(x => typeof x !== 'undefined').map(x => x.$value);
-        }
-        else {
-            return Object.fromEntries(Object.values(this.$_items).filter(x => typeof x !== 'undefined').map(x => {
-                return [x.$name, x.$value];
-            }));
+        const items = Object.values(this.$_items);
+        if (this.$type === 'array') {
+            const result = [];
+            for (const item of items) {
+                if (item !== undefined && !item.disabled) {
+                    result.push(item.$value);
+                }
+            }
+            return result;
+        } else {
+            const result = {};
+            for (const item of items) {
+                if (item !== undefined && !item.disabled) {
+                    result[item.$name] = item.$value;
+                }
+            }
+            return result;
         }
     }
     get $length() {
@@ -1139,9 +1148,17 @@ const staticFields = ['plain-text', 'image'];
 class ActionImplWithTarget {
     _action;
     _target;
+    _currentTarget;
     constructor(_action, _target) {
         this._action = _action;
-        this._target = _target;
+        if (_action.target) {
+            this._currentTarget = _target;
+            this._target = _action.target;
+        }
+        else {
+            this._target = _target;
+            this._currentTarget = _target;
+        }
     }
     get type() {
         return this._action.type;
@@ -1154,6 +1171,9 @@ class ActionImplWithTarget {
     }
     get target() {
         return this._target;
+    }
+    get currentTarget() {
+        return this._currentTarget;
     }
     get isCustomEvent() {
         return this._action.isCustomEvent;
@@ -1339,8 +1359,11 @@ class BaseNode {
         return this._jsonModel.uniqueItems;
     }
     isTransparent() {
-        const isNonTransparent = this.parent?._jsonModel.type === 'array';
+        const isNonTransparent = this.parent?._jsonModel?.type === 'array';
         return !this._jsonModel.name && !isNonTransparent;
+    }
+    getDependents() {
+        return this._dependents.map(x => x.node.id);
     }
     getState(forRestore = false) {
         return {
@@ -1356,7 +1379,7 @@ class BaseNode {
             } : {}),
             ':type': this[':type'],
             ...(forRestore ? {
-                _dependents: this._dependents.length ? this._dependents.map(x => x.node.id) : undefined,
+                _dependents: this._dependents.length ? this.getDependents() : undefined,
                 allowedComponents: undefined,
                 columnClassNames: undefined,
                 columnCount: undefined,
@@ -1382,7 +1405,12 @@ class BaseNode {
                     return propsToLook.indexOf(x.propertyName) > -1;
                 }) > -1;
                 if (isPropChanged) {
-                    dependent.dispatch(new ExecuteRule());
+                    if (this.form.changeEventBehaviour === 'deps') {
+                        dependent.dispatch(change);
+                    }
+                    else {
+                        dependent.dispatch(new ExecuteRule());
+                    }
                 }
             });
             this._dependents.push({ node: dependent, subscription });
@@ -1447,7 +1475,7 @@ class BaseNode {
         return [];
     }
     _bindToDataModel(contextualDataModel) {
-        if (this.id === '$form') {
+        if (this.fieldType === 'form' || this.id === '$form') {
             this._data = contextualDataModel;
             return;
         }
@@ -1658,16 +1686,23 @@ class Scriptable extends BaseNode {
         return this._events[eName] || [];
     }
     applyUpdates(updates) {
-        Object.entries(updates).forEach(([key, value]) => {
-            if (key in editableProperties || (key in this && typeof this[key] !== 'function')) {
-                try {
-                    this[key] = value;
-                }
-                catch (e) {
-                    console.error(e);
-                }
+        if (typeof updates === 'object') {
+            if (updates !== null) {
+                Object.entries(updates).forEach(([key, value]) => {
+                    if (key in editableProperties || (key in this && typeof this[key] !== 'function')) {
+                        try {
+                            this[key] = value;
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
+                    }
+                });
             }
-        });
+        }
+        else if (typeof updates !== 'undefined') {
+            this.value = updates;
+        }
     }
     executeAllRules(context) {
         const entries = Object.entries(this.getRules());
@@ -1755,6 +1790,11 @@ class Scriptable extends BaseNode {
         const node = this.ruleEngine.compileRule(expr, this.lang);
         return this.ruleEngine.execute(node, this.getExpressionScope(), ruleContext);
     }
+    change(event, context) {
+        if (this.form.changeEventBehaviour === 'deps') {
+            this.executeAllRules(context);
+        }
+    }
     executeAction(action) {
         const context = {
             'form': this.form,
@@ -1774,7 +1814,9 @@ class Scriptable extends BaseNode {
             this[funcName](action, context);
         }
         node.forEach((n) => this.executeEvent(context, n));
-        this.notifyDependents(action);
+        if (action.target === this) {
+            this.notifyDependents(action);
+        }
     }
 }
 const notifyChildrenAttributes = [
@@ -2184,13 +2226,13 @@ class Container extends Scriptable {
         }
     }
     get enabled() {
-        if (this.parent?.enabled !== undefined) {
-            return !this.parent?.enabled ? false : this._jsonModel.enabled;
+        const parentEnabled = this.parent?.enabled;
+        if (parentEnabled !== undefined) {
+            return parentEnabled ? this._jsonModel.enabled : false;
         }
-        else {
-            return this._jsonModel.enabled;
-        }
+        return this._jsonModel.enabled;
     }
+
     set enabled(e) {
         this._setProperty('enabled', e, true, this.notifyChildren);
     }
@@ -2625,8 +2667,23 @@ class FunctionRuntimeImpl {
                                 },
                                 submitForm: (payload, validateForm, contentType) => {
                                     const submitAs = contentType || 'multipart/form-data';
-                                    const args = ['custom:submitSuccess', 'custom:submitError', submitAs, payload, validateForm];
+                                    const args = [payload, validateForm, submitAs];
                                     return FunctionRuntimeImpl.getInstance().getFunctions().submitForm._func.call(undefined, args, data, interpreter);
+                                },
+                                markFieldAsInvalid: (fieldIdentifier, validationMessage, option) => {
+                                    if (!option || option.useId) {
+                                        interpreter.globals.form.getElement(fieldIdentifier)?.markAsInvalid(validationMessage);
+                                    }
+                                    else if (option && option.useDataRef) {
+                                        interpreter.globals.form.visit(function callback(f) {
+                                            if (f.dataRef === fieldIdentifier) {
+                                                f.markAsInvalid(validationMessage);
+                                            }
+                                        });
+                                    }
+                                    else if (option && option.useQualifiedName) {
+                                        interpreter.globals.form.resolveQualifiedName(fieldIdentifier)?.markAsInvalid(validationMessage);
+                                    }
                                 }
                             }
                         };
@@ -2683,7 +2740,7 @@ class FunctionRuntimeImpl {
                         validation = interpreter.globals.form.getElement(element.$id).validate();
                     }
                     if (Array.isArray(validation) && validation.length) {
-                        interpreter.globals.form.logger.error('Form Validation Error');
+                        interpreter.globals.form.logger.warn('Form Validation Error');
                     }
                     return validation;
                 },
@@ -2728,8 +2785,8 @@ class FunctionRuntimeImpl {
             },
             submitForm: {
                 _func: (args, data, interpreter) => {
-                    let success = 'custom:submitSuccess';
-                    let error = 'custom:submitError';
+                    let success = null;
+                    let error = null;
                     let submit_data;
                     let validate_form;
                     let submit_as;
@@ -2774,6 +2831,24 @@ class FunctionRuntimeImpl {
                         error = valueOf(args[5]);
                     }
                     request(interpreter.globals, uri, httpVerb, payload, success, error, headers);
+                    return {};
+                },
+                _signature: []
+            },
+            awaitFn: {
+                _func: async (args, data, interpreter) => {
+                    const success = args[1];
+                    const currentField = interpreter.globals.$field;
+                    try {
+                        const result = await args[0];
+                        defaultFunctions.dispatchEvent._func([currentField, success, result], data, interpreter);
+                    }
+                    catch (err) {
+                        const error = args[2];
+                        if (error) {
+                            defaultFunctions.dispatchEvent._func([currentField, error, err], data, interpreter);
+                        }
+                    }
                     return {};
                 },
                 _signature: []
@@ -2843,6 +2918,51 @@ class FunctionRuntimeImpl {
     }
 }
 const FunctionRuntime = FunctionRuntimeImpl.getInstance();
+class Version {
+    #minor;
+    #major;
+    #subVersion;
+    #invalid = true;
+    constructor(n) {
+        const match = n.match(/([^.]+)\.([^.]+)(?:\.(.+))?/);
+        if (match) {
+            this.#major = +match[1];
+            this.#minor = +match[2];
+            this.#subVersion = match[3] ? +match[3] : 0;
+            if (isNaN(this.#major) || isNaN(this.#minor) || isNaN(this.#subVersion)) {
+                throw new Error('Invalid version string ' + n);
+            }
+        }
+        else {
+            throw new Error('Invalid version string ' + n);
+        }
+    }
+    get major() {
+        return this.#major;
+    }
+    get minor() {
+        return this.#minor;
+    }
+    get subversion() {
+        return this.#subVersion;
+    }
+    completeMatch(v) {
+        return this.major === v.major &&
+            this.minor === v.minor &&
+            this.#subVersion === v.subversion;
+    }
+    lessThan(v) {
+        return this.major < v.major || (this.major === v.major && (this.minor < v.minor)) || (this.major === v.major && this.minor === v.minor && this.#subVersion < v.subversion);
+    }
+    toString() {
+        return `${this.major}.${this.minor}.${this.subversion}`;
+    }
+    valueOf() {
+        return this.toString();
+    }
+}
+const currentVersion = new Version('0.13');
+const changeEventVersion = new Version('0.13');
 class Form extends Container {
     _ruleEngine;
     _eventQueue;
@@ -2854,9 +2974,15 @@ class Form extends Container {
         this._ruleEngine = _ruleEngine;
         this._eventQueue = _eventQueue;
         this._logger = new Logger(logLevel);
+        this._applyDefaultsInModel();
         if (mode === 'create') {
             this.queueEvent(new Initialize());
-            this.queueEvent(new ExecuteRule());
+            if (this.changeEventBehaviour === 'deps') {
+                this.queueEvent(new Change({ changes: [] }));
+            }
+            else {
+                this.queueEvent(new ExecuteRule());
+            }
         }
         this._ids = IdGenerator();
         this._bindToDataModel(new DataGroup('$form', {}));
@@ -2865,9 +2991,20 @@ class Form extends Container {
             this.queueEvent(new FormLoad());
         }
     }
+    _applyDefaultsInModel() {
+        const current = this.specVersion;
+        this._jsonModel.properties = this._jsonModel.properties || {};
+        if (current.lessThan(changeEventVersion) ||
+            typeof this._jsonModel.properties['fd:changeEventBehaviour'] !== 'string') {
+            this._jsonModel.properties['fd:changeEventBehaviour'] = 'self';
+        }
+    }
     _logger;
     get logger() {
         return this._logger;
+    }
+    get changeEventBehaviour() {
+        return this.properties['fd:changeEventBehaviour'] === 'deps' ? 'deps' : 'self';
     }
     dataRefRegex = /("[^"]+?"|[^.]+?)(?:\.|$)/g;
     get metaData() {
@@ -2884,6 +3021,21 @@ class Form extends Container {
     }
     exportData() {
         return this.getDataNode()?.$value;
+    }
+    get specVersion() {
+        if (typeof this._jsonModel.adaptiveform === 'string') {
+            try {
+                return new Version(this._jsonModel.adaptiveform);
+            }
+            catch (e) {
+                console.log(e);
+                console.log('Falling back to default version' + currentVersion.toString());
+                return currentVersion;
+            }
+        }
+        else {
+            return currentVersion;
+        }
     }
     resolveQualifiedName(qualifiedName) {
         let foundFormElement = null;
@@ -3024,7 +3176,7 @@ class Form extends Container {
         }, 'valid');
         field.subscribe((action) => {
             const field = action.target.getState();
-            if (field) {
+            if (action.payload.changes.length > 0 && field) {
                 const shallowClone = (obj) => {
                     if (obj && typeof obj === 'object') {
                         if (Array.isArray(obj)) {
@@ -3044,7 +3196,7 @@ class Form extends Container {
                     };
                 });
                 const fieldChangedAction = new FieldChanged(changes, field);
-                this.dispatch(fieldChangedAction);
+                this.notifyDependents(fieldChangedAction);
             }
         });
     }
@@ -3108,7 +3260,7 @@ class Form extends Container {
         return null;
     }
     get id() {
-        return '$form';
+        return this._jsonModel.id || '$form';
     }
     get title() {
         return this._jsonModel.title || '';
@@ -3255,7 +3407,12 @@ class Field extends Scriptable {
         if (_options.mode !== 'restore') {
             this._applyDefaults();
             this.queueEvent(new Initialize());
-            this.queueEvent(new ExecuteRule());
+            if (this.form.changeEventBehaviour === 'deps') {
+                this.queueEvent(new Change({ changes: [] }));
+            }
+            else {
+                this.queueEvent(new ExecuteRule());
+            }
         }
     }
     _ruleNodeReference = [];
@@ -3423,13 +3580,13 @@ class Field extends Scriptable {
         this._setProperty('readOnly', e);
     }
     get enabled() {
-        if (this.parent.enabled !== undefined) {
-            return this.parent.enabled === false ? false : this._jsonModel.enabled;
+        const parentEnabled = this.parent?.enabled;
+        if (parentEnabled !== undefined) {
+            return parentEnabled ? this._jsonModel.enabled : false;
         }
-        else {
-            return this._jsonModel.enabled;
-        }
+        return this._jsonModel.enabled;
     }
+
     set enabled(e) {
         this._setProperty('enabled', e);
     }
@@ -3438,7 +3595,8 @@ class Field extends Scriptable {
     }
     set valid(e) {
         const validity = {
-            valid: e
+            valid: e,
+            ...(e ? {} : { customConstraint: true })
         };
         this._setProperty('valid', e);
         this._setProperty('validity', validity);
@@ -3876,12 +4034,15 @@ class Field extends Scriptable {
     }
     triggerValidationEvent(changes) {
         if (changes.validity) {
-            if (this.validity.valid) {
-                this.dispatch(new Valid());
-            }
-            else {
-                this.dispatch(new Invalid());
-            }
+            this.#triggerValidationEvent();
+        }
+    }
+    #triggerValidationEvent() {
+        if (this.validity.valid) {
+            this.dispatch(new Valid());
+        }
+        else {
+            this.dispatch(new Invalid());
         }
     }
     validate() {
@@ -3889,8 +4050,8 @@ class Field extends Scriptable {
             return [];
         }
         const changes = this.evaluateConstraints();
+        this.#triggerValidationEvent();
         if (changes.validity) {
-            this.triggerValidationEvent(changes);
             this.notifyDependents(new Change({ changes: Object.values(changes) }));
         }
         return this.valid ? [] : [new ValidationError(this.id, [this._jsonModel.errorMessage])];
@@ -3926,7 +4087,7 @@ class Field extends Scriptable {
             'validationMessage': message,
             'validity': {
                 valid: false,
-                ...(constraint != null ? { [constraintKeys[constraint]]: true } : {})
+                ...(constraint != null ? { [constraintKeys[constraint]]: true } : { customConstraint: true })
             }
         };
         const updates = this._applyUpdates(['valid', 'errorMessage', 'validationMessage', 'validity'], changes);
@@ -4196,9 +4357,6 @@ class DateField extends Field {
         if (!this._jsonModel.placeholder) {
             this._jsonModel.placeholder = parseDateSkeleton(this._jsonModel.editFormat, this.locale);
         }
-        if (!this._jsonModel.description) {
-            this._jsonModel.description = `To enter today's date use ${formatDate(new Date(), this.locale, this._jsonModel.editFormat)}`;
-        }
     }
     get value() {
         return super.value;
@@ -4303,9 +4461,11 @@ const FormFieldFactory = new FormFieldFactoryImpl();
 const createFormInstance = (formModel, callback, logLevel = 'error', fModel = undefined) => {
     try {
         let f = fModel;
-        if (f == null) {
-            formModel = sitesModelToFormModel(formModel);
-            f = new Form({ ...formModel }, FormFieldFactory, new RuleEngine(), new EventQueue(new Logger(logLevel)), logLevel);
+        {
+            if (f == null) {
+                formModel = sitesModelToFormModel(formModel);
+                f = new Form({ ...formModel }, FormFieldFactory, new RuleEngine(), new EventQueue(new Logger(logLevel)), logLevel);
+            }
         }
         const formData = formModel?.data;
         if (formData) {
@@ -4322,6 +4482,7 @@ const createFormInstance = (formModel, callback, logLevel = 'error', fModel = un
         throw new Error(e);
     }
 };
+createFormInstance.currentVersion = currentVersion;
 const defaultOptions = {
     logLevel: 'error'
 };

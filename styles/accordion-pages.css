@@ -1,0 +1,656 @@
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable no-descending-specificity */
+:root {
+  --hdfc-stepper-margin-style: 24px;
+  --hdfc-stepper-width: 42px;
+  --hdfc-stepper-height: 3px;
+  --hdfc-wizard-step-legend-padding: 0;
+  --hdfc-wizard-step-legend-width: clamp(100px, calc(308% / var(--wizard-step-count)), 330px);
+}
+
+main .form form .field-corporatecardwizardview.wizard {
+overflow: hidden;
+padding: 0;
+
+.date-wrapper:not(.field-invalid) .field-description { display: none; }
+.date-wrapper.field-invalid .field-description {display: block !important;}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  appearance: textfield;
+}
+
+.plain-text-wrapper b, legend {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+ul.wizard-menu-items {
+  flex-wrap: nowrap;
+  gap: 0;
+  margin-right: -111vw;
+  width: 110%;
+}
+
+li.wizard-menu-item {
+  flex-grow: 1;
+  position: relative;
+  list-style-type: none;
+  text-indent: 1%;
+  display: flex;
+  font-size: var(--form-font-size-xs);
+}
+
+li.wizard-menu-item:last-child {
+  margin-right: -1vw;
+}
+
+li.wizard-menu-item::before {
+  width: 30px;
+  height: 30px;
+}
+
+li.wizard-menu-active-item::before {
+  background-image: url('../icons/current-step-indicator.svg');
+  content: '';
+  background-size: cover;
+  background-color: unset;
+  color: unset;
+  border: none;
+}
+
+.stepper-style::after {
+  content: '';
+  display: block;
+  width: var(--hdfc-stepper-width);
+  height: var(--hdfc-stepper-height);
+  background: var(--color-action-stepper-style);
+  margin-top: var(--hdfc-stepper-margin-style);
+  margin-left: -19px;
+}
+
+.field-employmentdetails .field-officeaddresslabel {
+  p { 
+    margin: 0; 
+    h3 { margin: -10px 0 -5px; }
+  }
+}
+
+/* Accordion styling */
+fieldset fieldset {
+  position: relative;
+}
+
+.field-yourdetailspanel {
+  .field-prefilledemploymentdetails.field-wrapper { gap: 20px; }
+
+  fieldset {
+    legend {
+        background-color: var(--color-interface-background-secondary);
+        height: 60px;
+        padding: 16px 24px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+    }
+  }
+
+  .field-yourdetailsconsent {
+    display: flex;
+  }
+
+  .field-checkofferbutton {
+    text-align: left;
+    max-width: 260px;
+  }
+}
+
+> .wizard-button-wrapper { .field-back, .field-next { display: none; } }
+
+/* Confirm card panel */
+.field-cardnametitle {
+  p {
+    margin: 0 !important;
+    font-weight: var(--font-weight-bold);
+    font-size: 24px;
+    color: var(--color-interface-text-primary);
+  }
+}
+
+.field-cardtagline {
+  p {
+    margin: -15px 0 0 !important;
+    font-size: var(--body-lg-font-size);
+    font-weight: var(--font-weight-regular);
+  }
+}
+
+.field-corporatetimageandnamepanel {
+  background: var(--color-interface-background-quinary);
+  padding: 20px;
+  border-radius: 10px;
+  display: block;
+
+  .field-cardimage {
+    position: relative;
+    color: var(--color-interface-background-primary);
+    height: fit-content;
+  }
+
+  img { 
+    border-radius: 10px; 
+    width: 400px;
+  }
+
+  .cardNameText {
+    position: absolute;
+    top: 145px;
+    left: 45px;
+    font-size: var(--body-x-sm-font-size);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-interface-background-primary);
+  }
+
+  .field-nameoncarddropdown {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 30px;
+
+    label {
+      margin: 13px;
+    }
+
+    select {
+      margin: 0;
+    }
+  }
+}
+
+.field-cardbenefitsfeaturespanel {
+  display: grid;
+  padding-bottom: 20px;
+
+  .field-cardbenefitslabel { 
+    width: fit-content; 
+    padding: 20px 0 0 20px;
+
+    p { color: var(--color-interface-text-primary); }
+
+    b::before {
+      content: url('../icons/card-benefit-icon.svg');
+      margin-right: 12px;
+    }
+  }
+
+  .field-viewallcardbenefits {
+      position: absolute;
+      width: fit-content;
+      right: 0;
+      margin-top: 0 !important;
+      padding: 7px 7px 0 0;
+
+      button {
+          background: var(--color-action-text-primary-default);
+          color: var(--color-action-background-primary-default);
+          text-decoration: underline;
+      }
+
+      :hover {
+          background: var(--color-action-text-primary-default) !important;
+          color: var(--color-action-background-primary-default);
+      }
+  }
+
+  .field-cardbenefitstextbox {
+    margin: -15px 0 0 !important;
+    font-size: var(--body-lg-font-size);
+    font-weight: var(--font-weight-regular);
+    padding-left: 32px;
+  }
+
+  div[class*='field-keybenefitstext'] {
+    font-size: 14px;
+    display: list-item;
+    position: relative;
+    left: 30px;
+    width: 91%;
+  }
+
+  .field-joiningrenewalfee {
+      display: flex;
+      border: solid 3px var(--color-interface-background-quinary);
+      border-radius: 10px;
+      padding: 0 15px;
+      height: 50px;
+      margin-top: -5px;
+      width: 100%;
+      left: 20px;
+      pointer-events: none;
+
+      label {
+          width: 90%;
+          display: flex;
+          align-items: center;
+          font-weight: var(--font-weight-bold);
+          font-size: var(--body-sm-font-size);
+          color: var(--color-interface-text-primary);
+      }
+
+      input {
+          width: 30%;
+          text-align: right;
+          margin: 0;
+          padding: 0;
+          border: none;
+          height: 40px;
+          font-weight: var(--font-weight-bold);
+          font-size: var(--body-lg-font-size);
+          color: var(--color-interface-text-primary);
+      }
+  }
+}
+
+.field-getthiscardbutton {
+  text-align: left;
+  max-width: 260px;
+}
+
+.field-cardbenefitsagreecheckbox { padding-top: 20px; }
+
+/* End of Confirm Card Panel */
+
+/* Select KYC Panel */
+.field-selectkycpanel {
+  .plain-text-wrapper b, legend { color: #111827; }
+
+  fieldset { width: 100%; }
+
+  fieldset[class*='field-selectkycmethodoption'] {
+      border: solid 1px #D2D5DB;
+      border-radius: 16px;
+      padding: 0 13px;
+      margin-bottom: 20px;
+
+      fieldset {
+        transform: translateY(-10px);
+
+        legend {
+          font-weight: 400;
+          font-size: var(--body-x-sm-font-size);
+          line-height: 20px;
+          background-color: #D0DDFC;
+          width: fit-content;
+          padding: 0 6px;
+          border-radius: 12px;
+          color: var(--color-interface-text-primary);
+        }
+        
+        input[type="radio"] {
+          position: absolute;
+          right: 0;
+        }
+        
+        label {
+          color: var(--color-interface-text-primary);
+          font-weight: 600;
+          font-size: 14px !important;
+        }
+
+        label::before {
+          content: url('../icons/kyc-bullet-icon.svg');
+          margin-right: 16px;
+          position: relative;
+          top: 5px;
+        }
+
+        .radio-wrapper.field-aadharekycverification {
+          label::before {
+            content: url('../icons/kyc-aadhar-icon.svg');
+            top: 0;
+          }
+        }
+      }
+
+      div[class*='field-identityverificationtext']{
+        padding: 0 1vw 0 40px;
+        margin: -30px 0 19px;
+
+      p {
+        font-weight: 400;
+        font-size: var(--body-x-sm-font-size) !important;
+        margin: 0 !important;
+      }
+      } 
+  }
+
+  .field-ckycdetailspanel {
+    .field-ckyctoggle {
+      display: flex;            
+      flex-direction: row-reverse;
+      width: fit-content;
+
+      label.ckyctoggle__label {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .field-ckycdetailscontinueetbpanel, .field-ckycdetailscontinuentbaadhar, .field-docuploadovdbutton, .field-ckycdetailscontinuentbbiometric, .field-ckycdetailscontinuentbovd { 
+    text-align: left;
+    max-width: 260px;
+  }
+}
+
+/* End of Select KYC Panel */
+
+/* Doc upload screen */
+.field-docuploadetbflow {
+  .field-docuploadfront, .field-docuploadback { grid-column: span 6; }
+
+  .field-docuploadlabel {
+    p {
+      font-size: var(--body-md-font-size);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-interface-text-primary);
+      margin: 0;
+    }
+  }
+
+  .file-drag-area {
+    border: 2px dashed #030612;
+    border-radius: 15px;
+    padding: 30px 5px 5px;
+  }
+  .field-documenttype select { width: 49%; }
+
+  .field-description { 
+    margin-top: 10px; 
+
+    p { font-size: 14px; }
+  }
+  
+  .file-dragText {
+    p {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      color: #111827;
+    }
+  }
+  .file-dragIcon { content: url('../icons/doc-upload-icon.svg'); }
+  .field-docuploaddropdown { width: 49%; }
+
+  .file-attachButton {
+    background: var(--color-interface-background-primary);
+    color: var(--color-interface-icon-highlight);
+    padding-top: 0;
+    margin-top: 0;
+  }
+}
+
+/* End of doc upload screen */
+
+
+/* Confirm and Submit Panel */
+.field-confirmandsubmitpanel {
+  a { text-decoration: underline; }
+
+  .field-addressdeclarationtext1 p {
+    margin-bottom: 0;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--body-xx-lg-font-size);
+    color: var(--color-interface-text-primary);
+  }
+
+  .field-addressdeclarationtext2 p {
+    margin: -20px 0 0;
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-sm-font-size);
+    color: var(--color-interface-text-quaternary);
+  }
+
+  .field-addressdeclarationaadhar, .field-currentaddressdeclaration, .field-currentaddressbiometric, .field-addressdeclarationoffice {
+    border: solid 1px #D2D5DB;
+    border-radius: 24px;
+    padding: 32px;
+  }
+
+ .field-aadharaddressckyc, .field-currentresidenceaddressckyc, .field-currentresidenceaddressbiometriclabel, .field-officeaddresslabelckyc {
+    display: flex;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--body-x-lg-font-size);
+
+    p {
+      margin: 0 0 0 10px;
+      color: #111827;
+    }
+  }
+
+  .field-aadharaddressckyc::before { content: url('../icons/address-aadhar-icon.svg'); }
+  .field-currentresidenceaddressckyc::before, .field-currentresidenceaddressbiometriclabel::before { content: url('../icons/address-current-icon.svg'); }
+  .field-officeaddresslabelckyc::before { content: url('../icons/address-office-icon.svg'); }
+
+  .field-aadharaddressselectkyc, .field-currentresidenceaddress, .field-currentresidenceaddressbiometrictext, .field-officeaddressselectkyc {
+    margin: -25px 0 0 50px;
+    font-size: var(--body-sm-font-size);
+    font-weight: var(--font-weight-regular);
+
+    p {
+      margin-top: -3px;
+      font-size: var(--body-sm-font-size);
+      font-weight: var(--font-weight-regular);
+    }
+  }
+
+  .radio-group-wrapper {
+    display: flex !important;
+
+    .radio-wrapper { 
+      margin-right: 15px !important;
+    }
+  }
+
+  .checkbox-wrapper label, .checkbox-wrapper label p, .checkbox-wrapper label ul, .radio-group-wrapper legend, .field-tccheckbox1 label, .field-tccheckbox2 label {
+    font-weight: var(--font-weight-regular);
+    font-size: var(--body-sm-font-size);
+    color: #374151;
+    width: fit-content;
+    margin: 0;
+
+    .field-description {
+      margin: 0;
+    }
+  }
+
+  .field-addressdeclarationovd, .field-carddeliveryaddresspanel {
+    .field-carddeliveryaddresslabelovd, .field-carddeliveryaddresslabel {
+      width: 100%;
+
+      p {
+        margin: 0;
+        font-weight: 600;
+        font-size: 20px;
+        color: var(--color-interface-background-quaternary);
+      }
+    }
+
+    .field-currentaddressovdaddress, .field-officeaddressovdaddress {
+      padding-left: 39px;
+      margin-top: -15px;
+      font-size: 14px;
+    }
+
+    .radio-highlight-selected {
+      border: solid 1px #D2D5DB;
+      padding: 16px;
+      border-radius: 16px;
+
+      label { 
+        flex-basis: 100%; 
+        font-weight: 600;
+        color: #111827;
+        font-size: 16px !important;
+      }
+
+      input[type='radio'] {
+        position: absolute;
+        right: 15px;
+      }
+    }
+
+    .field-carddeliveryaddressoption1 label::before, .field-currentaddressovdoption label::before {
+      content: url('../icons/select-address-current.svg');
+      margin: 0 18px 0 4px;
+    }
+
+    .field-carddeliveryaddressoption2 label::before, .field-officeaddressovdoption label::before {
+      content: url('../icons/select-address-office.svg');
+      margin: 0 18px 0 4px;
+    }
+  }
+
+  .field-addressdeclarationovd .radio-highlight-selected input[type='radio'] {
+    right: 0;
+  }
+}
+
+/* End of Confirm and Submit Panel */
+
+/* Consent checkboxes */
+.field-yourdetailsconsent:has(.field-description), .field-tccheckbox1:has(.field-description), .field-tccheckbox2:has(.field-description) { 
+  display: inline-grid;
+
+  .field-description { margin-top: 7px; }
+}
+
+/* End of style for consent checkboxes */
+
+.hdfc-accordion-legend::after {
+  content: url('../icons/accordion-expand-icon.svg');
+  display: inline;
+  position: absolute;
+  right: 1vw;
+  transition: transform 0s;
+}
+
+.accordion-collapse::after {
+  transform: rotate(-180deg);
+  margin-top: -9px;
+}
+}
+
+@media (width <= 960px) {
+  main .form form .field-corporatecardwizardview.wizard {
+    ul.wizard-menu-items {
+      width: calc(100vw);
+    }
+    
+    .field-cardbenefitsfeaturespanel {
+      padding-left: 28px;
+    }
+    
+    .field-corporatetimageandnamepanel .cardNameText{
+      bottom: 125px;
+    }
+  }
+}
+
+@media (width <= 767px) {
+main .form form .field-corporatecardwizardview.wizard {
+  ul.wizard-menu-items {width: calc(120vw);}
+  
+  li.wizard-menu-item { width: auto; }
+
+  .field-yourdetailspanel .field-checkofferbutton, .field-confirmcardpanel .field-getthiscardbutton, .field-selectkycpanel .field-ckycdetailscontinueetbpanel, .field-selectkycpanel .field-ckycdetailscontinuentbaadhar, .field-selectkycpanel .field-docuploadovdbutton, .field-selectkycpanel .field-ckycdetailscontinuentbbiometric, .field-selectkycpanel .field-ckycdetailscontinuentbovd {
+    text-align: center;
+    max-width: initial;
+  }
+
+  fieldset {
+      width: 90vw;
+      display: block;
+
+      .field-employmentdetails .field-officeaddresslabel { h3 { margin: 15px 0; } }
+
+      .panel-wrapper.field-prefilledemploymentdetails { gap: 20px; }
+  }
+
+  :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee) > label {
+      margin-left: 5px;
+      font-weight: 400;
+      font-size: var(--body-x-sm-font-size);
+      padding: 0;
+  }
+
+  .field-cardtagline {
+    p { margin: 0 !important; }
+  }
+
+  .field-cardbenefitsfeaturespanel {
+    padding: 30px 0 0;
+
+    .field-viewallcardbenefits { padding: 40px 0; }
+    img { width: 253.44px; }
+  }
+
+  .field-confirmandsubmitpanel {
+    fieldset {
+      display: grid !important;
+      margin-bottom: 0 !important;
+    }
+
+    .field-addressdeclarationtext2 p { margin: var(--form-paragraph-margin); }
+    .field-carddeliveryaddresslabelovd .radio-highlight-selected input[type='radio'] { right: 38px; }
+    .field-carddeliveryaddresslabelovd, .field-carddeliveryaddresslabel, .field-tandcpanelconfirmandsubmit legend { margin: 20px 0 10px; }
+
+    .field-addressdeclarationovd, .field-carddeliveryaddresspanel { 
+      display: block !important;
+
+      fieldset {
+        margin: 10px 0;
+      }
+    }
+
+    .field-addressdeclarationovd .radio-highlight-selected input[type='radio'] {
+      right: 35px;
+    }
+    
+    [data-visible='false'] {
+      display: none !important;
+    }
+  }
+
+  .field-corporatetimageandnamepanel .cardNameText{
+    bottom: 90px;
+    left: 50px;
+  }
+}
+}
+
+@media (width <= 600px) {
+  main .form form .field-corporatecardwizardview.wizard {
+    ul.wizard-menu-items {width: calc(140vw);}
+  }
+}
+
+@media (width <= 480px) {
+main .form form .field-corporatecardwizardview.wizard {
+  ul.wizard-menu-items {width: calc(180vw);}
+  fieldset { width: 85vw; }
+
+  .field-selectkycpanel {
+    fieldset { width: 100%; }
+
+    div[class*='field-identityverificationtext']{
+      margin: 7px 0 19px !important;
+    }
+  }
+  
+  .field-corporatetimageandnamepanel .cardNameText{
+    bottom: 90px;
+  }
+}
+}

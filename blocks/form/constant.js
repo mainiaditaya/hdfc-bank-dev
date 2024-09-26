@@ -1,4 +1,4 @@
-export const fileAttachmentText = 'Attach';
+export const fileAttachmentText = 'Upload';
 export const dragDropText = 'Drag and Drop To Upload';
 
 export const defaultErrorMessages = {
@@ -7,8 +7,11 @@ export const defaultErrorMessages = {
   maxItems: 'Specify a number of items equal to or less than $0.',
   minItems: 'Specify a number of items equal to or greater than $0.',
 };
-
 let submitBaseUrl = '';
+
+// submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
+
+
 
 export function setSubmitBaseUrl(url) {
   submitBaseUrl = url;
@@ -17,3 +20,10 @@ export function setSubmitBaseUrl(url) {
 export function getSubmitBaseUrl() {
   return submitBaseUrl;
 }
+
+export const formIdPathMapping = {
+  '/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', 
+  '/digital/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', 
+  // cc
+  // '/content/forms/af/hdfc_haf/cards/fdlien/forms/fdlien-dev': '../../../common/functions.js', // fd
+};
