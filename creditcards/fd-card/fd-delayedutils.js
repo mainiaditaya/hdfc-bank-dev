@@ -1,3 +1,4 @@
+import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { displayLoader, hideLoaderGif, setArnNumberInResult } from '../domutils/domutils.js';
 import { invokeJourneyDropOffByJourneyId } from './common-journeyutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
@@ -24,6 +25,11 @@ const fdCardBoardingSuccess = async (data, stateInfoData) => {
   const successPanel = document.getElementsByName('successResultPanel')?.[0];
   resultPanel.setAttribute('data-visible', true);
   successPanel.setAttribute('data-visible', true);
+  if (data?.finalDapResponse?.vkycUrl !== '') {
+    CURRENT_FORM_CONTEXT.VKYC_URL = data?.finalDapResponse?.vkycUrl;
+    const vkycConfirmationPanel = document.querySelector(`[name= ${'vkycConfirmationPanel'}]`);
+    vkycConfirmationPanel.setAttribute('data-visible', true);
+  }
   setArnNumberInResult(stateInfoData.currentFormContext.ARN_NUM, 'refNumPanel', 'referenceNumber');
   invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
