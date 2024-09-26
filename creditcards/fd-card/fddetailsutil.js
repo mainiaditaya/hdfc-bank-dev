@@ -13,7 +13,7 @@ import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 const resetFDSelection = (globals) => {
   const { selectedCustId } = SELECTED_CUSTOMER_ID;
   const selectedCustIdFds = selectedCustId?.listFDSummary ?? [];
-  const { fdSelectionInfo } = globals.form.fdBasedCreditCardWizard.selectFD;
+  const fdSelectionInfo = globals.form?.fdBasedCreditCardWizard?.selectFD?.fdSelectionInfo;
   const { fdNumberSelection, selectFDDetailsPanel, continueToBasicDetails } = fdSelectionInfo;
   const { creditLimit } = selectFDDetailsPanel;
   const continueToBasicDetailsUtil = formUtil(globals, continueToBasicDetails);
@@ -29,7 +29,7 @@ const resetFDSelection = (globals) => {
 };
 
 const updateCreditLimit = (selectedFDsAmt, globals) => {
-  const fdSelectionInfoPanel = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
+  const fdSelectionInfoPanel = globals.form?.fdBasedCreditCardWizard?.selectFD?.fdSelectionInfo;
   const selectedFDNumPanel = fdSelectionInfoPanel.selectedFDPanel.selectedFDNum;
 
   globals.functions.setProperty(selectedFDNumPanel, { value: selectedFDsAmt.length });
@@ -53,7 +53,7 @@ const updateCreditLimit = (selectedFDsAmt, globals) => {
  */
 const fdSelectHandler = (fdPanel, globals) => {
   const selectedFDsAmt = [];
-  const { continueToBasicDetails } = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
+  const continueToBasicDetails = globals.form?.fdBasedCreditCardWizard?.selectFD?.fdSelectionInfo?.continueToBasicDetails;
   fdPanel.forEach((item) => {
     if (item.fdAccSelect._data.$_value === 'on') {
       selectedFDsAmt.push(Number(item.selectedFDAmount._data.$_value));

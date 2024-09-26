@@ -12,6 +12,9 @@ const createIpaRequest = (payload, globals) => {
   const employmentTypeMap = {
     1: 'others',
     2: 'selfEmployed',
+    3: 'others',
+    4: 'others',
+    5: 'others',
   };
   const applicableCreditLimit = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.selectFDDetailsPanel.creditLimit._data.$_value;
   const selectedEmploymentType = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employmentDetails.employmentType._data.$_value;
