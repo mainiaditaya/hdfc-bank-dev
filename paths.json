@@ -1,7 +1,7 @@
 {
    "mappings": [
     "/content/forms/af/:/hdfca/",
-    "/content/cognizant-dot-com/headers.json:/.helix/config.json"
+    "/content/hdfc_haf/config.json:/.helix/config.json"
   ],
   "includes": []
 }
