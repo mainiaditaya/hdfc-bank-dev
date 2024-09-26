@@ -325,6 +325,8 @@ const otpValHandler = (response, globals) => {
   currentFormContext.promoCode = globals.functions.exportData().form.promoCode || formCallBackContext?.currentFormContext?.crmLeadResponse?.promoCode || currentFormContext.crmLeadResponse.promoCode;
   currentFormContext.jwtToken = res?.demogResponse?.Id_token_jwt;
   currentFormContext.panFromDemog = res?.demogResponse?.BRECheckAndFetchDemogResponse?.VDCUSTITNBR;
+  currentFormContext.dob = res?.demogResponse?.BRECheckAndFetchDemogResponse?.DDCUSTDATEOFBIRTH;
+  currentFormContext.fullName = res?.demogResponse?.BRECheckAndFetchDemogResponse?.VDCUSTFIRSTNAME;
   const existingCustomer = existingCustomerCheck(res);
   if (existingCustomer) {
     currentFormContext.journeyType = 'ETB';
