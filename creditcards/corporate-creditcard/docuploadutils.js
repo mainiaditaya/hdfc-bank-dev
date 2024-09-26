@@ -117,7 +117,6 @@ const documentUpload = async (globals) => {
         throw new Error('file upload failed');
       }
     }
-    throw new Error('Error in File');
   } catch (error) {
     hideLoaderGif();
     globals.functions.setProperty(globals.form.corporateCardWizardView, { visible: false });
