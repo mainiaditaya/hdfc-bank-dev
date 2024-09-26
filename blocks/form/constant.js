@@ -9,9 +9,8 @@ export const defaultErrorMessages = {
 };
 let submitBaseUrl = '';
 
-if(window.location.hostname.includes("aem.live") || window.location.hostname.includes("aem.page")){
    submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
-}
+
 
 
 export function setSubmitBaseUrl(url) {
