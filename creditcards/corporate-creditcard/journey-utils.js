@@ -113,6 +113,10 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
       leadProfile: {
         mobileNumber,
         leadProfileId: leadProfileId?.toString(),
+         profile: {
+          dob: currentFormContext.dob,
+          fullName: currentFormContext.fullName,
+        },
       },
       formData: {
         channel: CHANNEL,
