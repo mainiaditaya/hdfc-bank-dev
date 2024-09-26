@@ -10,7 +10,7 @@ import componentDecorater from './mappings.js';
 import DocBasedFormToAF from './transform.js';
 import transferRepeatableDOM from './components/repeat.js';
 import { handleSubmit } from './submit.js';
-import { getSubmitBaseUrl } from './constant.js';
+import { emailPattern, getSubmitBaseUrl } from './constant.js';
 
 export const DELAY_MS = 0;
 let captchaField;
@@ -315,6 +315,9 @@ function inputDecorator(field, element) {
     }
     if (field.maxFileSize) {
       input.dataset.maxFileSize = field.maxFileSize;
+    }
+    if (input.type === 'email') {
+      input.pattern = emailPattern;
     }
     setConstraintsMessage(element, field.constraintMessages);
     element.dataset.required = field.required;

@@ -339,17 +339,17 @@ const checkModeFd = (globals) => {
 
       invokeJourneyDropOffUpdate(
         'AADHAAR_REDIRECTION_SUCCESS',
-        formData.loginPanel.mobilePanel.registeredMobileNumber,
-        formData.runtime.leadProifileId,
-        formData.runtime.leadProifileId.journeyId,
+        formData?.loginPanel?.mobilePanel?.registeredMobileNumber,
+        formData?.runtime?.leadProifileId,
+        formData?.runtime?.leadProifileId?.journeyId,
         globals,
       );
     } catch (ex) {
       invokeJourneyDropOffUpdate(
         'AADHAAR_REDIRECTION_FAILURE',
-        formData.loginPanel.mobilePanel.registeredMobileNumber,
-        formData.runtime.leadProifileId,
-        formData.runtime.leadProifileId.journeyId,
+        formData?.loginPanel?.mobilePanel?.registeredMobileNumber,
+        formData?.runtime?.leadProifileId,
+        formData?.runtime?.leadProifileId?.journeyId,
         globals,
       );
     }

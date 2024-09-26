@@ -59,6 +59,15 @@ const DOM_ELEMENT = {
   },
 };
 
+const GENDER_MAP = { Male: '1', Female: '2', Others: '3' };
+const OCCUPATION_MAP = {
+  salaried: '1',
+  'self employed': '2',
+  student: '3',
+  housewife: '4',
+  retired: '5',
+};
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,
@@ -74,4 +83,6 @@ export {
   MIN_ADDRESS_LENGTH,
   DOM_ELEMENT,
   IDCOM,
+  GENDER_MAP,
+  OCCUPATION_MAP,
 };

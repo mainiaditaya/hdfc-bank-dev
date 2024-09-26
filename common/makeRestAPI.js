@@ -199,7 +199,7 @@ const fetchRecursiveResponse = async (
         }
         break;
       case 'customerId':
-        if (fieldValue === 'SUCCESS') {
+        if (fieldValue === 'SUCCESS' || fieldValue === 'FAILURE') {
           if (loader) hideLoaderGif();
           return response;
         }

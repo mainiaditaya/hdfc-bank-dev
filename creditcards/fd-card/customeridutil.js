@@ -2,7 +2,7 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { FD_ENDPOINTS } from './constant.js';
 import { fetchJsonResponse, fetchRecursiveResponse } from '../../common/makeRestAPI.js';
-import { replaceNullWithEmptyString, urlPath } from '../../common/formutils.js';
+import { urlPath } from '../../common/formutils.js';
 
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
@@ -70,7 +70,7 @@ const updateData = (globals, customerData, panel) => {
 const customerIdSuccessHandler = (payload, globals) => {
   const customerData = payload?.responseString?.customerDetailsDTO;
   if (!customerData?.length) return;
-  CURRENT_FORM_CONTEXT.customerInfo = replaceNullWithEmptyString(payload?.responseString);
+  CURRENT_FORM_CONTEXT.customerInfo = payload?.responseString;
   if (customerData?.length === 1) {
     const [selectedCustId] = customerData;
     SELECTED_CUSTOMER_ID.selectedCustId = selectedCustId;

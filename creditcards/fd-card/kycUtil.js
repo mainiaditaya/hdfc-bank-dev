@@ -48,7 +48,7 @@ const addressDeclarationProceedHandler = (globals) => {
 const aadhaarConsent = async (globals) => {
   KYC_STATE.selectedKyc = 'AADHAAR';
   CURRENT_FORM_CONTEXT.selectedKyc = 'aadhaar';
-  const { addressDeclarationPanel, selectKYCOptionsPanel } = globals.form;
+  const { selectKYCOptionsPanel } = globals.form;
   try {
     if (typeof window !== 'undefined') {
       const openModal = (await import('../../blocks/modal/modal.js')).default;
@@ -66,8 +66,6 @@ const aadhaarConsent = async (globals) => {
         const receivedData = event.detail;
         if (receivedData?.aadharConsentAgree) {
           globals.functions.setProperty(selectKYCOptionsPanel.triggerAadharAPI, { value: 1 });
-          globals.functions.setProperty(addressDeclarationPanel, { visible: true });
-          globals.functions.setProperty(addressDeclarationPanel.aadhaarAddressDeclaration, { visible: true });
         }
       });
     }

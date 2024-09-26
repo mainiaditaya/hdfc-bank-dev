@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-useless-escape */
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME as formRuntime } from '../../common/constants.js';
 import {
   composeNameOption,
@@ -9,12 +7,15 @@ import {
   ageValidator,
   parseCustomerAddress,
   splitName,
+  parseName,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
 import {
   FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
   MIN_ADDRESS_LENGTH,
+  GENDER_MAP,
+  OCCUPATION_MAP,
 } from './constant.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
@@ -115,30 +116,15 @@ const bindCustomerDetails = (globals) => {
   bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
 
-  /*
-  * Hardcoded value for address parsing development
-  * start
-  */
-
-  customerInfo.customerFirstName = 'Kunal';
-  customerInfo.customerFullName = 'Kunal';
-
-  /*
-* Hardcoded value for address parsing development
-* end
-*/
+  const { firstName, middleName, lastName } = parseName(customerInfo.customerFullName);
+  customerInfo.customerFirstName = firstName;
+  customerInfo.customerMiddleName = middleName;
+  customerInfo.customerLastName = lastName;
+  customerInfo.customerFullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ');
 
   CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   if (!customerInfo.datBirthCust || !customerInfo.refCustItNum || !customerInfo.genderDescription) CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-  const genderMap = { Male: '1', Female: '2', Others: '3' };
-  const occupationMap = {
-    salaried: '1',
-    'self employed': '2',
-    student: '3',
-    housewife: '4',
-    retired: '5',
-  };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const { personalDetails, addressDetails, employmentDetails } = reviewDetailsView;
 
@@ -147,7 +133,7 @@ const bindCustomerDetails = (globals) => {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
-  setFormValue(personalDetails.gender, genderMap[customerInfo.genderDescription]);
+  setFormValue(personalDetails.gender, GENDER_MAP[customerInfo.genderDescription]);
   if (customerInfo.datBirthCust) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.datBirthCust); }
   if (customerInfo.refCustItNum) {
     const formattedPan = customerInfo.refCustItNum.replace(/([A-Za-z])(\d)|(\d)([A-Za-z])/g, '$1$3 $2$4');
@@ -210,7 +196,7 @@ const bindCustomerDetails = (globals) => {
     initializeNameOnCardDdOptions(globals, personalDetails, customerFirstName, customerMiddleName, customerLastName);
   }
 
-  globals.functions.setProperty(employmentDetails.employmentType, occupationMap[customerInfo?.employeeDetail?.txtOccupDesc?.toLowerCase()]);
+  globals.functions.setProperty(employmentDetails.employmentType, OCCUPATION_MAP[customerInfo?.employeeDetail?.txtOccupDesc?.toLowerCase()]);
 
   const personaldetails = document.querySelector('.field-personaldetails');
   setTimeout(() => {
@@ -225,7 +211,7 @@ const bindCustomerDetails = (globals) => {
  */
 const validateEmailID = async (email, globals) => {
   const url = urlPath(FD_ENDPOINTS.emailId);
-  const invalidMsg = 'Please enter valid email id...';
+  const invalidMsg = 'Please enter a valid Email ID';
   const payload = {
     email,
   };
@@ -233,9 +219,9 @@ const validateEmailID = async (email, globals) => {
   try {
     const emailValid = await getJsonResponse(url, payload, method);
     if (emailValid === true) {
-      console.log(email, globals, invalidMsg);
-    } else {
-      console.log(email);
+      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { valid: true });
+    } else if (email !== '') {
+      globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID', invalidMsg, { useQualifiedName: true });
     }
   } catch (error) {
     console.error(error, 'error in emailValid');
