@@ -8,7 +8,7 @@ export const defaultErrorMessages = {
   minItems: 'Specify a number of items equal to or greater than $0.',
 };
 
-let submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
+let submitBaseUrl = '';
 
 export function setSubmitBaseUrl(url) {
   submitBaseUrl = url;
