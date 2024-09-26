@@ -168,8 +168,8 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   const jsonObj = {
     requestString: {
       dateOfBirth: clearString(dob.$value) || '',
-      // mobileNumber: FD_CONSTANT.MODE === 'dev' ? '7666220352' : mobileNumber.$value,
-      // panNumber: FD_CONSTANT.MODE === 'dev' ? 'AJLPA2422K' : panValue || '',
+      // mobileNumber: FD_CONSTANT.MODE === 'dev' ? '9137300956' : mobileNumber.$value,
+      // panNumber: FD_CONSTANT.MODE === 'dev' ? 'BPSPV2882P' : panValue || '',
       mobileNumber: mobileNumber.$value,
       panNumber: panValue || '',
       journeyID: globals.form.runtime.journeyId.$value,
@@ -182,8 +182,8 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   formRuntime?.getOtpLoader();
 
   // if (FD_CONSTANT.MODE === 'dev') {
-  //   globals.functions.setProperty(mobileNumber, { value: '7666220352' });
-  //   globals.functions.setProperty(pan, { value: 'AJLPA2422K' });
+  //   globals.functions.setProperty(mobileNumber, { value: '9137300956' });
+  //   globals.functions.setProperty(pan, { value: 'BPSPV2882P' });
   // }
 
   return fetchJsonResponse(path, jsonObj, 'POST', true);
@@ -329,6 +329,7 @@ const checkModeFd = (globals) => {
       globals.functions.setProperty(addressDeclarationPanel, { visible: true });
 
       formData.currentFormContext.mobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'y';
+      CURRENT_FORM_CONTEXT.mobileMatch = formData.currentFormContext.mobileMatch;
       globals.functions.setProperty(proceedFromAddressDeclarationIdcom, { visible: !formData?.currentFormContext?.customerIdentityChange });
       globals.functions.setProperty(proceedFromAddressDeclaration, { visible: formData?.currentFormContext?.customerIdentityChange });
 

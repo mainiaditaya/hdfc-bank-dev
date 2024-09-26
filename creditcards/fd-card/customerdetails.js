@@ -35,7 +35,8 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstNa
   );
   const initialValue = options[0]?.value;
   setSelectOptions(options, elementNameSelect);
-  globals.functions.setProperty(personalDetails.nameOnCardDD, { enum: options, value: initialValue });
+  const ddOption = options.map((item) => item.label);
+  globals.functions.setProperty(personalDetails.nameOnCardDD, { enum: ddOption, value: initialValue });
 };
 
 /**
