@@ -458,6 +458,7 @@ body.semi-form {
                     color: var(--color-interface-background-tertiary);
                     font-size: var(--body-md-font-size);
                     font-weight: var(--font-weight-bold);
+                    line-height: 18px;
 
                     p, input { padding: 0; }
 
