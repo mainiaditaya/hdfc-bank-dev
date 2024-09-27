@@ -27,7 +27,21 @@ const ratingButtonUI = () => {
   });
 };
 
+const copyToClipBoard = async () => {
+  const referenceNumberLabel = document.querySelector('.field-referencenumber label');
+  const referenceNumberInput = document.querySelector('.field-referencenumber input');
+  if (referenceNumberInput) {
+    try {
+      await navigator.clipboard.writeText(referenceNumberInput.value);
+      alert(`Copied ${referenceNumberLabel.textContent} ${referenceNumberInput.value}`);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+};
+
 export {
   finalPagePanelVisibility,
   ratingButtonUI,
+  copyToClipBoard,
 };
