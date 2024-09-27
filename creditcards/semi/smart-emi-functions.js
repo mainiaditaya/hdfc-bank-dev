@@ -613,12 +613,15 @@ const enableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => glob
 const disableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => globals.functions.setProperty(list.aem_Txn_checkBox, { enabled: (list.aem_Txn_checkBox.$value === 'on') }));
 
 /**
- * function to update number of transaction selected.
- * @param {string} checkboxVal - checkbox value
- * @param {string} txnType - BILLED /  UNBILLED
-* @param {object} globals - globals form object
- */
-function txnSelectHandler(checkboxVal, txnType, globals) {
+* function to update number of transaction selected.
+* @param {string} checkboxVal
+* @param {number} amount
+* @param {string} ID
+* @param {date} date
+* @param {string} txnType
+* @name txnSelectHandler
+*/
+function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
   /* enable-popup once it reaches BILLED-MAX-AMT-LIMIT */
   const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
