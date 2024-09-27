@@ -103,7 +103,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
       mobileEditFlag: 'N',
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
       monthlyincome: '',
-      nameEditFlag: personalDetails?.fathersFullName?.$value?.length > 0 ? 'Y' : 'N',
+      nameEditFlag: personalDetails?.fathersFullName?.$value?.length > 0 || CURRENT_FORM_CONTEXT?.nameParsed ? 'Y' : 'N',
       nameOnCard,
       occupation: employmentDetails.employmentType._data.$_value || '1',
       officialEmailId: '',
