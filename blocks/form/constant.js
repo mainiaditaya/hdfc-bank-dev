@@ -7,7 +7,7 @@ export const defaultErrorMessages = {
   maxItems: 'Specify a number of items equal to or less than $0.',
   minItems: 'Specify a number of items equal to or greater than $0.',
 };
-let submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
+let submitBaseUrl = '';
 
 const localDev = ['aem.live', 'aem.page', 'localhost', 'hlx.live', 'hlx.page'];
 
