@@ -93,7 +93,7 @@ import {
   aadhaarConsent,
 } from './kycUtil.js';
 
-import { ratingButtonUI } from './thankyouutil.js';
+import { ratingButtonUI, copyToClipBoard } from './thankyouutil.js';
 
 import { hideLoaderGif } from '../domutils/domutils.js';
 
@@ -157,6 +157,7 @@ export {
   checkModeFd,
   executeInterfacePostRedirect,
   ratingButtonUI,
+  copyToClipBoard,
   fullNameChangeHandler,
   hideLoaderGif,
 };

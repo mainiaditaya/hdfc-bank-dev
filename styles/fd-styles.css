@@ -902,6 +902,7 @@ main {
                 border-radius: 24px;
                 padding: 20px;
                 min-height: 300px;
+                display: flex;
 
                 .field-referencenumber {                    
                     background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
@@ -934,7 +935,31 @@ main {
                     }
                 }
 
+                .field-copytoclipboard {
+                    margin: 4% 0 0 25%;
+
+                    button {
+                        background: none;
+                        background-image: url('../icons/copy_to_clipboard.svg');
+                        background-repeat: no-repeat;
+                        width: 30px;
+                        height: 30px;
+
+                        &::after {
+                            background: none;
+                        }
+
+                        &:hover {
+                            background: none !important;
+                            background-image: url('../icons/copy_to_clipboard.svg') !important;
+                            background-repeat: no-repeat !important;
+                        }
+                    }
+                }
+
                 .field-referencenumbertagline {
+                    flex: 1 1 100%;
+
                     p {
                         font-size: var(--body-fd-md-font-size);
                         font-weight: var(--font-weight-regular);
@@ -1573,7 +1598,7 @@ main {
   
               .field-selectedfdselected {
                   p { 
-                      margin: 12px 0 0 !important; 
+                      margin: 14px 0 0 -5px !important; 
                       color: var(--color-input-text-primary);
                       font-size: var(--body-fd-md-font-size);
                   }
@@ -3268,6 +3293,10 @@ main {
                 }
             }
 
+            .field-copytoclipboard {
+                margin: -9% 0 0 45% !important;
+            }
+
             .field-referencenumbertagline {
                 p {
                     font-size: var(--body-fd-md-font-size);
@@ -3822,6 +3851,10 @@ main {
                 input {
                     width: 290px !important;
                 }                
+            }
+
+            .field-copytoclipboard {
+                margin: -17% 0 0 90% !important;
             }
 
             .field-referencenumbertagline {
