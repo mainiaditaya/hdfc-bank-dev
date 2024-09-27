@@ -410,16 +410,20 @@ const splitName = (fullName) => {
 };
 
 const parseName = (fullName) => {
-  const [firstName = '', middleName = '', lastName = ''] = sanitizeName(fullName).trim().split(/\s+/).slice(0, 3);
+  // eslint-disable-next-line prefer-const
+  let [firstName, middleName = '', lastName = ''] = sanitizeName(fullName).trim().split(/\s+/).slice(0, 3);
+  if (!lastName) {
+    lastName = middleName;
+    middleName = '';
+  }
   let combinedName = `${firstName}${middleName ? ` ${middleName}` : ''}${lastName ? ` ${lastName}` : ''}`;
   if (combinedName.length <= 30) {
     return { firstName, middleName, lastName };
   }
   combinedName = `${firstName} ${lastName}`;
-  if (combinedName.length > 30) {
-    return { firstName, middleName: '', lastName: `${lastName.charAt(0)}` };
-  }
-  return { firstName, middleName: '', lastName };
+  return combinedName.length > 30
+    ? { firstName, middleName: '', lastName: `${lastName.charAt(0)}` }
+    : { firstName, middleName: '', lastName };
 };
 
 /**
