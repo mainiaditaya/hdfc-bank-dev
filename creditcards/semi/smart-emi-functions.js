@@ -29,7 +29,8 @@ import {
   handleMdmUtmParam,
 } from './semi-mdm-utils.js';
 
-import { invokeJourneyDropOff, invokeJourneyDropOffByParam, invokeJourneyDropOffUpdate } from '../../common/journey-utils.js';
+import { invokeJourneyDropOffByParam } from '../../common/journey-utils.js';
+import { invokeJourneyDropOffUpdate, invokeJourneyDropOff } from './semi-journey-utils.js';
 import { reloadPage } from '../../common/functions.js';
 
 // import { getContextStorage } from '../../../conversational-service/src/request-utils'
@@ -483,6 +484,41 @@ const getTotalAmount = (globals) => {
 };
 
 /**
+ * Setting essential hidden fields for reports
+ * @param {Array} selectedTxnList
+ * @param {string} dispAmt
+ * @param {Object} globals
+ */
+const setReporthiddenFields = (selectedTxnList, dispAmt, globals) => {
+  let combinedTransactionType = '';
+  let hiddenBilledAmt = 0;
+  let hiddenUnbilledAmt = 0;
+  const allTxnTypes = selectedTxnList.map((el) => ({
+    amt: Number(String(el.aem_TxnAmt).replace(/[^\d]/g, '') / 100),
+    typ: el.aem_txn_type,
+  })) || [];
+  const mapTypes = allTxnTypes?.map((el) => el.typ);
+  const mapAmt = allTxnTypes?.map((el) => el.amt);
+  if (mapTypes.every((el) => el === 'BILLED')) {
+    combinedTransactionType = 'Billed';
+    hiddenBilledAmt = Number(mapAmt?.reduce((prev, acc) => prev + acc, 0));
+  } else if (mapTypes.every((el) => el === 'UNBILLED')) {
+    combinedTransactionType = 'Unbilled';
+    hiddenUnbilledAmt = Number(mapAmt?.reduce((prev, acc) => prev + acc, 0));
+  } else if (mapTypes.includes('BILLED') && mapTypes.includes('UNBILLED')) {
+    combinedTransactionType = 'Both';
+    hiddenBilledAmt = Number(allTxnTypes?.map((el) => (el.typ === 'BILLED') && el.amt)?.reduce((prev, acc) => prev + acc, 0));
+    hiddenUnbilledAmt = Number(allTxnTypes?.map((el) => (el.typ === 'UNBILLED') && el.amt)?.reduce((prev, acc) => prev + acc, 0));
+  } else {
+    combinedTransactionType = 'none';
+  }
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.combinedTransactionType, { value: combinedTransactionType });
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.hiddenUnBilledTotal, { value: hiddenUnbilledAmt });
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.hiddenBilledTotal, { value: hiddenBilledAmt });
+  globals.functions.setProperty(globals.form.aem_semiWizard.aem_success.smartEMIAmountHidden, { value: Number(String(dispAmt)?.replace(/[^\d]/g, '')) });
+};
+
+/**
  * Updates the UI to display the selected transaction amount for SmartEMI and pre-selects the last tenure option.
  * @param {object} globals - global form object
  */
@@ -506,6 +542,8 @@ const tenureDisplay = (globals) => {
   globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: LABEL_AMT_SELCTED });
   globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_outStandingLabel, { value: DISPLAY_TOTAL_AMT });
   globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: `${MISC.rupeesUnicode} ${TOTAL_AMT_IN_WORDS}` });
+  /* set hidden field values for report */
+  setReporthiddenFields(selectedTxnList, DISPLAY_TOTAL_AMT, globals);
   /* pre-select the last tenure option (radio btn) by default */
   const DEFUALT_SELCT_TENURE = (tenureRepatablePanel.length > 0) ? (tenureRepatablePanel.length - 1) : 0;
   globals.functions.setProperty(tenureRepatablePanel[DEFUALT_SELCT_TENURE].aem_tenureSelection, { value: '0' });
