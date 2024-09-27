@@ -1,6 +1,8 @@
 // declare COMMON_CONSTANTS for all forms only.
 // impoted as CONSTANT key name in all files
-const BASEURL = '';
+import { getSubmitBaseUrl } from '../blocks/form/constant.js';
+
+const BASEURL = getSubmitBaseUrl();
 const CHANNEL = 'ADOBE_WEBFORMS';
 const ENDPOINTS = {
   aadharCallback: '/content/hdfc_etb_wo_pacc/api/aadharCallback.json',
