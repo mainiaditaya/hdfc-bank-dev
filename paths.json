@@ -1,6 +1,6 @@
 {
    "mappings": [
-    "/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc:/digital/corporate-credit-cards-application-form",
+    "/content/forms/af/hdfc_haf/digital:/digital",
     "/content/hdfc_haf/config.json:/.helix/config.json"
   ],
   "includes": [
