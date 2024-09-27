@@ -9,9 +9,16 @@ export const defaultErrorMessages = {
 };
 let submitBaseUrl = '';
 
-// submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
+const localDev = ['aem.live', 'aem.page', 'localhost', 'hlx.live', 'hlx.page'];
 
+function isLocalDev() {
+  const hostname = location.hostname;
+  return localDev.some(dev => hostname.includes(dev));
+}
 
+if (isLocalDev()) {
+  submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
+} 
 
 export function setSubmitBaseUrl(url) {
   submitBaseUrl = url;
@@ -20,10 +27,3 @@ export function setSubmitBaseUrl(url) {
 export function getSubmitBaseUrl() {
   return submitBaseUrl;
 }
-
-export const formIdPathMapping = {
-  '/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', 
-  '/digital/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', 
-  // cc
-  // '/content/forms/af/hdfc_haf/cards/fdlien/forms/fdlien-dev': '../../../common/functions.js', // fd
-};
