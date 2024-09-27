@@ -37,7 +37,7 @@ const fetchCustomerId = (mobileNumber, pan, dob, response) => {
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus);
   const duration = 50;
   const timer = 10;
-  const fieldName = ['status'];
+  const fieldName = ['fdEligibilityStatusResponse', 'status'];
   return fetchRecursiveResponse('customerId', apiEndPoint, payload, 'POST', duration, timer, fieldName, true);
 };
 
