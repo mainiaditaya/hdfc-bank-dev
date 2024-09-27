@@ -123,7 +123,9 @@ const bindCustomerDetails = (globals) => {
   customerInfo.customerFirstName = firstName;
   customerInfo.customerMiddleName = middleName;
   customerInfo.customerLastName = lastName;
-  customerInfo.customerFullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ');
+  const parsedFullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ');
+  CURRENT_FORM_CONTEXT.nameParsed = customerInfo.customerFullName !== parsedFullName;
+  customerInfo.customerFullName = parsedFullName;
 
   CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   if (!customerInfo.datBirthCust || !customerInfo.refCustItNum || !customerInfo.genderDescription) CURRENT_FORM_CONTEXT.customerIdentityChange = true;
