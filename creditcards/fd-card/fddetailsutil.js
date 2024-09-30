@@ -6,6 +6,8 @@ import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { MAXIMUM_CREDIT_AMOUNT } from './constant.js';
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 
+const SELECT_FD_STATE = {};
+
 /**
  * @name resetFDSelection
  * @param {Object} globals - The global context object containing various information.
@@ -101,6 +103,7 @@ const updateData = (globals, fd, panel, index, fdNumberSelectionPanel) => {
 const customerIdProceedHandler = (globals) => {
   const { selectedCustId } = SELECTED_CUSTOMER_ID;
   const selectedCustIdFds = selectedCustId?.listFDSummary || [];
+  SELECT_FD_STATE.fdList = selectedCustIdFds;
   const {
     fdBasedCreditCardWizard,
     resultPanel,
@@ -132,4 +135,5 @@ export {
   fdSelectHandler,
   selectAllFdClickHandler,
   resetFDSelection,
+  SELECT_FD_STATE,
 };
