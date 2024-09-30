@@ -5,6 +5,7 @@ import { confirmCardState } from './confirmcardutil.js';
 import { JOURNEY_NAME, FD_ENDPOINTS } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
+import { SELECT_FD_STATE } from './fddetailsutil.js';
 import finalDap from './finaldaputils.js';
 import { IPA_RESPONSE } from './ipautil.js';
 
@@ -15,11 +16,26 @@ const createExecuteInterfaceRequest = (source, globals) => {
     customerAddress,
     permanentAddress,
   } = CURRENT_FORM_CONTEXT;
-  const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
+  const { basicDetails, selectFD } = globals.form.fdBasedCreditCardWizard;
   const {
     personalDetails, addressDetails, employeeAssistance, employmentDetails,
-  } = reviewDetailsView;
+  } = basicDetails.reviewDetailsView;
   const { employeeAssistancePanel } = employeeAssistance;
+
+  const { fdNumberSelection } = selectFD.fdSelectionInfo;
+  const { fdList } = SELECT_FD_STATE;
+  const selectedFds = fdNumberSelection.reduce((acc, fd) => {
+    if (fd.fdAccSelect._data.$_value === 'on') {
+      acc.push(fd?.fdNumber?._data?.$_value?.toString());
+    }
+    return acc;
+  }, []);
+  const selectedFdDetails = fdList.filter((fd) => selectedFds.includes(fd.fdAccountNo.trim())) // Filter based on selected FD
+    .map((fd) => ({
+      fdNumber: fd.fdAccountNo.trim(),
+      fdTenure: `${fd.termMonths} months ${fd.termDays} days`,
+      fdAmt: fd.balPrincipal,
+    }));
   const addressEditFlag = addressDetails?.mailingAddressToggle?.$value !== 'on';
 
   function getAddress(addressSource) {
@@ -134,8 +150,10 @@ const createExecuteInterfaceRequest = (source, globals) => {
       productCode: source === 'confirmcard' ? CURRENT_FORM_CONTEXT?.selectedProductCode : '',
       resPhoneEditFlag: 'N',
       selfConfirmation: 'Y',
+      selectedFdDetails,
       smCode: employeeAssistancePanel.smCode._data.$_value || '',
       timeInfo: new Date().toISOString(),
+      lienConsent: new Date().toISOString(),
     },
   };
   return request;
