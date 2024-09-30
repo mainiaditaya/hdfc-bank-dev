@@ -144,7 +144,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
       permanentCity: customerPermanentAddress?.city,
       permanentState: customerPermanentAddress?.state,
       permanentZipCode: customerPermanentAddress?.zip,
-      perAddressType: '2',
+      perAddressType: '4',
       perfiosTxnID: '',
       personalEmailId: personalDetails?.emailID.$value,
       productCode: source === 'confirmcard' ? CURRENT_FORM_CONTEXT?.selectedProductCode : '',
