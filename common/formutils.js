@@ -243,22 +243,27 @@ const composeNameOption = (fn, mn, ln, cardType, maxlength) => {
  * @returns {string[]} An array of substrings, each containing up to 30 characters.
  */
 const parseCustomerAddress = (address) => {
-  const words = address.trim().split(' ');
+  const words = address.replace(/\s+/g, ' ').trim().split(' ');
   const substrings = [];
   let currentSubstring = '';
-
   words.forEach((word) => {
-    if (substrings.length === 3) {
-      return; // Exit the loop if substrings length is equal to 3
-    }
-    if ((`${currentSubstring} ${word}`).length <= 30) {
+    if (substrings.length === 2) {
+      if ((`${currentSubstring} ${word}`).trim().length <= 30) {
+        currentSubstring += (currentSubstring === '' ? '' : ' ') + word;
+      }
+    } else if ((`${currentSubstring} ${word}`).trim().length <= 30) {
       currentSubstring += (currentSubstring === '' ? '' : ' ') + word;
     } else {
       substrings.push(currentSubstring);
       currentSubstring = word;
     }
   });
-
+  if (currentSubstring) {
+    if (substrings.length === 2 && currentSubstring.length > 30) {
+      currentSubstring = currentSubstring.slice(0, 30);
+    }
+    substrings.push(currentSubstring);
+  }
   return substrings;
 };
 
@@ -277,7 +282,7 @@ const removeSpecialCharacters = (str, allowedChars) => {
   const regex = new RegExp(`[^a-zA-Z0-9,${escapedAllowedChars.replace('-', '\\-')}]`, 'g');
 
   // Remove special characters from the input string using the regex pattern
-  return str.replace(regex, '');
+  return str?.replace(regex, '');
 };
 
 /**
@@ -380,7 +385,7 @@ const getCurrentDateAndTime = (dobFormatNo) => {
  * @param {String} name - The name token.
  * @returns {String} sanitized name - removes special chars, spaces.
  */
-const sanitizeName = (name) => name.replace(/[^a-zA-Z]/g, '');
+const sanitizeName = (name) => name.replace(/[^a-zA-Z\s]/g, '');
 
 /**
  * Splits a full name into its components: first name, middle name, and last name.
@@ -396,10 +401,29 @@ const splitName = (fullName) => {
   if (fullName) {
     const parts = fullName.split(' ');
     name.firstName = sanitizeName(parts.shift()) || '';
-    name.lastName = sanitizeName(parts.pop()) || '';
-    name.middleName = parts.length > 0 ? sanitizeName(parts[0]) : '';
+    if (parts.length > 0) {
+      name.lastName = sanitizeName(parts.pop()) || '';
+      name.middleName = parts.length > 0 ? sanitizeName(parts[0]) : '';
+    }
   }
   return name;
+};
+
+const parseName = (fullName) => {
+  // eslint-disable-next-line prefer-const
+  let [firstName, middleName = '', lastName = ''] = sanitizeName(fullName).trim().split(/\s+/).slice(0, 3);
+  if (!lastName) {
+    lastName = middleName;
+    middleName = '';
+  }
+  let combinedName = `${firstName}${middleName ? ` ${middleName}` : ''}${lastName ? ` ${lastName}` : ''}`;
+  if (combinedName.length <= 30) {
+    return { firstName, middleName, lastName };
+  }
+  combinedName = `${firstName} ${lastName}`;
+  return combinedName.length > 30
+    ? { firstName, middleName: '', lastName: `${lastName.charAt(0)}` }
+    : { firstName, middleName: '', lastName };
 };
 
 /**
@@ -529,6 +553,51 @@ const getUrlParamCaseInsensitive = (param) => {
   return paramEntry ? paramEntry[1] : null;
 };
 
+const fetchFiller4 = (mobileMatch, kycStatus, journeyType) => {
+  let filler4Value = null;
+  switch (kycStatus) {
+    case 'aadhaar':
+      // eslint-disable-next-line no-nested-ternary
+      filler4Value = (journeyType === 'NTB') ? `VKYC${getCurrentDateAndTime(3)}` : ((journeyType === 'ETB') && mobileMatch) ? `NVKYC${getCurrentDateAndTime(3)}` : `VKYC${getCurrentDateAndTime(3)}`;
+      break;
+    case 'bioKYC':
+      filler4Value = 'bioKYC';
+      break;
+    case 'OVD':
+      filler4Value = 'OVD';
+      break;
+    default:
+      filler4Value = null;
+  }
+  return filler4Value;
+};
+const extractJSONFromHTMLString = (htmlString) => {
+  let jsonString = htmlString.replace(/<\/?p>/g, '');
+  jsonString = jsonString
+    .replace(/&quot;/g, '"')
+    .replace(/\\n/g, '');
+  try {
+    const jsonObject = JSON.parse(jsonString);
+    return jsonObject;
+  } catch (error) {
+    console.error('Invalid JSON string', error);
+    return null;
+  }
+};
+
+function applicableCards(employmentTypeMap, employmentType, cardMap, applicableCreditLimit) {
+  const employmentCategory = employmentTypeMap[employmentType];
+
+  const cardData = cardMap[employmentCategory];
+
+  const matchingCard = cardData.find((entry) => {
+    const [minLimit, maxLimit] = entry.creditLimit.split('-').map(Number);
+    return applicableCreditLimit >= minLimit && applicableCreditLimit <= maxLimit;
+  });
+
+  return matchingCard ? matchingCard.card : [];
+}
+
 export {
   urlPath,
   maskNumber,
@@ -558,4 +627,9 @@ export {
   formatDateDDMMMYYY,
   pinCodeMasterCheck,
   getUrlParamCaseInsensitive,
+  fetchFiller4,
+  extractJSONFromHTMLString,
+  applicableCards,
+  parseName,
+  sanitizeName,
 };

@@ -8,10 +8,14 @@ import {
   customSetFocus,
   reloadPage,
   pincodeChangeHandler,
+  checkModeFd,
 } from './fdlien-functions.js';
+
 import {
   invokeJourneyDropOff,
   fdWizardSwitch,
+  journeyResponseHandler,
+  invokeJourneyDropOffUpdate,
 } from './fd-journey-util.js';
 
 import {
@@ -22,15 +26,24 @@ import {
   branchCodeHandler,
   dobChangeHandler,
   fathersNameChangeHandler,
+  fullNameChangeHandler,
 } from './customerdetails.js';
 
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
 import {
   redirect,
   validatePan,
+  idcomRedirection,
+  aadharInit,
 } from '../../common/functions.js';
 
-import createJourneyId from '../../common/journey-utils.js';
+import { createJourneyId } from '../../common/journey-utils.js';
+
+import {
+  docUploadClickHandler,
+  fileUploadUIHandler,
+  docUploadBiometricHandler,
+} from './docuploadutil.js';
 
 import {
   addGaps,
@@ -54,7 +67,37 @@ import {
   selectAllFdClickHandler,
 } from './fddetailsutil.js';
 
-import confirmCardClickHandler from './confirmcardutil.js';
+import {
+  executeInterface,
+  executeInterfacePostRedirect,
+} from './executeinterfaceutil.js';
+
+import {
+  confirmCardClickHandler,
+  knowMoreCardClickHandler,
+  selectCardBackClickHandler,
+  cardSelectHandler,
+  popupBackClickHandler,
+} from './confirmcardutil.js';
+
+import {
+  ipa,
+  ipaSuccessHandler,
+} from './ipautil.js';
+
+import { idcomm, idcomSuccessHandler } from './idcomutil.js';
+
+import {
+  kycProceedClickHandler,
+  addressDeclarationProceedHandler,
+  aadhaarConsent,
+} from './kycUtil.js';
+
+import { ratingButtonUI, copyToClipBoard } from './thankyouutil.js';
+
+import { hideLoaderGif } from '../domutils/domutils.js';
+
+setTimeout(() => import('./fd-delayedutils.js'), 2000);
 
 export {
   getOTP,
@@ -90,6 +133,31 @@ export {
   branchCodeHandler,
   dobChangeHandler,
   fathersNameChangeHandler,
+  executeInterface,
   fetchReferenceId,
   confirmCardClickHandler,
+  ipa,
+  ipaSuccessHandler,
+  knowMoreCardClickHandler,
+  selectCardBackClickHandler,
+  cardSelectHandler,
+  popupBackClickHandler,
+  docUploadClickHandler,
+  fileUploadUIHandler,
+  journeyResponseHandler,
+  invokeJourneyDropOffUpdate,
+  idcomRedirection,
+  idcomm,
+  idcomSuccessHandler,
+  kycProceedClickHandler,
+  addressDeclarationProceedHandler,
+  aadhaarConsent,
+  aadharInit,
+  docUploadBiometricHandler,
+  checkModeFd,
+  executeInterfacePostRedirect,
+  ratingButtonUI,
+  copyToClipBoard,
+  fullNameChangeHandler,
+  hideLoaderGif,
 };

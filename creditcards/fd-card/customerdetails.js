@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-useless-escape */
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME as formRuntime } from '../../common/constants.js';
 import {
   composeNameOption,
@@ -7,11 +5,19 @@ import {
   urlPath,
   getUrlParamCaseInsensitive,
   ageValidator,
+  parseCustomerAddress,
+  splitName,
+  parseName,
+  removeSpecialCharacters,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
 import {
   FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
+  MIN_ADDRESS_LENGTH,
+  GENDER_MAP,
+  OCCUPATION_MAP,
+  ALLOWED_CHARACTERS,
 } from './constant.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
@@ -29,7 +35,8 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstNa
   );
   const initialValue = options[0]?.value;
   setSelectOptions(options, elementNameSelect);
-  globals.functions.setProperty(personalDetails.nameOnCardDD, { enum: options, value: initialValue });
+  const ddOption = options.map((item) => item.label);
+  globals.functions.setProperty(personalDetails.nameOnCardDD, { enum: ddOption, value: initialValue });
 };
 
 /**
@@ -37,7 +44,8 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstNa
  * @returns {Promise<Object>} - A promise that resolves with the JSON response from the provided URL.
  */
 const bindEmployeeAssistanceField = async (globals) => {
-  const { employeeAssistancePanel, employeeAssistanceToggle, inPersonBioKYCPanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  const { resultPanel, fdBasedCreditCardWizard } = globals.form;
+  const { employeeAssistancePanel, employeeAssistanceToggle, inPersonBioKYCPanel } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
   const defaultChannel = getUrlParamCaseInsensitive('channel');
   const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC');
   const codes = {
@@ -55,24 +63,32 @@ const bindEmployeeAssistanceField = async (globals) => {
     }
     if (inPersonBioKYC?.toLowerCase() === 'yes') {
       globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
+      globals.functions.setProperty(inPersonBioKYCPanel.inPersonBioKYCOptions, { value: 0 });
     }
     const response = await getJsonResponse(FD_ENDPOINTS.masterchannel, null, 'GET');
     if (!response) return;
-
+    if (response?.[0].errorCode === '500') {
+      globals.functions.setProperty(resultPanel, { visible: true });
+      globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
+      globals.functions.setProperty(resultPanel.errorResultPanel, { visible: true });
+    }
     const dropDownSelectField = employeeAssistancePanel.channel;
-    const options = [{ label: 'Website Download', value: 'Website Download' }];
+    const channelOptions = ['Website Download'];
+    const options = channelOptions.map((channel) => ({ label: channel, value: channel }));
     let matchedChannel = options[0].value;
-
     response.forEach((item) => {
-      const channel = item.CHANNELS;
-      options.push({ label: channel, value: channel });
-      if (defaultChannel?.toLowerCase() === channel.toLowerCase()) {
+      const channel = item?.CHANNELS;
+      const normalizedChannel = channel?.toLowerCase();
+      if (!channelOptions.some((opt) => opt.toLowerCase() === normalizedChannel)) {
+        options.push({ label: channel, value: channel });
+        channelOptions.push(channel);
+      }
+      if (defaultChannel?.toLowerCase() === normalizedChannel) {
         matchedChannel = channel;
       }
     });
-
     setSelectOptions(options, 'channel');
-    globals.functions.setProperty(dropDownSelectField, { enum: options, value: matchedChannel });
+    globals.functions.setProperty(dropDownSelectField, { enum: channelOptions, value: matchedChannel });
 
     const changeDataAttrObj = { attrChange: true, value: false };
     ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
@@ -91,19 +107,43 @@ const bindEmployeeAssistanceField = async (globals) => {
  */
 const bindCustomerDetails = (globals) => {
   if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
+  CURRENT_FORM_CONTEXT.editFlags = {
+    nameOnCard: true,
+    addressEdit: false,
+  };
+  CURRENT_FORM_CONTEXT.customerAddress = {
+    addressLine1: '',
+    addressLine2: '',
+    addressLine3: '',
+    city: '',
+    pincode: '',
+    state: '',
+  };
+  CURRENT_FORM_CONTEXT.permanentAddress = {
+    addressLine1: '',
+    addressLine2: '',
+    addressLine3: '',
+    city: '',
+    pincode: '',
+    state: '',
+  };
   CUSTOMER_DATA_BINDING_CHECK = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
+
+  const { firstName, middleName, lastName } = parseName(customerInfo.customerFullName);
+  customerInfo.customerFirstName = firstName;
+  customerInfo.customerMiddleName = middleName;
+  customerInfo.customerLastName = lastName;
+  const parsedFullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ');
+  CURRENT_FORM_CONTEXT.nameParsed = customerInfo.customerFullName !== parsedFullName;
+  customerInfo.customerFullName = parsedFullName;
+
+  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
+  if (!customerInfo.datBirthCust || !customerInfo.refCustItNum || !customerInfo.genderDescription) CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-  const genderMap = { Male: '0', Female: '1', Others: '3' };
-  const occupationMap = {
-    salaried: '1',
-    'self employed': '2',
-    student: '3',
-    housewife: '4',
-    retired: '5',
-  };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const { personalDetails, addressDetails, employmentDetails } = reviewDetailsView;
 
@@ -112,13 +152,72 @@ const bindCustomerDetails = (globals) => {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
-  setFormValue(personalDetails.gender, genderMap[customerInfo.genderDescription]);
+  setFormValue(personalDetails.gender, GENDER_MAP[customerInfo.genderDescription]);
   if (customerInfo.datBirthCust) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.datBirthCust); }
   if (customerInfo.refCustItNum) {
     const formattedPan = customerInfo.refCustItNum.replace(/([A-Za-z])(\d)|(\d)([A-Za-z])/g, '$1$3 $2$4');
     if (formattedPan !== '') setFormValue(personalDetails.panNumberPersonalDetails, formattedPan);
   }
-  setFormValue(addressDetails.prefilledMailingAdddress, customerInfo.currentAddress);
+
+  const [address = '', cityDetails = ''] = customerInfo.currentAddress.split('||');
+  CURRENT_FORM_CONTEXT.perAddExist = false;
+  let perAddress = ''; let perCityDetails = '';
+  if (customerInfo.permanentAddress) {
+    perAddress = customerInfo.permanentAddress.split('||')?.[0];
+    perCityDetails = customerInfo.permanentAddress.split('||')?.[1];
+    CURRENT_FORM_CONTEXT.perAddExist = true;
+  }
+  const [perCity = '', perState = '', perPincode = ''] = perCityDetails.split('|');
+  const [city = '', state = '', pincode = ''] = cityDetails.split('|');
+  const cleanAddress = removeSpecialCharacters(address.replace(/\|/g, ' '), ALLOWED_CHARACTERS);
+  const cleanPerAddress = removeSpecialCharacters(perAddress.replace(/\|/g, ' '), ALLOWED_CHARACTERS);
+
+  let formattedCustomerAddress = '';
+  let parsedAddress = [];
+  let parsedPerAddress = [];
+  if (cleanAddress.length < MIN_ADDRESS_LENGTH) {
+    const addressArray = cleanAddress.trim().split(' ');
+    parsedAddress = [
+      addressArray.slice(0, -1).join(' '),
+      addressArray.slice(-1)[0],
+    ];
+  } else {
+    parsedAddress = parseCustomerAddress(cleanAddress);
+  }
+  if (cleanPerAddress.length < MIN_ADDRESS_LENGTH) {
+    const addressArray = cleanPerAddress.trim().split(' ');
+    parsedPerAddress = [
+      addressArray.slice(0, -1).join(' '),
+      addressArray.slice(-1)[0],
+    ];
+  } else {
+    parsedPerAddress = parseCustomerAddress(cleanPerAddress);
+  }
+
+  if (parsedAddress.length) {
+    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = parsedAddress;
+    Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
+    formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
+    CURRENT_FORM_CONTEXT.editFlags.addressEdit = true;
+  } else {
+    formattedCustomerAddress = `${cleanAddress}, ${city}, ${state}, ${pincode}`;
+    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address.split('|');
+    Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
+  }
+
+  Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { city, pincode, state });
+
+  if (parsedPerAddress.length) {
+    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = parsedPerAddress;
+    Object.assign(CURRENT_FORM_CONTEXT.permanentAddress, { addressLine1, addressLine2, addressLine3 });
+  } else {
+    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address.split('|');
+    Object.assign(CURRENT_FORM_CONTEXT.permanentAddress, { addressLine1, addressLine2, addressLine3 });
+  }
+
+  Object.assign(CURRENT_FORM_CONTEXT.permanentAddress, { city: perCity, pincode: perPincode, state: perState });
+
+  setFormValue(addressDetails.prefilledMailingAdddress, formattedCustomerAddress);
   const emailIDUtil = formUtil(globals, personalDetails.emailID);
   emailIDUtil.setValue(customerInfo.refCustEmail, { attrChange: true, value: false });
   if (customerInfo.currentAddress.length === 0) {
@@ -136,7 +235,7 @@ const bindCustomerDetails = (globals) => {
 
     globals.functions.setProperty(personalDetails.nameOnCard, { visible: false });
     globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: true });
-
+    CURRENT_FORM_CONTEXT.editFlags.nameOnCard = false;
     if (hasNoMiddleOrLastName) {
       globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
     }
@@ -144,12 +243,12 @@ const bindCustomerDetails = (globals) => {
     initializeNameOnCardDdOptions(globals, personalDetails, customerFirstName, customerMiddleName, customerLastName);
   }
 
-  globals.functions.setProperty(employmentDetails.employmentType, occupationMap[customerInfo?.employeeDetail?.txtOccupDesc?.toLowerCase()]);
+  globals.functions.setProperty(employmentDetails.employmentType, OCCUPATION_MAP[customerInfo?.employeeDetail?.txtOccupDesc?.toLowerCase()]);
 
   const personaldetails = document.querySelector('.field-personaldetails');
   setTimeout(() => {
     addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
-  }, 10);
+  }, 100);
 };
 
 /**
@@ -159,7 +258,7 @@ const bindCustomerDetails = (globals) => {
  */
 const validateEmailID = async (email, globals) => {
   const url = urlPath(FD_ENDPOINTS.emailId);
-  const invalidMsg = 'Please enter valid email id...';
+  const invalidMsg = 'Please enter a valid Email ID';
   const payload = {
     email,
   };
@@ -167,9 +266,9 @@ const validateEmailID = async (email, globals) => {
   try {
     const emailValid = await getJsonResponse(url, payload, method);
     if (emailValid === true) {
-      console.log(email, globals, invalidMsg);
-    } else {
-      console.log(email);
+      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { valid: true });
+    } else if (email !== '') {
+      globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID', invalidMsg, { useQualifiedName: true });
     }
   } catch (error) {
     console.error(error, 'error in emailValid');
@@ -268,6 +367,36 @@ const dobChangeHandler = (globals) => {
   }
 };
 
+const fullNameChangeHandler = (globals) => {
+  const { customerInfo } = CURRENT_FORM_CONTEXT;
+  const { personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const customerFullName = personalDetails.fullName._data.$_value || '';
+
+  // Split name and assign customer info
+  const { firstName, middleName = '', lastName = '' } = splitName(customerFullName);
+  Object.assign(customerInfo, {
+    customerFirstName: firstName,
+    customerMiddleName: middleName,
+    customerLastName: lastName,
+    customerFullName,
+    customerIdentityChange: !customerInfo.customerFullName ? true : customerInfo.customerIdentityChange,
+  });
+
+  // Handle name on card visibility
+  const nameOnCardVisible = customerFullName.length <= NAME_ON_CARD_LENGTH;
+  const { nameOnCard, nameOnCardDD } = personalDetails;
+  globals.functions.setProperty(nameOnCard, { visible: nameOnCardVisible });
+  globals.functions.setProperty(nameOnCardDD, { visible: !nameOnCardVisible });
+
+  CURRENT_FORM_CONTEXT.editFlags.nameOnCard = nameOnCardVisible;
+
+  if (nameOnCardVisible) {
+    formUtil(globals, nameOnCard).setValue(customerFullName, { attrChange: true, value: false, disable: true });
+  } else {
+    initializeNameOnCardDdOptions(globals, personalDetails, firstName, middleName, lastName);
+  }
+};
+
 /**
 *
 * @name fathersNameChangeHandler
@@ -276,32 +405,34 @@ const dobChangeHandler = (globals) => {
 const fathersNameChangeHandler = (globals) => {
   const { customerInfo } = CURRENT_FORM_CONTEXT;
   const { personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
-  const fathersNameArr = personalDetails.fathersFullName._data.$_value?.toUpperCase()?.split(' ') || [];
 
-  const [middleName = '', lastName = ''] = fathersNameArr.length === 1
-    ? ['', fathersNameArr[0]]
-    : fathersNameArr;
+  CURRENT_FORM_CONTEXT.customerIdentityChange = true;
 
-  const customerFullName = `${customerInfo.customerFirstName} ${middleName} ${lastName}`
-    .toUpperCase()
-    .replace(/\s+/g, ' ');
+  const fathersNameArr = (personalDetails.fathersFullName._data.$_value || '').toUpperCase().split(' ');
+  const [middleName = '', lastName = fathersNameArr[0] || ''] = fathersNameArr.length === 1 ? ['', fathersNameArr[0]] : fathersNameArr;
 
-  const nameOnCardVisible = customerFullName.length <= NAME_ON_CARD_LENGTH && fathersNameArr.length > 0;
+  const customerFullName = personalDetails.fullName._data.$_value || '';
+  const isSingleName = customerFullName.split(' ').length <= 1;
 
-  globals.functions.setProperty(personalDetails.nameOnCard, { visible: nameOnCardVisible });
-  globals.functions.setProperty(personalDetails.nameOnCardDD, { visible: !nameOnCardVisible });
+  if (isSingleName) {
+    Object.assign(customerInfo, {
+      customerFullName: `${customerInfo.customerFirstName} ${middleName} ${lastName}`.trim().toUpperCase(),
+      customerMiddleName: middleName,
+      customerLastName: lastName,
+    });
+  }
+
+  const nameOnCardVisible = customerInfo.customerFullName.length <= NAME_ON_CARD_LENGTH && fathersNameArr.length > 0;
+  const { nameOnCard, nameOnCardDD } = personalDetails;
+  globals.functions.setProperty(nameOnCard, { visible: nameOnCardVisible });
+  globals.functions.setProperty(nameOnCardDD, { visible: !nameOnCardVisible });
+
+  CURRENT_FORM_CONTEXT.editFlags.nameOnCard = nameOnCardVisible;
 
   if (nameOnCardVisible) {
-    formUtil(globals, personalDetails.nameOnCard).setValue(customerFullName, { attrChange: true, value: false, disable: true });
+    formUtil(globals, nameOnCard).setValue(customerInfo.customerFullName, { attrChange: true, value: false, disable: true });
   } else {
-    const { customerFirstName, customerMiddleName, customerLastName } = customerInfo;
-    initializeNameOnCardDdOptions(
-      globals,
-      personalDetails,
-      customerFirstName,
-      middleName || customerMiddleName,
-      lastName || customerLastName,
-    );
+    initializeNameOnCardDdOptions(globals, personalDetails, customerInfo.customerFirstName, middleName || customerInfo.customerMiddleName, lastName || customerInfo.customerLastName);
   }
 };
 
@@ -313,4 +444,5 @@ export {
   branchCodeHandler,
   dobChangeHandler,
   fathersNameChangeHandler,
+  fullNameChangeHandler,
 };

@@ -27,8 +27,11 @@ const FD_ENDPOINTS = {
   masterchannel: 'https://applyonlineuat01.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.CHANNEL_MASTER.CHANNELS.json',
   dsamaster: 'https://applyonlineuat01.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.DSA_MASTER.DSA_CODE-',
   branchMaster: 'https://applyonlineuat01.hdfcbank.com/content/hdfc_ccforms/api/branchcode.',
+  executeInterface: '/content/hdfc_hafcards/api/hdfccardsexecuteinterface.json',
+  ipa: '/content/hdfc_hafcards/api/hdfccardsipa.json',
   hdfccardsgetrefidfdcc: '/content/hdfc_hafcards/api/hdfccardsgetrefidfdcc.json',
   hdfccardsgetfdeligibilitystatus: '/content/hdfc_hafcards/api/hdfccardsgetfdeligibilitystatus.json',
+  hdfccardsexecutefinaldap: '/content/hdfc_hafcards/api/hdfccardsexecutefinaldap.json',
 };
 
 const OTP_TIMER = 30;
@@ -37,6 +40,34 @@ const MODE = 'dev';
 const MAX_OTP_RESEND_COUNT = 3;
 const MAXIMUM_CREDIT_AMOUNT = 800000;
 const NAME_ON_CARD_LENGTH = 19;
+const MAX_ADDRESS_LENGTH = 90;
+const MIN_ADDRESS_LENGTH = 30;
+
+const IDCOM = {
+  productCode: 'CCPREISS',
+  scope: {
+    addressNotChanged: 'AACC_FDCC',
+    addressChanged: 'ADOBE_FDCC',
+  },
+};
+
+const DOM_ELEMENT = {
+  selectKyc: {
+    aadharModalContent: 'aadharConsentPopup',
+    modalBtnWrapper: 'button-wrapper',
+    defaultLanguage: 'English',
+  },
+};
+
+const GENDER_MAP = { Male: '1', Female: '2', Others: '3' };
+const OCCUPATION_MAP = {
+  salaried: '1',
+  'self employed': '2',
+  student: '3',
+  housewife: '4',
+  retired: '5',
+};
+const ALLOWED_CHARACTERS = '/ -,';
 
 export {
   JOURNEY_NAME,
@@ -49,4 +80,11 @@ export {
   MODE,
   MAXIMUM_CREDIT_AMOUNT,
   NAME_ON_CARD_LENGTH,
+  MAX_ADDRESS_LENGTH,
+  MIN_ADDRESS_LENGTH,
+  DOM_ELEMENT,
+  IDCOM,
+  GENDER_MAP,
+  OCCUPATION_MAP,
+  ALLOWED_CHARACTERS,
 };

@@ -1,13 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { FD_ENDPOINTS } from './constant.js';
-import { fetchJsonResponse } from '../../common/makeRestAPI.js';
+import { fetchJsonResponse, fetchRecursiveResponse } from '../../common/makeRestAPI.js';
 import { urlPath } from '../../common/formutils.js';
 
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
 
-const createPayload = (mobileNumber, panNumber, dateOfBirth) => {
+const createPayload = (mobileNumber, panNumber, dateOfBirth, jwtToken) => {
   const payload = {
     requestString: {
       mobileNumber,
@@ -15,6 +15,7 @@ const createPayload = (mobileNumber, panNumber, dateOfBirth) => {
       panNumber: panNumber ? panNumber.replace(/\s+/g, '') : '',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
+      jwtToken,
     },
   };
   return payload;
@@ -30,10 +31,14 @@ const createPayload = (mobileNumber, panNumber, dateOfBirth) => {
  * @param {Object} globals
  * @returns {Promise<Object>} A promise that resolves to the JSON response of the customer account details.
  */
-const fetchCustomerId = (mobileNumber, pan, dob, response, globals) => {
-  const payload = createPayload(mobileNumber, pan, dob, globals);
+const fetchCustomerId = (mobileNumber, pan, dob, response) => {
+  const payload = createPayload(mobileNumber, pan, dob, response?.jwtToken);
   payload.requestString.referenceNumber = response.referenceNo;
-  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus), payload, 'POST');
+  const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus);
+  const duration = 50;
+  const timer = 10;
+  const fieldName = ['fdEligibilityStatusResponse', 'status'];
+  return fetchRecursiveResponse('customerId', apiEndPoint, payload, 'POST', duration, timer, fieldName, true);
 };
 
 /**
@@ -42,12 +47,12 @@ const fetchCustomerId = (mobileNumber, pan, dob, response, globals) => {
  * @param {string} mobileNumber
  * @param {string} pan
  * @param {string} dob
- * @param {Object} globals
+ * @param {string} jwtToken
  * @returns {Promise<Object>}
  */
-const fetchReferenceId = (mobileNumber, pan, dob, globals) => {
-  const payload = createPayload(mobileNumber, pan, dob, globals);
-  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetrefidfdcc), payload, 'POST');
+const fetchReferenceId = (mobileNumber, pan, dob, jwtToken) => {
+  const payload = createPayload(mobileNumber, pan, dob, jwtToken);
+  return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetrefidfdcc), payload, 'POST', false);
 };
 
 const updateData = (globals, customerData, panel) => {
@@ -65,19 +70,22 @@ const updateData = (globals, customerData, panel) => {
 const customerIdSuccessHandler = (payload, globals) => {
   const customerData = payload?.responseString?.customerDetailsDTO;
   if (!customerData?.length) return;
-
   CURRENT_FORM_CONTEXT.customerInfo = payload?.responseString;
+  if (customerData?.length === 1) {
+    const [selectedCustId] = customerData;
+    SELECTED_CUSTOMER_ID.selectedCustId = selectedCustId;
+  } else {
+    const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
 
-  const panel = globals.form.multipleCustIDPanel.multipleCustIDSelectionPanel.multipleCustIDRepeatable;
-
-  customerData.forEach((custItem, i) => {
-    if (i < customerData.length - 1) {
-      globals.functions.dispatchEvent(panel, 'addItem');
-    }
-    setTimeout(() => {
-      updateData(globals, custItem, panel[i]);
-    }, i * 40);
-  });
+    customerData.forEach((custItem, i) => {
+      if (i < customerData.length - 1) {
+        globals.functions.dispatchEvent(panel, 'addItem');
+      }
+      setTimeout(() => {
+        updateData(globals, custItem, panel[i]);
+      }, i * 40);
+    });
+  }
 };
 
 /**

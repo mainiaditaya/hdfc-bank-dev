@@ -166,6 +166,67 @@ const chainedFetchAsyncCall = async (apiUrl, method, payloadArray, payloadType) 
   return fileResponses;
 };
 
+const fetchRecursiveResponse = async (
+  source,
+  url,
+  payload,
+  method,
+  duration,
+  timer,
+  fieldName,
+  loader = false,
+  startTime = Date.now(),
+) => {
+  const getFieldValue = (obj, fieldArray) => fieldArray.reduce((acc, curr) => (acc && acc[curr] !== undefined ? acc[curr] : undefined), obj);
+
+  try {
+    const res = await fetch(url, {
+      method,
+      body: payload ? JSON.stringify(payload) : null,
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain',
+        Accept: 'application/json',
+      },
+    });
+    const response = await res.json();
+    const fieldValue = getFieldValue(response, fieldName);
+    switch (source) {
+      case 'ipa':
+        if ((fieldValue && fieldValue !== '' && fieldValue !== 'null' && fieldValue !== 'undefined' && fieldValue?.length !== 0)) {
+          if (loader) hideLoaderGif();
+          return response;
+        }
+        break;
+      case 'customerId':
+        if (fieldValue === 'SUCCESS' || fieldValue === 'FAILURE') {
+          if (loader) hideLoaderGif();
+          return response;
+        }
+        break;
+      default:
+    }
+
+    const elapsedTime = (Date.now() - startTime) / 1000;
+    if (elapsedTime >= duration) {
+      if (loader) hideLoaderGif();
+      return response;
+    }
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, timer * 1000);
+    });
+
+    return await fetchRecursiveResponse(source, url, payload, method, duration, timer, fieldName, loader, startTime);
+  } catch (error) {
+    if (loader) hideLoaderGif();
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+};
+
 export {
   restAPICall,
   getJsonResponse,
@@ -174,4 +235,5 @@ export {
   fetchJsonResponse,
   fetchIPAResponse,
   chainedFetchAsyncCall,
+  fetchRecursiveResponse,
 };
