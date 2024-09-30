@@ -22,6 +22,8 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
       globals.functions.setProperty(docUploadFlow, { visible: true });
       globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: CURRENT_FORM_CONTEXT.customerIdentityChange });
       globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: true });
+      globals.functions.setProperty(docUploadFlow.docUploadConfirm, { visible: true });
+      globals.functions.setProperty(docUploadFlow.docUploadBiometric, { visible: false });
       CURRENT_FORM_CONTEXT.identityDocUploadFlag = true;
       CURRENT_FORM_CONTEXT.addressDocUploadFlag = !!CURRENT_FORM_CONTEXT?.customerIdentityChange;
       break;
