@@ -10,7 +10,10 @@ import { IPA_RESPONSE } from './ipautil.js';
 
 const createExecuteInterfaceRequest = (source, globals) => {
   const {
-    customerInfo, journeyID, customerAddress,
+    customerInfo,
+    journeyID,
+    customerAddress,
+    permanentAddress,
   } = CURRENT_FORM_CONTEXT;
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const {
@@ -31,7 +34,10 @@ const createExecuteInterfaceRequest = (source, globals) => {
   }
 
   let communicationAddress = getAddress(customerAddress);
-  const permanentAddress = getAddress(customerAddress);
+  let customerPermanentAddress = getAddress(customerAddress);
+  if (CURRENT_FORM_CONTEXT?.perAddExist) {
+    customerPermanentAddress = getAddress(permanentAddress);
+  }
 
   if (addressEditFlag) {
     const newAddressPanel = addressDetails.newCurentAddressPanel;
@@ -116,12 +122,12 @@ const createExecuteInterfaceRequest = (source, globals) => {
       panCheckFlag: 'Y',
       panEditFlag: customerInfo?.refCustItNum ? 'N' : 'Y',
       panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),
-      permanentAddress1: permanentAddress?.line1,
-      permanentAddress2: permanentAddress?.line2,
-      permanentAddress3: permanentAddress?.line3,
-      permanentCity: permanentAddress?.city,
-      permanentState: permanentAddress?.state,
-      permanentZipCode: permanentAddress?.zip,
+      permanentAddress1: customerPermanentAddress?.line1,
+      permanentAddress2: customerPermanentAddress?.line2,
+      permanentAddress3: customerPermanentAddress?.line3,
+      permanentCity: customerPermanentAddress?.city,
+      permanentState: customerPermanentAddress?.state,
+      permanentZipCode: customerPermanentAddress?.zip,
       perAddressType: '2',
       perfiosTxnID: '',
       personalEmailId: personalDetails?.emailID.$value,
