@@ -44,7 +44,8 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstNa
  * @returns {Promise<Object>} - A promise that resolves with the JSON response from the provided URL.
  */
 const bindEmployeeAssistanceField = async (globals) => {
-  const { employeeAssistancePanel, employeeAssistanceToggle, inPersonBioKYCPanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  const { resultPanel, fdBasedCreditCardWizard } = globals.form;
+  const { employeeAssistancePanel, employeeAssistanceToggle, inPersonBioKYCPanel } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
   const defaultChannel = getUrlParamCaseInsensitive('channel');
   const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC');
   const codes = {
@@ -62,17 +63,22 @@ const bindEmployeeAssistanceField = async (globals) => {
     }
     if (inPersonBioKYC?.toLowerCase() === 'yes') {
       globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
+      globals.functions.setProperty(inPersonBioKYCPanel.inPersonBioKYCOptions, { value: 0 });
     }
     const response = await getJsonResponse(FD_ENDPOINTS.masterchannel, null, 'GET');
     if (!response) return;
-
+    if (response?.[0].errorCode === '500') {
+      globals.functions.setProperty(resultPanel, { visible: true });
+      globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
+      globals.functions.setProperty(resultPanel.errorResultPanel, { visible: true });
+    }
     const dropDownSelectField = employeeAssistancePanel.channel;
     const channelOptions = ['Website Download'];
     const options = channelOptions.map((channel) => ({ label: channel, value: channel }));
     let matchedChannel = options[0].value;
     response.forEach((item) => {
-      const channel = item.CHANNELS;
-      const normalizedChannel = channel.toLowerCase();
+      const channel = item?.CHANNELS;
+      const normalizedChannel = channel?.toLowerCase();
       if (!channelOptions.some((opt) => opt.toLowerCase() === normalizedChannel)) {
         options.push({ label: channel, value: channel });
         channelOptions.push(channel);
