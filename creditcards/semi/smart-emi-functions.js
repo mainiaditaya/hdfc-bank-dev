@@ -69,11 +69,12 @@ currentFormContext.journeyID = generateJourneyId('a', 'b', 'c');
 currentFormContext.totalSelect = 0;
 currentFormContext.billed = 0;
 currentFormContext.unbilled = 0;
-currentFormContext.billedMaxSelect = 0;
+currentFormContext.tadMinusMadValue = 0;
 currentFormContext.txnSelectExceedLimit = 1000000; // ten lakhs txn's select exceeding limit
 let tnxPopupAlertOnce = 0; // flag alert for the pop to show only once on click of continue
 let resendOtpCount = 0;
 let resendOtpCount2 = 0;
+const userPrevSelect = {};
 
 function getCurrentFormContext(globals) {
   if (isNodeEnv) {
@@ -262,7 +263,7 @@ const cardDisplay = (globals, response) => {
   imageEl?.childNodes[1].setAttribute('srcset', imagePath);
 };
 
-const DELAY = 100;
+const DELAY = 0;
 const DELTA_DELAY = 120;
 
 // Special handling for whatsapp flow, can be removed once proper fix is done
@@ -359,7 +360,7 @@ function checkELigibilityHandler(resPayload1, globals) {
   const response = {};
   try {
     /* billed txn maximum amount select limt */
-    currentFormContext.billedMaxSelect = ((parseFloat(resPayload.blockCode.tad) / 100) - (parseFloat(resPayload.blockCode.mad) / 100));
+    currentFormContext.tadMinusMadValue = ((parseFloat(resPayload.blockCode.tad) / 100) - (parseFloat(resPayload.blockCode.mad) / 100));
     /* continue btn disabling code added temorary, can be removed after form authoring */
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnSelectionContinue, { enabled: false });
     let ccBilledData = resPayload?.ccBilledTxnResponse?.responseString || [];
@@ -538,6 +539,7 @@ const tenureDisplay = (globals) => {
   const TOTAL_AMT_IN_WORDS = `${numberToText(totalAmountOfTxn)}`;
   /* set the total amount in hidden field - thank u scrren */
   globals.functions.setProperty(globals.form.aem_semiWizard.aem_success.aem_hiddenTotalAmt, { value: DISPLAY_TOTAL_AMT });
+  /* hidden fields to set for reports */
   /* display amount */
   globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: LABEL_AMT_SELCTED });
   globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_outStandingLabel, { value: DISPLAY_TOTAL_AMT });
@@ -607,13 +609,22 @@ function sortData(txnType, orderBy, globals) {
     ...item,
     aem_TxnAmt: (currencyStrToNum(item?.aem_TxnAmt)),
   }));
-  mapSortedDat?.forEach((_data, i) => {
-    const data = {
-      ..._data,
-      type: txnType,
-    };
-    setData(globals, pannel, data, i);
-  });
+  try {
+    mapSortedDat?.forEach((_data, i) => {
+      const data = {
+        ..._data,
+        type: txnType,
+      };
+      const delay = DELAY + (DELTA_DELAY * i);
+      setTimeout(() => {
+        setData(globals, pannel, data, i);
+      }, delay);
+    });
+    userPrevSelect.prevTxnType = 'SORT_BY';
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error, 'sortEr');
+  }
   setTimeout(() => {
     isUserSelection = !isUserSelection;
   }, 1000);
@@ -651,6 +662,66 @@ const enableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => glob
 const disableAllTxnFields = (txnList, globals) => txnList?.forEach((list) => globals.functions.setProperty(list.aem_Txn_checkBox, { enabled: (list.aem_Txn_checkBox.$value === 'on') }));
 
 /**
+ * function will be triggered on click of ok button of tag/mad alert
+ * Unselect the previous checkbox value if it reaches the tad/ mad calculation.
+ * @param {object} globals - global form object.
+ */
+const handleTadMadAlert = (globals) => {
+  const prevSelectedRowData = userPrevSelect.txnRowData;
+  if (userPrevSelect.prevTxnType === 'SELECT_TOP') {
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: false });
+    const billedList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+    const mapBiledList = billedList?.map((el) => ({ checkVal: el.aem_Txn_checkBox.$value, amtVal: (Number(String(el.aem_TxnAmt.$value).replace(/[^\d]/g, '')) / 100), id: el.aem_TxnID.$value }));
+    let billedTotal = currentFormContext.sumOfbilledTxnOnly;
+    const trackLastIndex = [];
+    // eslint-disable-next-line no-plusplus
+    for (let i = mapBiledList.length - 1; i >= 0; i--) {
+      const prev = mapBiledList[i];
+      billedTotal -= prev.amtVal;
+      if (billedTotal < currentFormContext.tadMinusMadValue) {
+        trackLastIndex.push(i);
+        break; // Exit the loop
+      } else {
+        trackLastIndex.push(i);
+      }
+    }
+    trackLastIndex?.forEach((selectedIndex) => globals.functions.setProperty(billedList[selectedIndex].aem_Txn_checkBox, { value: undefined }));
+    userPrevSelect.prevTxnType = null;
+    return;
+  }
+  const BILLED_FRAG = 'billedTxnFragment';
+  const UNBILLED_FRAG = 'unbilledTxnFragment';
+  const TXN_FRAG = (userPrevSelect.prevTxnType === 'BILLED') ? BILLED_FRAG : UNBILLED_FRAG;
+
+  const txnList = globals.form.aem_semiWizard.aem_chooseTransactions[`${TXN_FRAG}`].aem_chooseTransactions.aem_TxnsList;
+  if (currentFormContext.sumOfbilledTxnOnly > currentFormContext.tadMinusMadValue) {
+    const txnArrayList = txnList?.map((el) => ({ checkVal: el.aem_Txn_checkBox.$value, amtVal: el.aem_TxnAmt.$value, id: el.aem_TxnID.$value }));
+    const findExactSelect = txnList?.find((el) => (prevSelectedRowData?.txnAmt === el.aem_TxnAmt.$value) && (prevSelectedRowData?.txnDate === el.aem_TxnDate.$value) && (prevSelectedRowData?.txnId === el.aem_TxnID.$value) && (prevSelectedRowData?.txnType === el.aem_txn_type.$value));
+    const indexOfPrevSelect = txnArrayList.findIndex((el) => el.id === findExactSelect.aem_TxnID.$value);
+    globals.functions.setProperty(txnList[indexOfPrevSelect].aem_Txn_checkBox, { value: undefined });
+  }
+};
+
+/**
+ * getSelectedCount
+ * get the total count of txn selected both billed and unbilled.
+ * @param {object} globals - global form object.
+ * @returns {object} - returns selectedbilledCount, selectedUnbilledCount, totallySelectedCount
+ */
+const getSelectedCount = (globals) => {
+  const billedData = globals.functions.exportData().smartemi.aem_billedTxn.aem_billedTxnSelection;
+  const unbilledData = globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection;
+  const totalSelectCount = billedData.concat(unbilledData).filter((el) => el.aem_Txn_checkBox).length;
+  const billedSelectCount = billedData.filter((el) => el.aem_Txn_checkBox)?.length;
+  const unBilledSelectCount = unbilledData.filter((el) => el.aem_Txn_checkBox)?.length;
+  return ({
+    billed: billedSelectCount,
+    unBilled: unBilledSelectCount,
+    total: totalSelectCount,
+  });
+};
+
+/**
 * function to update number of transaction selected.
 * @param {string} checkboxVal
 * @param {number} amount
@@ -663,11 +734,23 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
   /* enable-popup once it reaches BILLED-MAX-AMT-LIMIT */
   const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
+  const MAX_SELECT = 10;
+  const BILLED_FRAG = 'billedTxnFragment';
+  const UNBILLED_FRAG = 'unbilledTxnFragment';
+  const TXN_FRAG = txnType === 'BILLED' ? BILLED_FRAG : UNBILLED_FRAG;
+  const COUNT = getSelectedCount(globals);
+  const txnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
+  const SELECTED = `${(txnType === 'BILLED') ? COUNT?.billed : COUNT?.unBilled} Selected`;
   const totalSelectBilledTxnAmt = getTotalAmount(globals);
-  if (totalSelectBilledTxnAmt) {
+  currentFormContext.totalSelectBilledTxnAmt = totalSelectBilledTxnAmt;
+  /* popup alert hanldles for the tad-mad values */
+  const sumOfbilledTxnOnly = billedTxnList?.filter((el) => el.aem_Txn_checkBox.$value)?.reduce((acc, prev) => (acc + Number(String(prev.aem_TxnAmt.$value).replace(/[^\d]/g, '') / 100)), 0);
+  currentFormContext.sumOfbilledTxnOnly = sumOfbilledTxnOnly;
+  if (sumOfbilledTxnOnly) {
     /* popup alert hanldles */
-    if (totalSelectBilledTxnAmt > currentFormContext.billedMaxSelect) {
-      const SELECTED_MAX_BILL = ` Please select Billed Transactions Amount Max up to Rs.${nfObject.format(currentFormContext.billedMaxSelect)}`;
+    const selectedTotalTxn = globals.functions.exportData().smartemi.aem_billedTxn.aem_billedTxnSelection.filter((el) => el.aem_Txn_checkBox).length + globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection.filter((el) => el.aem_Txn_checkBox).length;
+    if (sumOfbilledTxnOnly > currentFormContext.tadMinusMadValue) {
+      const SELECTED_MAX_BILL = ` Please select Billed Transactions Amount Max up to Rs.${nfObject.format(currentFormContext.tadMinusMadValue)}`;
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup, { visible: true });
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: SELECTED_MAX_BILL });
@@ -675,9 +758,33 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
       /* disabling selected fields in case disabled */
       disableAllTxnFields(unbilledTxnList, globals);
       disableAllTxnFields(billedTxnList, globals);
+      currentFormContext.totalSelect = COUNT?.total;
+      userPrevSelect.txnRowData = {
+        txnCheck: checkboxVal,
+        txnAmt: amount,
+        txnId: ID,
+        txnDate: date,
+        txnType,
+      };
+      if (userPrevSelect.prevTxnType === 'SELECT_TOP') {
+        userPrevSelect.prevTxnType = 'SELECT_TOP';
+      } else {
+        userPrevSelect.prevTxnType = txnType;
+      }
+      const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${MAX_SELECT}`;
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });// total no of select billed or unbilled txn list
+      globals.functions.setProperty(txnSelected, { value: SELECTED }); // set number of select in billed or unbilled txn list
       return;
     }
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnSelectionContinue, { enabled: true });
+    /* enabling selected fields in case disabled */
+    enableAllTxnFields(unbilledTxnList, globals);
+    enableAllTxnFields(billedTxnList, globals);
+    currentFormContext.totalSelect = selectedTotalTxn;
+    const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${MAX_SELECT}`;
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });// total no of select billed or unbilled txn list
+    globals.functions.setProperty(txnSelected, { value: SELECTED }); // set number of select in billed or unbilled txn list
+    // return;
   }
 
   /* enable alert message if the user exceed selecting the txn above 10 laksh. */
@@ -692,27 +799,12 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
   }
   // null || ON
   if (selectTopTenFlag || isUserSelection) return;
-  const MAX_SELECT = 10;
-  const BILLED_FRAG = 'billedTxnFragment';
-  const UNBILLED_FRAG = 'unbilledTxnFragment';
-  const TXN_FRAG = txnType === 'BILLED' ? BILLED_FRAG : UNBILLED_FRAG;
-
-  const txnList = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_TxnsList;
-  const txnSelected = globals.form.aem_semiWizard.aem_chooseTransactions?.[`${TXN_FRAG}`].aem_chooseTransactions.aem_txnHeaderPanel.aem_txnSelected;
-  const selectedList = txnList?.filter((el) => (el.aem_Txn_checkBox.$value === 'on'));
-  const SELECTED = `${selectedList?.length} Selected`;
   globals.functions.setProperty(txnSelected, { value: SELECTED }); // set number of select in billed or unbilled txn list
-  if ((checkboxVal === 'on') && ((txnType === 'BILLED') || (txnType === 'UNBILLED'))) {
-    currentFormContext.totalSelect += 1;
-  } else if ((currentFormContext.totalSelect > 0)) {
-    currentFormContext.totalSelect -= 1;
-  }
+  currentFormContext.totalSelect = COUNT?.total;
   const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${MAX_SELECT}`;
-
   if ((currentFormContext.totalSelect <= MAX_SELECT)) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });// total no of select billed or unbilled txn list
   }
-
   if (currentFormContext.totalSelect < MAX_SELECT) {
     /* enabling selected fields in case disabled */
     enableAllTxnFields(unbilledTxnList, globals);
@@ -765,6 +857,7 @@ const semiWizardSwitch = (source, target, current, globals) => {
  */
 function selectTopTxn(globals) {
   selectTopTenFlag = !selectTopTenFlag;
+  userPrevSelect.prevTxnType = 'SELECT_TOP';
   const SELECT_TOP_TXN_LIMIT = 10;
   const resPayload = currentFormContext.EligibilityResponse;
   const billedResData = resPayload?.ccBilledTxnResponse?.responseString;
@@ -1126,4 +1219,5 @@ export {
   invokeJourneyDropOff,
   invokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
+  handleTadMadAlert,
 };
