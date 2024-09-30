@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: https://15.207.52.246/bin/franklin.delivery/aemsites/hdfc-bank-prod/main
+    url: http://15.207.52.246:4502/bin/franklin.delivery/aemsites/hdfc-bank-prod/main
     type: "markup"
     suffix: ".html"
