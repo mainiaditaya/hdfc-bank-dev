@@ -167,7 +167,6 @@ main {
       }
   }
   
-  
   .fdlien header>.cmp-container,
   .fdlien header>.cmp-container div:nth-child(1) {
     max-width: 1160px;
@@ -202,6 +201,10 @@ main {
   
   .fdlien:has(.section.cmp-container-container) .section.cmp-container-container {
     display: none !important;
+  }
+
+  body.fdlien:has(.field-selectkycoptionspanel[data-visible="true"]), body.fdlien:has(.field-selectkycoptionspanel[data-visible="true"]) main {
+    background: var(--color-interface-background-primary);
   }
   
   .fdlien:has(.section.form-container) .section.form-container {
@@ -534,6 +537,10 @@ main {
       .field-resultpanel {
         background: var(--color-interface-background-primary);
       }
+
+      .field-errorresultpanel:has(.field-ntberrorpage) .field-errresdealerpanel {
+        margin: -160px auto 0;
+      }
   
       .field-errorresultpanel {
           .field-errormessagetext {
@@ -581,6 +588,12 @@ main {
               font-size: var(--body-fd-xxx-lg-font-size);
               font-weight: var(--font-weight-bold);
               line-height: var(--font-linehight-x-large);
+          }
+
+          .field-ntberrorpage {
+              position: relative;
+              right: -30%;
+              top: -100%;
           }
   
           .field-errresdealerpanel {
@@ -861,6 +874,18 @@ main {
                     font-weight: var(--font-weight-regular);
                     color: var(--color-interface-background-primary);
                 }                
+            }
+
+            .field-tqbannertext3bio {
+                margin: -165px 0 0;
+                padding: 0 0 0 5px;
+                text-wrap: nowrap;
+
+                p {
+                    font-size: var(--body-fd-xx-lg-font-size);
+                    font-weight: var(--font-weight-regular);
+                    color: var(--color-interface-background-primary);
+                }
             }
 
             .field-vkycconfirmationpanel {
@@ -1199,14 +1224,14 @@ main {
                         background: var(--color-interface-feedback-notlikelyrating) !important;
                     }
 
-                    &:nth-of-type(8) button.active {
+                    &:nth-of-type(8) button.active,  &:nth-of-type(9) button.active {
                         color: var(--color-interface-background-primary);
                         border-radius: 5px;
                         transform: scaleY(1.2);
                         background: var(--color-interface-feedback-mayberating) !important;
                     }
 
-                    &:nth-of-type(10) button.active {
+                    &:nth-of-type(10) button.active, &:nth-of-type(11) button.active {
                         color: var(--color-interface-background-primary);
                         border-radius: 5px;
                         transform: scaleY(1.2);
@@ -1555,12 +1580,20 @@ main {
               margin-top: -45px;
   
               .field-selectallfdbutton {
+                  margin-top: 2px;
+
                   button {
                       &:hover {
                           background: none !important;
                       }
                   }
               }
+
+              .field-selectedfdnum {  
+                  input[type="number"] {
+                    text-align: right;
+                  }
+                }
   
               .field-selectedfdnum, .field-selectedfdnummax {
                   width: 0;
@@ -1587,16 +1620,24 @@ main {
 
               .field-selectedfdnummax {
                 input[type="number"] {
-                    margin-left: -16px;
+                    margin-left: -24px;
+                    text-align: left;
                 }
               }
   
               .field-selectedfdbreak {
-                  margin-top: 10px;
+                  margin: 18px 0 0 2px;
                   width: 10px;
+
+                  p {
+                    font-size: var(--body-x-sm-font-size);
+                  }
+                  
               }
   
               .field-selectedfdselected {
+                  margin-left: -10px;
+
                   p { 
                       margin: 14px 0 0 -5px !important; 
                       color: var(--color-input-text-primary);
@@ -1836,8 +1877,14 @@ main {
             }
 
             .radio-wrapper { 
-            width: fit-content; 
-            padding-right: 20px; 
+                width: fit-content; 
+                padding-right: 20px; 
+            }
+          }
+
+          .field-inpersonbiokycoptions {
+            label {
+                margin-top: 10px;
             }
           }
   
@@ -1919,7 +1966,11 @@ main {
                   font-weight: var(--font-weight-regular);
               }
   
-              textarea { margin: 0; }
+              textarea { 
+                margin: 0; 
+                height: auto !important;
+                overflow: hidden;
+              }
   
               .field-addressdetailshelptag {
                   width: fit-content;
@@ -2828,7 +2879,8 @@ main {
       textarea {
           /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
           font-family: Inter;
-          min-height: 65px !important;
+
+          /* min-height: 65px !important; */
           resize: none;
       }
   
@@ -3061,6 +3113,10 @@ main {
                   .field-selectallfdbutton {
                       margin-top: 0 !important;
                   }
+
+                  .field-selectedfdnum {
+                    margin-right: 15px;
+                }
               }
             }
   
@@ -3210,12 +3266,17 @@ main {
           padding: 30px 250px 80px 20px !important;
               text-align: left !important;
       }
+
+      .field-ntberrorpage {
+          right: -24% !important;
+          top: -147% !important;
+      }
     }
 
     .field-successresultpanel {
         .field-tqbannertext1:has(p) {
             text-align: left;
-            padding: 80px 300px 170px 10px !important;
+            padding: 60px 300px 170px 10px !important;
             margin: -12px 0 0;
             border-radius: 0;
             line-height: 22px !important;
@@ -3235,6 +3296,13 @@ main {
                 line-height: var(--font-linehight-medium) !important;
                 margin-top: 10px !important;
             }                
+        }
+
+        .field-tqbannertext3bio {
+            margin: -130px 0 0 !important;
+            text-wrap: wrap !important;
+            padding:  0 0 0 10px !important;
+            text-align: left !important;
         }
 
         .field-vkycconfirmationpanel {
@@ -3272,7 +3340,7 @@ main {
         }
 
         .field-refnumpanel {
-            margin: -70px 20px 0 !important;
+            margin: -90px 20px 0 !important;
             width: 95% !important;
             background: var(--color-interface-background-primary);
             border: 1px solid var(--color-interface-border-secondary);
@@ -3383,6 +3451,10 @@ main {
               }
             } 
 
+            .field-errorresultpanel:has(.field-ntberrorpage) .field-errresdealerpanel {
+                margin: -120px auto 0 !important;
+            }
+
             .field-errorresultpanel {
                 .field-errormessagetext p{
                     font-size: var(--font-linehight-m-large) !important;
@@ -3403,6 +3475,13 @@ main {
                 
                 .field-errresdealerpanel {
                    margin: -80px auto 0 !important;
+                }
+
+                .field-ntberrorpage {
+                    right: 0% !important;
+                    width: 90%;
+                    margin: 0 auto;
+                    top: 150px;
                 }
             
                 .button-wrapper:nth-child(5) {
@@ -3582,6 +3661,10 @@ main {
                     .field-selectallfdbutton {
                         margin-top: 0 !important;
                     }
+
+                    .field-selectedfdnum {
+                        margin-right: 15px;
+                    }
                 }
 
                 .field-fdnumberselection {
@@ -3645,6 +3728,12 @@ main {
                     padding-bottom: 20px !important;
                 }
             }
+
+            .field-addressdetails {
+                .field-mailingaddresslabel p, .field-currentmailingaddresslabel p {
+                    margin: 0 0 0 5px !important;
+                }
+            }
         }
 
        .field-fdselectioninfo .field-customername label, .field-fdselectioninfo .field-customername input,
@@ -3658,7 +3747,7 @@ main {
 
                 .repeat-wrapper {
                     overflow-x: scroll !important;
-                    width: 95%;
+                    width: 60%;
 
                     .field-cardselection-display {
                         margin-top: 5px !important;
@@ -3676,30 +3765,30 @@ main {
             }
 
             .field-selectcardtnc {
-                width: 27%;
+                width: 55%;
 
                 .field-confirmcardtnc1 {
                     .field-description {
-                        top: 85px !important;
+                        top: 105px !important;
                     }                    
                 }
 
                 .field-confirmcardtnc2 {
                     .field-description {
-                        top: 150px !important;
+                        top: 170px !important;
                     }                    
                 }
 
                 .field-confirmcardtnc3 {
                     .field-description {
-                        top: 190px !important;
+                        top: 213px !important;
                         left: 35px !important;
                     }                    
                 }
             }
 
             .field-selectidentifier {
-                width: 27%;
+                width: 55%;
             }
         }
     }   
@@ -3712,10 +3801,8 @@ main {
         .field-feessinglecard {
             margin-top: 0 !important;
         }    
-    }
+    }   
 
-    
-  
     .fdlien .field-selectkycoptionspanel div[class*='field-identityverificationtext'] { margin-top: 0 !important; }
 
     .fdlien .field-addressdeclarationpanel { padding: 20px;
@@ -3796,7 +3883,7 @@ main {
         }
 
         .field-tqbannertext2 {
-            margin: -140px 0 0 !important;
+            margin: -150px 0 0 !important;
             padding: 0 0 0 9px !important;
             text-wrap: wrap !important;
             text-align: left !important;
@@ -3805,6 +3892,17 @@ main {
                 color: var(--color-interface-border-secondary) !important;
                 line-height: var(--font-linehight-medium) !important;
             }                
+        }
+
+        .field-tqbannertext3bio {
+            margin: 0 !important;
+            text-wrap: wrap !important;
+            text-align: left !important;
+
+            p {
+                color: var(--color-interface-border-secondary) !important;
+                line-height: var(--font-linehight-medium) !important;
+            }  
         }
 
         .field-vkycconfirmationpanel {
