@@ -28,6 +28,20 @@ const {
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
 const { JOURNEY_NAME: journeyNameConstant } = CC_CONSTANT;
+
+/**
+  * @name isValidJson
+  * @param {string} str
+  */
+function isValidJson(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 /**
  * Detects the operating system of the user's device.
  *
@@ -200,7 +214,11 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
   };
 
   const path = urlPath(ENDPOINTS.aadharInit);
-  const response = fetchJsonResponse(path, btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj)))), 'POST');
+  let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
+  if (!isValidJson) {
+    finalPayload = btoa((encodeURIComponent(JSON.stringify(jsonObj))));
+  }
+  const response = fetchJsonResponse(path, finalPayload, 'POST');
   response
     .then((res) => {
       // var aadharValidationForm = "<form action=" + res.RedirectUrl + " method='post'></form>";
