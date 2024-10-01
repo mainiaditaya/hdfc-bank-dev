@@ -686,7 +686,33 @@ const handleTadMadAlert = (globals) => {
       }
     }
     trackLastIndex?.forEach((selectedIndex) => globals.functions.setProperty(billedList[selectedIndex].aem_Txn_checkBox, { value: undefined }));
-    userPrevSelect.prevTxnType = null;
+    /* Select Top Ten Handling - After unchecking the billed items based on the TAD-MAD value, if the user has selected 'Top Ten',
+     the 'Select Top Ten' functionality should apply to the remaining available unbilled transaction list */
+    const billedSelected = billedList.length - trackLastIndex.length;
+    const availableToSelectInUnbilled = userPrevSelect.txnAvailableToSelectInTopTen - billedSelected;
+    if (availableToSelectInUnbilled) {
+      const unbilledSortByAmt = sortDataByAmount(globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection);
+      const unbilledAvailableToselect = unbilledSortByAmt?.slice(0, availableToSelectInUnbilled);
+      const unbilledPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
+      // const billedPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+      try {
+        if ((availableToSelectInUnbilled + billedSelected) === DATA_LIMITS.totalSelectLimit) { // selected top ten
+          userPrevSelect.selectedTopTenMax = true;
+          [unbilledPanel, unbilledPanel]?.forEach((pannel) => {
+            pannel?.forEach((txnList) => globals.functions.setProperty(txnList.aem_Txn_checkBox, { enabled: false, value: undefined }));
+          });
+        }
+        unbilledAvailableToselect?.forEach((item) => {
+          const findAllAmtMatch = unbilledPanel.filter((el) => (el.aem_TxnAmt.$value === item.aem_TxnAmt) && ((el.aem_TxnDate.$value === item.aem_TxnDate) && (el.aem_TxnName.$value === item.aem_TxnName) && (el.logicMod.$value === item.logicMod) && (el.aem_TxnID.$value === item.aem_TxnID)));
+          findAllAmtMatch?.forEach((matchedAmt) => globals.functions.setProperty(matchedAmt.aem_Txn_checkBox, { value: 'on', enabled: true }));
+        });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+      userPrevSelect.prevTxnType = null;
+    }
+    /* */
     return;
   }
   const BILLED_FRAG = 'billedTxnFragment';
@@ -770,6 +796,7 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
         userPrevSelect.prevTxnType = 'SELECT_TOP';
       } else {
         userPrevSelect.prevTxnType = txnType;
+        userPrevSelect.selectedTopTenMax = false;
       }
       const TOTAL_SELECT = `Total selected ${currentFormContext.totalSelect}/${MAX_SELECT}`;
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });// total no of select billed or unbilled txn list
@@ -810,7 +837,7 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
     enableAllTxnFields(unbilledTxnList, globals);
     enableAllTxnFields(billedTxnList, globals);
   }
-  if ((currentFormContext.totalSelect === MAX_SELECT)) {
+  if ((currentFormContext.totalSelect === MAX_SELECT) && (!userPrevSelect.selectedTopTenMax)) {
     /* popup alert hanldles */
     const CONFIRM_TXT = 'You can select up to 10 transactions at a time, but you can repeat the process to convert more transactions into SmartEMI.';
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
