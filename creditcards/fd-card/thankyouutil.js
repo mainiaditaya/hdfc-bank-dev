@@ -8,8 +8,7 @@ const finalPagePanelVisibility = (formStatus, arn, globals) => {
   globals.functions.setProperty(docUploadFlow, { visible: false });
   globals.functions.setProperty(resultPanel, { visible: true });
   if (formStatus === 'success') {
-    globals.functions.setProperty(successResultPanel.refNumPanel.referenceNumber, { value: arn });
-
+    globals.functions.setProperty(successResultPanel?.tqSuccessWrapper?.refNumPanel?.referenceNumber, { value: arn });
     globals.functions.setProperty(successResultPanel, { visible: true });
   } else {
     globals.functions.setProperty(errorResultPanel, { visible: true });
