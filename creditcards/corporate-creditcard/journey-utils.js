@@ -149,7 +149,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   const url = urlPath(ENDPOINTS.journeyDropOffUpdate);
   const method = 'POST';
   let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(journeyJSONObj))));
-  const decodedData = JSON.parse(decodeURIComponent(escape(atob(encodedData))));
+  const decodedData = JSON.parse(decodeURIComponent(escape(atob(finalPayload))));
   if (!isValidJson(decodedData)) {
     finalPayload = btoa((encodeURIComponent(JSON.stringify(journeyJSONObj))));
   }
