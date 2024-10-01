@@ -851,7 +851,10 @@ function checkMode(globals) {
     globals.functions.setProperty(globals.form.resultPanel.errorResultPanel, { visible: false });
     globals.functions.setProperty(globals.form.confirmResult, { visible: false });
     const userRedirected = true;
-    executeInterfacePostRedirect('idCom', userRedirected, globals);
+    setTimeout(() => {
+      executeInterfacePostRedirect('idCom', userRedirected, globals);
+    }, 1000);
+    
   }
   if (!formData.form.login.maskedMobileNumber) {
     globals.functions.setProperty(globals.form.loginPanel, { visible: false });
