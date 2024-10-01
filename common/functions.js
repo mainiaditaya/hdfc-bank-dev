@@ -213,16 +213,14 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
     },
   };
 
-  let response = '';
-  const path = urlPath(ENDPOINTS.aadharInit);
+  let path = urlPath(ENDPOINTS.aadharInit);
   let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
   const decodedData = decodeURIComponent(escape(atob(finalPayload)));
   if (!isValidJson(decodedData)) {
-    response = fetchJsonResponse('https://hdfc-dev-04.adobecqms.net/content/hdfc_haf/api/aadhaarInit.json', jsonObj, 'POST');
-  }else {
-    response = fetchJsonResponse(path, finalPayload, 'POST');
+    path = 'https://hdfc-dev-04.adobecqms.net/content/hdfc_haf/api/aadhaarInit.json'
   }
-  response && response
+  const response = fetchJsonResponse(path, jsonObj, 'POST');
+  response
     .then((res) => {
       // var aadharValidationForm = "<form action=" + res.RedirectUrl + " method='post'></form>";
       const aadharValidationForm = document.createElement('form');
