@@ -31,8 +31,9 @@ const createPayload = (mobileNumber, panNumber, dateOfBirth, jwtToken) => {
  * @param {Object} globals
  * @returns {Promise<Object>} A promise that resolves to the JSON response of the customer account details.
  */
-const fetchCustomerId = (mobileNumber, pan, dob, response) => {
-  const payload = createPayload(mobileNumber, pan, dob, response?.jwtToken);
+const fetchCustomerId = (mobileNumber, pan, dob, response, globals) => {
+  const dateOfBirth = globals?.form?.loginMainPanel?.loginPanel?.identifierPanel?.dateOfBirth?._data?.$_value || '';
+  const payload = createPayload(mobileNumber, pan, dateOfBirth, response?.jwtToken);
   payload.requestString.referenceNumber = response.referenceNo;
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsgetfdeligibilitystatus);
   const duration = 50;
@@ -50,8 +51,9 @@ const fetchCustomerId = (mobileNumber, pan, dob, response) => {
  * @param {string} jwtToken
  * @returns {Promise<Object>}
  */
-const fetchReferenceId = (mobileNumber, pan, dob, jwtToken) => {
-  const payload = createPayload(mobileNumber, pan, dob, jwtToken);
+const fetchReferenceId = (mobileNumber, pan, dob, jwtToken, globals) => {
+  const dateOfBirth = globals?.form?.loginMainPanel?.loginPanel?.identifierPanel?.dateOfBirth?._data?.$_value || '';
+  const payload = createPayload(mobileNumber, pan, dateOfBirth, jwtToken);
   return fetchJsonResponse(urlPath(FD_ENDPOINTS.hdfccardsgetrefidfdcc), payload, 'POST', false);
 };
 
