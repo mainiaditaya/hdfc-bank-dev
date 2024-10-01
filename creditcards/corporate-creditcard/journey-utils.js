@@ -14,6 +14,19 @@ const { ENDPOINTS, CHANNEL, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTAN
 const { JOURNEY_NAME } = CC_CONSTANT;
 
 /**
+  * @name isValidJson
+  * @param {string} str
+  */
+function isValidJson(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
    * generates the journeyId
    * @param {string} visitMode - The visit mode (e.g., "online", "offline").
    * @param {string} journeyAbbreviation - The abbreviation for the journey.
@@ -135,7 +148,11 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   // sendSubmitClickEvent(mobileNumber, linkName, sanitizedFormData);
   const url = urlPath(ENDPOINTS.journeyDropOffUpdate);
   const method = 'POST';
-  return fetchJsonResponse(url, btoa(unescape(encodeURIComponent(JSON.stringify(journeyJSONObj)))), method);
+  let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(journeyJSONObj))));
+  if (!isValidJson) {
+    finalPayload = btoa((encodeURIComponent(JSON.stringify(journeyJSONObj))));
+  }
+  return fetchJsonResponse(url, finalPayload, method);
 };
 
 /**
@@ -172,6 +189,7 @@ const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyI
   const method = 'POST';
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
+
 
 export {
   invokeJourneyDropOff,
