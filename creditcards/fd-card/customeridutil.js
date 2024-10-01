@@ -2,17 +2,17 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { FD_ENDPOINTS } from './constant.js';
 import { fetchJsonResponse, fetchRecursiveResponse } from '../../common/makeRestAPI.js';
-import { urlPath } from '../../common/formutils.js';
+import { dateFormat, urlPath } from '../../common/formutils.js';
 
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
 
-const createPayload = (mobileNumber, panNumber, dateOfBirth, jwtToken) => {
+const createPayload = (mobileNumber, panNumber, dob, jwtToken) => {
   const payload = {
     requestString: {
       mobileNumber,
-      dateOfBirth: dateOfBirth || '',
-      panNumber: panNumber ? panNumber.replace(/\s+/g, '') : '',
+      dateOfBirth: dob ? dateFormat(dob, 'YYYYMMDD') : '',
+      panNumber: panNumber ? panNumber?.replace(/\s+/g, '') : '',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
       jwtToken,
