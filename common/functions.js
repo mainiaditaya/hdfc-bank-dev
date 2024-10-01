@@ -215,7 +215,8 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
 
   const path = urlPath(ENDPOINTS.aadharInit);
   let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
-  if (!isValidJson(finalPayload)) {
+  const decodedData = decodeURIComponent(escape(atob(finalPayload)));
+  if (!isValidJson(decodedData)) {
     finalPayload = btoa((encodeURIComponent(JSON.stringify(jsonObj))));
   }
    const response = fetchJsonResponse(path, finalPayload, 'POST');
