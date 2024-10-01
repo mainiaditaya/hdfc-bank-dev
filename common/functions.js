@@ -214,7 +214,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
   };
 
   const path = urlPath(ENDPOINTS.aadharInit);
-  const response = fetchJsonResponse(path, btoa((encodeURIComponent(JSON.stringify(jsonObj)))), 'POST');
+  const response = fetchJsonResponse(path, jsonObj, 'POST');
   response
     .then((res) => {
       // var aadharValidationForm = "<form action=" + res.RedirectUrl + " method='post'></form>";
