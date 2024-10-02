@@ -697,7 +697,8 @@ const handleTadMadAlert = (globals) => {
 
     /* Select Top Ten Handling - After unchecking the billed items based on the TAD-MAD value, if the user has selected 'Top Ten',
      the 'Select Top Ten' functionality should apply to the remaining available unbilled transaction list */
-    const billedSelected = billedList.length - trackLastIndex.length;
+    const prevSelectedBilled = mapBiledSelected;
+    const billedSelected = prevSelectedBilled.length - trackLastIndex.length;
     const availableToSelectInUnbilled = userPrevSelect.txnAvailableToSelectInTopTen - billedSelected;
     if (availableToSelectInUnbilled) {
       const unbilledSortByAmt = sortDataByAmount(globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection);
