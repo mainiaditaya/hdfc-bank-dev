@@ -704,18 +704,20 @@ const handleTadMadAlert = (globals) => {
       const unbilledSortByAmt = sortDataByAmount(globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection);
       const unbilledAvailableToselect = unbilledSortByAmt?.slice(0, availableToSelectInUnbilled);
       const unbilledPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
-      // const billedPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
+      const billedPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
       try {
-        if ((availableToSelectInUnbilled + billedSelected) === DATA_LIMITS.totalSelectLimit) { // selected top ten
-          userPrevSelect.selectedTopTenMax = true;
-          // [billedPanel, unbilledPanel]?.forEach((pannel) => {
-          //   pannel?.forEach((txnList) => globals.functions.setProperty(txnList.aem_Txn_checkBox, { enabled: false }));
-          // });
-        }
         unbilledAvailableToselect?.forEach((item) => {
           const foundMatch = unbilledPanel.find((el) => (el.aem_TxnAmt.$value === item.aem_TxnAmt) && ((el.aem_TxnDate.$value === item.aem_TxnDate) && (el.aem_TxnName.$value === item.aem_TxnName) && (el.logicMod.$value === item.logicMod) && (el.aem_TxnID.$value === item.aem_TxnID)));
           globals.functions.setProperty(foundMatch.aem_Txn_checkBox, { value: 'on', enabled: true });
         });
+        if ((availableToSelectInUnbilled + billedSelected) === DATA_LIMITS.totalSelectLimit) { // selected top ten
+          userPrevSelect.tadMadReachedTopTen = true;
+          // [billedPanel, unbilledPanel]?.forEach((pannel) => {
+          //   pannel?.forEach((txnList) => globals.functions.setProperty(txnList.aem_Txn_checkBox, { enabled: false }));
+          // });
+          disableCheckBoxes(billedPanel, false, globals);
+          disableCheckBoxes(unbilledPanel, false, globals);
+        }
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
@@ -846,7 +848,7 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
     enableAllTxnFields(unbilledTxnList, globals);
     enableAllTxnFields(billedTxnList, globals);
   }
-  if ((currentFormContext.totalSelect === MAX_SELECT)) {
+  if ((currentFormContext.totalSelect === MAX_SELECT) && (!userPrevSelect.tadMadReachedTopTen)) {
     /* popup alert hanldles */
     const CONFIRM_TXT = 'You can select up to 10 transactions at a time, but you can repeat the process to convert more transactions into SmartEMI.';
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
