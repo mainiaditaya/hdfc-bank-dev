@@ -715,8 +715,10 @@ const handleTadMadAlert = (globals) => {
           // [billedPanel, unbilledPanel]?.forEach((pannel) => {
           //   pannel?.forEach((txnList) => globals.functions.setProperty(txnList.aem_Txn_checkBox, { enabled: false }));
           // });
-          disableCheckBoxes(billedPanel, false, globals);
-          disableCheckBoxes(unbilledPanel, false, globals);
+          setTimeout(() => {
+            disableCheckBoxes(billedPanel, false, globals);
+            disableCheckBoxes(unbilledPanel, false, globals);
+          }, 3000);
         }
       } catch (error) {
         // eslint-disable-next-line no-console
