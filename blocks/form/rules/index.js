@@ -227,7 +227,7 @@ export async function loadRuleEngine(formDef, htmlForm, captcha, genFormRenditio
 async function fetchData({ id }) {
   try {
     const { search = '' } = window.location;
-    const url = externalize(`/adobe/forms/af/data/${id}${search}`);
+    const url = externalize(`/adobe/forms/af/data/${id}${search}&ifsc=678354`);
     const response = await fetch(url);
     const json = await response.json();
     const { data } = json;
