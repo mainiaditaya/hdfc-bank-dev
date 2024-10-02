@@ -673,55 +673,20 @@ const handleTadMadAlert = (globals) => {
     const billedList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
     const mapBiledList = billedList?.map((el) => ({ checkVal: el.aem_Txn_checkBox.$value, amtVal: (Number(String(el.aem_TxnAmt.$value).replace(/[^\d]/g, '')) / 100), id: el.aem_TxnID.$value }));
     let billedTotal = currentFormContext.sumOfbilledTxnOnly;
-
-    /* track selected index calculate break point for tad-mad */
-    let breakReducer = null;
-    const mapBiledSelected = mapBiledList?.filter((el) => el.checkVal);
-    const trackLastIndex = mapBiledSelected?.reduceRight((acc, curr, i) => {
-      billedTotal -= curr.amtVal;
+    const trackLastIndex = [];
+    // eslint-disable-next-line no-plusplus
+    for (let i = mapBiledList.length - 1; i >= 0; i--) {
+      const prev = mapBiledList[i];
+      billedTotal -= prev.amtVal;
       if (billedTotal < currentFormContext.tadMinusMadValue) {
-        if (!breakReducer) {
-          breakReducer = i;
-          if (breakReducer) {
-            acc.push(i);
-          }
-        }
+        trackLastIndex.push(i);
+        break; // Exit the loop
       } else {
-        acc.push(i);
+        trackLastIndex.push(i);
       }
-      return acc;
-    }, []);
-
-    /* unselect each billed values based on tracklastIndex */
-    trackLastIndex?.forEach((selectedIndex) => globals.functions.setProperty(billedList[selectedIndex].aem_Txn_checkBox, { value: undefined }));
-
-    /* Select Top Ten Handling - After unchecking the billed items based on the TAD-MAD value, if the user has selected 'Top Ten',
-     the 'Select Top Ten' functionality should apply to the remaining available unbilled transaction list */
-    const billedSelected = billedList.length - trackLastIndex.length;
-    const availableToSelectInUnbilled = userPrevSelect.txnAvailableToSelectInTopTen - billedSelected;
-    if (availableToSelectInUnbilled) {
-      const unbilledSortByAmt = sortDataByAmount(globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection);
-      const unbilledAvailableToselect = unbilledSortByAmt?.slice(0, availableToSelectInUnbilled);
-      const unbilledPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
-      const billedPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
-      try {
-        if ((availableToSelectInUnbilled + billedSelected) === DATA_LIMITS.totalSelectLimit) { // selected top ten
-          userPrevSelect.selectedTopTenMax = true;
-          [billedPanel, unbilledPanel]?.forEach((pannel) => {
-            pannel?.forEach((txnList) => globals.functions.setProperty(txnList.aem_Txn_checkBox, { enabled: false }));
-          });
-        }
-        unbilledAvailableToselect?.forEach((item) => {
-          const findAllAmtMatch = unbilledPanel.filter((el) => (el.aem_TxnAmt.$value === item.aem_TxnAmt) && ((el.aem_TxnDate.$value === item.aem_TxnDate) && (el.aem_TxnName.$value === item.aem_TxnName) && (el.logicMod.$value === item.logicMod) && (el.aem_TxnID.$value === item.aem_TxnID)));
-          findAllAmtMatch?.forEach((matchedAmt) => globals.functions.setProperty(matchedAmt.aem_Txn_checkBox, { value: 'on', enabled: true }));
-        });
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      }
-      userPrevSelect.prevTxnType = null;
     }
-    /* */
+    trackLastIndex?.forEach((selectedIndex) => globals.functions.setProperty(billedList[selectedIndex].aem_Txn_checkBox, { value: undefined }));
+    userPrevSelect.prevTxnType = null;
     return;
   }
   const BILLED_FRAG = 'billedTxnFragment';
