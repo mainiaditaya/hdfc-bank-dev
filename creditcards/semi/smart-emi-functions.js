@@ -846,7 +846,7 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
     enableAllTxnFields(unbilledTxnList, globals);
     enableAllTxnFields(billedTxnList, globals);
   }
-  if ((currentFormContext.totalSelect === MAX_SELECT) && (userPrevSelect.selectedTopTenMax === false)) {
+  if ((currentFormContext.totalSelect === MAX_SELECT)) {
     /* popup alert hanldles */
     const CONFIRM_TXT = 'You can select up to 10 transactions at a time, but you can repeat the process to convert more transactions into SmartEMI.';
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
