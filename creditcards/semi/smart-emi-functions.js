@@ -716,7 +716,7 @@ const handleTadMadAlert = (globals) => {
             disableCheckBoxes(billedPanel, false, globals);
             disableCheckBoxes(unbilledPanel, false, globals);
             userPrevSelect.tadMadReachedTopTen = false;
-          }, 3000);
+          });
         }
       } catch (error) {
         // eslint-disable-next-line no-console
