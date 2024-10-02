@@ -723,7 +723,6 @@ const handleTadMadAlert = (globals) => {
     }
     /* */
     userPrevSelect.prevTxnType = null;
-    userPrevSelect.selectedTopTenMax = false;
     return;
   }
   const BILLED_FRAG = 'billedTxnFragment';
