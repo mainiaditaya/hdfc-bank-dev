@@ -713,8 +713,8 @@ const handleTadMadAlert = (globals) => {
           // });
         }
         unbilledAvailableToselect?.forEach((item) => {
-          const findAllAmtMatch = unbilledPanel.filter((el) => (el.aem_TxnAmt.$value === item.aem_TxnAmt) && ((el.aem_TxnDate.$value === item.aem_TxnDate) && (el.aem_TxnName.$value === item.aem_TxnName) && (el.logicMod.$value === item.logicMod) && (el.aem_TxnID.$value === item.aem_TxnID)));
-          findAllAmtMatch?.forEach((matchedAmt) => globals.functions.setProperty(matchedAmt.aem_Txn_checkBox, { value: 'on', enabled: true }));
+          const foundMatch = unbilledPanel.find((el) => (el.aem_TxnAmt.$value === item.aem_TxnAmt) && ((el.aem_TxnDate.$value === item.aem_TxnDate) && (el.aem_TxnName.$value === item.aem_TxnName) && (el.logicMod.$value === item.logicMod) && (el.aem_TxnID.$value === item.aem_TxnID)));
+          globals.functions.setProperty(foundMatch.aem_Txn_checkBox, { value: 'on', enabled: true });
         });
       } catch (error) {
         // eslint-disable-next-line no-console
