@@ -1,7 +1,6 @@
 import { BASEURL, CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { applicableCards, extractJSONFromHTMLString, urlPath } from '../../common/formutils.js';
 import {
-  // fetchJsonResponse,
   fetchRecursiveResponse,
 } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
@@ -50,7 +49,6 @@ const ipa = (payload, showLoader, hideLoader, globals) => {
   if (showLoader) FORM_RUNTIME.ipa();
   const fieldName = ['IPAResponse', 'productEligibility', 'productDetails'];
   return fetchRecursiveResponse('ipa', apiEndPoint, ipaRequest, 'POST', Number(payload.ipaDuration), Number(payload.ipaTimer), fieldName, hideLoader);
-  // return fetchJsonResponse(apiEndPoint, ipaRequest, 'POST', hideLoader);
 };
 
 const updateData = (globals, productDetail, panel, index) => {
@@ -129,12 +127,12 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
 
 /**
  *
- * @name ipaSuccessHandler
+ * @name fdIpaSuccessHandler
  * @param {object} response - The response recieved from the IPA request.
  * @param {object} globals - The global context object.
  * @returns {Promise<object>}
  */
-const ipaSuccessHandler = (response, globals) => {
+const fdIpaSuccessHandler = (response, globals) => {
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
   const productDetails = response?.productEligibility?.productDetails?.length
     ? response.productEligibility.productDetails
@@ -185,6 +183,6 @@ const ipaSuccessHandler = (response, globals) => {
 
 export {
   ipa,
-  ipaSuccessHandler,
+  fdIpaSuccessHandler,
   IPA_RESPONSE,
 };
