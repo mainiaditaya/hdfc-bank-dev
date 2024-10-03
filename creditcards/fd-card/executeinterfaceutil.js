@@ -20,7 +20,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
   const {
     personalDetails, addressDetails, employeeAssistance, employmentDetails,
   } = basicDetails.reviewDetailsView;
-  const { employeeAssistancePanel } = employeeAssistance;
+  const { employeeAssistancePanel, employeeAssistanceToggle } = employeeAssistance;
 
   const { fdNumberSelection } = selectFD.fdSelectionInfo;
   const { fdList } = SELECT_FD_STATE;
@@ -77,9 +77,10 @@ const createExecuteInterfaceRequest = (source, globals) => {
   if (source === 'confirmcard') {
     CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';
   }
+  const empAssistanceToggle = employeeAssistanceToggle?._data?.$_value === 'on';
   const request = {
     requestString: {
-      addressEditFlag: addressEditFlag || CURRENT_FORM_CONTEXT?.editFlags?.addressEdit ? 'Y' : 'N',
+      addressEditFlag: addressEditFlag ? 'Y' : 'N',
       annualIncomeOrItrAmount: String(employmentDetails?.annualIncome?._data?.$_value) || '',
       annualItr: '',
       applyingBranch: 'N',
@@ -87,11 +88,11 @@ const createExecuteInterfaceRequest = (source, globals) => {
       apsEmailEditFlag,
       authMode: '',
       bankEmployee: 'N',
-      branchCity: employeeAssistancePanel.branchCity._data.$_value || '',
-      branchName: employeeAssistancePanel.branchName._data.$_value || '',
+      branchCity: (empAssistanceToggle && employeeAssistancePanel?.branchCity?._data?.$_value) || '',
+      branchName: (empAssistanceToggle && employeeAssistancePanel?.branchName?._data?.$_value) || '',
       CCAD_Relationship_number: '',
       cardsData: '',
-      channel: employeeAssistancePanel.channel._data.$_value || '',
+      channel: (empAssistanceToggle && employeeAssistancePanel?.channel?._data?.$_value) || '',
       channelSource: '',
       communicationAddress1: communicationAddress?.line1,
       communicationAddress2: communicationAddress?.line2,
@@ -106,8 +107,8 @@ const createExecuteInterfaceRequest = (source, globals) => {
       dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
       departmentOrEmpCode: '',
       designation: '',
-      dsaValue: employeeAssistancePanel.dsaName._data.$_value || '',
-      dseCode: employeeAssistancePanel.dsaCode._data.$_value,
+      dsaValue: (empAssistanceToggle && employeeAssistancePanel?.dsaName?._data?.$_value) || '',
+      dseCode: (empAssistanceToggle && employeeAssistancePanel?.dsaCode?._data?.$_value) || '',
       eReferenceNumber: CURRENT_FORM_CONTEXT.referenceNumber,
       filler6: '',
       firstName: customerInfo.customerFirstName,
@@ -120,7 +121,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
       lastName: customerInfo.customerLastName,
       leadClosures: '',
       leadGenerater: '',
-      lc2: employeeAssistancePanel.lc2Code._data.$_value || '',
+      lc2: (empAssistanceToggle && employeeAssistancePanel?.lc2Code?._data?.$_value) || '',
       middleName: customerInfo.customerMiddleName,
       mobileEditFlag: 'N',
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
@@ -151,7 +152,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
       resPhoneEditFlag: 'N',
       selfConfirmation: 'Y',
       selectedFdDetails,
-      smCode: employeeAssistancePanel.smCode._data.$_value || '',
+      smCode: (empAssistanceToggle && employeeAssistancePanel?.smCode?._data?.$_value) || '',
       timeInfo: new Date().toISOString(),
       lienConsent: new Date().toISOString(),
     },
