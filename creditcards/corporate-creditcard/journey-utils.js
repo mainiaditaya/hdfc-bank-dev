@@ -85,6 +85,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
    * @return {PROMISE}
    */
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
+  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || currentFormContext;
   // temporary_hotfix_radioBtnValues_undefined_issue
   /* storing the radio btn values in current form context */
   if ((state === 'IDCOM_REDIRECTION_INITIATED') || (state === 'CUSTOMER_AADHAR_INIT')) {
@@ -103,7 +104,6 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
       cardDeliveryAddressOption1: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel.cardDeliveryAddressOption1.$value,
       cardDeliveryAddressOption2: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel.cardDeliveryAddressOption2.$value,
     };
-    const formContextCallbackData = globals.functions.exportData()?.currentFormContext || currentFormContext;
     const journeyType = formContextCallbackData?.executeInterfaceReqObj?.requestString?.journeyFlag;
     const biometricStatus = ((aadharBiometricVerification.$value || form.aadharBiometricVerification) && 'bioKyc') || ((aadharEKYCVerification.$value || form.aadharEKYCVerification) && 'aadhaar') || ((officiallyValidDocumentsMethod.$value || form.officiallyValidDocumentsMethod) && 'OVD');
     const etbAddressChange = formContextCallbackData?.executeInterfaceReqObj?.requestString?.addressEditFlag;
@@ -127,8 +127,8 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
         mobileNumber,
         leadProfileId: leadProfileId?.toString(),
          profile: {
-          dob: currentFormContext.dob,
-          fullName: currentFormContext.fullName,
+          dob: formContextCallbackData.dob,
+          fullName: formContextCallbackData.fullName,
         },
       },
       formData: {
