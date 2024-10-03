@@ -602,10 +602,10 @@ const fetchFiller3 = (authMode) => {
   if (authMode.toLowerCase() === 'debitcard') {
     return 'DCPINSUCCESS';
   }
-  if (authMode.toLowerCase() === 'debitcard') {
+  if (authMode.toLowerCase() === 'netbanking') {
     return 'NBSUCCESS';
   }
-  if (authMode.toLowerCase() === 'debitcard') {
+  if (authMode.toLowerCase() === 'aadhaarotp') {
     return 'AADHAARSUCCESS';
   }
   return '';
