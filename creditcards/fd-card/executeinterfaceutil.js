@@ -177,6 +177,9 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
       executeInterfaceRequest[key] = '';
     }
   });
+  if (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc') {
+    executeInterfaceRequest.requestString.authMode = 'OTP';
+  }
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   if (showLoader) FORM_RUNTIME.executeInterface();
   return fetchJsonResponse(apiEndPoint, executeInterfaceRequest, 'POST', hideLoader);
@@ -194,7 +197,9 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
   requestObj.requestString.productCode = requestObj.requestString.productCode || 'FCFL';
 
   if (source === 'idCom') {
-    requestObj.requestString.authMode = 'IDCOM';
+    if (requestObj?.addressEditFlag?.toUpperCase() === 'Y') {
+      requestObj.requestString.authMode = 'eKYCID-COM';
+    } else requestObj.requestString.authMode = 'IDCOM';
   }
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   const eventHandlers = {
