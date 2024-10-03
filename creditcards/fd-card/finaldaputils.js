@@ -1,5 +1,7 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import { fetchFiller4, getCurrentDateAndTime, urlPath } from '../../common/formutils.js';
+import {
+  fetchFiller3, fetchFiller4, getCurrentDateAndTime, urlPath,
+} from '../../common/formutils.js';
 import { restAPICall } from '../../common/makeRestAPI.js';
 import { invokeJourneyDropOffUpdate } from '../corporate-creditcard/journey-utils.js';
 import { FD_ENDPOINTS } from './constant.js';
@@ -25,6 +27,8 @@ const createDapRequestObj = (globals) => {
     'ETB',
   );
 
+  const filler3 = fetchFiller3(formData?.queryParams?.authmode);
+
   return {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
@@ -41,6 +45,7 @@ const createDapRequestObj = (globals) => {
       journeyName: formContextCallbackData?.journeyName || CURRENT_FORM_CONTEXT?.journeyName,
       filler7: '',
       filler1: '',
+      filler3,
       biometricStatus: formContextCallbackData?.selectedKyc || '',
       ekycConsent: `${getCurrentDateAndTime(3)}YEnglishxeng1x0`,
       ekycSuccess,
@@ -53,8 +58,8 @@ const finalDap = (userRedirected, globals) => {
   const { resultPanel, fdBasedCreditCardWizard } = globals.form;
 
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsexecutefinaldap);
-  const payload = createDapRequestObj(globals);
   const formData = globals.functions.exportData();
+  const payload = createDapRequestObj(globals);
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
   const { journeyId } = formData;
