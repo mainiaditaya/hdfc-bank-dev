@@ -599,13 +599,13 @@ function applicableCards(employmentTypeMap, employmentType, cardMap, applicableC
 }
 
 const fetchFiller3 = (authMode) => {
-  if (authMode.toLowerCase() === 'debitcard') {
+  if (authMode?.toLowerCase() === 'debitcard') {
     return 'DCPINSUCCESS';
   }
-  if (authMode.toLowerCase() === 'netbanking') {
+  if (authMode?.toLowerCase() === 'netbanking') {
     return 'NBSUCCESS';
   }
-  if (authMode.toLowerCase() === 'aadhaarotp') {
+  if (authMode?.toLowerCase() === 'aadhaarotp') {
     return 'AADHAARSUCCESS';
   }
   return '';
