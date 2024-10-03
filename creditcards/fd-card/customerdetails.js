@@ -411,7 +411,7 @@ const fathersNameChangeHandler = (globals) => {
   const fathersNameArr = (personalDetails.fathersFullName._data.$_value || '').toUpperCase().split(' ');
   const [middleName = '', lastName = fathersNameArr[0] || ''] = fathersNameArr.length === 1 ? ['', fathersNameArr[0]] : fathersNameArr;
 
-  const customerFullName = personalDetails.fullName._data.$_value || '';
+  const customerFullName = personalDetails?.fullName?._data?.$_value?.trim() || '';
   const isSingleName = customerFullName.split(' ').length <= 1;
 
   if (isSingleName) {
