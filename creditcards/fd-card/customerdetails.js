@@ -110,7 +110,6 @@ const bindCustomerDetails = (globals) => {
   CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   CURRENT_FORM_CONTEXT.editFlags = {
     nameOnCard: true,
-    addressEdit: false,
   };
   CURRENT_FORM_CONTEXT.customerAddress = {
     addressLine1: '',
@@ -198,7 +197,6 @@ const bindCustomerDetails = (globals) => {
     const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = parsedAddress;
     Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
-    CURRENT_FORM_CONTEXT.editFlags.addressEdit = true;
   } else {
     formattedCustomerAddress = `${cleanAddress}, ${city}, ${state}, ${pincode}`;
     const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address.split('|');
