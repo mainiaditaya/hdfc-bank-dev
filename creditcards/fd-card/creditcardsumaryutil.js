@@ -3,7 +3,7 @@ import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 const creditCardSummary = (globals) => {
   const { functions, form } = globals;
   const { exportData, setProperty, importData } = functions;
-  const { tqSummarySection } = form.resultPanel.successResultPanel;
+  const { tqSummarySection } = form.resultPanel.successResultPanel.tqSuccessWrapper;
 
   const formData = exportData();
   const selectedCreditCard = CURRENT_FORM_CONTEXT?.selectedCreditCard || formData?.currentFormContext?.selectedCreditCard || {};
@@ -16,9 +16,9 @@ const creditCardSummary = (globals) => {
   || formData?.FDlienCard?.nameOnCard
   || CURRENT_FORM_CONTEXT?.executeInterfaceRequest?.requestString?.nameOnCard
   || '';
-  setProperty(tqSummarySection.tqNameOnCard, { value: nameOnCard });
-  setProperty(tqSummarySection.tqAnnualCCFee, { value: String(annualFee) });
-  setProperty(tqSummarySection.tqCreditLimit, { value: eligibleCreditLimitAmount });
+  setProperty(tqSummarySection?.tqNameOnCard, { value: nameOnCard });
+  setProperty(tqSummarySection?.tqAnnualCCFee, { value: String(annualFee) });
+  setProperty(tqSummarySection?.tqCreditLimit, { value: eligibleCreditLimitAmount });
 
   const formattedFDs = fdNumberSelection.reduce((acc, fd) => {
     if (fd.fdAccSelect === 'on') {
@@ -27,7 +27,7 @@ const creditCardSummary = (globals) => {
     return acc;
   }, []);
 
-  importData({ items: formattedFDs }, tqSummarySection.tqSelectedFDs.selectedFdsRepeatable.$qualifiedName);
+  importData({ items: formattedFDs }, tqSummarySection?.tqSelectedFDs?.selectedFdsRepeatable?.$qualifiedName);
 };
 
 export default creditCardSummary;
