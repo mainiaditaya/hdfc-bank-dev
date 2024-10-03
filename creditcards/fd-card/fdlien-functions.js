@@ -169,7 +169,7 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
     requestString: {
       dateOfBirth: clearString(dob.$value) || '',
       mobileNumber: FD_CONSTANT.MODE === 'dev' ? '7666220352' : mobileNumber.$value,
-      panNumber: FD_CONSTANT.MODE === 'dev' ? 'KGFPD6067D' : panValue || '',
+      panNumber: FD_CONSTANT.MODE === 'dev' ? 'AJLPA2422K' : panValue || '',
       // mobileNumber: mobileNumber.$value,
       // panNumber: panValue || '',
       journeyID: globals.form.runtime.journeyId.$value,
@@ -183,7 +183,7 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
 
   if (FD_CONSTANT.MODE === 'dev') {
     globals.functions.setProperty(mobileNumber, { value: '7666220352' });
-    globals.functions.setProperty(pan, { value: 'KGFPD6067D' });
+    globals.functions.setProperty(pan, { value: 'AJLPA2422K' });
   }
 
   return fetchJsonResponse(path, jsonObj, 'POST', true);
