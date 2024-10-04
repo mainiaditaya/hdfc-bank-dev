@@ -121,7 +121,9 @@ const customerIdProceedHandler = (globals) => {
       }, i * 40);
     });
     const { customerInfo } = CURRENT_FORM_CONTEXT;
-    globals.functions.setProperty(selectFDDetailsPanel.customerName, { value: sanitizeName(customerInfo?.customerFullName?.split(' ')?.[0]) });
+    let customerFirstName = sanitizeName(customerInfo?.customerFullName?.split(' ')?.[0]);
+    if (customerFirstName?.length > 0) customerFirstName = `${customerFirstName.charAt(0).toUpperCase() + customerFirstName.slice(1).toLowerCase()},`;
+    globals.functions.setProperty(selectFDDetailsPanel.customerName, { value: customerFirstName });
     globals.functions.setProperty(fdSelectionInfoPanel.selectedFDPanel.selectedFDNum, '0');
     globals.functions.setProperty(fdSelectionInfoPanel.selectedFDPanel.selectedFDNumMax, selectedCustIdFds.length.toString());
   } else {
