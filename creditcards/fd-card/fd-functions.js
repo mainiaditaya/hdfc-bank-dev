@@ -82,7 +82,7 @@ import {
 
 import {
   ipa,
-  ipaSuccessHandler,
+  fdIpaSuccessHandler,
 } from './ipautil.js';
 
 import { idcomm, idcomSuccessHandler } from './idcomutil.js';
@@ -137,7 +137,7 @@ export {
   fetchReferenceId,
   confirmCardClickHandler,
   ipa,
-  ipaSuccessHandler,
+  fdIpaSuccessHandler,
   knowMoreCardClickHandler,
   selectCardBackClickHandler,
   cardSelectHandler,
