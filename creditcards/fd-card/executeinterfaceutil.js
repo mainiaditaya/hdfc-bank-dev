@@ -87,6 +87,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
       apsDobEditFlag: customerInfo?.datBirthCust ? 'N' : 'Y',
       apsEmailEditFlag,
       authMode: '',
+      bankAccountNumber: SELECTED_CUSTOMER_ID?.selectedCustId?.codAcctNo,
       bankEmployee: 'N',
       branchCity: (empAssistanceToggle && employeeAssistancePanel?.branchCity?._data?.$_value) || '',
       branchName: (empAssistanceToggle && employeeAssistancePanel?.branchName?._data?.$_value) || '',
@@ -122,6 +123,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
       leadClosures: '',
       leadGenerater: '',
       lc2: (empAssistanceToggle && employeeAssistancePanel?.lc2Code?._data?.$_value) || '',
+      lienConsent: new Date().toISOString(),
       middleName: customerInfo.customerMiddleName,
       mobileEditFlag: 'N',
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
@@ -150,11 +152,10 @@ const createExecuteInterfaceRequest = (source, globals) => {
       personalEmailId: personalDetails?.emailID.$value,
       productCode: source === 'confirmcard' ? CURRENT_FORM_CONTEXT?.selectedProductCode : '',
       resPhoneEditFlag: 'N',
-      selfConfirmation: 'Y',
       selectedFdDetails,
+      selfConfirmation: 'Y',
       smCode: (empAssistanceToggle && employeeAssistancePanel?.smCode?._data?.$_value) || '',
       timeInfo: new Date().toISOString(),
-      lienConsent: new Date().toISOString(),
     },
   };
   return request;
