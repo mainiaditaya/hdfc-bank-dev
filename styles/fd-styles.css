@@ -2130,6 +2130,14 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
     }
 
+    .field-employeeassistancepanel {
+      input:disabled,
+      select:disabled {
+        background: var(--color-input-background-disabled);
+        color: var(--color-input-text-primary) !important;
+      }
+    }
+
     .wrapper-disabled {
       label {
         margin-left: 5px;
