@@ -77,11 +77,12 @@ const createExecuteInterfaceRequest = (source, globals) => {
   if (source === 'confirmcard') {
     CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';
   }
+  const annualIncome = employmentDetails?.annualIncome?._data?.$_value || '';
   const empAssistanceToggle = employeeAssistanceToggle?._data?.$_value === 'on';
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag ? 'Y' : 'N',
-      annualIncomeOrItrAmount: String(employmentDetails?.annualIncome?._data?.$_value) || '',
+      annualIncomeOrItrAmount: String(annualIncome),
       annualItr: '',
       applyingBranch: 'N',
       apsDobEditFlag: customerInfo?.datBirthCust ? 'N' : 'Y',
