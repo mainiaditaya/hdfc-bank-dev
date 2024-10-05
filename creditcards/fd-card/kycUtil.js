@@ -10,11 +10,15 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
   const {
     addressDeclarationPanel,
     docUploadFlow,
+    fdBasedCreditCardWizard,
   } = globals.form;
+  const { inPersonBioKYCOptions } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance.inPersonBioKYCPanel;
   KYC_STATE.selectedKyc = selectedKyc;
   switch (selectedKyc) {
     case 'BIOMETRIC':
-      CURRENT_FORM_CONTEXT.selectedKyc = 'biokyc';
+      CURRENT_FORM_CONTEXT.selectedKyc = inPersonBioKYCOptions?._data.$_value === '0'
+        ? 'bioinperson'
+        : 'biokyc';
       globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD, { visible: true });
       break;
     case 'OVD':
