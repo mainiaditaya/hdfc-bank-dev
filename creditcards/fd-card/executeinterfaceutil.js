@@ -2,7 +2,7 @@ import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse, restAPICall } from '../../common/makeRestAPI.js';
 import { confirmCardState } from './confirmcardutil.js';
-import { JOURNEY_NAME, FD_ENDPOINTS } from './constant.js';
+import { JOURNEY_NAME, FD_ENDPOINTS, EMPLOYEE_MAP } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
 import { SELECT_FD_STATE } from './fddetailsutil.js';
@@ -80,6 +80,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
   }
   const annualIncome = employmentDetails?.annualIncome?._data?.$_value || '';
   const empAssistanceToggle = employeeAssistanceToggle?._data?.$_value === 'on';
+
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag ? 'Y' : 'N',
@@ -105,11 +106,11 @@ const createExecuteInterfaceRequest = (source, globals) => {
       comAddressType: '2',
       comCityZip: communicationAddress?.zip,
       comResidenceType: '2',
-      companyName: customerInfo?.employeeDetail?.companyName,
+      companyName: customerInfo?.customerFullName,
       customerID: SELECTED_CUSTOMER_ID?.selectedCustId?.customerID,
       dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
       departmentOrEmpCode: '',
-      designation: customerInfo?.employeeDetail?.designation,
+      designation: EMPLOYEE_MAP[employmentDetails.employmentType._data.$_value],
       dsaValue: (empAssistanceToggle && employeeAssistancePanel?.dsaName?._data?.$_value) || '',
       dseCode: (empAssistanceToggle && employeeAssistancePanel?.dsaCode?._data?.$_value) || '',
       eReferenceNumber: CURRENT_FORM_CONTEXT.referenceNumber,
