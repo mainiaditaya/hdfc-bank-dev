@@ -9,6 +9,7 @@ import {
   splitName,
   parseName,
   removeSpecialCharacters,
+  pincodeCheck,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
 import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
@@ -109,7 +110,7 @@ const bindEmployeeAssistanceField = async (globals) => {
  * @name bindCustomerDetails
  * @param {Object} globals - The global context object containing various information.
  */
-const bindCustomerDetails = (globals) => {
+const bindCustomerDetails = async (globals) => {
   if (!CUSTOMER_DATA_BINDING_CHECK) return;
   CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   CURRENT_FORM_CONTEXT.editFlags = {
@@ -205,6 +206,12 @@ const bindCustomerDetails = (globals) => {
     formattedCustomerAddress = `${cleanAddress}, ${city}, ${state}, ${pincode}`;
     const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address.split('|');
     Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
+  }
+
+  const validPin = await pincodeCheck(pincode, city, state);
+
+  if (validPin.result === 'false') {
+    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
   }
 
   Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { city, pincode, state });
