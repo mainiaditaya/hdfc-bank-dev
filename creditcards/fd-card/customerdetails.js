@@ -49,7 +49,7 @@ const bindEmployeeAssistanceField = async (globals) => {
   const defaultChannel = getUrlParamCaseInsensitive('channel');
   const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC');
   const codes = {
-    lc1Code: getUrlParamCaseInsensitive('lccode'),
+    lc1Code: getUrlParamCaseInsensitive('lc1'),
     lgCode: getUrlParamCaseInsensitive('lgcode'),
     smCode: getUrlParamCaseInsensitive('smcode'),
     lc2Code: getUrlParamCaseInsensitive('lc2'),
@@ -76,6 +76,7 @@ const bindEmployeeAssistanceField = async (globals) => {
     const channelOptions = ['Website Download'];
     const options = channelOptions.map((channel) => ({ label: channel, value: channel }));
     let matchedChannel = options[0].value;
+    let disableChannelDropdown = false;
     response.forEach((item) => {
       const channel = item?.CHANNELS;
       const normalizedChannel = channel?.toLowerCase();
@@ -85,12 +86,15 @@ const bindEmployeeAssistanceField = async (globals) => {
       }
       if (defaultChannel?.toLowerCase() === normalizedChannel) {
         matchedChannel = channel;
+        disableChannelDropdown = true;
       }
     });
     setSelectOptions(options, 'channel');
     globals.functions.setProperty(dropDownSelectField, { enum: channelOptions, value: matchedChannel });
-
-    const changeDataAttrObj = { attrChange: true, value: false };
+    if (disableChannelDropdown) {
+      globals.functions.setProperty(dropDownSelectField, { enabled: false });
+    }
+    const changeDataAttrObj = { attrChange: true, value: false, disable: true };
     ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
       const util = formUtil(globals, employeeAssistancePanel[code]);
       if (codes[code] !== null) util.setValue(codes[code], changeDataAttrObj);

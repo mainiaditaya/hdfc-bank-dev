@@ -28,7 +28,6 @@ const createDapRequestObj = (globals) => {
   );
 
   const filler3 = fetchFiller3(formData?.queryParams?.authmode);
-
   return {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
