@@ -38,34 +38,35 @@ const createExecuteInterfaceRequest = (source, globals) => {
     }));
   const addressEditFlag = addressDetails?.mailingAddressToggle?.$value !== 'on';
 
-  function getAddress(addressSource) {
-    return {
-      line1: addressSource?.addressLine1 || '',
-      line2: addressSource?.addressLine2 || '',
-      line3: addressSource?.addressLine3 || '',
-      city: addressSource?.city || '',
-      state: addressSource?.state || '',
-      zip: addressSource?.pincode || addressSource?.comCityZip || '',
-    };
-  }
+  const getAddress = (addressSource) => ({
+    line1: addressSource?.addressLine1 || '',
+    line2: addressSource?.addressLine2 || '',
+    line3: addressSource?.addressLine3 || '',
+    city: addressSource?.city || '',
+    state: addressSource?.state || '',
+    zip: addressSource?.pincode || addressSource?.comCityZip || '',
+  });
+
+  const getEditedAddress = (panel) => ({
+    line1: panel?.newCurrentAddressLine1?.$value || '',
+    line2: panel?.newCurrentAddressLine2?.$value || '',
+    line3: panel?.newCurrentAddressLine3?.$value || '',
+    city: panel?.newCurentAddressCity?.$value || '',
+    state: panel?.newCurentAddressState?.$value || '',
+    zip: panel?.newCurentAddressPin?.$value || '',
+  });
 
   let communicationAddress = getAddress(customerAddress);
-  let customerPermanentAddress = getAddress(customerAddress);
-  if (CURRENT_FORM_CONTEXT?.perAddExist) {
-    customerPermanentAddress = getAddress(permanentAddress);
-  }
+  let customerPermanentAddress = CURRENT_FORM_CONTEXT?.perAddExist
+    ? getAddress(permanentAddress)
+    : communicationAddress;
 
   if (addressEditFlag) {
     const newAddressPanel = addressDetails.newCurentAddressPanel;
-    communicationAddress = {
-      line1: newAddressPanel.newCurrentAddressLine1.$value || '',
-      line2: newAddressPanel.newCurrentAddressLine2.$value || '',
-      line3: newAddressPanel.newCurrentAddressLine3.$value || '',
-      city: newAddressPanel.newCurentAddressCity.$value,
-      state: newAddressPanel.newCurentAddressState.$value,
-      zip: newAddressPanel.newCurentAddressPin.$value,
-    };
+    communicationAddress = getEditedAddress(newAddressPanel);
+    customerPermanentAddress = getEditedAddress(newAddressPanel);
   }
+
   let apsEmailEditFlag = 'N';
   if (customerInfo?.refCustEmail !== personalDetails.emailID.$value) {
     apsEmailEditFlag = 'Y';
