@@ -492,6 +492,13 @@ const panvalidationSuccessHandler = (response, globals) => {
   }
 };
 
+const addressChangeHandler = (addressLineNumber, globals) => {
+  const { newCurrentAddressLine1, newCurrentAddressLine2 } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
+  if (newCurrentAddressLine1?._data?.$_value?.toLowerCase() === newCurrentAddressLine2?._data?.$_value?.toLowerCase()) {
+    globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.newCurrentAddressLine2', ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
+  }
+};
+
 export {
   bindCustomerDetails,
   validateEmailID,
@@ -503,4 +510,5 @@ export {
   fullNameChangeHandler,
   checkPanValidation,
   panvalidationSuccessHandler,
+  addressChangeHandler,
 };
