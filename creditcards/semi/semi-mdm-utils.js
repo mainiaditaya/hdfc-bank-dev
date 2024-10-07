@@ -17,6 +17,30 @@ const UTM_PARAMS = {
 };
 
 /**
+ * Extracts specific tenure-related fields from the global form object.
+ * @param {object} globals - global form object
+ * @returns {object} - An object containing the extracted tenure-related fields:
+ *  - `continueToTQbtn` {Object}: The continue button element.
+ *  - `tNCCheckBox` {Object}: The terms and conditions checkbox element.
+ *  - `tnCMadCheckBox` {Object}: The T&C MAD checkbox element.
+ */
+const getSelectTenureFields = async (globals) => {
+  const selectTenure = globals.form.aem_semiWizard.aem_selectTenure;
+  const {
+    aem_continueToTQ: continueToTQbtn,
+    tnCPanelWrapper: {
+      aem_tandC: tNCCheckBox,
+    },
+    aem_tandCMAD: tnCMadCheckBox,
+  } = selectTenure;
+  return {
+    continueToTQbtn,
+    tNCCheckBox,
+    tnCMadCheckBox,
+  };
+};
+
+/**
  * extract all the asst panal form object by passing globals
  * @param {object} globals - global form object;
  * @returns {object} - All pannel object present inside employee asst pannel
@@ -64,12 +88,14 @@ const setFieldsValue = (globals, field, value) => {
  */
 const preFillFromUtm = async (globals) => {
   const {
-    branchCode, dsaCode, lc1Code, lc2Code, smCode, lgTseCode,
+    branchCode, dsaCode, lc1Code, bdrLc1Code, lc2Code, smCode, lgTseCode,
   } = await extractEmpAsstPannels(globals);
+  // dsa, branch based on that lc1 code fields should be changed.
+  const decideLC1Code = (UTM_PARAMS?.dsacode || UTM_PARAMS?.branchcode) ? bdrLc1Code : lc1Code;
   // Mapping UTM params to field names
   const fieldMapping = {
     dsacode: dsaCode,
-    lc1: lc1Code,
+    lc1: decideLC1Code,
     lc2: lc2Code,
     branchcode: branchCode,
     smcode: smCode,
@@ -91,6 +117,11 @@ const assistedToggleHandler = async (globals) => {
   try {
     const response = await getJsonResponse(semiEndpoints.masterChanel, null, 'GET');
     const { channel, ...asstPannels } = await extractEmpAsstPannels(globals);
+    const {
+      continueToTQbtn,
+      tNCCheckBox,
+      tnCMadCheckBox,
+    } = await getSelectTenureFields(globals);
     const asstPannelArray = Object.entries(asstPannels).map(([, proxyFiels]) => proxyFiels);
     const channelDropDown = channel;
     const DEF_OPTION = [{ label: 'Website Download', value: 'Website Download' }];
@@ -106,6 +137,9 @@ const assistedToggleHandler = async (globals) => {
       await preFillFromUtm(globals);
     } else {
       globals.functions.setProperty(channelDropDown, { enum: channelOptions, enumNames: chanelEnumNames, value: DEF_OPTION[0].value });
+      if ((channelDropDown.$value === DEF_OPTION[0].value) && (tNCCheckBox.$value) && (tnCMadCheckBox.$value)) {
+        globals.functions.setProperty(continueToTQbtn, { enabled: true });
+      }
       asstPannelArray?.forEach((pannel) => globals.functions.setProperty(pannel, { visible: false }));
     }
   } catch (error) {
@@ -153,11 +187,20 @@ const channelDDHandler = async (globals) => {
    */
 const branchHandler = async (globals) => {
   const { branchName, branchCity, branchCode } = await extractEmpAsstPannels(globals);
+  const {
+    continueToTQbtn,
+    // eslint-disable-next-line no-unused-vars
+    tNCCheckBox,
+    // eslint-disable-next-line no-unused-vars
+    tnCMadCheckBox,
+  } = await getSelectTenureFields(globals);
   const branchNameUtil = formUtil(globals, branchName);
   const branchCityUtil = formUtil(globals, branchCity);
-  // eslint-disable-next-line no-unused-vars
   const INVALID_MSG = 'Please enter valid Branch Code';
-  globals.functions.markFieldAsInvalid(branchCode.$qualifiedName, '', { useQualifiedName: true });
+  if (!branchCode.$value) {
+    globals.functions.markFieldAsInvalid(branchCode.$qualifiedName, INVALID_MSG, { useQualifiedName: true });
+    return;
+  }
   try {
     const branchCodeUrl = `${semiEndpoints.branchMaster}-${branchCode.$value}.json`;
     const response = await getJsonResponse(branchCodeUrl, null, 'GET');
@@ -172,7 +215,10 @@ const branchHandler = async (globals) => {
       branchCityUtil.setValue(cityName, changeDataAttrObj);
     }
   } catch (error) {
-    // globals.functions.markFieldAsInvalid(branchCode.$qualifiedName, INVALID_MSG, { useQualifiedName: true });
+    if (error.message === 'No Records Found') {
+      globals.functions.markFieldAsInvalid(branchCode.$qualifiedName, INVALID_MSG, { useQualifiedName: true });
+    }
+    globals.functions.setProperty(continueToTQbtn, { enabled: false });
     branchNameUtil.resetField();
     branchCityUtil.resetField();
   }
@@ -185,10 +231,19 @@ const branchHandler = async (globals) => {
 const dsaHandler = async (globals) => {
   //  'XKSD' //BSDG003
   const { dsaCode, dsaName } = await extractEmpAsstPannels(globals);
-  // eslint-disable-next-line no-unused-vars
+  const {
+    continueToTQbtn,
+    // eslint-disable-next-line no-unused-vars
+    tNCCheckBox,
+    // eslint-disable-next-line no-unused-vars
+    tnCMadCheckBox,
+  } = await getSelectTenureFields(globals);
   const INVALID_MSG = 'Please enter valid DSA Code';
   const dsaNameUtil = formUtil(globals, dsaName);
-  // globals.functions.markFieldAsInvalid(dsaCode.$qualifiedName, '', { useQualifiedName: true });
+  if (!dsaCode.$value) {
+    globals.functions.markFieldAsInvalid(dsaCode.$qualifiedName, INVALID_MSG, { useQualifiedName: true });
+    return;
+  }
   try {
     const dsaCodeUrl = `${semiEndpoints.dsaCode}-${dsaCode.$value?.toLowerCase()}.json`;
     const response = await getJsonResponse(dsaCodeUrl, null, 'GET');
@@ -196,14 +251,15 @@ const dsaHandler = async (globals) => {
     if (data?.errorCode === '500') {
       throw new Error(data?.errorMessage);
     } else {
-      // globals.functions.setProperty(dsaCode, { valid: true });
-      // globals.functions.markFieldAsInvalid(dsaCode.$qualifiedName, '', { useQualifiedName: true });
       const dsaNameVal = data?.DSANAME;
       const changeDataAttrObj = { attrChange: true, value: false, disable: true };
       dsaNameUtil.setValue(dsaNameVal, changeDataAttrObj);
     }
   } catch (error) {
-    // globals.functions.markFieldAsInvalid(dsaCode.$qualifiedName, INVALID_MSG, { useQualifiedName: true });
+    if (error.message === 'No Records Found') {
+      globals.functions.markFieldAsInvalid(dsaCode.$qualifiedName, INVALID_MSG, { useQualifiedName: true });
+    }
+    globals.functions.setProperty(continueToTQbtn, { enabled: false });
     dsaNameUtil.resetField();
     // eslint-disable-next-line no-console
     console.log(error);
