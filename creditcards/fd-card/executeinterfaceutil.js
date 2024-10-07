@@ -80,7 +80,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
   }
   const annualIncome = employmentDetails?.annualIncome?._data?.$_value || '';
   const empAssistanceToggle = employeeAssistanceToggle?._data?.$_value === 'on';
-
+  const companyName = employmentDetails.employmentType._data.$_value === '1' || employmentDetails.employmentType._data.$_value === '2' ? customerInfo?.customerFullName : '';
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag ? 'Y' : 'N',
@@ -106,7 +106,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       comAddressType: '2',
       comCityZip: communicationAddress?.zip,
       comResidenceType: '2',
-      companyName: customerInfo?.customerFullName,
+      companyName,
       customerID: SELECTED_CUSTOMER_ID?.selectedCustId?.customerID,
       dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
       departmentOrEmpCode: '',
