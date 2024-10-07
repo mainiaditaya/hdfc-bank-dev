@@ -114,8 +114,9 @@ const fileUploadUIHandler = () => {
     // Check if the current file input has a file selected
     if (fileInput.files.length > 0) {
       const file = fileInput.files[0];
-      const parentDiv = fileInput.closest('.field-addressprooffile');
+      const parentDiv = fileInput.closest('.field-docuploadfront, .field-docuploadback, .field-addressprooffile1, .field-addressprooffile2');
       const fileList = parentDiv.querySelector('.files-list');
+      const fileDescription = parentDiv.querySelector('.field-description');
       const uploadButton = parentDiv.querySelector('.file-attachButton');
 
       const validFileTypes = ['image/jpeg', 'image/png', 'application/pdf'];
@@ -133,6 +134,7 @@ const fileUploadUIHandler = () => {
         }
       } else {
         parentDiv.classList.add('file-error');
+        fileDescription.textContent = parentDiv.getAttribute('data-required-error-message');
         parentDiv.classList.remove('file-uploaded');
 
         if (uploadButton) {
