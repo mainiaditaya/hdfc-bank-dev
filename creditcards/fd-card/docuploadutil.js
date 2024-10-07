@@ -109,6 +109,7 @@ const docUploadClickHandler = async (globals) => {
  */
 const fileUploadUIHandler = () => {
   const fileInputs = document.querySelectorAll('input[type="file"]');
+  const MAX_FILE_SIZE_MB = 2;
 
   fileInputs.forEach((fileInput) => {
     // Check if the current file input has a file selected
@@ -120,10 +121,12 @@ const fileUploadUIHandler = () => {
       const uploadButton = parentDiv.querySelector('.file-attachButton');
 
       const validFileTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+      const fileSizeInMB = file.size / (1024 * 1024);
 
-      if (validFileTypes.includes(file.type)) {
+      parentDiv.classList.remove('file-uploaded', 'file-error');
+
+      if (validFileTypes.includes(file.type) && fileSizeInMB <= MAX_FILE_SIZE_MB) {
         parentDiv.classList.add('file-uploaded');
-        parentDiv.classList.remove('file-error');
 
         if (fileList) {
           fileList.textContent = file.name;
@@ -134,8 +137,12 @@ const fileUploadUIHandler = () => {
         }
       } else {
         parentDiv.classList.add('file-error');
-        fileDescription.textContent = parentDiv.getAttribute('data-required-error-message');
-        parentDiv.classList.remove('file-uploaded');
+
+        if (!validFileTypes.includes(file.type)) {
+          fileDescription.textContent = parentDiv.getAttribute('data-required-error-message');
+        } else if (fileSizeInMB > MAX_FILE_SIZE_MB) {
+          fileDescription.textContent = parentDiv.getAttribute('data-max-file-size-error-message');
+        }
 
         if (uploadButton) {
           uploadButton.textContent = 'Upload';
