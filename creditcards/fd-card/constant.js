@@ -16,6 +16,7 @@ const ERROR_MSG = {
   panError: 'Please enter a valid PAN Number',
   mobileError: 'Enter valid mobile number',
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
+  invalidPan: 'Maximum PAN retry attempts exceeded.',
 };
 
 const FD_ENDPOINTS = {
