@@ -2819,6 +2819,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
     }
+    
+    .field-description {
+      margin: 10px 0;
+    }
   }
 
   .file-wrapper.file-error {
