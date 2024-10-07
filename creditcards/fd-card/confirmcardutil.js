@@ -13,7 +13,7 @@ const confirmCardState = {
  * @param {Object} globals - The global context object containing various information.
  */
 const confirmCardClickHandler = (globals) => {
-  CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';
+  CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode;
   CURRENT_FORM_CONTEXT.selectedCreditCard = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex];
   const {
     fdBasedCreditCardWizard,

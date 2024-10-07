@@ -17,6 +17,7 @@ const ERROR_MSG = {
   mobileError: 'Enter valid mobile number',
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
   invalidPan: 'Maximum PAN retry attempts exceeded.',
+  matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
 };
 
 const FD_ENDPOINTS = {
