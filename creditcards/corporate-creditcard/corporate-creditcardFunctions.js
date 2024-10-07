@@ -31,7 +31,11 @@ import * as CONSTANT from '../../common/constants.js';
 import * as CC_CONSTANT from './constant.js';
 import { executeInterfacePostRedirect } from './executeinterfaceutils.js';
 
-setTimeout(() => import('./cc.js'), 1200);
+setTimeout(() => {
+  if (typeof window !== 'undefined') {
+    import('./cc.js');
+  }
+}, 1200);
 
 const {
   ENDPOINTS,
@@ -854,9 +858,8 @@ function checkMode(globals) {
     globals.functions.setProperty(globals.form.confirmResult, { visible: false });
     const userRedirected = true;
     executeInterfacePostRedirect('idCom', userRedirected, globals);
-    
   }
-    if (!formData.form.login.maskedMobileNumber) {
+  if (!formData.form.login.maskedMobileNumber) {
     globals.functions.setProperty(globals.form.loginPanel, { visible: false });
     globals.functions.setProperty(globals.form.welcomeText, { visible: false });
     globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
