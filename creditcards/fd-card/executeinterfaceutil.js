@@ -76,7 +76,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
     nameOnCard = personalDetails.nameOnCardDD?.$value?.toUpperCase()?.replace(/\s+/g, ' ');
   }
   if (source === 'confirmcard') {
-    CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';
+    CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode;
   }
   const annualIncome = employmentDetails?.annualIncome?._data?.$_value || '';
   const empAssistanceToggle = employeeAssistanceToggle?._data?.$_value === 'on';
@@ -198,7 +198,6 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
 const executeInterfacePostRedirect = async (source, userRedirected, globals) => {
   const formCallBackContext = globals.functions.exportData()?.currentFormContext;
   const requestObj = formCallBackContext?.executeInterfaceRequest;
-  requestObj.requestString.productCode = requestObj.requestString.productCode || 'FCFL';
 
   if (source === 'idCom') {
     if (requestObj?.addressEditFlag?.toUpperCase() === 'Y') {
