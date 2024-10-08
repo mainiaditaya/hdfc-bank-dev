@@ -2119,6 +2119,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           }
         }
       }
+
+      .field-pincodenotmatch, .field-pincodenotmatch p {
+          color: var(--color-input-text-msg-error);
+          font-size: var(--body-fd-sm-font-size);
+          font-weight: var(--font-weight-regular);
+      }
     }
 
     .field-employeeassistancepanel .field-inpersonbiokycoptions {
@@ -2889,6 +2895,28 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     border: solid 1px var(--color-interface-border-secondary);
     border-radius: 24px;
     padding: 32px;
+  }
+
+  .field-aadhaaraddressdeclaration {
+    .field-aadhaaraddressprefilled p {
+      margin: 0;
+    }
+
+    .field-aadharaddressconfirmation legend {
+      padding-top: 20px;
+      border-top: 1px dashed var(--color-interface-border-secondary);
+    }
+  }
+
+  .field-currentaddressdeclarationaadhar {
+    .field-currentresidenceaddressaadhaar p {
+      margin: 0;
+    }
+
+    .field-currentresidenceaddressdeclaration {
+      padding-top: 20px;
+      border-top: 1px dashed var(--color-interface-border-secondary);
+    }
   }
 
   .field-currentresidenceaddressbiometricovd {
@@ -4122,6 +4150,18 @@ header:has(~ .fd-form-wrapper) {
     .field-currentaddressdeclarationaadhar,
     .field-currentresidenceaddressbiometricovd {
       margin-bottom: 20px;
+    }
+
+    .field-aadhaaraddressdeclaration {
+      .field-aadhaaraddressprefilled p {
+        margin-bottom: 20px;
+      }
+    }
+  
+    .field-currentaddressdeclarationaadhar {
+      .field-currentresidenceaddressaadhaar p {
+        margin-bottom: 20px;
+      }
     }
   }
 
