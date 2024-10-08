@@ -15,7 +15,7 @@ export default async function initializeRuleEngineWorker(formDef, renderHTMLForm
     let form;
     myWorker.addEventListener('message', async (e) => {
       if (e.data.name === 'init') {
-        form = await renderHTMLForm(e.data.payload);
+        form = await renderHTMLForm(e.data.payload, e.data.payload.data);
         // myWorker.terminate();
         resolve(form);
       }

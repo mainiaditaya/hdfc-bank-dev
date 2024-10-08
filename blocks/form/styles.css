@@ -1,0 +1,803 @@
+/* stylelint-disable selector-not-notation */
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable selector-class-pattern */
+@import url('../../creditcards/corporate-creditcard/creditcards.css');
+
+:root {
+  --loader-image-url: url('loader.gif');
+}
+
+body,
+.section.form-container {
+  background-color: var(--color-interface-background-secondary);
+}
+
+main {
+  overflow: hidden;
+  padding-bottom: 30px;
+}
+
+main .form {
+  input[type='text'],
+  input[type='number'],
+  input[type='email'],
+  input[type='date'] {
+    height: var(--form-input-height);
+    padding: var(--form-input-padding);
+    border: 1px solid var(--color-input-border-default);
+    border-radius: var(--form-input-border-radius);
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  input[type='password'] {
+    font-size: 31px;
+  }
+
+  a:any-link, a:hover, .link { color: var(--color-action-text-secondary-default); }
+  
+  .error-field {
+    input[type='text'] {
+      border: 1px solid var(--color-input-border-error-default) !important;
+
+      &:focus-visible {
+        border: 1px solid var(--color-input-border-error-default) !important;
+        outline: none !important;
+      }
+    }
+  }
+
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    appearance: textfield;
+  }
+}
+
+.date-wrapper:not(.field-invalid) .field-description { display: none; }
+.passwordField .field-description { display: none; }
+
+/* Base style for labels */
+main .form :not(.checkbox-wrapper, .radio-wrapper, .field-joiningrenewalfee) > label{
+  margin: 20px;
+  position: absolute;
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--body-sm-font-size);
+  width: max-content;
+}
+
+main .form :not(.checkbox-wrapper, .radio-wrapper, .field-joiningrenewalfee) > label:has(p) p {
+  margin: 1px 0;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--body-sm-font-size);
+}
+
+main .form form .checkbox-wrapper {
+  align-items: flex-start !important;
+}
+
+main .form form fieldset > .checkbox-wrapper:not(:first-of-type) {
+  margin-top: 15px;
+}
+
+main .form form {
+  padding: 40px;
+
+  .label-disabled {
+    background-color: var(--form-input-disable-color) !important;
+  }
+
+  .field-maskedmobilenumber {
+    input,
+    label {
+      background-color: var(--form-input-disable-color) !important;
+    }
+  }
+
+  .field-currentdetails {
+    .field-currentaddressetb {
+      row-gap: 8px !important;
+    }
+  }
+
+  .field-permanentaddresstoggle,
+  .field-ckyctoggle,
+  .field-currentaddresstoggle {
+    align-items: center !important;
+
+    .field-label {
+      display: flex;
+      flex-basis: 40px;
+      align-items: center;
+      background-color: #9ca3af;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 12px;
+      height: 24px;
+      width: 40px;
+    }
+
+    .field-label::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border-radius: 50%;
+      margin-right: 10px;
+      transition: transform 0.3s;
+      margin-left: 1px;
+    }
+  }
+
+  .field-currentaddresstoggle {
+    flex-direction: row-reverse;
+    width: fit-content;
+
+    input[disabled] + .field-label {
+      pointer-events: none;
+      cursor: not-allowed !important;
+    }
+  }
+
+  .field-permanentaddresstoggle input[type='checkbox'],
+  .field-currentaddresstoggle input[type='checkbox'],
+  .field-ckyctoggle input[type='checkbox'] {
+    display: none;
+  }
+
+  .field-permanentaddresstoggle input[type='checkbox']:checked + .field-label,
+  .field-currentaddresstoggle input[type='checkbox']:checked + .field-label,
+  .field-ckyctoggle input[type='checkbox']:checked + .field-label {
+    background-color: #1c3fca;
+  }
+
+  .field-permanentaddresstoggle
+    input[type='checkbox']:checked
+    + .field-label::before,
+  .field-currentaddresstoggle
+    input[type='checkbox']:checked
+    + .field-label::before,
+  .field-ckyctoggle input[type='checkbox']:checked + .field-label::before {
+    transform: translateX(20px);
+    margin-right: 21px;
+  }
+
+  .current-address-toggle__label {
+    color: var(--color-interface-text-secondary);
+    font-size: var(--body-sm-font-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--font-linehight-regular);
+  }
+
+  .field-prefilledcurrentadddress {
+    textarea {
+      background-color: var(--color-action-background-secondary-disabled);
+      border: none;
+      pointer-events: none;
+      padding: 0;
+      margin: 0;
+      font-weight: var(--font-weight-bold);
+      font-size: var(--body-md-font-size);
+      line-height: var(--font-linehight-medium);
+      color: var(--color-interface-text-primary);
+      min-height: auto !important;
+      height: auto !important;
+      font-family: var(--body-font-family) !important;
+      resize: none;
+    }
+  }
+}
+
+main .form.block {
+  border-radius: var(--form-border-radius);
+}
+
+main .section.form-container {
+  max-width: var(--form-max-width);
+}
+
+main .form select {
+  height: var(--form-input-height) !important;
+  padding: var(--form-input-padding) !important;
+  border: 1px solid var(--color-input-border-default) !important;
+  border-radius: var(--form-input-border-radius) !important;
+}
+
+main .form .field-welcometext p {
+  font-size: var(--body-x-lg-font-size);
+  font-weight: var(--font-weight-extra-bold);
+  color: var(--color-interface-text-primary);
+}
+
+/* loader for app show hide on api call */
+.preloader::before,
+.preloader::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader::before {
+  /* preLoading-text-css */
+  content: attr(loader-text);
+  font-size: 16px;
+  color: var(--form-label-title-color);
+  font-weight: var(--form-title-font-weight);
+  z-index: 10000;
+  top: -100px;
+}
+
+.preloader::after {
+  /* preLoading-gif-image */
+  background: rgb(255 255 255 / 80%) var(--loader-image-url) no-repeat center
+    center;
+}
+
+/* Password view and hide icon */
+main .form .bi-eye {
+  content: url('../../icons/password-view-icon.png');
+  margin-left: -30px;
+  cursor: pointer;
+  width: 21px;
+  margin-bottom: -6px;
+}
+
+main .form .bi-eye-slash {
+  content: url('../../icons/password-hide-icon.png');
+  margin-left: -30px;
+  cursor: pointer;
+  width: 21px;
+}
+
+/* Date picker for only iOS devices */
+@supports (-webkit-touch-callout: none) {
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+  }
+
+  input[type="date"] {
+    position: relative;
+
+    &::after {
+      content: url('../../icons/date-picker.svg');
+      position: absolute;
+      right: 5px;
+      bottom: 10px;
+      background-color: var(--color-interface-background-primary);
+    }
+  }    
+}
+
+/* Style for labels when input is active or not empty */
+main .form :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee) > label{
+  color: var(--label-color);
+  transform: translateY(-22px);
+  z-index: 1;
+  background-color: var(--color-interface-background-primary);
+  padding: 0 4px;
+  font-weight: var(--font-weight-bold);
+  font-size: 13px;
+  line-height: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+main .form :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee) > label:has(p) p {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Button Styling */
+.button-wrapper {
+  text-align: center;
+
+  .button {
+    max-width: 400px;
+    border-radius: 13px;
+    width: 100%;
+    height: 52px;
+    line-height: 24px;
+    letter-spacing: 0 em;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: var(--form-button-font-size);
+    font-weight: var(--form-button-font-weight);
+    background: var(--color-action-background-primary-default);
+    border: var(--color-action-border-primary-default);
+    color: var(--color-action-text-primary-default);
+  }
+
+  :hover {
+    background: var(--color-action-background-primary-default) !important;
+    border: var(--color-action-border-primary-default);
+    color: var(--color-action-text-primary-default);
+  }
+
+  :disabled {
+    background-color: var(
+      --color-action-background-primary-disabled
+    ) !important;
+    border: var(--color-action-border-primary-disabled) !important;
+    color: var(--color-action-text-primary-disabled) !important;
+  }
+}
+
+.btn-short {
+  text-align: center;
+
+  .button {
+    max-width: 260px !important;
+    width: 100%;
+  }
+}
+
+.btn-long {
+  .button {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.button-wrapper.field-vkycproceedbutton {
+  width: 400px;
+  text-align: center;
+  display: block;
+}
+
+main .form .field-otphelptext p {
+  font-size: var(--body-sm-font-size);
+  margin: 0;
+}
+
+main .field-incorrectotptext {
+  padding: 0 16px;
+  border-radius: 8px;
+  background: var(--color-interface-error-box-primary);
+  width: fit-content;
+  margin: 0 auto !important;
+
+  > p > p::before {
+    content: url('../../icons/error-info-icon.svg');
+    padding: 10px;
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+    margin: 0 !important;
+    font-weight: 600;
+    font-size: 12px !important;
+    color: var(--color-input-text-msg-error) !important;
+  }
+}
+
+main .form .field-resultpanel .field-errormessagetext:not(:has(p))::before {
+  content: '';
+  display: block;
+  position: relative;
+  left: 45%;
+  width: 80px;
+  height: 80px;
+  background-image: url('../../icons/hdfc-error-icon.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-bottom: 24px;
+}
+
+main .form .field-resultpanel .field-errormessagetext p::before {
+  background-image: url('../../icons/hdfc-error-icon.svg');
+}
+
+main .form .field-successresultpanel .field-successresulttextlabel > p::before {
+  background-image: url('../../icons/hdfc-success-icon.svg');
+}
+
+main .form .field-resultpanel,
+main .form .field-successresultpanel {
+  padding-bottom: 20px;
+
+  > .field-wrapper {
+    border-radius: var(--form-border-radius) var(--form-border-radius) 0 0;
+  }
+
+  .field-errormessagetext:not(:has(p)) {
+    display: grid;
+    text-align: center;
+    background-color: var(--color-interface-background-quaternary);
+    padding: 40px 0;
+    color: var(--color-interface-text-tertiary);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--body-md-font-size);
+    border-radius: 20px 20px 0 0;
+    margin: -40px -40px 0;
+  }
+
+  .field-errormessagetext:has(p), .field-successresulttextlabel {
+    background-color: var(--color-interface-background-quaternary);
+    margin: -40px -40px 0;
+    padding: 0 15px;
+    border-radius: 20px 20px 0 0;
+
+    p {
+      padding: 20px 0 10px;
+      color: var(--color-interface-text-tertiary);
+      text-align: center;
+    }
+
+    > p::before {
+      background-size: cover;
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      content: '';
+    }
+  }
+}
+
+main .form .field-resultpanel > div.bulleted-paragraph,
+main
+  .form
+  .field-successresultpanel
+  > div:not(.field-successresulttextlabel, .field-newarnnumber) {
+  display: flex;
+  max-width: 506px;
+  margin: 0 auto;
+  text-align: center;
+
+  p > p:not(:first-child) {
+    padding-top: 15px;
+  }
+}
+
+main .form .field-resultpanel > .bulleted-paragraph::before,
+main .form .field-successresultpanel > .field-arnrefnumpanel::before {
+  background-image: url('../../icons/result-list-icon.svg');
+  padding-right: 15px; 
+}
+
+main .form .field-successresultpanel {
+  display: grid;
+
+  .field-arnrefnumpanel::before {
+    content: url('../../icons/result-list-icon.svg');
+    padding-right: 15px;
+    width: 32px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 33%;
+  }
+
+  .field-arnrefnumpanel {
+    position: relative;
+    padding-bottom: 45px;
+
+    p { 
+      margin: 0;
+      padding: 0;
+    }
+
+    .field-arnrefnumlabel {
+      position: absolute;
+      top: 3px;
+      left: 40%;
+    }
+
+    .field-newarnnumber {
+      position: absolute;
+      top: 30px;
+      left: 40%;
+      margin: 0;
+      padding: 0;
+
+      p {
+        font-weight: var(--font-weight-bold);
+        font-size: var(--body-lg-font-size);
+        color: var(--color-interface-text-primary);
+      }
+    }
+  }
+
+  .field-vkycconfirmationtext {
+    font-size: 13px;
+    margin-top: 27px;
+  }
+
+  .field-offerslink {
+    border: solid 1px var(--color-interface-border-primary);
+    border-radius: 8px;
+    padding: 2%;
+    width: 50%;
+    justify-content: center;
+  }
+
+  .field-vkyccameraconfirmation {
+    display: flex;
+    flex-direction: row;
+    margin: 0 16%;
+    width: 73%;
+    border: solid 1px var(--color-interface-border-secondary);
+    border-radius: 16px;
+
+    .field-cameraaccess1 {
+      padding: 10px 0 10px 10px;
+    }
+
+    .field-cameraaccess2 {
+      padding: 10px 0 10px 10px;
+      border-left: solid 1px #D2D5DB;
+    }
+
+    .field-cameraaccess3 {
+      padding: 10px 0 10px 10px;
+      border-left: solid 1px #D2D5DB;
+    }
+  }
+
+  .field-ratingfragment {
+    .field-ratinglabel p { color: var(--color-interface-text-primary); }
+
+    .field-ratingpanel .field-rating .rating.hover{
+      justify-content: center;
+      margin-top: -20px;
+      .star { font-size: 36px; }
+      .emoji { display: none; }
+    }
+
+    .field-submitfeedback button {
+      width: 205px;
+    }
+  }
+}
+
+main .form .field-resultpanel > div:not(.bulleted-paragraph) {
+    justify-content: center;
+    display: flex;
+}
+
+main .form.block .field-otppanel {
+  display: grid;
+  max-width: 344px;
+  margin: 0 auto;
+  text-align: center;
+
+  > legend { width: 265px;
+    p, b { width: 265px; }
+  }
+
+  .field-otpnumber {
+    margin-bottom: -10px;
+
+    input {
+      text-align: center;
+      margin-bottom: 0;
+      letter-spacing: 2vw;
+      caret-color: transparent;
+      height: 40px;
+      border-radius: 12px;
+      padding: 15px 25px;
+      width: 98%;
+    }
+  }
+
+  .field-otpresend {
+    text-align: left;
+
+    .button {
+      max-width: fit-content;
+      background: var(--color-action-text-primary-default);
+      color: var(--color-action-text-secondary-default);
+      text-align: left;
+    }
+
+    :hover {
+      background: white !important;
+    }
+  }
+
+  .field-otpsubpanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+
+    .plain-text-wrapper {
+      width: fit-content;
+
+      p {
+        margin-top: 0.9em;
+        font-size: 14px;
+      }
+    }
+
+    .field-numretries {
+      text-align: right;
+      direction: rtl;
+      margin: 0 -14px 0 -30px;
+
+      input {
+        padding: 0;
+        width: 24px;
+        margin: 0;
+        border: none;
+        background: transparent;
+        pointer-events: none;
+      }
+    }
+
+    .field-remaining { margin-left: -15px; }
+  }
+}
+
+/* Error/Success Result Panel */
+main .form .field-resultpanel {
+  p,
+  label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 4px;
+  }
+}
+
+@media (width <= 767px) {
+  main .form .field-successresultpanel { 
+    display: grid; 
+  
+    .field-successresulttextlabel { margin-bottom: 12px; }
+    .field-arnrefnumpanel::before { left: 24%; }
+    .field-arnrefnumpanel { margin-left: -25px; }
+    .field-newarnnumber, .field-newarnnumber p { line-height: 45px; }
+    .field-arnrefnumlabel, .field-newarnnumber { left: 36%; }
+    .field-ratingpanel .field-rating .rating.hover {margin-top: 0 !important;}
+
+    .field-vkycconfirmationtext { 
+      justify-content: center; 
+      margin: 19px 0 !important; 
+    }
+  }
+}
+
+@media (width <= 750px) {
+  main .section.form-container {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  main .form.block {
+    border-radius: 0;
+  }
+
+  main .form form {
+    padding: 28px;
+  }
+
+  main .form .field-otppanel { display: grid;
+
+    > legend { width: 265px;
+      p, b { width: 265px; }
+    }
+
+    .field-otpnumber {
+      input {
+        padding: 0 0 0 2vw;
+        letter-spacing: 2vw;
+      }
+    }
+
+    .field-otpresend {
+      margin: 0 !important;
+    }
+
+    .field-otpsubpanel {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  main .form .field-resultpanel,
+  main .form .field-successresultpanel {
+    > div:not(.field-errormessagetext):not(.field-successresulttextlabel) {
+      max-width: 100%;
+    }
+
+    > .field-wrapper {
+      border-radius: 0;
+    }
+  }
+}
+
+@media (width <= 480px) {
+  main .form form {
+    padding: 20px;
+  }
+
+  main .form.block .field-otppanel { display: grid;
+    
+    > legend { width: 265px;
+      p, b { width: 265px; }
+    }
+
+    .field-otpnumber {
+      input {
+        letter-spacing: 6vw;
+      }
+    }
+
+    .field-otpresend {
+      margin: 0 !important;
+    }
+  }
+  
+  main .form form .field-successresultpanel {
+    margin-left: -17px;
+    display: grid;
+
+    .field-arnrefnumpanel::before { left: 14%; }
+    .field-arnrefnumlabel { left: 32%; }
+
+    .field-newarnnumber {
+      left: 32%; 
+      top: 43px;
+    }
+
+    .field-vkycconfirmationtext, .field-offerslink, .field-vkyccameraconfirmation {
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
+
+@media (width <=960px) {
+  main .section.form-container {
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  main .form.block .field-otppanel { display: grid;
+
+    > legend { width: 265px;
+      p, b { width: 265px; }
+    }
+
+    .field-otpsubpanel {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+}
+
+.read-only-text {
+  pointer-events: none;
+  cursor: text;
+}

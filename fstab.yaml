@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: https://applyonlinedev.hdfcbank.com/
+    url: https://author-hdfc-prod.adobecqms.net/bin/franklin.delivery/aemsites/hdfc-bank-prod/main
     type: "markup"
-    suffix: ".md.html"
+    suffix: ".html"

@@ -1,0 +1,6 @@
+projectKey=EDS
+serverUrl=https://aemcompetencysonar.cq.corp.adobe.com
+serverVersion=9.9.2.77730
+dashboardUrl=https://aemcompetencysonar.cq.corp.adobe.com/dashboard?id=EDS
+ceTaskId=AY5Bb7iwlPlH9y8KCB0Q
+ceTaskUrl=https://aemcompetencysonar.cq.corp.adobe.com/api/ce/task?id=AY5Bb7iwlPlH9y8KCB0Q
