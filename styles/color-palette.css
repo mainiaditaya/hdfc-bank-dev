@@ -49,4 +49,13 @@
   --color-input-border-disabled: #9ca3af;
   --color-input-border-error-default: #e30613;
   --color-action-stepper-style: linear-gradient(90deg, rgb(211 214 220) 50%, rgba(255 255 255 / 0%) 100%);
+  --color-interface-fd-background-primary: #08173A;
+  --color-interface-fd-background-secondary: #DDF2F8;
+  --color-interface-button-background: #1C3FCA;
+  --color-interface-fd-title-border: #525D75;
+  --color-action-scroll-primary: #4F6FDF;
+  --color-action-scroll-background-primary: #f5f6fb;
+  --color-interface-popup-background: #00000080;
+  --color-interface-fileupload-border: #B9D7CA;
+  --color-interface-fileupload-background: #FAFFFD;
 }
