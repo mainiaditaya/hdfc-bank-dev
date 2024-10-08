@@ -1,0 +1,431 @@
+:root {
+    --form-text-field-horz-gap: 20px;
+}
+
+main {
+    background-color: var(--color-interface-background-quinary)
+}
+
+main .section {
+    padding: 0 !important;
+}
+
+
+main .form input[type='checkbox'] {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 4.5px;
+    border: 1.13px;
+}
+
+main .form input[type='radio'] {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+main .form form .radio-wrapper {
+    align-items: center !important;
+}
+
+
+main img {
+    max-width: 100%;
+    width: 100% ;
+    height: 180px;
+}
+
+.form-container {
+    max-width: 960px !important;
+    width: 100%;
+    margin: 0 auto !important;
+    padding: 36px 36px 32px 40px !important;
+    margin-bottom: 24px !important;
+    margin-top: 16px !important;
+    box-shadow: 0 3px 6px var(--color-interface-background-box-shadow-primary);
+    border-radius: 13px;
+    background: var(--color-interface-background-primary) !important;
+}
+
+.header-wrapper {
+    height: 48px;
+    background: var(--color-interface-background-tertiary);
+}
+
+.cmp-container-wrapper {
+    max-width: 100% !important;
+}
+
+.field-checkboxconsent1label {
+    margin-bottom: -1em !important;
+}
+
+.field-checkboxconsent1label p,
+.field-checkboxconsent2label label p {
+    font-size: var(--body-sm-font-size) !important;
+    font-weight: var(--font-weight-regular);
+    line-height: var(--font-linehight-regular);
+    align-items: start;
+}
+
+.field-welcometextlabel p p {
+    font-size: var(--body-x-lg-font-size) !important;
+    font-weight: var(--font-weight-extra-bold);
+    line-height: var(--font-linehight-large);
+    letter-spacing: -0.01em;
+    text-align: left;
+    color: var(--color-interface-text-primary) !important;
+}
+
+.field-loginpanel {
+    margin-top: -11px !important;
+
+    .field-mobilepanel {
+        p,
+        .field-pandobselection legend {
+            font-size: var(--body-md-font-size) !important;
+            font-weight: var(--font-weight-bold);
+            line-height: var(--font-linehight-regular);
+            text-align: left;
+            color: var(--color-interface-text-primary) !important;
+            margin-top: 6px;
+        }
+
+        .field-registeredmobilenumber, .field-maskedmobilenumber{
+            margin-top: -19px;
+            position: relative;
+        }
+
+    }
+
+    .field-identifierpanel {
+        margin-top: 5px !important;
+
+        .radio-group-wrapper {
+            margin-top: -2px;
+            margin-bottom: 13px;
+
+            legend {
+                max-width: fit-content;
+                float: left;
+                margin-right: 22px;
+                margin-bottom: 0;
+                font-size: var(--body-md-font-size) !important;
+                font-weight: var(--font-weight-bold);
+                line-height: var(--font-linehight-regular);
+                text-align: left;
+                color: var(--color-interface-text-primary) !important;
+            }
+
+            .radio-wrapper {
+                margin-right: 20px;
+                float: left;
+            }
+        }
+
+        .field-pan input {
+            font-size: var(--body-md-font-size);
+            font-weight: var(--font-weight-medium);
+            line-height: var(--font-linehight-medium);
+            letter-spacing: 21PX;
+            text-align: left;
+            color: var(--color-input-text-default) !important;
+            text-transform: uppercase;
+
+            ::placeholder {
+                text-transform: none;
+            }
+        }
+
+        .field-dateofbirth,
+        .field-pan {
+            margin-top: -19px !important;
+        }
+
+        .field-dateofbirth input {
+            font-size: var(--body-sm-font-size);
+            font-weight: var(--font-weight-regular);
+            line-height: var(--font-linehight-regular);
+            text-align: left;
+            color: var(--color-interface-background-quaternary);
+        }
+    }
+
+    .checkbox-wrapper {
+        align-items: unset !important;
+    }
+
+    .field-consent2panelwrapper, .field-consent1panelwrapper{
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        flex-direction: unset !important;
+
+        a{
+            color: var(--color-action-text-secondary-default);
+        }
+
+        .field-checkboxconsent2label, .field-checkboxconsent1label{
+            display: unset !important;
+            max-width: 21px;
+        }
+
+        .field-checkbox2text, .field-checkbox1text{
+            margin-left: -13px;
+
+            p{
+                font-size: var(--body-sm-font-size) !important;
+                font-weight: var(--font-weight-regular);
+                line-height: var(--font-linehight-regular);
+            }
+        }
+
+        .field-checkbox1text p{
+            margin-bottom: -10px !important;
+            margin-top: 1px;
+        }
+    }
+}
+
+.link{
+    color: var(--color-action-text-secondary-default);
+    cursor: pointer;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--body-sm-font-size);
+
+    &:hover{
+        text-decoration: underline;
+    }
+}
+
+a[data-clickable-id="clickable-3"] {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--body-sm-font-size);
+}
+
+.field-pandobselection {
+    margin-top: -7px;
+}
+
+.footer-wrapper {
+    background: var(--color-interface-background-tertiary);
+    bottom: 0;
+    position: relative;
+}
+
+.radio-group-wrapper label {
+    font-size: var(--body-sm-font-size) !important;
+    font-weight: var(--font-weight-regular);
+    line-height: var (--font-linehight-regular);
+    text-align: left;
+
+}
+
+main .form form .panel-wrapper {
+    gap: var(--form-text-field-horz-gap) !important;
+}
+
+.field-description{
+    margin-top: -15px;
+    font-size: var(--body-sm-font-size) !important;
+    margin-bottom: -8px;
+}
+
+.field-checkboxconsent1label label, .field-checkboxconsent2label label{
+    margin-top: -4px;
+}
+
+/***** mobile large ********/
+@media (320px <=width <=480px) {
+    .field-welcometextlabel {
+        margin-bottom: 24px !important;
+    }
+
+    main .form form {
+        padding: 20px !important;
+    }
+
+    .form.block>div>div>form,
+    .form.block>div>div>form fieldset {
+        display: block;
+    }
+
+    main .form .field-successresultpanel { display: grid; }
+
+    .field-dateofbirth,
+    .field-pan {
+        margin-top: -12px !important;
+    }
+
+    .field-loginpanel {
+        .field-identifierpanel {
+            .radio-group-wrapper legend {
+                max-width: max-content;
+                float: none;
+                margin-bottom: 0.5em;
+
+            }
+
+            .field-dateofbirth,
+            .field-pan {
+                margin-top: 1em !important;
+            }
+        }
+    }
+
+    .button-wrapper .button {
+        max-width: 440px;
+        width: 100%;
+    }
+
+    .button-wrapper {
+        margin-top: 1em !important;
+    }
+
+    .form-container {
+        box-shadow: none;
+    }
+
+    .field-pan input {
+        letter-spacing: 17px !important;
+    }
+
+    .field-checkboxconsent2label {
+        margin-top: 1em !important;
+    }
+
+    .field-registeredmobilenumber {
+        margin-top: 1px !important;
+    }
+
+    .radio-group-wrapper {
+        margin-bottom: -13px !important;
+    }
+
+    .field-description{
+        margin-bottom: 0;
+    }
+
+    .field-checkboxconsent1label{
+        margin-top: 10px !important;
+     }
+
+     .field-consent2panelwrapper, .field-consent1panelwrapper{
+        .field-checkbox2text, .field-checkbox1text{
+            margin-left: -13px;
+
+            p{
+                margin-top: 1.6em;
+            }
+
+
+        }
+
+        .field-checkbox1text p{
+            margin-top: 12px !important;
+     }
+    }
+
+    .field-maskedmobilenumber {
+        margin-top: 0 !important;
+    }
+
+}
+
+@media (481px <=width <=767px) {
+    main .form form {
+        padding: 20px !important;
+    }
+
+    .form.block>div>div>form,
+    .form.block>div>div>form fieldset {
+        display: block;
+    }
+
+    .radio-group-wrapper {
+        margin-top: 1px !important;
+        margin-bottom: 38px !important;
+    }
+
+    .field-welcometextlabel {
+        margin-bottom: 24px;
+     }
+
+     .field-checkboxconsent1label{
+        margin-top: 10px !important;
+     }
+
+     .field-checkboxconsent2label {
+        margin-top: 1em !important;
+    }
+
+    .field-registeredmobilenumber {
+        margin-top: 1px !important;
+    }
+
+    .field-dateofbirth,
+    .field-pan {
+        margin-top: -12px !important;
+    }
+
+    .button-wrapper{
+        margin-top: 1em !important;
+    }
+
+    main{
+        background-color: var(--color-interface-background-primary);
+    }
+
+    .form-container{
+        box-shadow: none;
+    }
+
+    .field-description{
+        margin-bottom: 0;
+    }
+
+    .field-consent2panelwrapper, .field-consent1panelwrapper{
+        .field-checkbox2text{
+            margin-left: -13px;
+
+            p{
+                margin-top: 1.6em;
+            }
+
+        }
+
+        .field-checkbox1text p{
+            margin-top: 12px !important;
+     }
+    }
+
+    .field-maskedmobilenumber {
+        margin-top: 0 !important;
+    }
+}
+
+@media (768px <=width <=960px) {
+    main .form form {
+        padding: 25px !important;
+    }
+
+    main{
+        background-color: var(--color-interface-background-primary);
+    }
+
+    .form-container{
+        box-shadow: none;
+    }
+
+    [id^="pandobselection-1"] {
+        margin-left: 20px !important;
+    }
+
+    .radio-wrapper {
+        margin-right: 0 !important;
+    }
+
+    .field-consent2panelwrapper,.field-consent1panelwrapper{
+        .field-checkbox2text{
+            margin-left: -13px;
+        }
+    }
+}
