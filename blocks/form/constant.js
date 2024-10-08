@@ -7,8 +7,18 @@ export const defaultErrorMessages = {
   maxItems: 'Specify a number of items equal to or less than $0.',
   minItems: 'Specify a number of items equal to or greater than $0.',
 };
+let submitBaseUrl = '';
 
-let submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
+const localDev = ['aem.live', 'aem.page', 'localhost', 'hlx.live', 'hlx.page'];
+
+function isLocalDev() {
+  const hostname = location.hostname;
+  return localDev.some(dev => hostname.includes(dev));
+}
+
+if (isLocalDev()) {
+  submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
+} 
 
 export function setSubmitBaseUrl(url) {
   submitBaseUrl = url;
@@ -17,10 +27,3 @@ export function setSubmitBaseUrl(url) {
 export function getSubmitBaseUrl() {
   return submitBaseUrl;
 }
-
-export const formIdPathMapping = {
-  '/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', // cc
-  '/content/forms/af/hdfc_haf/cards/fdlien/forms/fdlien-dev': '../../../creditcards/fd-card/fd-functions.js', // fd
-  '/content/forms/af/hdfc_haf/cards/fdlien/forms/copy/fdlien-dev21': '../../../creditcards/fd-card/fd-functions.js', // fd
-  '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
-};
