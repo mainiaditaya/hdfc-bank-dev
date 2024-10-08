@@ -24,12 +24,12 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
     case 'OVD':
       CURRENT_FORM_CONTEXT.selectedKyc = 'OVD';
       globals.functions.setProperty(docUploadFlow, { visible: true });
-      globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: CURRENT_FORM_CONTEXT.customerIdentityChange });
-      globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: true });
+      globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: CURRENT_FORM_CONTEXT.customerIdentityChange });
+      globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: true });
       globals.functions.setProperty(docUploadFlow.docUploadConfirm, { visible: true });
       globals.functions.setProperty(docUploadFlow.docUploadBiometric, { visible: false });
-      CURRENT_FORM_CONTEXT.identityDocUploadFlag = true;
-      CURRENT_FORM_CONTEXT.addressDocUploadFlag = !!CURRENT_FORM_CONTEXT?.customerIdentityChange;
+      CURRENT_FORM_CONTEXT.addressDocUploadFlag = true;
+      CURRENT_FORM_CONTEXT.identityDocUploadFlag = CURRENT_FORM_CONTEXT?.customerIdentityChange;
       break;
     default:
   }
@@ -42,8 +42,9 @@ const addressDeclarationProceedHandler = (globals) => {
     const { docUploadPanel, uploadAddressProof } = docUploadFlow;
     globals.functions.setProperty(addressDeclarationPanel, { visible: false });
     globals.functions.setProperty(docUploadFlow, { visible: true });
-    globals.functions.setProperty(docUploadPanel, { visible: false });
-    globals.functions.setProperty(uploadAddressProof, { visible: true });
+    globals.functions.setProperty(docUploadPanel, { visible: true });
+    globals.functions.setProperty(uploadAddressProof, { visible: false });
+    CURRENT_FORM_CONTEXT.identityDocUploadFlag = true;
     return;
   }
   if (!currentFormContext.customerIdentityChange && KYC_STATE?.selectedKyc === 'BIOMETRIC') {
