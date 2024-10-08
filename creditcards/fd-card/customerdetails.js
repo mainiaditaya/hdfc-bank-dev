@@ -66,7 +66,7 @@ const bindEmployeeAssistanceField = async (globals) => {
 
   try {
     if (defaultChannel || Object.values(codes).some(Boolean)) {
-      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on' });
+      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on', enabled: false });
     }
     if (inPersonBioKYC?.toLowerCase() === 'yes') {
       globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
