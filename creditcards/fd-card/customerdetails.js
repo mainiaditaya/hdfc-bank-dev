@@ -218,6 +218,7 @@ const bindCustomerDetails = async (globals) => {
 
   if (validPin.result === 'false') {
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+    globals.functions.setProperty(addressDetails.pinCodeNotMatch, { visible: true });
   }
 
   Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { city, pincode, state });
