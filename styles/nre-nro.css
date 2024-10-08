@@ -1,7 +1,9 @@
 @import url("../../styles/color-palette.css");
+
 .nre {
   main {
     display: flex;
+
     & .field-invalid:has(.field-description) {
       input {
         border-color: var(--color-input-border-error) !important;
@@ -9,16 +11,22 @@
         outline: none;
       }
     }
-    .field-consentsfragmentnrenro .checkbox-wrapper {
+
+    .field-consentsfragmentnrenro .checkbox-wrapper.field-checkboxconsent1label {
       flex-wrap: wrap;
+
       .field-description {
         margin-top: 4px;
         margin-bottom: 5px;
       }
     }
 
+    .field-consentsfragmentnrenro .checkbox-wrapper input[type="checkbox"] {
+      border-radius: 5px;
+    }
+
     .cmp-container-container {
-      width: 50%;
+      width: 44%;
       background-color: white !important;
     }
 
@@ -27,6 +35,10 @@
       line-height: 36px;
       font-weight: 600;
       color: var(--color-interface-background-quaternary) !important;
+    }
+
+    .form form .plain-text-wrapper.field-letsgetstarted p {
+      margin-bottom: 5px;
     }
 
     .form form .field-wrapper.col-6 {
@@ -53,6 +65,13 @@
       font-size: 20px !important;
       color: rgb(17, 24, 39);
       letter-spacing: 6px;
+      border-color: #D2D5DB;
+      margin-bottom: 0;
+
+      &:focus-visible {
+        outline: none;
+      }
+
       @media (768px <=width <=991px) {
         max-width: 298px !important;
       }
@@ -88,6 +107,7 @@
         font-size: 24px !important;
         line-height: 32px;
       }
+
       background: var(--color-interface-background-quinary);
       padding: 20px;
       border-radius: 20px;
@@ -111,23 +131,29 @@
       fieldset.panel-wrapper.field-mobilepanel.field-wrapper {
         @media screen and (min-width: 768px) {
           padding-top: 23px;
-          border-top: 1px dotted #d2d5d8;
+          border-top: 1px dotted #D2D5DB;
         }
+
         @media (768px <=width <=991px) {
           display: grid;
         }
       }
     }
 
+    .form form .panel-wrapper.field-identifierpanel {
+      margin-top: 30px;
+    }
+
+    .form form .panel-wrapper.field-identifierpanel .radio-wrapper label {
+      font-weight: 500;
+      color: #111827;
+    }
+
     .form form .panel-wrapper.field-stepstofollow fieldset img {
       padding-right: 90px;
     }
 
-    .form
-      form
-      .panel-wrapper.field-stepstofollow
-      fieldset
-      div.plain-text-wrapper.field-wrapper {
+    .form form .panel-wrapper.field-stepstofollow fieldset div.plain-text-wrapper.field-wrapper {
       @media screen and (min-width: 768px) {
         margin-bottom: 0px;
       }
@@ -170,6 +196,7 @@
 
     .form form .panel-wrapper.field-stepstofollow fieldset.field-step1panel {
       position: relative;
+
       div.image-wrapper.field-wrapper {
         @media screen and (min-width: 768px) {
           margin-top: 15px;
@@ -184,6 +211,7 @@
 
     .form form .panel-wrapper.field-step2panel.field-wrapper {
       position: relative;
+
       div.image-wrapper.field-submitotpicon.field-wrapper {
         @media screen and (min-width: 768px) {
           margin-top: 15px;
@@ -198,6 +226,7 @@
 
     .form form .panel-wrapper.field-step3panel.field-wrapper {
       position: relative;
+
       div.image-wrapper.field-selectaccounticon.field-wrapper {
         @media screen and (min-width: 768px) {
           margin-top: 15px;
@@ -212,6 +241,7 @@
 
     .form form .panel-wrapper.field-step4panel.field-wrapper {
       position: relative;
+
       div.image-wrapper.field-confirmdetailsicon.field-wrapper {
         @media screen and (min-width: 768px) {
           margin-top: 15px;
@@ -226,6 +256,7 @@
 
     .form form .panel-wrapper.field-step5panel.field-wrapper {
       position: relative;
+
       div.image-wrapper.field-accountopendicon.field-wrapper {
         @media screen and (min-width: 768px) {
           margin-top: 15px;
@@ -262,45 +293,74 @@
       display: flex;
     }
 
-    div.drop-down-wrapper.field-countrycode.field-wrapper {
+    /*  div.drop-down-wrapper.field-countrycode.field-wrapper {
       width: 100px;
+    } */
+    .form .field-countrycode {
+      position: relative;
     }
 
     .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
-      width: 221px !important;
+      width: 247px !important;
       font-size: 18px !important;
       color: rgb(17, 24, 39);
       letter-spacing: 9px;
+      border-color: #D2D5DB;
+      border-left: 0;
+      padding-left: 20px;
 
-      &:hover {
-        border-color: none;
+      &:focus-visible {
+        outline: none;
       }
     }
 
-    .form select[name="countryCode"] {
+    .form .field-countrycode select[name="countryCode"] {
       border-top-right-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
-      padding-left: 0 !important;
+      /*  padding-left: 0 !important; */
       padding-right: 0 !important;
+      border-color: #D2D5DB !important;
+      max-width: 75px;
+      width: 75px;
+      border-right: 0 !important;
+      -moz-appearance: none;
+      /* Firefox */
+      -webkit-appearance: none;
+      /* Safari and Chrome */
+      appearance: none;
+      background: url('./../icons/select_arrow.png') no-repeat right center;
+      background-size: 20px;
+
+      &:focus-visible {
+        outline: none;
+      }
     }
-    .form
-      :is([data-active="true"], [data-empty="false"], .date-wrapper):not(
-        .field-joiningrenewalfee,
-        .field-nooffds,
-        .field-customername,
-        .field-creditlimit,
-        .field-fdnumber,
-        .field-selectedfdamount,
-        .field-maturingdate,
-        .field-eligiblecreditlimitamount,
-        .field-joiningfeeamt,
-        .field-renewalfeeamt
-      )
-      > label {
+
+    .form .field-countrycode::before {
+      content: '|';
+      color: #f0f0f0;
+      margin-left: 80px;
+      padding-right: 5px;
+      position: absolute;
+      top: 15px;
+      border-width: .5px;
+    }
+
+    .form :is([data-active="true"], [data-empty="false"], .date-wrapper):not(.field-joiningrenewalfee,
+      .field-nooffds,
+      .field-customername,
+      .field-creditlimit,
+      .field-fdnumber,
+      .field-selectedfdamount,
+      .field-maturingdate,
+      .field-eligiblecreditlimitamount,
+      .field-joiningfeeamt,
+      .field-renewalfeeamt)>label {
       margin-left: -75px;
     }
+
     .form.block {
       border-radius: 0 !important;
     }
@@ -308,12 +368,13 @@
     input[name="pan"] {
       max-width: 320px !important;
     }
+
     .cmp-container-wrapper {
       padding: 0 !important;
       border-bottom: none !important;
       content: url("../../icons/nre_nro_desktop_banner.png");
       width: 100% !important;
-      height: 40%;
+      /*  height: 40%; */
       margin: inherit;
     }
 
@@ -327,6 +388,15 @@
 
     div.date-wrapper.field-dateofbirth.field-wrapper label {
       margin-left: 6px;
+      display: none;
+    }
+
+    div.date-wrapper.field-dateofbirth.field-wrapper .field-description {
+      margin-top: 5px;
+    }
+
+    .field-checkboxconsent1text {
+      margin-top: 30px !important;
     }
 
     div.checkbox-wrapper.field-checkboxconsent1label.field-wrapper p {
@@ -368,23 +438,24 @@
     & .field-otpsubpanel {
       .field-numretries {
         position: absolute;
-        margin-right: 105px;
+        margin-right: 100px;
         margin-top: 7px;
       }
     }
   }
 
-  main .form.block .field-otppanel {
+  /* main .form.block .field-otppanel {
     & .field-otpresend {
       .button {
         margin-left: 15px;
       }
     }
-  }
+  } */
 
   div.plain-text-wrapper.field-registermobilenumbererror {
     display: block;
     width: 100%;
+
     p {
       margin-top: -33px;
       font-size: 16px !important;
@@ -393,6 +464,7 @@
       color: #e22853 !important;
     }
   }
+
   /* OTP Panel Styling */
 
   .field-otppanelwrapper {
@@ -416,8 +488,10 @@
           max-width: 100%;
           margin-left: 169px;
           margin-top: -25px;
+
           .field-numretries {
             margin: -6px -14px 0 -30px;
+
             input {
               font-size: var(--body-fd-sm-font-size) !important;
               letter-spacing: normal !important;
@@ -429,6 +503,7 @@
 
       legend {
         text-align: left;
+
         b {
           color: var(--color-interface-background-quaternary);
           font-size: 28px;
@@ -439,9 +514,11 @@
 
       .field-attempts p {
         margin-top: -7px;
-        margin-left: 120px;
+        margin-left: 132px;
         color: #6b7280 !important;
         font-size: var(--body-sm-font-size) !important;
+        font-weight: 400;
+
         @media (320px <=width <=439px) {
           margin-left: 38px;
           margin-top: 18px !important;
@@ -454,6 +531,7 @@
         line-height: 20px;
         font-weight: 400;
         text-align: left;
+
         p {
           color: var(--color-input-text-primary);
           font-size: 12px !important;
@@ -467,7 +545,7 @@
         margin: -28px 0 -18px;
 
         input {
-          width: 100%;
+          width: 100% !important;
           max-width: 100%;
           letter-spacing: 65px !important;
           height: 60px !important;
@@ -483,6 +561,7 @@
       .field-secondspanel {
         display: flex;
         flex-direction: row;
+
         .field-seconds {
           input {
             border: none;
@@ -494,6 +573,7 @@
             margin-top: 12px;
           }
         }
+
         .field-sectext p {
           font-size: var(--body-sm-font-size) !important;
         }
@@ -527,6 +607,7 @@
       .field-sectext {
         width: fit-content;
         margin: 17px 0 0 -54px;
+
         p {
           font-size: var(--body-fd-sm-font-size);
         }
@@ -563,17 +644,18 @@
 
 header {
   background: var(--color-interface-fd-background-primary);
-  .cmp-container > div:nth-child(1) {
+
+  .cmp-container>div:nth-child(1) {
     @media screen and (min-width: 768px) {
       margin-left: 20px;
     }
   }
 
-  .cmp-container > div:nth-child(2) {
+  .cmp-container>div:nth-child(2) {
     display: none;
   }
 
-  .cmp-container > div:nth-child(3) {
+  .cmp-container>div:nth-child(3) {
     position: absolute;
     width: 110px;
     right: -100px;
@@ -586,12 +668,39 @@ header {
 
 footer {
   background: var(--color-interface-fd-background-primary);
+
   & .cmp-container {
-    div > div {
+    div>div {
       margin-right: -25px;
       text-align: center;
     }
   }
+}
+
+/* personal details */
+main .form form .wizard.field-wizardnrenro {
+  padding: 0;
+}
+
+main .form fieldset.field-personaldetails legend {
+  font-size: 24px !;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  color: #111827;
+  padding: 20px;
+  background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  margin-bottom: 0;
+}
+
+main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label{
+  margin: 0;
+  font-size: 14px;
+  color: #6B7280;
+  line-height: 20px;
+  font-weight: 400;
 }
 
 @media (320px <=width <=439px) {
@@ -603,7 +712,7 @@ footer {
         width: 100%;
       }
 
-      div > div > p {
+      div>div>p {
         width: 100% !important;
         text-align: center;
       }
@@ -631,14 +740,17 @@ footer {
         width: 100%;
         margin-top: 10px !important;
       }
+
       .form form .panel-wrapper.field-stepstofollow fieldset {
         display: flex;
         flex-direction: row;
       }
+
       div.plain-text-wrapper.field-registermobilenumbererror {
         margin-top: 98px;
         margin-left: -391px;
       }
+
       div.plain-text-wrapper.field-doberrortext.field-wrapper,
       div.plain-text-wrapper.field-panerrortext.field-wrapper {
         margin-top: 20px;
@@ -646,6 +758,7 @@ footer {
 
       .form form .panel-wrapper.field-stepstofollow fieldset.field-step1panel {
         padding-top: 20px;
+
         &::before {
           content: url("../../icons/Arrow.png");
           position: absolute;
@@ -666,11 +779,7 @@ footer {
         margin-left: 10px;
       }
 
-      .form
-        form
-        .panel-wrapper.field-stepstofollow
-        fieldset
-        div.plain-text-wrapper.field-wrapper {
+      .form form .panel-wrapper.field-stepstofollow fieldset div.plain-text-wrapper.field-wrapper {
         display: flex;
         align-items: center;
       }
@@ -687,6 +796,7 @@ footer {
         padding-top: 0px;
         padding-bottom: 12px;
       }
+
       .form form .field-wrapper.col-6.field-mobilepanel {
         flex-direction: row;
       }
@@ -695,14 +805,17 @@ footer {
         margin-top: 7px;
         width: 300px !important;
       }
+
       input[name="pan"] {
         width: 100% !important;
         max-width: 100% !important;
         margin-top: 24px !important;
       }
+
       .cmp-container-wrapper {
         content: url("../../icons/nre_mobile_page_banner.png");
       }
+
       .form form .panel-wrapper.field-stepstofollowfragment {
         .field-stepstofollowtitle p {
           margin-top: 20px;
@@ -715,14 +828,18 @@ footer {
         padding-top: 0;
         border-radius: 20px;
       }
+
       .form form .panel-wrapper.field-basicrequirements.field-wrapper {
         margin-top: 32px;
       }
+
       div.date-wrapper.field-dateofbirth.field-wrapper label {
         margin-top: 42px;
       }
+
       .form form .panel-wrapper.field-stepstofollow fieldset.field-step1panel {
         position: relative;
+
         div.image-wrapper.field-wrapper {
           @media (320px <=width <=439px) {
             margin-top: 50px;
@@ -740,6 +857,7 @@ footer {
 
       .form form .panel-wrapper.field-step2panel.field-wrapper {
         position: relative;
+
         div.image-wrapper.field-submitotpicon.field-wrapper {
           margin-top: 30px;
           margin-right: 0;
@@ -754,6 +872,7 @@ footer {
 
       .form form .panel-wrapper.field-step3panel.field-wrapper {
         position: relative;
+
         div.image-wrapper.field-selectaccounticon.field-wrapper {
           margin-top: 30px;
           margin-right: 0;
@@ -768,6 +887,7 @@ footer {
 
       .form form .panel-wrapper.field-step4panel.field-wrapper {
         position: relative;
+
         div.image-wrapper.field-confirmdetailsicon.field-wrapper {
           margin-top: 30px;
           margin-right: 0;
@@ -782,6 +902,7 @@ footer {
 
       .form form .panel-wrapper.field-step5panel.field-wrapper {
         position: relative;
+
         div.image-wrapper.field-accountopendicon.field-wrapper {
           margin-top: 30px;
           height: 15px;
@@ -801,11 +922,13 @@ footer {
           text-align: left !important;
         }
       }
-      .cmp-container > div:nth-child(1) {
+
+      .cmp-container>div:nth-child(1) {
         left: 10px;
         display: block;
       }
-      .cmp-container > div:nth-child(3) {
+
+      .cmp-container>div:nth-child(3) {
         right: 10px;
         display: block;
       }
@@ -818,11 +941,12 @@ footer {
         }
       }
     }
+
     footer {
       .cmp-container {
         height: 30px;
 
-        div > div {
+        div>div {
           text-align: center;
           padding: 0;
           height: 30px;
@@ -858,7 +982,7 @@ footer {
 
   footer {
     .cmp-container {
-      div > div {
+      div>div {
         margin-left: 257px;
         text-align: center;
       }
@@ -872,6 +996,7 @@ footer {
   .nre {
     main {
       flex-direction: column;
+
       .cmp-container-container {
         width: 100%;
       }
@@ -914,11 +1039,11 @@ footer {
       }
     }
 
-    .cmp-container > div:nth-child(1) {
+    .cmp-container>div:nth-child(1) {
       display: block;
     }
 
-    .cmp-container > div:nth-child(3) {
+    .cmp-container>div:nth-child(3) {
       right: 10px;
       display: block;
     }
