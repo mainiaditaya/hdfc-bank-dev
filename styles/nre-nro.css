@@ -1,14 +1,21 @@
 @import url("../../styles/color-palette.css");
 .nre {
-main {
+  main {
     display: flex;
     & .field-invalid:has(.field-description) {
       input {
-          border-color: var(--color-input-border-error) !important;
-          box-shadow: 0 0 0 2px var(--color-input-box-shadow-error-default);
-          outline: none;
+        border-color: var(--color-input-border-error) !important;
+        box-shadow: 0 0 0 2px var(--color-input-box-shadow-error-default);
+        outline: none;
       }
-  }
+    }
+    .field-consentsfragmentnrenro .checkbox-wrapper {
+      flex-wrap: wrap;
+      .field-description {
+        margin-top: 4px;
+        margin-bottom: 5px;
+      }
+    }
 
     .cmp-container-container {
       width: 50%;
@@ -37,7 +44,7 @@ main {
       color: var(--color-interface-background-quaternary) !important;
     }
 
-    .form form .field-wrapper.col-12 div[data-id="pandobselection-1"] {
+    .form form .field-wrapper #pandobselection-1 {
       margin-left: 32px;
     }
 
@@ -46,6 +53,9 @@ main {
       font-size: 20px !important;
       color: rgb(17, 24, 39);
       letter-spacing: 6px;
+      @media (768px <=width <=991px) {
+        max-width: 298px !important;
+      }
     }
 
     .form form .panel-wrapper.field-consentsfragmentnrenro.field-wrapper p {
@@ -64,7 +74,7 @@ main {
       position: relative;
       width: 272px;
     }
-    
+
     .form form .field-wrapper .button-wrapper::after {
       content: url("../../icons/Arrow.png");
       position: absolute;
@@ -139,7 +149,7 @@ main {
       &.field-step3text {
         @media screen and (min-width: 768px) {
           margin-bottom: 40px;
-          margin-top:30px;
+          margin-top: 30px;
         }
       }
 
@@ -158,86 +168,75 @@ main {
       }
     }
 
-    .form
-      form
-      .panel-wrapper.field-stepstofollow
-      fieldset.field-step1panel {
-        position: relative;
-        div.image-wrapper.field-wrapper {
-          @media screen and (min-width: 768px) {
-            margin-top: 15px;
-            height: 25px;
-            position: absolute;
-            content: url('../icons/mobile-number.png');
-            top: -28px;
-            left: 50px;
-          }
+    .form form .panel-wrapper.field-stepstofollow fieldset.field-step1panel {
+      position: relative;
+      div.image-wrapper.field-wrapper {
+        @media screen and (min-width: 768px) {
+          margin-top: 15px;
+          height: 25px;
+          position: absolute;
+          content: url("../icons/mobile-number.png");
+          top: -28px;
+          left: 50px;
         }
       }
+    }
 
-    .form
-      form
-      .panel-wrapper.field-step2panel.field-wrapper {
-        position: relative;
-        div.image-wrapper.field-submitotpicon.field-wrapper{
-          @media screen and (min-width: 768px) {
-            margin-top: 15px;
-            height: 25px;
-            position: absolute;
-            content: url('../icons/submitotp.png');
-            top: -28px;
-            left: 50px;
-          }
+    .form form .panel-wrapper.field-step2panel.field-wrapper {
+      position: relative;
+      div.image-wrapper.field-submitotpicon.field-wrapper {
+        @media screen and (min-width: 768px) {
+          margin-top: 15px;
+          height: 25px;
+          position: absolute;
+          content: url("../icons/submitotp.png");
+          top: -28px;
+          left: 50px;
         }
       }
+    }
 
-    .form
-      form
-      .panel-wrapper.field-step3panel.field-wrapper {
-        position: relative;
-        div.image-wrapper.field-selectaccounticon.field-wrapper{
-          @media screen and (min-width: 768px) {
-            margin-top: 15px;
-            height: 25px;
-            position: absolute;
-            content: url('../icons/account.png');
-            top: -28px;
-            left: 50px;
-          }
+    .form form .panel-wrapper.field-step3panel.field-wrapper {
+      position: relative;
+      div.image-wrapper.field-selectaccounticon.field-wrapper {
+        @media screen and (min-width: 768px) {
+          margin-top: 15px;
+          height: 25px;
+          position: absolute;
+          content: url("../icons/account.png");
+          top: -28px;
+          left: 50px;
         }
       }
+    }
 
-    .form
-      form
-      .panel-wrapper.field-step4panel.field-wrapper {
-        position: relative;
-        div.image-wrapper.field-confirmdetailsicon.field-wrapper{
-          @media screen and (min-width: 768px) {
-            margin-top: 15px;
-            height: 25px;
-            position: absolute;
-            content: url('../icons/confirmdetails.png');
-            top: -28px;
-            left: 50px;
-          }
-        }
-      }  
-
-      .form
-      form
-      .panel-wrapper.field-step5panel.field-wrapper {
-        position: relative;
-        div.image-wrapper.field-accountopendicon.field-wrapper{
-          @media screen and (min-width: 768px) {
-            margin-top: 15px;
-            height: 25px;
-            position: absolute;
-            content: url('../icons/confirmdetails.png');
-            top: -28px;
-            left: 50px;
-          }
+    .form form .panel-wrapper.field-step4panel.field-wrapper {
+      position: relative;
+      div.image-wrapper.field-confirmdetailsicon.field-wrapper {
+        @media screen and (min-width: 768px) {
+          margin-top: 15px;
+          height: 25px;
+          position: absolute;
+          content: url("../icons/confirmdetails.png");
+          top: -28px;
+          left: 50px;
         }
       }
+    }
+
+    .form form .panel-wrapper.field-step5panel.field-wrapper {
+      position: relative;
+      div.image-wrapper.field-accountopendicon.field-wrapper {
+        @media screen and (min-width: 768px) {
+          margin-top: 15px;
+          height: 25px;
+          position: absolute;
+          content: url("../icons/confirmdetails.png");
+          top: -28px;
+          left: 50px;
+        }
+      }
+    }
 
     .form form .panel-wrapper.field-stepstofollow-additionalinfopanel p {
       font-size: 14px !important;
@@ -315,6 +314,7 @@ main {
       content: url("../../icons/nre_nro_desktop_banner.png");
       width: 100% !important;
       height: 40%;
+      margin: inherit;
     }
 
     .field-registeredmobilenumber {
@@ -339,158 +339,152 @@ main {
       margin-top: 4px;
     }
 
-    div.plain-text-wrapper.field-doberrortext.field-wrapper p{
+    div.plain-text-wrapper.field-doberrortext.field-wrapper p {
       margin-top: -33px;
       font-size: 16px !important;
       line-height: 24px;
       font-weight: 400;
-      color:#e22853 !important;
+      color: #e22853 !important;
     }
 
-    div.plain-text-wrapper.field-panerrortext.field-wrapper p{
+    div.plain-text-wrapper.field-panerrortext.field-wrapper p {
       margin-top: -33px;
       font-size: 16px !important;
       line-height: 24px;
       font-weight: 400;
-      color:#e22853 !important;
-      }
+      color: #e22853 !important;
     }
-
-    main .form.block .field-otppanel {
-      & .field-otpsubpanel {
-          .plain-text-wrapper {
-              width: max-content;
-          }
-      }
   }
 
   main .form.block .field-otppanel {
     & .field-otpsubpanel {
-        .field-numretries {
-          position: absolute;
-          margin-right: 105px;
-          margin-top: 7px;
-        }
+      .plain-text-wrapper {
+        width: max-content;
       }
     }
+  }
 
-    main .form.block .field-otppanel {
-      & .field-otpresend {
-          .button {
-            margin-left: 15px;
-          }
-        }
+  main .form.block .field-otppanel {
+    & .field-otpsubpanel {
+      .field-numretries {
+        position: absolute;
+        margin-right: 105px;
+        margin-top: 7px;
       }
-
-
-    div.plain-text-wrapper.field-registermobilenumbererror {
-display: block;
-width: 100%;
-p {
-  margin-top: -33px;
-  font-size: 16px !important;
-  line-height: 24px;
-  font-weight: 400;
-  color:#e22853 !important;
-}
-
-
     }
-    /* OTP Panel Styling */
-    
-    .field-otppanelwrapper {
-      grid-template-rows: auto auto 270px;
+  }
 
-      input[name='otpNnumber'] {
-        width: 100%;
-        max-width: 100%;
+  main .form.block .field-otppanel {
+    & .field-otpresend {
+      .button {
+        margin-left: 15px;
       }
+    }
+  }
+
+  div.plain-text-wrapper.field-registermobilenumbererror {
+    display: block;
+    width: 100%;
+    p {
+      margin-top: -33px;
+      font-size: 16px !important;
+      line-height: 24px;
+      font-weight: 400;
+      color: #e22853 !important;
+    }
+  }
+  /* OTP Panel Styling */
+
+  .field-otppanelwrapper {
+    grid-template-rows: auto auto 270px;
+
+    input[name="otpNnumber"] {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .field-otppanel {
+      max-width: 100% !important;
+      grid-template-rows: auto;
+      padding: 40px 40px 0 10px;
 
       .field-otppanel {
-        max-width: 100% !important;
-        grid-template-rows: auto;
-        padding: 40px 40px 0 10px;
+        text-align: left;
 
-        .field-otppanel {
-          text-align: left;
-
-          .field-otpsubpanel {
-            width: 100%;
-            max-width: 100%;
-            margin-left: 169px;
-            margin-top: -25px;
-            .field-numretries{
-              margin: -6px -14px 0 -30px;
-              input {
-                font-size: var(--body-fd-sm-font-size) !important;
-                letter-spacing: normal !important;
-                color: var(--color-interface-text-secondary) !important;
-              }
+        .field-otpsubpanel {
+          width: 100%;
+          max-width: 100%;
+          margin-left: 169px;
+          margin-top: -25px;
+          .field-numretries {
+            margin: -6px -14px 0 -30px;
+            input {
+              font-size: var(--body-fd-sm-font-size) !important;
+              letter-spacing: normal !important;
+              color: var(--color-interface-text-secondary) !important;
             }
-          
           }
         }
+      }
 
-        legend {
-          text-align: left;
-          b {
-            color: var(--color-interface-background-quaternary);
-            font-size: 28px;
-            line-height: 36px;
-            font-weight: 600;
-          }
+      legend {
+        text-align: left;
+        b {
+          color: var(--color-interface-background-quaternary);
+          font-size: 28px;
+          line-height: 36px;
+          font-weight: 600;
         }
-        
-        .field-attempts p{
-            margin-top: -7px;
-            margin-left: 120px;
-            color: #6B7280 !important;
-            font-size: var(--body-sm-font-size) !important;
-            @media (320px <=width <=439px) {
-              margin-left:38px;
-              margin-top:18px !important;
-            }
+      }
+
+      .field-attempts p {
+        margin-top: -7px;
+        margin-left: 120px;
+        color: #6b7280 !important;
+        font-size: var(--body-sm-font-size) !important;
+        @media (320px <=width <=439px) {
+          margin-left: 38px;
+          margin-top: 18px !important;
         }
+      }
 
-
-
-        .field-otphelptext {
-          margin-top: -60px;
+      .field-otphelptext {
+        margin-top: -60px;
+        font-size: 12px !important;
+        line-height: 20px;
+        font-weight: 400;
+        text-align: left;
+        p {
+          color: var(--color-input-text-primary);
           font-size: 12px !important;
           line-height: 20px;
           font-weight: 400;
-          text-align: left;
-          p {
-            color: var(--color-input-text-primary);
-            font-size: 12px !important;
-            line-height: 20px;
-            font-weight: 400;
-            display: inline-block;
-          }
+          display: inline-block;
+        }
+      }
+
+      .field-otpnumber {
+        margin: -28px 0 -18px;
+
+        input {
+          width: 100%;
+          max-width: 100%;
+          letter-spacing: 65px !important;
+          height: 60px !important;
         }
 
-        .field-otpnumber {
-          margin: -28px 0 -18px;
+        input::placeholder {
+          font-size: 36px !important;
+          letter-spacing: 51px !important;
+          color: var(--color-input-text-placeholder-default);
+        }
+      }
 
+      .field-secondspanel {
+        display: flex;
+        flex-direction: row;
+        .field-seconds {
           input {
-            width: 100%;
-            max-width: 100%;
-            letter-spacing: 65px !important;
-            height:  60px !important;
-          }
-
-          input::placeholder {
-            font-size: 36px !important;
-            letter-spacing: 51px !important;
-            color: var(--color-input-text-placeholder-default);
-          }
-        }
-
-        .field-secondspanel {
-          display: flex;
-          flex-direction: row;
-          .field-seconds {
-            input{
             border: none;
             padding-left: 0;
             width: 55px;
@@ -498,115 +492,115 @@ p {
             color: var(--color-interface-background-quaternary) !important;
             font-weight: 600;
             margin-top: 12px;
-            }
-          }
-          .field-sectext p{
-            font-size: var(--body-sm-font-size) !important;
           }
         }
-
-
-
-        .field-resendotplabel {
-          margin: 17px 0 0;
-          width: fit-content;
-
-          p {
-            font-size: var(--body-sm-font-size) !important;
-            color: #6B7280 !important;
-            padding: 0;
-          }
-        }
-
-        .field-seconds {
-          margin: -1px 0 0 -15px;
-          width: fit-content;
-
-          input[type="number"] {
-            border: none;
-            width: 50px;
-            margin: 0;
-            padding: 0;
-            pointer-events: none;
-            appearance: none;
-          }
-        }
-
-        .field-sectext {
-          width: fit-content;
-          margin: 17px 0 0 -54px;
-          p {
-            font-size: var(--body-fd-sm-font-size);
-          }
+        .field-sectext p {
+          font-size: var(--body-sm-font-size) !important;
         }
       }
-    }
 
-    .field-otppanel:has(.field-secondspanel:not([data-visible="false"])) {
-      .field-otpsubpanel {
-        grid-column: span 3;
-        margin: 5px 0 0;
+      .field-resendotplabel {
+        margin: 17px 0 0;
+        width: fit-content;
+
+        p {
+          font-size: var(--body-sm-font-size) !important;
+          color: #6b7280 !important;
+          padding: 0;
+        }
       }
-    }
 
-    .field-submitotp {
-      padding: 0 20px 40px;
-      margin-left: 100px;
-      margin-top: 0 !important;
-      width: 85% !important;
-      text-align: center !important;
+      .field-seconds {
+        margin: -1px 0 0 -15px;
+        width: fit-content;
 
-      button {
-        width: 272px;
+        input[type="number"] {
+          border: none;
+          width: 50px;
+          margin: 0;
+          padding: 0;
+          pointer-events: none;
+          appearance: none;
+        }
       }
-    }
 
-    .field-submitotp::after{
-      right: 42% !important;
-      top: 10px;
-      height: 20px;
-      width: 20px !important;
+      .field-sectext {
+        width: fit-content;
+        margin: 17px 0 0 -54px;
+        p {
+          font-size: var(--body-fd-sm-font-size);
+        }
+      }
     }
   }
 
-  header {
-    background: var(--color-interface-fd-background-primary);
-    .cmp-container>div:nth-child(1) {
-      @media screen and (min-width: 768px) {
-        margin-left: -105px;
-      }
+  .field-otppanel:has(.field-secondspanel:not([data-visible="false"])) {
+    .field-otpsubpanel {
+      grid-column: span 3;
+      margin: 5px 0 0;
     }
-    .cmp-container>div:nth-child(2) {
-      display: none;
+  }
+
+  .field-submitotp {
+    padding: 0 20px 40px;
+    margin-left: 100px;
+    margin-top: 0 !important;
+    width: 85% !important;
+    text-align: center !important;
+
+    button {
+      width: 272px;
     }
-    .cmp-container>div:nth-child(3) {
-      position: absolute;
-      width: 110px;
-      right: -100px;
-      top: 0.5em;
-      height: 32px;
-      content: url(../icons/safe-secure.svg);
-      padding: 0;
+  }
+
+  .field-submitotp::after {
+    right: 42% !important;
+    top: 10px;
+    height: 20px;
+    width: 20px !important;
   }
 }
 
-  footer {
-    background: var(--color-interface-fd-background-primary);
-    & .cmp-container {
-      div > div {
-        margin-right: -25px;
-        text-align: center;
-      }
+header {
+  background: var(--color-interface-fd-background-primary);
+  .cmp-container > div:nth-child(1) {
+    @media screen and (min-width: 768px) {
+      margin-left: 20px;
     }
   }
+
+  .cmp-container > div:nth-child(2) {
+    display: none;
+  }
+
+  .cmp-container > div:nth-child(3) {
+    position: absolute;
+    width: 110px;
+    right: -100px;
+    top: 0.5em;
+    height: 32px;
+    content: url(../icons/header-safe-secure.png);
+    padding: 0;
+  }
+}
+
+footer {
+  background: var(--color-interface-fd-background-primary);
+  & .cmp-container {
+    div > div {
+      margin-right: -25px;
+      text-align: center;
+    }
+  }
+}
 
 @media (320px <=width <=439px) {
   .nre {
     main {
       flex-direction: column;
 
-      .cmp-container-container{
-        width:100%;
+      .cmp-container-container {
+        width: 100%;
       }
 
       div > div > p {
@@ -626,7 +620,7 @@ p {
       .form input[name="dateOfBirth"] {
         width: 100% !important;
         max-width: 100% !important;
-        margin-top: 24px !important;
+        margin-top: 31px !important;
       }
 
       .form form .panel-wrapper.field-consentsfragmentnrenro.field-wrapper p {
@@ -645,7 +639,8 @@ p {
         margin-top: 98px;
         margin-left: -391px;
       }
-      div.plain-text-wrapper.field-doberrortext.field-wrapper,div.plain-text-wrapper.field-panerrortext.field-wrapper {
+      div.plain-text-wrapper.field-doberrortext.field-wrapper,
+      div.plain-text-wrapper.field-panerrortext.field-wrapper {
         margin-top: 20px;
       }
 
@@ -658,7 +653,7 @@ p {
           top: 10px;
         }
       }
-      
+
       .form form .panel-wrapper.field-stepstofollow fieldset img {
         height: 40px;
         width: 40px;
@@ -668,7 +663,7 @@ p {
 
       .form form .panel-wrapper.field-stepstofollow fieldset p {
         margin-bottom: 7px !important;
-        margin-left:10px;
+        margin-left: 10px;
       }
 
       .form
@@ -724,12 +719,9 @@ p {
         margin-top: 32px;
       }
       div.date-wrapper.field-dateofbirth.field-wrapper label {
-        margin-top: 38px;
+        margin-top: 42px;
       }
-   .form
-      form
-      .panel-wrapper.field-stepstofollow
-      fieldset.field-step1panel {
+      .form form .panel-wrapper.field-stepstofollow fieldset.field-step1panel {
         position: relative;
         div.image-wrapper.field-wrapper {
           @media (320px <=width <=439px) {
@@ -739,74 +731,66 @@ p {
             height: 15px;
 
             position: absolute;
-            content: url('../icons/mobile-number.png');
+            content: url("../icons/mobile-number.png");
             top: -28px;
             left: -13px;
+          }
         }
       }
-    }
 
-   .form
-      form
-      .panel-wrapper.field-step2panel.field-wrapper {
+      .form form .panel-wrapper.field-step2panel.field-wrapper {
         position: relative;
         div.image-wrapper.field-submitotpicon.field-wrapper {
-            margin-top: 30px;
-            margin-right: 0;
-            margin-left: 10px;
-            height: 15px;
-            position: absolute;
-            content: url('../icons/submitotp.png');
-            top: -28px;
-            left: -13px;
+          margin-top: 30px;
+          margin-right: 0;
+          margin-left: 10px;
+          height: 15px;
+          position: absolute;
+          content: url("../icons/submitotp.png");
+          top: -28px;
+          left: -13px;
         }
       }
 
-   .form
-      form
-      .panel-wrapper.field-step3panel.field-wrapper {
+      .form form .panel-wrapper.field-step3panel.field-wrapper {
         position: relative;
         div.image-wrapper.field-selectaccounticon.field-wrapper {
-            margin-top: 30px;
-            margin-right: 0;
-            margin-left: 10px;
-            height: 15px;
-            position: absolute;
-            content: url('../icons/account.png');
-            top: -28px;
-            left: -13px;
+          margin-top: 30px;
+          margin-right: 0;
+          margin-left: 10px;
+          height: 15px;
+          position: absolute;
+          content: url("../icons/account.png");
+          top: -28px;
+          left: -13px;
         }
       }
 
-    .form
-      form
-      .panel-wrapper.field-step4panel.field-wrapper {
+      .form form .panel-wrapper.field-step4panel.field-wrapper {
         position: relative;
         div.image-wrapper.field-confirmdetailsicon.field-wrapper {
-            margin-top: 30px;
-            margin-right: 0;
-            margin-left: 10px;
-            height: 15px;
-            position: absolute;
-            content: url('../icons/confirmdetails.png');
-            top: -28px;
-            left: -13px;
+          margin-top: 30px;
+          margin-right: 0;
+          margin-left: 10px;
+          height: 15px;
+          position: absolute;
+          content: url("../icons/confirmdetails.png");
+          top: -28px;
+          left: -13px;
         }
       }
 
-    .form
-      form
-      .panel-wrapper.field-step5panel.field-wrapper {
+      .form form .panel-wrapper.field-step5panel.field-wrapper {
         position: relative;
         div.image-wrapper.field-accountopendicon.field-wrapper {
-            margin-top: 30px;
-            height: 15px;
-            position: absolute;
-            content: url('../icons/accountopened.png');
-            top: -28px;
-            left: -13px;
-            margin-right: 0;
-            margin-left: 10px;
+          margin-top: 30px;
+          height: 15px;
+          position: absolute;
+          content: url("../icons/accountopened.png");
+          top: -28px;
+          left: -13px;
+          margin-right: 0;
+          margin-left: 10px;
         }
       }
     }
@@ -816,24 +800,24 @@ p {
         div:nth-child(1) {
           text-align: left !important;
         }
+      }
+      .cmp-container > div:nth-child(1) {
+        left: 10px;
+        display: block;
+      }
+      .cmp-container > div:nth-child(3) {
+        right: 10px;
+        display: block;
+      }
     }
-    .cmp-container>div:nth-child(1) {
-      left: 10px;
-      display: block;
-    }
-    .cmp-container>div:nth-child(3) {
-      right: 10px;
-      display: block;
-    }
-  }
 
-  header {
-    & .cmp-container {
+    header {
+      & .cmp-container {
         div:nth-child(1) {
-            text-align: left;
+          text-align: left;
         }
+      }
     }
-  }
     footer {
       .cmp-container {
         height: 30px;
@@ -855,88 +839,88 @@ p {
 
     & .field-otppanelwrapper {
       & .field-otppanel {
-          & .field-otphelptext {
-            p {
-              margin-right: 0px;
-            }
+        & .field-otphelptext {
+          p {
+            margin-right: 0px;
           }
         }
+      }
 
-    .field-submitotp {
-      width: 100% !important;
-    }
+      .field-submitotp {
+        width: 100% !important;
+      }
 
-    .field-submitotp::after {
-      right: 36% !important;
-    }
-
-    
-  }
-}
-
-
-
-footer {
- 
-  .cmp-container {
-    div > div {
-      margin-left: 257px;
-      text-align: center;
-    }
-  }
-}
-}
-
-
-/******* Tablet *******/
-
-@media (768px <=width <=991px) {
-.nre {
-  main {
-    flex-direction: column;
-    .cmp-container-container{
-      width:100%;
-    }
-
-    .panel-wrapper.field-mobilepanel.field-wrapper.col-6 {
-      display: grid;
-    }
-
-    div.drop-down-wrapper.field-countrycode.field-wrapper {
-      grid-column: span 6 !important;
-    }
-
-    .field-registeredmobilenumber {
-      grid-column: span 6 !important;
-      margin-left: -292px !important;
-    }
-
-    .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
-      width: 221px !important;
-    }
-
-    .cmp-container-wrapper{
-      content: url("../icons/nre-tablet-banner.png");
+      .field-submitotp::after {
+        right: 36% !important;
+      }
     }
   }
 
   footer {
-    & .cmp-container {
-      div:nth-child(1) {
-        text-align: center ;
+    .cmp-container {
+      div > div {
+        margin-left: 257px;
+        text-align: center;
       }
+    }
   }
-
 }
 
-.cmp-container>div:nth-child(1) {
-  left: 130px;
-  display: block;
-}
+/******* Tablet *******/
 
-.cmp-container>div:nth-child(3) {
-  right: 10px;
-  display: block;
-}
-}
+@media (768px <=width <=991px) {
+  .nre {
+    main {
+      flex-direction: column;
+      .cmp-container-container {
+        width: 100%;
+      }
+
+      .panel-wrapper.field-mobilepanel.field-wrapper.col-6 {
+        display: grid;
+      }
+
+      div.drop-down-wrapper.field-countrycode.field-wrapper {
+        grid-column: span 6 !important;
+      }
+
+      .field-registeredmobilenumber {
+        grid-column: span 6 !important;
+        margin-left: -292px !important;
+      }
+
+      .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
+        width: 221px !important;
+      }
+
+      .cmp-container-wrapper {
+        content: url("../icons/nre-tablet-banner.png");
+      }
+    }
+
+    header {
+      & .cmp-container {
+        div:nth-child(1) {
+          text-align: left;
+        }
+      }
+    }
+
+    footer {
+      & .cmp-container {
+        div:nth-child(1) {
+          text-align: center;
+        }
+      }
+    }
+
+    .cmp-container > div:nth-child(1) {
+      display: block;
+    }
+
+    .cmp-container > div:nth-child(3) {
+      right: 10px;
+      display: block;
+    }
+  }
 }
