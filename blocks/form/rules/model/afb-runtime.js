@@ -17,7 +17,7 @@
  * Adobe permits you to use and modify this file solely in accordance with
  * the terms of the Adobe license agreement accompanying it.
  *************************************************************************/
-
+// af-core version 0.22.104
 import { propertyChange, ExecuteRule, Initialize, RemoveItem, Change, FormLoad, FieldChanged, ValidationComplete, Valid, Invalid, SubmitSuccess, CustomEvent, SubmitError, SubmitFailure, Submit, Save, Reset, RemoveInstance, AddInstance, AddItem, Click } from './afb-events.js';
 import Formula from '../formula/index.js';
 import { format, parseDefaultDate, datetimeToNumber, parseDateSkeleton, numberToDatetime, formatDate, parseDate } from './afb-formatters.min.js';
