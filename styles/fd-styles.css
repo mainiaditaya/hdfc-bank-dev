@@ -863,6 +863,58 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
 
     .field-successresultpanel {
+      display: grid;
+
+      .field-tqsuccesswrapper {
+        grid-column: span 9;
+      }
+
+      .field-promotionpanel {
+        grid-column: span 2;
+        margin-top: -85px;
+        height: max-content;
+
+        .field-promotionpanel1 {
+          background: var(--color-interface-error-cta-background) url('../icons/pl-promotion-icon.svg') no-repeat top left;
+          border-radius: 4px;
+          height: max-content;
+          padding: 130px 0 20px 20px;
+
+          .field-promotiontext11, .field-promotiontext11 p {
+            font-size: var(--body-fd-md-font-size);
+            color: var(--color-interface-promotion-text-primary);
+            font-weight: var(--font-weight-bold);
+          }
+
+          .field-promotiontext12, .field-promotiontext12 p {
+            font-size: var(--body-fd-x-lg-font-size);
+            color: var(--color-interface-text-primary);
+            font-weight: var(--font-weight-bold);
+            margin-top: -10px;
+          }
+        }
+
+        .field-promotionpanel2 {
+          background: var(--color-interface-promotion-background-primary) url('../icons/NRI-promotion-icon.svg') no-repeat top left;
+          border-radius: 4px;
+          height: max-content;
+          padding: 130px 0 20px 20px;
+
+          .field-promotiontext21, .field-promotiontext21 p {
+            font-size: var(--body-fd-md-font-size);
+            color: var(--color-interface-promotion-text-secondary);
+            font-weight: var(--font-weight-bold);
+          }
+
+          .field-promotiontext22, .field-promotiontext22 p {
+            font-size: var(--body-fd-x-lg-font-size);
+            color: var(--color-interface-text-primary);
+            font-weight: var(--font-weight-bold);
+            margin-top: -10px;
+          }
+        }
+      }
+
       .field-tqbannertext1 {
         max-width: 100%;
 
@@ -920,6 +972,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
+      
+
       .field-vkycconfirmationpanel {
         padding: 25px;
         margin: 70px 60px 0;
@@ -955,7 +1009,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
       .field-refnumpanel {
         margin: -85px 60px 0;
-        width: 70%;
+        width: 92%;
         background: var(--color-interface-background-primary);
         border: 1px solid var(--color-interface-border-secondary);
         border-radius: 24px;
@@ -1060,7 +1114,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         display: flex;
         border-radius: 24px;
         margin: 0 60px;
-        width: 70%;
+        width: 92%;
 
         > .plain-text-wrapper {
           width: 100%;
@@ -1196,7 +1250,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         padding: 20px;
         border-radius: 24px;
         margin: 0 60px;
-        width: 70%;
+        width: 92%;
         position: relative;
 
         legend {
@@ -1311,19 +1365,19 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           .field-notlikelytext {
             border-top: 6px solid
               var(--color-interface-feedback-notlikelyrating);
-            width: 61.8%;
+            width: 63%;
           }
 
           .field-maybetext {
             border-top: 6px solid var(--color-interface-feedback-mayberating);
-            width: 17.5%;
+            width: 17.8%;
             margin-left: -18px;
           }
 
           .field-verylikelytext {
             border-top: 6px solid
               var(--color-interface-feedback-verylikelyrating);
-            width: 17.5%;
+            width: 18%;
             margin-left: -18px;
           }
         }
@@ -3583,6 +3637,16 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   }
 
   .field-successresultpanel {
+    .field-tqsuccesswrapper {
+      grid-column: span 12 !important;
+    }
+
+    .field-promotionpanel {
+      grid-column: span 12 !important;
+      margin: 0 auto !important;
+      width: 95%;
+    }
+
     .field-tqbannertext1:has(p) {
       text-align: left;
       padding: 60px 300px 170px 10px !important;
@@ -3737,6 +3801,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           width: 18% !important;
         }
       }
+    }
+    
+    > .field-banklink {
+      margin-left: 20px !important;
     }
   }
 }
@@ -4217,6 +4285,20 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   }
 
   .field-successresultpanel {
+    .field-tqsuccesswrapper {
+      grid-column: span 12 !important;
+    }
+
+    .field-promotionpanel {
+      grid-column: span 12 !important;
+      margin: 0 auto !important;
+      width: 95%;
+      
+      .field-promotionpanel1 {
+        margin-bottom: 20px;
+      }
+    }
+
     .field-tqbannertext1 {
       max-width: 100%;
 
@@ -4403,6 +4485,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           width: 28% !important;
         }
       }
+    }
+
+    > .field-banklink {
+      margin-left: 0 !important;
     }
   }
 }
