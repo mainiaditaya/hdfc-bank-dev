@@ -395,7 +395,7 @@ const fullNameChangeHandler = (globals) => {
     customerMiddleName: middleName,
     customerLastName: lastName,
     customerFullName,
-    customerIdentityChange: !customerInfo.customerFullName ? true : customerInfo.customerIdentityChange,
+    customerIdentityChange: !customerInfo?.customerFullName ? true : customerInfo?.customerIdentityChange,
   });
 
   // Handle name on card visibility
