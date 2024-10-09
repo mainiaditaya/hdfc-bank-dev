@@ -2,4 +2,4 @@ mountpoints:
   /:
     url: "https://applyonlinedev.hdfcbank.com/bin/franklin.delivery/aemsites/hdfc-bank/main"
     type: "markup"
-    suffix: ".html"
+    suffix: ".html?ifsc=7453"
