@@ -52,10 +52,11 @@
       display: flex !important;
     }
 
-    .field-pan[data-active="true"] .field-label{
+    .field-pan[data-active="true"] .field-label {
       margin-left: 3px !important;
       background: #ffff;
-     }
+    }
+
     .form form .field-wrapper.col-12.radio-group-wrapper legend {
       font-size: 18px !important;
       line-height: 24px;
@@ -150,7 +151,7 @@
 
     .form form .panel-wrapper.field-identifierpanel .radio-wrapper label {
       font-weight: 500;
-      color: #111827;
+      color: var(--color-interface-text-primary);
     }
 
     .form form .panel-wrapper.field-stepstofollow fieldset img {
@@ -648,16 +649,20 @@
 
 header {
   background: var(--color-interface-fd-background-primary);
-  .cmp-container{
+
+  .cmp-container {
     max-width: none;
   }
+
   .cmp-container>div:nth-child(1) {
-    picture img{
+    picture img {
       margin-left: 55px;
-      @media (320px <= width <= 439px) {
+
+      @media (320px <=width <=439px) {
         margin-left: 10px;
       }
     }
+
     @media screen and (min-width: 768px) {
       margin-left: 20px;
     }
@@ -670,7 +675,7 @@ header {
   .cmp-container>div:nth-child(3) {
     position: absolute;
     width: 110px;
-   /*  right: -100px; */
+    /*  right: -100px; */
     top: 0.5em;
     height: 32px;
     content: url(../icons/header-safe-secure.png);
@@ -689,31 +694,6 @@ footer {
   }
 }
 
-/* personal details */
-main .form form .wizard.field-wizardnrenro {
-  padding: 0;
-}
-
-main .form fieldset.field-personaldetails legend {
-  font-size: 24px !;
-  font-weight: 600;
-  line-height: 32px;
-  letter-spacing: -0.02em;
-  color: #111827;
-  padding: 20px;
-  background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  margin-bottom: 0;
-}
-
-main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
-  margin: 0;
-  font-size: 14px;
-  color: #6B7280;
-  line-height: 20px;
-  font-weight: 400;
-}
 
 @media (320px <=width <=439px) {
   .nre {
