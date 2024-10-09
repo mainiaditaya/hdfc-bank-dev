@@ -151,7 +151,6 @@ const bindCustomerDetails = async (globals) => {
   CURRENT_FORM_CONTEXT.nameParsed = customerInfo.customerFullName !== parsedFullName;
   customerInfo.customerFullName = parsedFullName;
 
-  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   if (!customerInfo.datBirthCust || !customerInfo.refCustItNum || !customerInfo.genderDescription) CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
