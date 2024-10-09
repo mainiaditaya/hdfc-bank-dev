@@ -19,6 +19,7 @@ const confirmCardClickHandler = (globals) => {
     fdBasedCreditCardWizard,
     docUploadFlow,
     selectKYCOptionsPanel,
+    runtime,
   } = globals.form;
   if (CURRENT_FORM_CONTEXT.customerIdentityChange) {
     globals.functions.setProperty(docUploadFlow.docUploadConfirm, { visible: true });
@@ -36,15 +37,15 @@ const confirmCardClickHandler = (globals) => {
   }
   if (addressDetails.mailingAddressToggle._data.$_value === 'on' && CURRENT_FORM_CONTEXT.customerIdentityChange) {
     globals.functions.setProperty(docUploadFlow, { visible: true });
-    globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: true });
-    globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: false });
+    globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: false });
+    globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: true });
     globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
-    CURRENT_FORM_CONTEXT.addressDocUploadFlag = true;
+    CURRENT_FORM_CONTEXT.identityDocUploadFlag = true;
   } else if (addressDetails.mailingAddressToggle._data.$_value === 'off') {
     globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
     globals.functions.setProperty(selectKYCOptionsPanel, { visible: true });
-    CURRENT_FORM_CONTEXT.addressDocUploadFlag = true;
   }
+  globals.functions.setProperty(runtime.formContext, { value: JSON.stringify(CURRENT_FORM_CONTEXT) });
 };
 
 const setknowMoreBenefitsPanelData = (moreFeatures, knowMoreBenefitsPanel, globals) => {
