@@ -77,7 +77,8 @@ const docUploadClickHandler = async (globals) => {
       { docValue: docUploadPanel?.DocUploadBack, docType: identityDocType, fileId: '1_BS' },
     ] : []),
     ...(CURRENT_FORM_CONTEXT?.addressDocUploadFlag ? [
-      { docValue: uploadAddressProof?.addressProofFile, docType: addressDocType, fileId: '1_AD' },
+      { docValue: uploadAddressProof?.addressProofFile1, docType: addressDocType, fileId: '1_ADF' },
+      { docValue: uploadAddressProof?.addressProofFile2, docType: addressDocType, fileId: '1_ADB' },
     ] : []),
   ];
 

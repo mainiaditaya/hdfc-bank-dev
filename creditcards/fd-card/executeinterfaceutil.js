@@ -198,11 +198,11 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
  * @param {object} globals - An object containing global variables and functions.
  */
 const executeInterfacePostRedirect = async (source, userRedirected, globals) => {
-  const formCallBackContext = globals.functions.exportData()?.currentFormContext;
+  const formCallBackContext = globals.functions.exportData()?.currentFormContext || JSON.parse(globals?.functions?.exportData()?.formContext);
   const requestObj = formCallBackContext?.executeInterfaceRequest;
 
   if (source === 'idCom') {
-    if (requestObj?.addressEditFlag?.toUpperCase() === 'Y') {
+    if (requestObj?.requestString?.addressEditFlag?.toUpperCase() === 'Y') {
       requestObj.requestString.authMode = 'eKYCID-COM';
     } else requestObj.requestString.authMode = 'IDCOM';
   }
