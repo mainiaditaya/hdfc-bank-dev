@@ -16,8 +16,11 @@
       flex-wrap: wrap;
 
       .field-description {
-        margin-top: 4px;
+        margin-top: -7px;
         margin-bottom: 5px;
+        line-height: 24px;
+        font-weight: 400;
+        color: #e22853;
       }
     }
 
@@ -49,6 +52,10 @@
       display: flex !important;
     }
 
+    .field-pan[data-active="true"] .field-label{
+      margin-left: 3px !important;
+      background: #ffff;
+     }
     .form form .field-wrapper.col-12.radio-group-wrapper legend {
       font-size: 18px !important;
       line-height: 24px;
@@ -140,9 +147,6 @@
       }
     }
 
-    .form form .panel-wrapper.field-identifierpanel {
-      margin-top: 30px;
-    }
 
     .form form .panel-wrapper.field-identifierpanel .radio-wrapper label {
       font-weight: 500;
@@ -374,7 +378,7 @@
       border-bottom: none !important;
       content: url("../../icons/nre_nro_desktop_banner.png");
       width: 100% !important;
-       height: 40%;
+      height: 40%;
       margin: inherit;
     }
 
@@ -411,7 +415,7 @@
 
     div.plain-text-wrapper.field-doberrortext.field-wrapper p {
       margin-top: -33px;
-      font-size: 16px !important;
+      font-size: 14px !important;
       line-height: 24px;
       font-weight: 400;
       color: #e22853 !important;
@@ -419,7 +423,7 @@
 
     div.plain-text-wrapper.field-panerrortext.field-wrapper p {
       margin-top: -33px;
-      font-size: 16px !important;
+      font-size: 14px !important;
       line-height: 24px;
       font-weight: 400;
       color: #e22853 !important;
@@ -644,8 +648,16 @@
 
 header {
   background: var(--color-interface-fd-background-primary);
-
+  .cmp-container{
+    max-width: none;
+  }
   .cmp-container>div:nth-child(1) {
+    picture img{
+      margin-left: 55px;
+      @media (320px <= width <= 439px) {
+        margin-left: 10px;
+      }
+    }
     @media screen and (min-width: 768px) {
       margin-left: 20px;
     }
@@ -658,7 +670,7 @@ header {
   .cmp-container>div:nth-child(3) {
     position: absolute;
     width: 110px;
-    right: -100px;
+   /*  right: -100px; */
     top: 0.5em;
     height: 32px;
     content: url(../icons/header-safe-secure.png);
@@ -695,7 +707,7 @@ main .form fieldset.field-personaldetails legend {
   margin-bottom: 0;
 }
 
-main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label{
+main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
   margin: 0;
   font-size: 14px;
   color: #6B7280;
