@@ -563,6 +563,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     margin: -13px 0 0;
   }
 
+  .field-errorresultpanel:has(.field-ntberrorpage[data-visible='false']) .field-errresdealerpanel {
+    margin: -90px auto 0;
+  }
+
+
+
   .field-resultpanel {
     background: var(--color-interface-background-primary);
   }
@@ -2183,6 +2189,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         font-size: var(--body-fd-sm-font-size);
         font-weight: var(--font-weight-regular);
         margin-top: -15px;
+        margin-left: 4px;
       }
     }
 
