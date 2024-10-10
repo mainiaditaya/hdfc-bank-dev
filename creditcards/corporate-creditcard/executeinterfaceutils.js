@@ -5,6 +5,7 @@ import {
   formUtil,
   composeNameOption,
   setSelectOptions,
+  removeSpecialCharacters,
 } from '../../common/formutils.js';
 import { invokeJourneyDropOffUpdate } from './journey-utils.js';
 import {
