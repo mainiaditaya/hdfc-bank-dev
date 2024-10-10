@@ -21,11 +21,18 @@ import {
 import * as CONSTANT from '../../common/constants.js';
 import * as NRE_CONSTANT from './constant.js';
 
+setTimeout(() => {
+  if (typeof window !== 'undefined') {
+    import('./nre-nro-dom-functions.js');
+  }
+}, 1200);
+
 let prevSelectedIndex = -1;
 let defaultDropdownIndex = -1;
 let resendOtpCount = 0;
 const MAX_OTP_RESEND_COUNT = 3;
 const OTP_TIMER = 30;
+let MAX_COUNT = 3;
 let sec = OTP_TIMER;
 let dispSec = OTP_TIMER;
 const {
@@ -299,8 +306,10 @@ function prefillCustomerDetails(response, globals) {
   setFormValue(singleAccount.ifsc, response.ifscCode);
 }
 
-setTimeout(async () => {
-  await getCountryCodes(document.querySelector('.field-countrycode select'));
+setTimeout(() => {
+  if (typeof window !== 'undefined') { /* check document-undefined */
+    getCountryCodes(document.querySelector('.field-countrycode select'));
+  }
 }, 2000);
 
 /**
@@ -340,15 +349,10 @@ const resendOTP = async (globals) => {
   return null; // Return null if max attempts reached
 };
 
-/**
- * does the custom show hide of panel or screens in resend otp.
- * @param {string} errorMessage
- * @param {number} numRetries
- * @param {object} globals
- */
-function customFocus(errorMessage, numRetries, globals) {
-  if (numRetries === 1) {
-    globals.functions.setProperty(globals.form.errorPanel.otppanelwrapper.incorrectOTPPanel, { visible: true });
+function customFocus(numRetries, globals) {
+  MAX_COUNT -= 1;
+  if (MAX_COUNT < MAX_OTP_RESEND_COUNT) {
+    globals.functions.setProperty(numRetries, { value: `${MAX_COUNT}/${MAX_OTP_RESEND_COUNT}` });
   }
 }
 
