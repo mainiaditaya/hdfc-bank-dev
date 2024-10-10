@@ -6,6 +6,7 @@ import {
   composeNameOption,
   setSelectOptions,
   removeSpecialCharacters,
+  parseCustomerAddress,
 } from '../../common/formutils.js';
 import { invokeJourneyDropOffUpdate } from './journey-utils.js';
 import {
