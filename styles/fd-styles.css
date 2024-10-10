@@ -563,6 +563,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     margin: -13px 0 0;
   }
 
+  .field-errorresultpanel:has(.field-ntberrorpage[data-visible='false']) .field-errresdealerpanel {
+    margin: -90px auto 0;
+  }
+
+
+
   .field-resultpanel {
     background: var(--color-interface-background-primary);
   }
@@ -2183,6 +2189,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         font-size: var(--body-fd-sm-font-size);
         font-weight: var(--font-weight-regular);
         margin-top: -15px;
+        margin-left: 4px;
       }
     }
 
@@ -2768,8 +2775,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 .fdlien .field-docuploadflow {
   padding: 0 60px 60px;
 
-  .plain-text-wrapper p b {
+  .plain-text-wrapper.field-identificationverificationtitle p b{
     font-size: var(--body-fd-xx-lg-font-size);
+  }
+
+  .plain-text-wrapper p b {
+    font-size: var(--body-fd-md-font-size);
     color: var(--color-interface-background-quaternary);
     font-weight: var(--font-weight-bold);
     margin: 0;
@@ -2783,8 +2794,15 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   }
 
   .drop-down-wrapper {
+    label {
+      font-size: var(--body-x-sm-font-size) !important;
+    }
+
     select {
       width: 32%;
+      font-weight: var(--font-weight-medium);
+      font-size: var(--body-fd-md-font-size);
+      color: var(--color-interface-background-quaternary);
     }
   }
 
@@ -2931,8 +2949,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   }
 
   .field-uploadaddressproof {
-    .plain-text-wrapper p b {
-      font-size: var(--body-fd-xx-lg-font-size);
+    .plain-text-wrapper p b, legend p b{
+      font-size: var(--body-fd-md-font-size);
       color: var(--color-interface-background-quaternary);
       font-weight: var(--font-weight-bold);
       margin: 0;
