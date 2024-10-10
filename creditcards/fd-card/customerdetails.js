@@ -221,7 +221,7 @@ const bindCustomerDetails = async (globals) => {
     Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
     if (addressLine1.length < 10 || addressLine2 === '') {
-      globals.functions.setProperty(addressDetails.pinCodeNotMatch, { value: 'Address is too short, please enter valid address', visible: true });
+      globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shorAddressNote, visible: true });
       globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
       addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
     }
@@ -235,7 +235,7 @@ const bindCustomerDetails = async (globals) => {
 
   if (validPin.result === 'false') {
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
-    globals.functions.setProperty(addressDetails.pinCodeNotMatch, { visible: true });
+    globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.invalidPinNote, visible: true });
     addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
   }
 
