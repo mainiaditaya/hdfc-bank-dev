@@ -349,10 +349,10 @@ const resendOTP = async (globals) => {
   return null; // Return null if max attempts reached
 };
 
-function customFocus(globals) {
+function customFocus(numRetries, globals) {
   MAX_COUNT -= 1;
   if (MAX_COUNT < MAX_OTP_RESEND_COUNT) {
-    globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.otpSubPanel.numRetries, { value: `${MAX_COUNT}/${MAX_OTP_RESEND_COUNT}` });
+    globals.functions.setProperty(numRetries, { value: `${MAX_COUNT}/${MAX_OTP_RESEND_COUNT}` });
   }
 }
 
