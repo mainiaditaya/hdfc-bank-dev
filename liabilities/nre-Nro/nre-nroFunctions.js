@@ -271,6 +271,8 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
     },
   };
 
+  addClassInBody();
+
   const path = urlPath(ENDPOINTS.otpValidationFatca);
   formRuntime?.otpValLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
@@ -340,6 +342,20 @@ const resendOTP = async (globals) => {
   return null; // Return null if max attempts reached
 };
 
+
+const addClassInBody = () => {
+  /*  const wizardPanel = document.querySelector('.field-wizardpanel'); 
+   if(wizardPanel && wizardPanel.getAttribute('data-visible') === 'true'){
+     document.body.classList.add('wizardPanelBody')
+   } */     
+     const aemForm = document.querySelector('form[data-rules="true"]');
+ 
+     if (aemForm) {
+         document.body.classList.add('wizardPanelBody');
+     }
+ 
+ }
+
 /**
  * does the custom show hide of panel or screens in resend otp.
  * @param {string} errorMessage
@@ -365,4 +381,5 @@ export {
   customFocus,
   validFDPan,
   switchWizard,
+  addClassInBody
 };
