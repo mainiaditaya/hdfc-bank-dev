@@ -12,7 +12,11 @@ import {
   pincodeCheck,
 } from '../../common/formutils.js';
 import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
-import { addDisableClass, setSelectOptions } from '../domutils/domutils.js';
+import {
+  addDisableClass,
+  setSelectOptions,
+  addClassToElement,
+} from '../domutils/domutils.js';
 import {
   FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
   MIN_ADDRESS_LENGTH,
@@ -67,6 +71,7 @@ const bindEmployeeAssistanceField = async (globals) => {
   try {
     if (defaultChannel || Object.values(codes).some(Boolean)) {
       globals.functions.setProperty(employeeAssistanceToggle, { value: 'on', enabled: false });
+      addClassToElement('.field-employeeassistancetoggle label.field-label', 'cursor-na');
     }
     if (inPersonBioKYC?.toLowerCase() === 'yes') {
       globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
@@ -218,6 +223,7 @@ const bindCustomerDetails = async (globals) => {
     if (addressLine1.length < 10 || addressLine2 === '') {
       globals.functions.setProperty(addressDetails.pinCodeNotMatch, { value: 'Address is too short, please enter valid address', visible: true });
       globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+      addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
     }
   } else {
     formattedCustomerAddress = `${cleanAddress}, ${city}, ${state}, ${pincode}`;
@@ -230,6 +236,7 @@ const bindCustomerDetails = async (globals) => {
   if (validPin.result === 'false') {
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
     globals.functions.setProperty(addressDetails.pinCodeNotMatch, { visible: true });
+    addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
   }
 
   Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { city, pincode, state });
