@@ -183,8 +183,8 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
       executeInterfaceRequest[key] = '';
     }
   });
-  if (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc') {
-    executeInterfaceRequest.requestString.authMode = 'OTP';
+  if (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectedKyc === 'bioinperson') {
+    executeInterfaceRequest.requestString.authMode = CURRENT_FORM_CONTEXT?.selectedKyc;
   }
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   if (showLoader) FORM_RUNTIME.executeInterface();

@@ -4,7 +4,7 @@ const creditCardSummary = (globals) => {
   const { functions, form } = globals;
   const { exportData, setProperty, importData } = functions;
   // const { tqSummarySection } = form.resultPanel.successResultPanel.tqSuccessWrapper;
-  const { tqSummarySection } = form.resultPanel.successResultPanel;
+  const { tqSummarySection } = form.resultPanel.successResultPanel.tqSuccessWrapper;
 
   const formData = exportData();
   const selectedCreditCard = CURRENT_FORM_CONTEXT?.selectedCreditCard || formData?.currentFormContext?.selectedCreditCard || {};
