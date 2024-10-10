@@ -74,9 +74,10 @@ const moveWizardView = (source, target) => {
  * Changes the language of the Aadhar content to the specified language.
  * @param {Object} content - The content configuration for Aadhar.
  * @param {string} defaultLang - The language to show us default.
+ * @param {Object} currentFormContext - current form context to store the language selected for aadhar
  */
 // select dropdow-aadhar
-const aadharLangChange = (adharContentDom, defaultLang) => {
+const aadharLangChange = async (adharContentDom, defaultLang, currentFormContext) => {
   const selectOp = adharContentDom.querySelector(`[name= ${'selectLanguage'}]`);
   const findFieldSet = adharContentDom?.querySelectorAll('fieldset');
   const selectedClass = 'selected-language';
@@ -93,11 +94,13 @@ const aadharLangChange = (adharContentDom, defaultLang) => {
     });
   };
   applySelected(findFieldSet, defaultOptionClass, selectedClass);
+  currentFormContext.languageSelected = defaultLang;
   selectOp.value = defaultLang;
   selectOp?.addEventListener('change', (e) => {
     e.preventDefault();
     const { value: valueSelected } = e.target;
     selectOp.value = valueSelected;
+    currentFormContext.languageSelected = valueSelected;
     const optionClass = `field-aadharconsent-${valueSelected?.toLowerCase()}`;
     applySelected(findFieldSet, optionClass, selectedClass);
   });
@@ -329,6 +332,22 @@ const validateOTPInput = (inputField) => {
   }
 };
 
+/**
+ * Attaches a click handler to an element that redirects to a specified URL.
+ *
+ * @param {string} selector - The CSS selector for the element to make clickable.
+ * @param {string} url - The URL to navigate to when the element is clicked.
+ * @param {string} [target='_blank'] - The target window or tab for the URL (e.g., '_blank', '_self').
+ */
+const attachRedirectOnClick = (selector, url, target = '_blank') => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.addEventListener('click', (event) => {
+      event.preventDefault();
+      window?.open(url, target);
+    });
+  }
+};
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -346,4 +365,5 @@ export {
   validatePhoneNumber,
   validateCardDigits,
   validateOTPInput,
+  attachRedirectOnClick,
 };

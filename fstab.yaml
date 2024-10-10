@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: https://applyonlinedev.hdfcbank.com/
+    url: "https://applyonlinedev.hdfcbank.com/bin/franklin.delivery/aemsites/hdfc-bank/main"
     type: "markup"
-    suffix: ".md.html"
+    suffix: ".html?ifsc=543"

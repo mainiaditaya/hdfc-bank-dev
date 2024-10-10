@@ -84,9 +84,10 @@ function getCurrentFormContext(globals) {
    * @param {string} channel - The channel through which the journey is initiated.
    * @param {object} globals
    */
-function createJourneyId(visitMode, journeyAbbreviation, channel, globals) {
+function createJourneyId(visitMode, journeyAbbreviation, channelValue, globals) {
   const dynamicUUID = generateUUID();
   // var dispInstance = getDispatcherInstance();
+  let channel = channelValue;
   if (isNodeEnv) {
     channel = CHANNELS.adobeWhatsApp;
   }
@@ -321,7 +322,6 @@ const getTranactionPanelData = (transactions) => {
       aem_txn_type: txn?.type,
     };
   });
-  console.log('txnsData: ', txnsData);
   return txnsData;
 };
 
@@ -392,10 +392,10 @@ function customDispatchEvent(eventName, payload, globals) {
   globals.functions.dispatchEvent(globals.form, `custom:${eventName}`, evtPayload);
 }
 
-const handleResendOtp2VisibilityInFlow = (resendOtpCount, globals) => {
+const handleResendOtp2VisibilityInFlow = (countOfResendOtp, globals) => {
   if (!isNodeEnv) return;
   const otpPanel = globals.form.aem_semiWizard.aem_selectTenure.aem_otpPanelConfirmation.aem_otpPanel2;
-  if (resendOtpCount >= DATA_LIMITS.maxOtpResendLimit) {
+  if (countOfResendOtp >= DATA_LIMITS.maxOtpResendLimit) {
     const properties = otpPanel.aem_otpResend2.$properties;
     globals.functions.setProperty(otpPanel.aem_otpResend2, { properties: { ...properties, 'flow:setVisible': false } });
   }
@@ -1160,7 +1160,6 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
   const eligibiltyResponse = _context.EligibilityResponse;
   const tenurePlan = globals.functions.exportData().aem_tenureSelectionRepeatablePanel;
   const selectedTenurePlan = tenurePlan?.find((emiPlan) => emiPlan.aem_tenureSelection === '0');
-  console.log('selectedTenurePlan', selectedTenurePlan);
   const emiSubData = JSON.parse(selectedTenurePlan?.aem_tenureRawData);
   const PROC_FEES = String(currencyStrToNum(selectedTenurePlan?.aem_tenureSelectionProcessing));
   const INTEREST = emiSubData?.interest; // '030888'

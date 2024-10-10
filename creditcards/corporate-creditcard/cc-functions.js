@@ -2,7 +2,6 @@
 import {
   formRuntime,
   journeyResponseHandler,
-  sendAnalytics,
   resendOTP,
   customSetFocus,
   validateLogin,
@@ -16,6 +15,12 @@ import {
   getThisCard,
   aadharConsent123,
   checkMode,
+  crmResponseHandler,
+  getOTP,
+  otpValidation,
+  getFormContext,
+  getWrappedFormContext,
+  firstLastNameValidation,
 } from './corporate-creditcardFunctions.js';
 
 import {
@@ -41,8 +46,6 @@ import {
 import finalDap from './finaldaputils.js';
 
 import {
-  getOTP,
-  otpValidation,
   hideLoaderGif,
   validatePan,
   panAPISuccesHandler,
@@ -53,11 +56,12 @@ import {
   idcomRedirection,
   fetchAuthCode,
   days,
-  getFormContext,
   getFullName,
-  getWrappedFormContext,
   onWizardInit,
+  initRestAPIDataSecurityServiceES6,
 } from '../../common/functions.js';
+
+import { sendAnalytics } from './analytics.js';
 
 export {
   finalDap,
@@ -106,4 +110,7 @@ export {
   getFullName,
   getWrappedFormContext,
   onWizardInit,
+  crmResponseHandler,
+  firstLastNameValidation,
+  initRestAPIDataSecurityServiceES6,
 };

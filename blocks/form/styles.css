@@ -274,6 +274,35 @@ main .form .bi-eye-slash {
   width: 21px;
 }
 
+/* Date picker for only iOS devices */
+
+@supports (-webkit-touch-callout: none) {
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+  }
+  
+  input[type="date"] {
+    position: relative;
+    
+    &::after {
+      content: url('../../icons/date-picker.svg');
+      position: absolute;
+      right: 5px;
+      bottom: 10px;
+      background-color: var(--color-interface-background-primary);
+    }
+  }    
+}
+
 /* Style for labels when input is active or not empty */
 main .form :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee, .field-nooffds, .field-customername, .field-creditlimit, .field-fdnumber, .field-selectedfdamount, .field-maturingdate) > label{
   color: var(--label-color);
@@ -650,6 +679,9 @@ main .form .field-resultpanel {
 
     .field-successresulttextlabel { margin-bottom: 12px; }
     .field-arnrefnumpanel::before { left: 24%; }
+    .field-arnrefnumpanel { margin-left: -25px; }
+
+    .field-newarnnumber, .field-newarnnumber p { line-height: 45px; }
     .field-arnrefnumlabel, .field-newarnnumber { left: 36%; }
     .field-ratingpanel .field-rating .rating.hover {margin-top: 0 !important;}
 
@@ -676,6 +708,16 @@ main .form .field-resultpanel {
   }
 
   main .form .field-otppanel {
+     display: grid;
+   
+     > legend { 
+      width: 265px;
+     
+      p, b { 
+        width: 265px; 
+      }
+    }
+    
     .field-otpnumber {
       input {
         padding: 0 0 0 2vw;
@@ -712,7 +754,15 @@ main .form .field-resultpanel {
 
   main .form.block .field-otppanel {
     display: grid;
-
+    
+    > legend { 
+      width: 265px;
+      
+      p, b { 
+        width: 265px; 
+      }
+    }
+    
     .field-otpnumber {
       input {
         letter-spacing: 6vw;
@@ -750,6 +800,14 @@ main .form .field-resultpanel {
   }
 
   main .form.block .field-otppanel {
+    > legend { 
+      width: 265px;
+    
+      p, b { 
+        width: 265px; 
+      }
+    }
+    
     .field-otpsubpanel {
       display: flex;
       flex-direction: row;
