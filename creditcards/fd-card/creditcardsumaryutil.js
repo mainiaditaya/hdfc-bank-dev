@@ -17,10 +17,11 @@ const creditCardSummary = (globals) => {
   || formData?.FDlienCard?.nameOnCard
   || CURRENT_FORM_CONTEXT?.executeInterfaceRequest?.requestString?.nameOnCard
   || '';
-  setProperty(tqSummarySection?.tqNameOnCard, { value: nameOnCard });
-  setProperty(tqSummarySection?.tqAnnualCCFee, { value: String(annualFee) });
-  setProperty(tqSummarySection?.tqCreditLimit, { value: eligibleCreditLimitAmount });
-
+  if (tqSummarySection) {
+    setProperty(tqSummarySection?.tqNameOnCard, { value: nameOnCard });
+    setProperty(tqSummarySection?.tqAnnualCCFee, { value: String(annualFee) });
+    setProperty(tqSummarySection?.tqCreditLimit, { value: eligibleCreditLimitAmount });
+  }
   const formattedFDs = fdNumberSelection.reduce((acc, fd) => {
     if (fd.fdAccSelect === 'on') {
       acc.push({ selectedFDNum: fd?.fdNumber?.toString() });

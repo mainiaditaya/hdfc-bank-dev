@@ -11,9 +11,12 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
     addressDeclarationPanel,
     docUploadFlow,
     fdBasedCreditCardWizard,
+    runtime,
   } = globals.form;
   const { inPersonBioKYCOptions } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance.inPersonBioKYCPanel;
   KYC_STATE.selectedKyc = selectedKyc;
+  globals.functions.setProperty(runtime.formContext, { value: JSON.stringify(CURRENT_FORM_CONTEXT) });
+
   switch (selectedKyc) {
     case 'BIOMETRIC':
       CURRENT_FORM_CONTEXT.selectedKyc = inPersonBioKYCOptions?._data.$_value === '0'
@@ -24,12 +27,12 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
     case 'OVD':
       CURRENT_FORM_CONTEXT.selectedKyc = 'OVD';
       globals.functions.setProperty(docUploadFlow, { visible: true });
-      globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: CURRENT_FORM_CONTEXT.customerIdentityChange });
-      globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: true });
+      globals.functions.setProperty(docUploadFlow.docUploadPanel, { visible: CURRENT_FORM_CONTEXT.customerIdentityChange });
+      globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: true });
       globals.functions.setProperty(docUploadFlow.docUploadConfirm, { visible: true });
       globals.functions.setProperty(docUploadFlow.docUploadBiometric, { visible: false });
-      CURRENT_FORM_CONTEXT.identityDocUploadFlag = true;
-      CURRENT_FORM_CONTEXT.addressDocUploadFlag = !!CURRENT_FORM_CONTEXT?.customerIdentityChange;
+      CURRENT_FORM_CONTEXT.addressDocUploadFlag = true;
+      CURRENT_FORM_CONTEXT.identityDocUploadFlag = CURRENT_FORM_CONTEXT?.customerIdentityChange;
       break;
     default:
   }
@@ -37,16 +40,19 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
 
 const addressDeclarationProceedHandler = (globals) => {
   const { addressDeclarationPanel, docUploadFlow } = globals.form;
-  const currentFormContext = CURRENT_FORM_CONTEXT?.journeyID ? CURRENT_FORM_CONTEXT : globals.functions.exportData()?.currentFormContext;
-  if (currentFormContext.customerIdentityChange && (currentFormContext?.selectedKyc === 'biokyc' || currentFormContext?.selectedKyc === 'aadhaar')) {
+  if (CURRENT_FORM_CONTEXT.journeyID === undefined) {
+    Object.assign(CURRENT_FORM_CONTEXT, JSON.parse(globals?.functions?.exportData()?.formContext));
+  }
+  if (CURRENT_FORM_CONTEXT?.customerIdentityChange && (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectedKyc === 'aadhaar')) {
     const { docUploadPanel, uploadAddressProof } = docUploadFlow;
     globals.functions.setProperty(addressDeclarationPanel, { visible: false });
     globals.functions.setProperty(docUploadFlow, { visible: true });
-    globals.functions.setProperty(docUploadPanel, { visible: false });
-    globals.functions.setProperty(uploadAddressProof, { visible: true });
+    globals.functions.setProperty(docUploadPanel, { visible: true });
+    globals.functions.setProperty(uploadAddressProof, { visible: false });
+    CURRENT_FORM_CONTEXT.identityDocUploadFlag = true;
     return;
   }
-  if (!currentFormContext.customerIdentityChange && KYC_STATE?.selectedKyc === 'BIOMETRIC') {
+  if (!CURRENT_FORM_CONTEXT?.customerIdentityChange && KYC_STATE?.selectedKyc === 'BIOMETRIC') {
     finalDap(false, globals);
   }
 };
@@ -54,7 +60,7 @@ const addressDeclarationProceedHandler = (globals) => {
 const aadhaarConsent = async (globals) => {
   KYC_STATE.selectedKyc = 'AADHAAR';
   CURRENT_FORM_CONTEXT.selectedKyc = 'aadhaar';
-  const { selectKYCOptionsPanel } = globals.form;
+  const { selectKYCOptionsPanel, runtime } = globals.form;
   try {
     if (typeof window !== 'undefined') {
       const openModal = (await import('../../blocks/modal/modal.js')).default;
@@ -71,6 +77,7 @@ const aadhaarConsent = async (globals) => {
       config?.content?.addEventListener('modalTriggerValue', (event) => {
         const receivedData = event.detail;
         if (receivedData?.aadharConsentAgree) {
+          globals.functions.setProperty(runtime.formContext, { value: JSON.stringify(CURRENT_FORM_CONTEXT) });
           globals.functions.setProperty(selectKYCOptionsPanel.triggerAadharAPI, { value: 1 });
         }
       });

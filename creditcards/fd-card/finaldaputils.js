@@ -27,6 +27,9 @@ const createDapRequestObj = (globals) => {
     'ETB',
   );
 
+  const searchParam = new URLSearchParams(window.location.search);
+  const visitType = searchParam.get('authmode');
+  const filler2 = visitType?.toLowerCase === 'aadhaarotp' ? 'ADVxRRN' : '';
   const filler3 = fetchFiller3(formData?.queryParams?.authmode);
   return {
     requestString: {
@@ -42,6 +45,7 @@ const createDapRequestObj = (globals) => {
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
       journeyID: formContextCallbackData?.journeyID || CURRENT_FORM_CONTEXT?.journeyID,
       journeyName: formContextCallbackData?.journeyName || CURRENT_FORM_CONTEXT?.journeyName,
+      filler2,
       filler7: '',
       filler1: '',
       filler3,

@@ -39,6 +39,9 @@ const createIdComRequestObj = (globals) => {
  * @returns {Promise<Object>} A promise that resolves to the JSON response from the API.
  */
 const idcomm = async (globals) => {
+  if (CURRENT_FORM_CONTEXT.executeInterfaceRequest === undefined) {
+    Object.assign(CURRENT_FORM_CONTEXT, JSON.parse(globals?.functions?.exportData()?.formContext));
+  }
   const idComRequest = createIdComRequestObj(globals);
   const apiEndPoint = urlPath(ENDPOINTS.fetchAuthCode);
   return fetchJsonResponse(apiEndPoint, idComRequest, 'POST');

@@ -2,14 +2,14 @@ import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse, restAPICall } from '../../common/makeRestAPI.js';
 import { confirmCardState } from './confirmcardutil.js';
-import { JOURNEY_NAME, FD_ENDPOINTS } from './constant.js';
+import { JOURNEY_NAME, FD_ENDPOINTS, EMPLOYEE_MAP } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
 import { SELECT_FD_STATE } from './fddetailsutil.js';
 import finalDap from './finaldaputils.js';
 import { IPA_RESPONSE } from './ipautil.js';
 
-const createExecuteInterfaceRequest = (source, globals) => {
+const createExecuteInterfaceRequest = (payload, source, globals) => {
   const {
     customerInfo,
     journeyID,
@@ -76,10 +76,11 @@ const createExecuteInterfaceRequest = (source, globals) => {
     nameOnCard = personalDetails.nameOnCardDD?.$value?.toUpperCase()?.replace(/\s+/g, ' ');
   }
   if (source === 'confirmcard') {
-    CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode || 'FCFL';
+    CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode;
   }
   const annualIncome = employmentDetails?.annualIncome?._data?.$_value || '';
   const empAssistanceToggle = employeeAssistanceToggle?._data?.$_value === 'on';
+  const companyName = employmentDetails.employmentType._data.$_value === '1' || employmentDetails.employmentType._data.$_value === '2' ? customerInfo?.customerFullName : '';
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag ? 'Y' : 'N',
@@ -105,11 +106,11 @@ const createExecuteInterfaceRequest = (source, globals) => {
       comAddressType: '2',
       comCityZip: communicationAddress?.zip,
       comResidenceType: '2',
-      companyName: customerInfo?.employeeDetail?.companyName,
+      companyName,
       customerID: SELECTED_CUSTOMER_ID?.selectedCustId?.customerID,
       dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
       departmentOrEmpCode: '',
-      designation: customerInfo?.employeeDetail?.designation,
+      designation: EMPLOYEE_MAP[employmentDetails.employmentType._data.$_value],
       dsaValue: (empAssistanceToggle && employeeAssistancePanel?.dsaName?._data?.$_value) || '',
       dseCode: (empAssistanceToggle && employeeAssistancePanel?.dsaCode?._data?.$_value) || '',
       eReferenceNumber: CURRENT_FORM_CONTEXT.referenceNumber,
@@ -141,7 +142,9 @@ const createExecuteInterfaceRequest = (source, globals) => {
       officeState: '',
       officeZipCode: '',
       panCheckFlag: 'Y',
+      panDobMatch: payload?.validDob,
       panEditFlag: customerInfo?.refCustItNum ? 'N' : 'Y',
+      panNameMatch: payload?.validName,
       panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),
       permanentAddress1: customerPermanentAddress?.line1,
       permanentAddress2: customerPermanentAddress?.line2,
@@ -173,7 +176,7 @@ const createExecuteInterfaceRequest = (source, globals) => {
  * @returns {Promise<object>} A promise that resolves to the response of the interface request.
  */
 const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
-  const executeInterfaceRequest = createExecuteInterfaceRequest(source, globals);
+  const executeInterfaceRequest = createExecuteInterfaceRequest(payload, source, globals);
   CURRENT_FORM_CONTEXT.executeInterfaceRequest = executeInterfaceRequest;
   Object.keys(executeInterfaceRequest).forEach((key) => {
     if (executeInterfaceRequest[key] === undefined) {
@@ -195,12 +198,11 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
  * @param {object} globals - An object containing global variables and functions.
  */
 const executeInterfacePostRedirect = async (source, userRedirected, globals) => {
-  const formCallBackContext = globals.functions.exportData()?.currentFormContext;
+  const formCallBackContext = globals.functions.exportData()?.currentFormContext || JSON.parse(globals?.functions?.exportData()?.formContext);
   const requestObj = formCallBackContext?.executeInterfaceRequest;
-  requestObj.requestString.productCode = requestObj.requestString.productCode || 'FCFL';
 
   if (source === 'idCom') {
-    if (requestObj?.addressEditFlag?.toUpperCase() === 'Y') {
+    if (requestObj?.requestString?.addressEditFlag?.toUpperCase() === 'Y') {
       requestObj.requestString.authMode = 'eKYCID-COM';
     } else requestObj.requestString.authMode = 'IDCOM';
   }

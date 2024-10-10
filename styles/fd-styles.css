@@ -165,7 +165,7 @@ body.fdlien main .section.form-container {
 }
 
 body.fdlien:has(
-    .fd-form-wrapper .field-fdbasedcreditcardwizard:not([data-visible='false'])
+    .field-fdbasedcreditcardwizard:not([data-visible='false'])
   ) {
   header {
     height: 100px !important;
@@ -225,10 +225,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   form {
     padding: 0 !important;
     gap: 20px;
-  }
-
-  .fd-form-wrapper {
-    margin-bottom: 40px;
+  }   
 
     .field-multiplecustidbanner {
       background: var(--color-interface-fd-background-secondary)
@@ -245,6 +242,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
     .field-loginmainpanel {
       padding: 40px 40px 7px 20px;
+      margin-bottom: 40px;
 
       .field-welcometext {
         p {
@@ -865,6 +863,58 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
 
     .field-successresultpanel {
+      display: grid;
+
+      .field-tqsuccesswrapper {
+        grid-column: span 9;
+      }
+
+      .field-promotionpanel {
+        grid-column: span 2;
+        margin-top: -85px;
+        height: max-content;
+
+        .field-promotionpanel1 {
+          background: var(--color-interface-error-cta-background) url('../icons/pl-promotion-icon.svg') no-repeat top left;
+          border-radius: 4px;
+          height: max-content;
+          padding: 130px 0 20px 20px;
+
+          .field-promotiontext11, .field-promotiontext11 p {
+            font-size: var(--body-fd-md-font-size);
+            color: var(--color-interface-promotion-text-primary);
+            font-weight: var(--font-weight-bold);
+          }
+
+          .field-promotiontext12, .field-promotiontext12 p {
+            font-size: var(--body-fd-x-lg-font-size);
+            color: var(--color-interface-text-primary);
+            font-weight: var(--font-weight-bold);
+            margin-top: -10px;
+          }
+        }
+
+        .field-promotionpanel2 {
+          background: var(--color-interface-promotion-background-primary) url('../icons/NRI-promotion-icon.svg') no-repeat top left;
+          border-radius: 4px;
+          height: max-content;
+          padding: 130px 0 20px 20px;
+
+          .field-promotiontext21, .field-promotiontext21 p {
+            font-size: var(--body-fd-md-font-size);
+            color: var(--color-interface-promotion-text-secondary);
+            font-weight: var(--font-weight-bold);
+          }
+
+          .field-promotiontext22, .field-promotiontext22 p {
+            font-size: var(--body-fd-x-lg-font-size);
+            color: var(--color-interface-text-primary);
+            font-weight: var(--font-weight-bold);
+            margin-top: -10px;
+          }
+        }
+      }
+
       .field-tqbannertext1 {
         max-width: 100%;
 
@@ -922,6 +972,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
+      
+
       .field-vkycconfirmationpanel {
         padding: 25px;
         margin: 70px 60px 0;
@@ -957,7 +1009,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
       .field-refnumpanel {
         margin: -85px 60px 0;
-        width: 70%;
+        width: 92%;
         background: var(--color-interface-background-primary);
         border: 1px solid var(--color-interface-border-secondary);
         border-radius: 24px;
@@ -1062,7 +1114,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         display: flex;
         border-radius: 24px;
         margin: 0 60px;
-        width: 70%;
+        width: 92%;
 
         > .plain-text-wrapper {
           width: 100%;
@@ -1198,7 +1250,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         padding: 20px;
         border-radius: 24px;
         margin: 0 60px;
-        width: 70%;
+        width: 92%;
         position: relative;
 
         legend {
@@ -1313,19 +1365,19 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           .field-notlikelytext {
             border-top: 6px solid
               var(--color-interface-feedback-notlikelyrating);
-            width: 61.8%;
+            width: 63%;
           }
 
           .field-maybetext {
             border-top: 6px solid var(--color-interface-feedback-mayberating);
-            width: 17.5%;
+            width: 17.8%;
             margin-left: -18px;
           }
 
           .field-verylikelytext {
             border-top: 6px solid
               var(--color-interface-feedback-verylikelyrating);
-            width: 17.5%;
+            width: 18%;
             margin-left: -18px;
           }
         }
@@ -1336,7 +1388,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
     }
   }
-}
+
 
 /* Multiple Customer Id  */
 .fdlien .field-multiplecustidselectionpanel {
@@ -1679,6 +1731,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
         .field-selectallfdbutton {
           margin-top: 2px;
+          margin-right: -25px;
 
           button {
             &:hover {
@@ -1705,6 +1758,9 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
             padding: 0;
             width: 35px;
             height: 50px !important;
+            color: var(--color-input-text-primary);
+            font-size: var(--body-fd-md-font-size);
+            font-weight: var(--font-weight-medium);
 
             &:hover {
               box-shadow: none;
@@ -1734,6 +1790,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
           p {
             font-size: var(--body-x-sm-font-size);
+            color: var(--color-input-text-primary);
+            font-weight: var(--body-fd-md-font-size);
           }
         }
 
@@ -1744,6 +1802,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
             margin: 14px 0 0 -5px !important;
             color: var(--color-input-text-primary);
             font-size: var(--body-fd-md-font-size);
+            font-weight: var(--font-weight-medium);
           }
         }
       }
@@ -2096,6 +2155,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         margin: 0;
         height: auto !important;
         overflow: hidden;
+        min-height: auto;
       }
 
       .field-addressdetailshelptag {
@@ -2118,6 +2178,13 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
             background: var(--color-interface-background-primary);
           }
         }
+      }
+
+      .field-pincodenotmatch, .field-pincodenotmatch p {
+          color: var(--color-input-text-msg-error);
+          font-size: var(--body-fd-sm-font-size);
+          font-weight: var(--font-weight-regular);
+          margin-top: -15px;
       }
     }
 
@@ -2778,7 +2845,20 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       font-size: var(--body-fd-md-font-size);
       font-weight: var(--font-weight-bold);
       width: 60%;
-      min-height: 45px;
+      min-height: 90px;
+      padding-top: 45px;
+      line-height: var(--font-linehight-regular);
+
+      &::before {
+        content: '';
+        background: url('../icons/doc_upload_success.png') no-repeat;
+        width: 45px;
+        height: 45px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
 
       .file-description {
         position: relative;
@@ -2786,17 +2866,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         margin: 0;
         padding-top: 40px;
         background: var(--color-interface-fileupload-background);
-
-        &::before {
-          content: '';
-          background: url('../icons/doc_upload_success.png') no-repeat;
-          width: 45px;
-          height: 45px;
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-        }
       }
 
       .file-description-name {
@@ -2819,6 +2888,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
     }
+    
+    .field-description {
+      margin: 10px 0;
+    }
   }
 
   .file-wrapper.file-error {
@@ -2833,7 +2906,20 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       font-size: var(--body-fd-md-font-size);
       font-weight: var(--font-weight-bold);
       width: 60%;
-      min-height: 45px;
+      min-height: 90px;
+      padding-top: 45px;
+      line-height: var(--font-linehight-regular);
+
+      &::before {
+        content: '';
+        background: url('../icons/doc-upload-icon.svg') no-repeat;
+        width: 45px;
+        height: 45px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
 
     .field-description {
@@ -2885,6 +2971,28 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     border: solid 1px var(--color-interface-border-secondary);
     border-radius: 24px;
     padding: 32px;
+  }
+
+  .field-aadhaaraddressdeclaration {
+    .field-aadhaaraddressprefilled p {
+      margin: 0;
+    }
+
+    .field-aadharaddressconfirmation legend {
+      padding-top: 20px;
+      border-top: 1px dashed var(--color-interface-border-secondary);
+    }
+  }
+
+  .field-currentaddressdeclarationaadhar {
+    .field-currentresidenceaddressaadhaar p {
+      margin: 0;
+    }
+
+    .field-currentresidenceaddressdeclaration {
+      padding-top: 20px;
+      border-top: 1px dashed var(--color-interface-border-secondary);
+    }
   }
 
   .field-currentresidenceaddressbiometricovd {
@@ -3062,10 +3170,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 }
 
 /* Footer */
-header:has(~ .fd-form-wrapper) {
-  background-color: var(--color-interface-fd-background-primary);
-}
-
 .fdlien footer {
   background: var(--color-interface-fd-background-primary);
   text-align: center;
@@ -3272,14 +3376,12 @@ header:has(~ .fd-form-wrapper) {
   }
 
   .fdlien:has(.section.form-container) .section.form-container {
-    .fd-form-wrapper {
       .field-bannerimagepanel,
       .field-multiplecustidbanner {
         background: var(--color-interface-fd-background-secondary)
           url('../icons/banner_tablet.png') no-repeat center center / 100% 100%;
         min-height: 225px;
       }
-    }
 
     .field-loginmainpanel,
     .field-otppanelwrapper,
@@ -3535,6 +3637,16 @@ header:has(~ .fd-form-wrapper) {
   }
 
   .field-successresultpanel {
+    .field-tqsuccesswrapper {
+      grid-column: span 12 !important;
+    }
+
+    .field-promotionpanel {
+      grid-column: span 12 !important;
+      margin: 0 auto !important;
+      width: 95%;
+    }
+
     .field-tqbannertext1:has(p) {
       text-align: left;
       padding: 60px 300px 170px 10px !important;
@@ -3690,6 +3802,10 @@ header:has(~ .fd-form-wrapper) {
         }
       }
     }
+    
+    > .field-banklink {
+      margin-left: 20px !important;
+    }
   }
 }
 
@@ -3700,7 +3816,6 @@ header:has(~ .fd-form-wrapper) {
   }
 
   .fdlien:has(.section.form-container) .section.form-container {
-    .fd-form-wrapper {
       .field-bannerimagepanel,
       .field-multiplecustidbanner {
         background: var(--color-interface-fd-background-secondary)
@@ -3818,7 +3933,6 @@ header:has(~ .fd-form-wrapper) {
           margin: 0 0 0 30px;
         }
       }
-    }
   }
 
   .fdlien header > .cmp-container div:nth-child(2) {
@@ -4119,6 +4233,18 @@ header:has(~ .fd-form-wrapper) {
     .field-currentresidenceaddressbiometricovd {
       margin-bottom: 20px;
     }
+
+    .field-aadhaaraddressdeclaration {
+      .field-aadhaaraddressprefilled p {
+        margin-bottom: 20px;
+      }
+    }
+  
+    .field-currentaddressdeclarationaadhar {
+      .field-currentresidenceaddressaadhaar p {
+        margin-bottom: 20px;
+      }
+    }
   }
 
   .fdlien .field-aadharconsentpopup {
@@ -4159,6 +4285,20 @@ header:has(~ .fd-form-wrapper) {
   }
 
   .field-successresultpanel {
+    .field-tqsuccesswrapper {
+      grid-column: span 12 !important;
+    }
+
+    .field-promotionpanel {
+      grid-column: span 12 !important;
+      margin: 0 auto !important;
+      width: 95%;
+      
+      .field-promotionpanel1 {
+        margin-bottom: 20px;
+      }
+    }
+
     .field-tqbannertext1 {
       max-width: 100%;
 
@@ -4345,6 +4485,10 @@ header:has(~ .fd-form-wrapper) {
           width: 28% !important;
         }
       }
+    }
+
+    > .field-banklink {
+      margin-left: 0 !important;
     }
   }
 }

@@ -16,6 +16,8 @@ const ERROR_MSG = {
   panError: 'Please enter a valid PAN Number',
   mobileError: 'Enter valid mobile number',
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
+  invalidPan: 'Maximum PAN retry attempts exceeded.',
+  matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
 };
 
 const FD_ENDPOINTS = {
@@ -71,6 +73,14 @@ const OCCUPATION_MAP = {
 };
 const ALLOWED_CHARACTERS = '/ -,';
 
+const EMPLOYEE_MAP = {
+  1: 'Employee',
+  2: 'Proprietor',
+  3: '',
+  4: '',
+  5: '',
+};
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,
@@ -89,4 +99,5 @@ export {
   GENDER_MAP,
   OCCUPATION_MAP,
   ALLOWED_CHARACTERS,
+  EMPLOYEE_MAP,
 };

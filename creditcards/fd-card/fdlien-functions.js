@@ -290,7 +290,6 @@ const checkModeFd = (globals) => {
   const formData = globals.functions.exportData();
   const { authmode: idcomVisit, visitType: aadhaarVisit } = formData?.queryParams || {};
   const { addressDeclarationPanel } = globals.form;
-
   if (!idcomVisit && !aadhaarVisit) return;
 
   const { bannerImagePanel, loginMainPanel } = globals.form;

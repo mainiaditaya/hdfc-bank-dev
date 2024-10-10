@@ -77,7 +77,8 @@ const docUploadClickHandler = async (globals) => {
       { docValue: docUploadPanel?.DocUploadBack, docType: identityDocType, fileId: '1_BS' },
     ] : []),
     ...(CURRENT_FORM_CONTEXT?.addressDocUploadFlag ? [
-      { docValue: uploadAddressProof?.addressProofFile, docType: addressDocType, fileId: '1_AD' },
+      { docValue: uploadAddressProof?.addressProofFile1, docType: addressDocType, fileId: '1_ADF' },
+      { docValue: uploadAddressProof?.addressProofFile2, docType: addressDocType, fileId: '1_ADB' },
     ] : []),
   ];
 
@@ -109,20 +110,24 @@ const docUploadClickHandler = async (globals) => {
  */
 const fileUploadUIHandler = () => {
   const fileInputs = document.querySelectorAll('input[type="file"]');
+  const MAX_FILE_SIZE_MB = 2;
 
   fileInputs.forEach((fileInput) => {
     // Check if the current file input has a file selected
     if (fileInput.files.length > 0) {
       const file = fileInput.files[0];
-      const parentDiv = fileInput.closest('.field-addressprooffile');
+      const parentDiv = fileInput.closest('.field-docuploadfront, .field-docuploadback, .field-addressprooffile1, .field-addressprooffile2');
       const fileList = parentDiv.querySelector('.files-list');
+      const fileDescription = parentDiv.querySelector('.field-description');
       const uploadButton = parentDiv.querySelector('.file-attachButton');
 
       const validFileTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+      const fileSizeInMB = file.size / (1024 * 1024);
 
-      if (validFileTypes.includes(file.type)) {
+      parentDiv.classList.remove('file-uploaded', 'file-error');
+
+      if (validFileTypes.includes(file.type) && fileSizeInMB <= MAX_FILE_SIZE_MB) {
         parentDiv.classList.add('file-uploaded');
-        parentDiv.classList.remove('file-error');
 
         if (fileList) {
           fileList.textContent = file.name;
@@ -133,7 +138,12 @@ const fileUploadUIHandler = () => {
         }
       } else {
         parentDiv.classList.add('file-error');
-        parentDiv.classList.remove('file-uploaded');
+
+        if (!validFileTypes.includes(file.type)) {
+          fileDescription.textContent = parentDiv.getAttribute('data-required-error-message');
+        } else if (fileSizeInMB > MAX_FILE_SIZE_MB) {
+          fileDescription.textContent = parentDiv.getAttribute('data-max-file-size-error-message');
+        }
 
         if (uploadButton) {
           uploadButton.textContent = 'Upload';

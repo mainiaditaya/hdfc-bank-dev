@@ -20,8 +20,14 @@ import {
   OCCUPATION_MAP,
   ALLOWED_CHARACTERS,
 } from './constant.js';
+import { validatePan } from '../../common/functions.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
+const CUSTOMER_DETAILS_STATE = {
+  panCheckCount: 0,
+  maxPanCheckCount: 3,
+  onLoad: true,
+};
 
 const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstName, customerMiddleName, customerLastName) => {
   const elementNameSelect = 'nameOnCardDD';
@@ -60,7 +66,7 @@ const bindEmployeeAssistanceField = async (globals) => {
 
   try {
     if (defaultChannel || Object.values(codes).some(Boolean)) {
-      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on' });
+      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on', enabled: false });
     }
     if (inPersonBioKYC?.toLowerCase() === 'yes') {
       globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
@@ -145,7 +151,6 @@ const bindCustomerDetails = async (globals) => {
   CURRENT_FORM_CONTEXT.nameParsed = customerInfo.customerFullName !== parsedFullName;
   customerInfo.customerFullName = parsedFullName;
 
-  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   if (!customerInfo.datBirthCust || !customerInfo.refCustItNum || !customerInfo.genderDescription) CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
@@ -212,6 +217,7 @@ const bindCustomerDetails = async (globals) => {
 
   if (validPin.result === 'false') {
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+    globals.functions.setProperty(addressDetails.pinCodeNotMatch, { visible: true });
   }
 
   Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { city, pincode, state });
@@ -388,7 +394,7 @@ const fullNameChangeHandler = (globals) => {
     customerMiddleName: middleName,
     customerLastName: lastName,
     customerFullName,
-    customerIdentityChange: !customerInfo.customerFullName ? true : customerInfo.customerIdentityChange,
+    customerIdentityChange: !customerInfo?.customerFullName ? true : customerInfo?.customerIdentityChange,
   });
 
   // Handle name on card visibility
@@ -445,6 +451,54 @@ const fathersNameChangeHandler = (globals) => {
   }
 };
 
+/**
+ * checkPanValidation - Validates PAN details by calling validatePan function.
+ * Increments PAN check count and validates if input is correct and check limit is not exceeded.
+ * @param {string} fullName - Full name of the customer.
+ * @param {string} pan - PAN number of the customer.
+ * @param {object} dob - Date of birth of the customer.
+ * @param {object} globals - Global object containing form and panel details.
+ * @returns {Promise} - Resolves with PAN validation response or rejects with an error if inputs are invalid or check limit is exceeded.
+ */
+const checkPanValidation = (fullName, pan, dob, globals) => {
+  const isPanValidLength = pan?.length === 12;
+  const isPanCheckAllowed = CUSTOMER_DETAILS_STATE.panCheckCount <= CUSTOMER_DETAILS_STATE.maxPanCheckCount;
+  const { personalDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  if (fullName && pan && isPanValidLength && dob && isPanCheckAllowed && !CUSTOMER_DETAILS_STATE.onLoad && CURRENT_FORM_CONTEXT?.customerInfo?.refCustItNum === '' && ageValidator(AGE_LIMIT.min, AGE_LIMIT.max, personalDetails.dateOfBirthPersonalDetails.$value)) {
+    CUSTOMER_DETAILS_STATE.panCheckCount += 1;
+    const mobileNumber = globals?.form?.loginMainPanel?.loginPanel?.mobilePanel?.registeredMobileNumber?.$value;
+    return validatePan(mobileNumber, pan, dob, fullName, false, false);
+  }
+
+  CUSTOMER_DETAILS_STATE.onLoad = false;
+  return Promise.reject(new Error('Invalid input or PAN check limit exceeded'));
+};
+
+const panvalidationSuccessHandler = (response, globals) => {
+  if (response.panStatus !== 'E') {
+    const panErrorText = 'Please enter a valid PAN';
+    const panFieldPath = '$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.panNumberPersonalDetails';
+
+    if (CUSTOMER_DETAILS_STATE.panCheckCount < CUSTOMER_DETAILS_STATE.maxPanCheckCount) {
+      globals.functions.markFieldAsInvalid(panFieldPath, panErrorText, { useQualifiedName: true });
+    } else {
+      const { fdBasedCreditCardWizard, resultPanel } = globals.form;
+      const { errorResultPanel } = resultPanel;
+      globals.functions.setProperty(fdBasedCreditCardWizard, { visible: false });
+      globals.functions.setProperty(errorResultPanel.errorMessageText, { value: ERROR_MSG.invalidPan });
+      globals.functions.setProperty(resultPanel, { visible: true });
+      globals.functions.setProperty(errorResultPanel, { visible: true });
+    }
+  }
+};
+
+const addressChangeHandler = (addressLineNumber, globals) => {
+  const { newCurrentAddressLine1, newCurrentAddressLine2 } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
+  if (newCurrentAddressLine1?._data?.$_value?.toLowerCase() === newCurrentAddressLine2?._data?.$_value?.toLowerCase()) {
+    globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.newCurrentAddressLine2', ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
+  }
+};
+
 export {
   bindCustomerDetails,
   validateEmailID,
@@ -454,4 +508,7 @@ export {
   dobChangeHandler,
   fathersNameChangeHandler,
   fullNameChangeHandler,
+  checkPanValidation,
+  panvalidationSuccessHandler,
+  addressChangeHandler,
 };

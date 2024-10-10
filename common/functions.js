@@ -288,8 +288,10 @@ function redirect(redirectUrl) {
   let urlLink = redirectUrl;
   if (redirectUrl === 'VKYCURL' && currentFormContext.VKYC_URL) {
     urlLink = currentFormContext.VKYC_URL;
+    window.open(urlLink, '_blank');
+  } else {
+    window.location.href = urlLink;
   }
-  window.location.href = urlLink;
 }
 
 /**
