@@ -27,7 +27,7 @@ const createDapRequestObj = (userRedirected, globals) => {
     'ETB',
   );
   let visitType = '';
-  if (window) {
+  if (typeof window !== 'undefined') {
     const searchParam = new URLSearchParams(window?.location?.search);
     visitType = searchParam.get('authmode');
   } else {
