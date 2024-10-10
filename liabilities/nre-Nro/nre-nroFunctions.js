@@ -28,11 +28,18 @@ import {
   ID_COM as idCom,
 } from '../../common/constants.js';
 
+setTimeout(() => {
+  if (typeof window !== 'undefined') {
+    import('./nre-nro-dom-functions.js');
+  }
+}, 1200);
+
 let prevSelectedIndex = -1;
 let defaultDropdownIndex = -1;
 let resendOtpCount = 0;
 const MAX_OTP_RESEND_COUNT = 3;
 const OTP_TIMER = 30;
+let MAX_COUNT = 3;
 let sec = OTP_TIMER;
 let dispSec = OTP_TIMER;
 
