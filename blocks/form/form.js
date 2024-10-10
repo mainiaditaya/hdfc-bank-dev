@@ -1,3 +1,5 @@
+// check
+
 import {
   createButton, createFieldWrapper, createLabel, getHTMLRenderType,
   createHelpText,
@@ -219,12 +221,12 @@ function createPlainText(fd) {
 
 function createImage(fd) {
   const field = createFieldWrapper(fd);
-  const image = `
+  const image = fd.source ? `
   <picture>
     <source srcset="${fd.source}?width=2000&optimize=medium" media="(min-width: 600px)">
     <source srcset="${fd.source}?width=750&optimize=medium">
     <img alt="${fd.altText || fd.name}" src="${fd.source}?width=750&optimize=medium">
-  </picture>`;
+  </picture>` : '';
   field.innerHTML = image;
   return field;
 }
@@ -290,6 +292,7 @@ function inputDecorator(field, element) {
       input.setAttribute('display-value', field.displayValue ?? '');
       input.type = 'text';
       input.value = field.displayValue ?? '';
+      input.addEventListener('touchstart', () => { input.type = field.type; }); // in mobile devices the input type needs to be toggled before focus
       input.addEventListener('focus', () => handleFocus(input, field));
       input.addEventListener('blur', () => handleFocusOut(input));
     } else if (input.type !== 'file') {
