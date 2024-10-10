@@ -13,7 +13,7 @@ import creditCardSummary from './creditcardsumaryutil.js';
  * @param {Object} globals - The global object containing necessary data for DAP request.
  * @returns {Object} - The DAP request object.
  */
-const createDapRequestObj = (globals) => {
+const createDapRequestObj = (userRedirected, globals) => {
   const formData = globals.functions.exportData() || {};
   const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const aadhaarData = formData.aadhaar_otp_val_data?.result || {};
@@ -27,7 +27,11 @@ const createDapRequestObj = (globals) => {
     'ETB',
   );
 
+  const searchParam = new URLSearchParams(window.location.search);
+  const visitType = searchParam.get('authmode');
+  const filler2 = visitType?.toLowerCase === 'aadhaarotp' ? 'ADVxRRN' : '';
   const filler3 = fetchFiller3(formData?.queryParams?.authmode);
+  const filler4 = !userRedirected ? 'bioInperson' : '';
   return {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
@@ -42,9 +46,11 @@ const createDapRequestObj = (globals) => {
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
       journeyID: formContextCallbackData?.journeyID || CURRENT_FORM_CONTEXT?.journeyID,
       journeyName: formContextCallbackData?.journeyName || CURRENT_FORM_CONTEXT?.journeyName,
+      filler2,
       filler7: '',
       filler1: '',
       filler3,
+      filler4,
       biometricStatus: formContextCallbackData?.selectedKyc || '',
       ekycConsent: `${getCurrentDateAndTime(3)}YEnglishxeng1x0`,
       ekycSuccess,
@@ -58,7 +64,7 @@ const finalDap = (userRedirected, globals) => {
 
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsexecutefinaldap);
   const formData = globals.functions.exportData();
-  const payload = createDapRequestObj(globals);
+  const payload = createDapRequestObj(userRedirected, globals);
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
   const { journeyId } = formData;

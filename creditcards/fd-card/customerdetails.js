@@ -66,7 +66,7 @@ const bindEmployeeAssistanceField = async (globals) => {
 
   try {
     if (defaultChannel || Object.values(codes).some(Boolean)) {
-      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on' });
+      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on', enabled: false });
     }
     if (inPersonBioKYC?.toLowerCase() === 'yes') {
       globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
@@ -151,7 +151,6 @@ const bindCustomerDetails = async (globals) => {
   CURRENT_FORM_CONTEXT.nameParsed = customerInfo.customerFullName !== parsedFullName;
   customerInfo.customerFullName = parsedFullName;
 
-  CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   if (!customerInfo.datBirthCust || !customerInfo.refCustItNum || !customerInfo.genderDescription) CURRENT_FORM_CONTEXT.customerIdentityChange = true;
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
@@ -187,19 +186,27 @@ const bindCustomerDetails = async (globals) => {
   let parsedPerAddress = [];
   if (cleanAddress.length < MIN_ADDRESS_LENGTH) {
     const addressArray = cleanAddress.trim().split(' ');
-    parsedAddress = [
-      addressArray.slice(0, -1).join(' '),
-      addressArray.slice(-1)[0],
-    ];
+    if (addressArray.length > 1) {
+      parsedAddress = [
+        addressArray.slice(0, -1).join(' '),
+        addressArray.slice(-1)[0],
+      ];
+    } else {
+      parsedAddress = [addressArray[0]];
+    }
   } else {
     parsedAddress = parseCustomerAddress(cleanAddress);
   }
   if (cleanPerAddress.length < MIN_ADDRESS_LENGTH) {
     const addressArray = cleanPerAddress.trim().split(' ');
-    parsedPerAddress = [
-      addressArray.slice(0, -1).join(' '),
-      addressArray.slice(-1)[0],
-    ];
+    if (addressArray.length > 1) {
+      parsedPerAddress = [
+        addressArray.slice(0, -1).join(' '),
+        addressArray.slice(-1)[0],
+      ];
+    } else {
+      parsedPerAddress = [addressArray[0]];
+    }
   } else {
     parsedPerAddress = parseCustomerAddress(cleanPerAddress);
   }
@@ -208,6 +215,10 @@ const bindCustomerDetails = async (globals) => {
     const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = parsedAddress;
     Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
+    if (addressLine1.length < 10 || addressLine2 === '') {
+      globals.functions.setProperty(addressDetails.pinCodeNotMatch, { value: 'Address is too short, please enter valid address', visible: true });
+      globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+    }
   } else {
     formattedCustomerAddress = `${cleanAddress}, ${city}, ${state}, ${pincode}`;
     const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address.split('|');
@@ -395,7 +406,7 @@ const fullNameChangeHandler = (globals) => {
     customerMiddleName: middleName,
     customerLastName: lastName,
     customerFullName,
-    customerIdentityChange: !customerInfo.customerFullName ? true : customerInfo.customerIdentityChange,
+    customerIdentityChange: !customerInfo?.customerFullName ? true : customerInfo?.customerIdentityChange,
   });
 
   // Handle name on card visibility
