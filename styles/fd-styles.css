@@ -2194,6 +2194,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           padding-top: 0;
           padding-bottom: 0;
           height: 16px !important;
+
+          &:hover {
+            box-shadow: none;
+          }
         }
       }
     }
