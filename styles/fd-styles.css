@@ -563,11 +563,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     margin: -13px 0 0;
   }
 
-  .field-errorresultpanel:has(.field-ntberrorpage[data-visible='false']) .field-errresdealerpanel {
+  .field-errorresultpanel:has(.field-ntberrorpage[data-visible='false'])
+    .field-errresdealerpanel {
     margin: -90px auto 0;
   }
-
-
 
   .field-resultpanel {
     background: var(--color-interface-background-primary);
@@ -2183,509 +2182,515 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
-      .field-pincodenotmatch,
-      .field-pincodenotmatch p {
-        color: var(--color-input-text-msg-error);
-        font-size: var(--body-fd-sm-font-size);
-        font-weight: var(--font-weight-regular);
-        margin-top: -15px;
-        margin-left: 4px;
-      }
-    }
-
-    .field-employeeassistancepanel .field-inpersonbiokycoptions {
-      display: flex;
-
-      .radio-wrapper {
-        width: fit-content;
-        margin-right: 15px;
-      }
-    }
-
-    .field-employeeassistancepanel {
-      input:disabled,
-      select:disabled {
-        background: var(--color-input-background-disabled);
-        color: var(--color-input-text-primary) !important;
-        cursor: not-allowed;
-      }
-    }
-
-    .wrapper-disabled {
-      label {
-        margin-left: 5px;
-        font-size: var(--body-fd-sm-font-size);
-        font-weight: var(--font-weight-regular);
-        color: var(--color-interface-text-secondary);
-        transform: translateY(-22px);
-      }
-
-      input,
-      input:disabled,
-      select,
-      select:disabled,
-      textarea,
-      textarea:disabled {
-        font-size: var(--body-fd-lg-font-size) !important;
-        background-color: var(--color-interface-background-primary) !important;
-        border: none !important;
-        pointer-events: none;
-        appearance: none;
-        opacity: 1;
-        background-image: none;
-
-        &:hover {
-          box-shadow: none;
+      .field-invalidaddressnote {
+        input {
+          color: var(--color-input-text-msg-error);
+          font-size: var(--body-fd-sm-font-size);
+          font-weight: var(--font-weight-regular);
+          margin-top: -15px;
+          border: none !important;
+          outline: none !important;
+          background-color: transparent;
+          padding-top: 0;
+          padding-bottom: 0;
+          height: 16px !important;
         }
       }
     }
   }
 
-  .field-selectcard {
-    .field-selectsuitablecardtext p {
-      font-weight: var(--font-weight-medium);
-      color: var(--color-input-text-primary);
-      font-size: var(--body-fd-md-font-size);
-    }
+  .field-employeeassistancepanel .field-inpersonbiokycoptions {
+    display: flex;
 
-    .field-eligiblecreditlimitamount {
-      border: solid 1px var(--color-interface-border-secondary);
-      border-radius: 12px;
-      display: grid;
-      grid-template-columns: 188px 161px;
-      height: 62px;
+    .radio-wrapper {
       width: fit-content;
-      justify-self: end;
+      margin-right: 15px;
+    }
+  }
 
-      label {
-        text-align: right;
-        align-content: center;
-        justify-self: center;
-        color: var(--color-interface-text-primary);
-      }
+  .field-employeeassistancepanel {
+    input:disabled,
+    select:disabled {
+      background: var(--color-input-background-disabled);
+      color: var(--color-input-text-primary) !important;
+      cursor: not-allowed;
+    }
+  }
 
-      input {
-        padding: 0;
-        text-align: center;
-        margin: 0;
-        width: 161px;
-        border-radius: 0 12px 12px 0 !important;
-        border: none;
-        background: var(--color-interface-background-quinary);
-        font-size: var(--body-fd-x-lg-font-size);
-        font-weight: var(--font-weight-bold);
-        color: var(--color-interface-text-primary);
-        pointer-events: none;
-      }
+  .wrapper-disabled {
+    label {
+      margin-left: 5px;
+      font-size: var(--body-fd-sm-font-size);
+      font-weight: var(--font-weight-regular);
+      color: var(--color-interface-text-secondary);
+      transform: translateY(-22px);
     }
 
-    /* Multiple Cards */
-    .field-selectcardfaciapanelmultiple {
-      padding-bottom: 23px;
-      border-bottom: solid 1px var(--color-interface-border-secondary);
+    input,
+    input:disabled,
+    select,
+    select:disabled,
+    textarea,
+    textarea:disabled {
+      font-size: var(--body-fd-lg-font-size) !important;
+      background-color: var(--color-interface-background-primary) !important;
+      border: none !important;
+      pointer-events: none;
+      appearance: none;
+      opacity: 1;
+      background-image: none;
 
-      .repeat-wrapper {
-        .panel-wrapper {
-          padding: 24px;
-          border: solid 1px var(--color-interface-border-secondary);
-          border-radius: 16px;
-          position: relative;
-          display: flow;
-        }
+      &:hover {
+        box-shadow: none;
+      }
+    }
+  }
+}
 
-        .radio-wrapper.field-cardselection {
-          flex-direction: row-reverse;
+.field-selectcard {
+  .field-selectsuitablecardtext p {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-input-text-primary);
+    font-size: var(--body-fd-md-font-size);
+  }
 
-          label {
-            display: none;
-          }
-        }
+  .field-eligiblecreditlimitamount {
+    border: solid 1px var(--color-interface-border-secondary);
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 188px 161px;
+    height: 62px;
+    width: fit-content;
+    justify-self: end;
 
-        .field-cardselection-display {
-          font-size: var(--body-fd-x-lg-font-size) !important;
-          font-weight: var(--font-weight-bold) !important;
-          color: var(--color-interface-text-primary) !important;
-          position: absolute;
-          left: 25px;
-          top: 18px;
-        }
+    label {
+      text-align: right;
+      align-content: center;
+      justify-self: center;
+      color: var(--color-interface-text-primary);
+    }
 
-        .field-cardtagline {
-          min-height: 11px;
-          margin-bottom: 20px;
+    input {
+      padding: 0;
+      text-align: center;
+      margin: 0;
+      width: 161px;
+      border-radius: 0 12px 12px 0 !important;
+      border: none;
+      background: var(--color-interface-background-quinary);
+      font-size: var(--body-fd-x-lg-font-size);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-interface-text-primary);
+      pointer-events: none;
+    }
+  }
 
-          p {
-            font-size: var(--body-fd-md-font-size);
-          }
-        }
+  /* Multiple Cards */
+  .field-selectcardfaciapanelmultiple {
+    padding-bottom: 23px;
+    border-bottom: solid 1px var(--color-interface-border-secondary);
 
-        .field-cardfeatures1:has(p:empty),
-        .field-cardfeatures2:has(p:empty),
-        .field-cardfeatures3:has(p:empty) {
+    .repeat-wrapper {
+      .panel-wrapper {
+        padding: 24px;
+        border: solid 1px var(--color-interface-border-secondary);
+        border-radius: 16px;
+        position: relative;
+        display: flow;
+      }
+
+      .radio-wrapper.field-cardselection {
+        flex-direction: row-reverse;
+
+        label {
           display: none;
         }
-
-        .field-cardtagline:not(:has(p)),
-        .field-cardselection-display:not(:has(p)) {
-          font-size: var(--body-fd-md-font-size);
-        }
-
-        .field-cardfeatures1,
-        .field-cardfeatures2,
-        .field-cardfeatures3 {
-          font-size: var(--body-x-sm-font-size);
-          font-weight: var(--font-weight-regular);
-          color: var(--color-interface-background-quaternary);
-          padding-left: 25px;
-        }
-
-        .field-cardfeatures1 {
-          background: url('/content/dam/fd-lien/moneybank.svg') no-repeat;
-        }
-
-        .field-cardfeatures2 {
-          background: url('/content/dam/fd-lien/shieldtick.svg') no-repeat;
-        }
-
-        .field-cardfeatures3 {
-          background: url('/content/dam/fd-lien/folderopen.svg') no-repeat;
-        }
-
-        .field-knowmorelink {
-          margin: 0;
-        }
-
-        .field-knowmorelink button {
-          font-size: var(--body-fd-md-font-size);
-          font-weight: var(--font-weight-bold);
-
-          &::after {
-            background: url('../icons/Arrow-Expand.svg') no-repeat !important;
-            margin: 0 0 -3px 6px;
-          }
-        }
-
-        .field-joiningfeeamt,
-        .field-renewalfeeamt {
-          display: grid;
-          height: 36px;
-          border: solid 1px;
-          grid-template-columns: auto 89px;
-          background-color: var(--color-interface-background-quinary);
-
-          label {
-            align-content: center;
-            justify-self: flex-start;
-            font-size: 14px;
-            font-weight: 400;
-            padding-left: 20px;
-            color: var(--color-interface-text-primary);
-          }
-
-          input {
-            width: 89px;
-            height: 36px !important;
-            text-align: right;
-            padding-right: 20px;
-            margin: 0;
-            border-radius: 0 12px 12px 0 !important;
-            border: none;
-            background: var(--color-interface-background-quinary);
-            font-size: var(--body-fd-x-lg-font-size);
-            font-weight: var(--font-weight-bold);
-            color: var(--color-interface-text-primary);
-            pointer-events: none;
-
-            &:hover {
-              box-shadow: none;
-            }
-          }
-        }
-
-        .field-joiningfeeamt {
-          border-color: var(--color-action-background-primary-disabled)
-            var(--color-action-background-primary-disabled) transparent;
-          border-radius: 8px 8px 0 0;
-        }
-
-        .field-renewalfeeamt {
-          border-radius: 0 0 8px 8px;
-          border-color: transparent
-            var(--color-action-background-primary-disabled)
-            var(--color-action-background-primary-disabled);
-
-          input {
-            height: 32px !important;
-          }
-        }
-      }
-    }
-
-    /* Know More Popup */
-    .field-viewallcardbenefitspanel::backdrop {
-      background-color: rgb(0 0 0 / 50%);
-    }
-
-    .field-knowmorepopupwrapper {
-      border: none !important;
-      border-radius: 0 !important;
-      position: fixed;
-      z-index: 99999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      display: grid;
-      background-color: var(--color-interface-popup-background);
-
-      .field-viewallcardbenefitspanel {
-        border: none !important;
-        background-color: var(--color-interface-background-primary);
-        border-radius: 8px;
-        padding: 10px 12px;
-        max-width: 608px;
-        width: 100%;
-        position: absolute;
-        top: 2%;
-        justify-self: center;
-        text-align: center;
-        box-sizing: border-box;
-
-        .field-backlinkcardbenefits {
-          button {
-            max-width: 100% !important;
-            border-radius: 6px;
-            background: var(--color-interface-background-quinary);
-            color: var(--color-interface-background-quaternary);
-            text-align: left;
-            padding: 0 0 0 20px;
-            font-size: var(--body-fd-x-lg-font-size) !important;
-            font-weight: var(--font-weight-medium);
-
-            &::before {
-              content: '';
-              background: url('../icons/left-arrow.png') no-repeat;
-              padding: 0 0 0 20px;
-              vertical-align: sub;
-            }
-
-            &::after {
-              content: unset !important;
-            }
-
-            &:hover {
-              background: var(--color-interface-background-quinary) !important;
-            }
-          }
-        }
-
-        .field-cardbenefitstext {
-          text-align: left;
-          font-size: var(--body-fd-md-font-size);
-          color: var(--color-input-text-primary);
-          line-height: var(--font-linehight-large);
-          font-weight: var(--font-weight-regular);
-
-          p {
-            font-size: var(--body-fd-md-font-size);
-            color: var(--color-input-text-primary);
-            line-height: var(--font-linehight-large);
-            font-weight: var(--font-weight-regular);
-            margin: 0;
-          }
-
-          b {
-            color: var(--color-input-text-default);
-          }
-        }
-      }
-    }
-
-    /* Single Card */
-    .field-selectcardfaciapanelsingle {
-      border: solid 1px var(--color-action-border-primary-default);
-      padding: 24px;
-      border-radius: 16px;
-
-      .plain-text-wrapper p,
-      .number-wrapper input,
-      .text-wrapper input {
-        margin: 0;
       }
 
-      .field-singlecardname p {
+      .field-cardselection-display {
         font-size: var(--body-fd-x-lg-font-size) !important;
         font-weight: var(--font-weight-bold) !important;
         color: var(--color-interface-text-primary) !important;
+        position: absolute;
+        left: 25px;
+        top: 18px;
       }
 
-      .field-singlecardtitle {
-        margin-top: -20px;
+      .field-cardtagline {
+        min-height: 11px;
+        margin-bottom: 20px;
 
         p {
-          font-size: var(--body-fd-lg-font-size);
-          color: var(--color-interface-text-primary);
-          font-weight: var(--font-weight-extra-bold);
-        }
-      }
-
-      .field-singlecardkeybenefitspanel {
-        .plain-text-wrapper p {
-          font-size: var(--body-fd-sm-font-size);
-          font-weight: var(--font-weight-regular);
-          color: var(--color-interface-background-quaternary);
-        }
-
-        .plain-text-wrapper:not(.field-singlecardfeatureslabel) {
-          display: grid;
-          grid-column: span 4;
-        }
-
-        .plain-text-wrapper:nth-of-type(n + 2):nth-of-type(-n + 4) {
-          background: url('../icons/bank_icon.svg') no-repeat 0 8px;
-          background-size: 15px 15px;
-          padding: 5px 0 5px 25px;
-        }
-
-        .plain-text-wrapper:nth-of-type(n + 5):nth-of-type(-n + 7) {
-          background: url('../icons/shield_icon.svg') no-repeat 0 8px;
-          background-size: 15px 15px;
-          padding: 5px 0 5px 25px;
-          margin-top: -20px;
-        }
-      }
-
-      .field-singlecardknowmore {
-        margin-top: 0;
-
-        button {
           font-size: var(--body-fd-md-font-size);
-          font-weight: var(--font-weight-bold);
         }
+      }
 
-        button::after {
+      .field-cardfeatures1:has(p:empty),
+      .field-cardfeatures2:has(p:empty),
+      .field-cardfeatures3:has(p:empty) {
+        display: none;
+      }
+
+      .field-cardtagline:not(:has(p)),
+      .field-cardselection-display:not(:has(p)) {
+        font-size: var(--body-fd-md-font-size);
+      }
+
+      .field-cardfeatures1,
+      .field-cardfeatures2,
+      .field-cardfeatures3 {
+        font-size: var(--body-x-sm-font-size);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-interface-background-quaternary);
+        padding-left: 25px;
+      }
+
+      .field-cardfeatures1 {
+        background: url('/content/dam/fd-lien/moneybank.svg') no-repeat;
+      }
+
+      .field-cardfeatures2 {
+        background: url('/content/dam/fd-lien/shieldtick.svg') no-repeat;
+      }
+
+      .field-cardfeatures3 {
+        background: url('/content/dam/fd-lien/folderopen.svg') no-repeat;
+      }
+
+      .field-knowmorelink {
+        margin: 0;
+      }
+
+      .field-knowmorelink button {
+        font-size: var(--body-fd-md-font-size);
+        font-weight: var(--font-weight-bold);
+
+        &::after {
           background: url('../icons/Arrow-Expand.svg') no-repeat !important;
           margin: 0 0 -3px 6px;
         }
       }
 
-      .field-singlecardfeatureslabel b {
-        font-weight: var(--font-weight-bold);
-        font-size: var(--body-fd-md-font-size);
-        color: var(--color-interface-text-primary);
-      }
+      .field-joiningfeeamt,
+      .field-renewalfeeamt {
+        display: grid;
+        height: 36px;
+        border: solid 1px;
+        grid-template-columns: auto 89px;
+        background-color: var(--color-interface-background-quinary);
 
-      .field-feessinglecard {
-        display: flex;
-        flex-direction: row;
-        margin-top: -20px;
+        label {
+          align-content: center;
+          justify-self: flex-start;
+          font-size: 14px;
+          font-weight: 400;
+          padding-left: 20px;
+          color: var(--color-interface-text-primary);
+        }
+
+        input {
+          width: 89px;
+          height: 36px !important;
+          text-align: right;
+          padding-right: 20px;
+          margin: 0;
+          border-radius: 0 12px 12px 0 !important;
+          border: none;
+          background: var(--color-interface-background-quinary);
+          font-size: var(--body-fd-x-lg-font-size);
+          font-weight: var(--font-weight-bold);
+          color: var(--color-interface-text-primary);
+          pointer-events: none;
+
+          &:hover {
+            box-shadow: none;
+          }
+        }
       }
 
       .field-joiningfeeamt {
-        width: 165px;
         border-color: var(--color-action-background-primary-disabled)
-          var(--color-interface-border-secondary)
+          var(--color-action-background-primary-disabled) transparent;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .field-renewalfeeamt {
+        border-radius: 0 0 8px 8px;
+        border-color: transparent
           var(--color-action-background-primary-disabled)
           var(--color-action-background-primary-disabled);
-        border-radius: 12px 0 0 12px;
-      }
-
-      .field-renewalfeeamt {
-        width: 155px;
-        margin-left: -21px;
-        border-color: var(--color-action-background-primary-disabled)
-          var(--color-action-background-primary-disabled)
-          var(--color-action-background-primary-disabled)
-          var(--color-interface-border-secondary);
-        border-radius: 0 12px 12px 0;
-      }
-
-      .field-joiningfeeamt,
-      .field-renewalfeeamt {
-        background-color: var(--color-interface-background-quinary);
-        padding-left: 10px;
-        border-width: 1px;
-        border-style: solid;
-        pointer-events: none;
-
-        label {
-          font-size: var(--body-x-sm-font-size);
-          font-weight: var(--font-weight-medium);
-          color: var(--color-interface-text-primary);
-          vertical-align: middle;
-        }
 
         input {
-          width: 55px;
-          background-color: var(--color-interface-background-quinary);
-          padding: 0;
-          margin: 0;
-          text-align: end;
-          border: none;
-          font-size: var(--body-fd-md-font-size);
-          font-weight: var(--font-weight-extra-bold);
-          height: 45px !important;
+          height: 32px !important;
         }
       }
     }
+  }
 
-    .field-selectcardtnc {
-      margin-top: 5px;
-      position: relative;
+  /* Know More Popup */
+  .field-viewallcardbenefitspanel::backdrop {
+    background-color: rgb(0 0 0 / 50%);
+  }
 
-      legend {
-        font-weight: var(--font-weight-bold);
+  .field-knowmorepopupwrapper {
+    border: none !important;
+    border-radius: 0 !important;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    display: grid;
+    background-color: var(--color-interface-popup-background);
+
+    .field-viewallcardbenefitspanel {
+      border: none !important;
+      background-color: var(--color-interface-background-primary);
+      border-radius: 8px;
+      padding: 10px 12px;
+      max-width: 608px;
+      width: 100%;
+      position: absolute;
+      top: 2%;
+      justify-self: center;
+      text-align: center;
+      box-sizing: border-box;
+
+      .field-backlinkcardbenefits {
+        button {
+          max-width: 100% !important;
+          border-radius: 6px;
+          background: var(--color-interface-background-quinary);
+          color: var(--color-interface-background-quaternary);
+          text-align: left;
+          padding: 0 0 0 20px;
+          font-size: var(--body-fd-x-lg-font-size) !important;
+          font-weight: var(--font-weight-medium);
+
+          &::before {
+            content: '';
+            background: url('../icons/left-arrow.png') no-repeat;
+            padding: 0 0 0 20px;
+            vertical-align: sub;
+          }
+
+          &::after {
+            content: unset !important;
+          }
+
+          &:hover {
+            background: var(--color-interface-background-quinary) !important;
+          }
+        }
+      }
+
+      .field-cardbenefitstext {
+        text-align: left;
+        font-size: var(--body-fd-md-font-size);
+        color: var(--color-input-text-primary);
+        line-height: var(--font-linehight-large);
+        font-weight: var(--font-weight-regular);
+
+        p {
+          font-size: var(--body-fd-md-font-size);
+          color: var(--color-input-text-primary);
+          line-height: var(--font-linehight-large);
+          font-weight: var(--font-weight-regular);
+          margin: 0;
+        }
+
+        b {
+          color: var(--color-input-text-default);
+        }
+      }
+    }
+  }
+
+  /* Single Card */
+  .field-selectcardfaciapanelsingle {
+    border: solid 1px var(--color-action-border-primary-default);
+    padding: 24px;
+    border-radius: 16px;
+
+    .plain-text-wrapper p,
+    .number-wrapper input,
+    .text-wrapper input {
+      margin: 0;
+    }
+
+    .field-singlecardname p {
+      font-size: var(--body-fd-x-lg-font-size) !important;
+      font-weight: var(--font-weight-bold) !important;
+      color: var(--color-interface-text-primary) !important;
+    }
+
+    .field-singlecardtitle {
+      margin-top: -20px;
+
+      p {
         font-size: var(--body-fd-lg-font-size);
         color: var(--color-interface-text-primary);
+        font-weight: var(--font-weight-extra-bold);
+      }
+    }
+
+    .field-singlecardkeybenefitspanel {
+      .plain-text-wrapper p {
+        font-size: var(--body-fd-sm-font-size);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-interface-background-quaternary);
       }
 
-      .checkbox-wrapper {
+      .plain-text-wrapper:not(.field-singlecardfeatureslabel) {
+        display: grid;
+        grid-column: span 4;
+      }
+
+      .plain-text-wrapper:nth-of-type(n + 2):nth-of-type(-n + 4) {
+        background: url('../icons/bank_icon.svg') no-repeat 0 8px;
+        background-size: 15px 15px;
+        padding: 5px 0 5px 25px;
+      }
+
+      .plain-text-wrapper:nth-of-type(n + 5):nth-of-type(-n + 7) {
+        background: url('../icons/shield_icon.svg') no-repeat 0 8px;
+        background-size: 15px 15px;
+        padding: 5px 0 5px 25px;
+        margin-top: -20px;
+      }
+    }
+
+    .field-singlecardknowmore {
+      margin-top: 0;
+
+      button {
+        font-size: var(--body-fd-md-font-size);
+        font-weight: var(--font-weight-bold);
+      }
+
+      button::after {
+        background: url('../icons/Arrow-Expand.svg') no-repeat !important;
+        margin: 0 0 -3px 6px;
+      }
+    }
+
+    .field-singlecardfeatureslabel b {
+      font-weight: var(--font-weight-bold);
+      font-size: var(--body-fd-md-font-size);
+      color: var(--color-interface-text-primary);
+    }
+
+    .field-feessinglecard {
+      display: flex;
+      flex-direction: row;
+      margin-top: -20px;
+    }
+
+    .field-joiningfeeamt {
+      width: 165px;
+      border-color: var(--color-action-background-primary-disabled)
+        var(--color-interface-border-secondary)
+        var(--color-action-background-primary-disabled)
+        var(--color-action-background-primary-disabled);
+      border-radius: 12px 0 0 12px;
+    }
+
+    .field-renewalfeeamt {
+      width: 155px;
+      margin-left: -21px;
+      border-color: var(--color-action-background-primary-disabled)
+        var(--color-action-background-primary-disabled)
+        var(--color-action-background-primary-disabled)
+        var(--color-interface-border-secondary);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .field-joiningfeeamt,
+    .field-renewalfeeamt {
+      background-color: var(--color-interface-background-quinary);
+      padding-left: 10px;
+      border-width: 1px;
+      border-style: solid;
+      pointer-events: none;
+
+      label {
+        font-size: var(--body-x-sm-font-size);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-interface-text-primary);
+        vertical-align: middle;
+      }
+
+      input {
+        width: 55px;
+        background-color: var(--color-interface-background-quinary);
+        padding: 0;
         margin: 0;
+        text-align: end;
+        border: none;
+        font-size: var(--body-fd-md-font-size);
+        font-weight: var(--font-weight-extra-bold);
+        height: 45px !important;
+      }
+    }
+  }
 
-        input {
-          margin-right: 5px;
-        }
+  .field-selectcardtnc {
+    margin-top: 5px;
+    position: relative;
 
-        label {
-          margin-top: 3px;
-        }
+    legend {
+      font-weight: var(--font-weight-bold);
+      font-size: var(--body-fd-lg-font-size);
+      color: var(--color-interface-text-primary);
+    }
 
-        label p,
-        a {
-          margin: 0;
-          font-size: var(--body-fd-sm-font-size) !important;
-          font-weight: var(--font-weight-regular) !important;
-        }
+    .checkbox-wrapper {
+      margin: 0;
 
-        ul,
-        a {
-          margin: 0;
-          color: var(--color-action-text-secondary-default);
-        }
+      input {
+        margin-right: 5px;
       }
 
-      .field-confirmcardtnc1,
-      .field-confirmcardtnc2,
-      .field-confirmcardtnc3 {
-        .field-description {
-          position: absolute;
-          top: 40px;
-          left: 35px;
-        }
+      label {
+        margin-top: 3px;
       }
 
-      .field-confirmcardtnc2 {
-        .field-description {
-          top: 85px;
-        }
+      label p,
+      a {
+        margin: 0;
+        font-size: var(--body-fd-sm-font-size) !important;
+        font-weight: var(--font-weight-regular) !important;
       }
 
-      .field-confirmcardtnc3 {
-        .field-description {
-          top: 110px;
-          left: 30%;
-        }
+      ul,
+      a {
+        margin: 0;
+        color: var(--color-action-text-secondary-default);
+      }
+    }
+
+    .field-confirmcardtnc1,
+    .field-confirmcardtnc2,
+    .field-confirmcardtnc3 {
+      .field-description {
+        position: absolute;
+        top: 40px;
+        left: 35px;
+      }
+    }
+
+    .field-confirmcardtnc2 {
+      .field-description {
+        top: 85px;
+      }
+    }
+
+    .field-confirmcardtnc3 {
+      .field-description {
+        top: 110px;
+        left: 30%;
       }
     }
   }
@@ -2775,7 +2780,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 .fdlien .field-docuploadflow {
   padding: 0 60px 60px;
 
-  .plain-text-wrapper.field-identificationverificationtitle p b{
+  .plain-text-wrapper.field-identificationverificationtitle p b {
     font-size: var(--body-fd-xx-lg-font-size);
   }
 
@@ -2949,7 +2954,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   }
 
   .field-uploadaddressproof {
-    .plain-text-wrapper p b, legend p b{
+    .plain-text-wrapper p b,
+    legend p b {
       font-size: var(--body-fd-md-font-size);
       color: var(--color-interface-background-quaternary);
       font-weight: var(--font-weight-bold);
