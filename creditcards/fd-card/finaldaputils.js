@@ -31,7 +31,7 @@ const createDapRequestObj = (userRedirected, globals) => {
     const searchParam = new URLSearchParams(window?.location?.search);
     visitType = searchParam.get('authmode');
   } else {
-    visitType = formData.queryParams.authmode;
+    visitType = formData?.queryParams?.authmode;
   }
   const filler2 = visitType?.toLowerCase === 'aadhaarotp' ? 'ADVxRRN' : '';
   const filler3 = fetchFiller3(formData?.queryParams?.authmode);
