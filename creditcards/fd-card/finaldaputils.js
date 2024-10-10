@@ -26,9 +26,13 @@ const createDapRequestObj = (userRedirected, globals) => {
     formContextCallbackData?.selectedKyc,
     'ETB',
   );
-
-  const searchParam = new URLSearchParams(window.location.search);
-  const visitType = searchParam.get('authmode');
+  let visitType = '';
+  if (window) {
+    const searchParam = new URLSearchParams(window?.location?.search);
+    visitType = searchParam.get('authmode');
+  } else {
+    visitType = formData.queryParams.authmode;
+  }
   const filler2 = visitType?.toLowerCase === 'aadhaarotp' ? 'ADVxRRN' : '';
   const filler3 = fetchFiller3(formData?.queryParams?.authmode);
   const filler4 = !userRedirected ? 'bioInperson' : '';
