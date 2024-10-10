@@ -101,7 +101,7 @@ const createExecuteInterfaceRequestObj = (globals) => {
       currentAddress.pincode = newCurentAddressPanel.newCurentAddressPin.$value;
       currentAddress.state = newCurentAddressPanel.newCurentAddressState.$value;
     } else if (customerFiller2 === 'D106') {
-      const ALLOWED_CHARACTERS = '/-,';
+      const ALLOWED_CHARACTERS = '/-, ';
        	if(!currentFormContext.customerParsedAddress) {
 		      const fullAddress = [
           removeSpecialCharacters(breDemogResponse?.VDCUSTADD1, ALLOWED_CHARACTERS),
