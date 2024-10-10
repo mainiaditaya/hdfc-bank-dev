@@ -358,6 +358,10 @@ const setArnNumberInResult = (arnNumRef, arnNumberPanel, arnNumberFieldName) => 
   arnNumberElement.value = arnNumRef;
 };
 
+const addClassToElement = (selector, classNames) => {
+  document.querySelector(selector)?.classList?.add(...classNames.split(' '));
+};
+
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -377,4 +381,5 @@ export {
   validateTextInput,
   validateTextInputOnPaste,
   setArnNumberInResult,
+  addClassToElement,
 };
