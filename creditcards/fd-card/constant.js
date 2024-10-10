@@ -18,6 +18,8 @@ const ERROR_MSG = {
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
   invalidPan: 'Maximum PAN retry attempts exceeded.',
   matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
+  shorAddressNote: 'Note: Address is too short, please enter valid address.',
+  invalidPinNote: 'Note: Pincode is not matching with the city in address as per the bank records, please provide correct address.',
 };
 
 const FD_ENDPOINTS = {
