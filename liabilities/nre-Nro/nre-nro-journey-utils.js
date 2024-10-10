@@ -150,13 +150,14 @@ function journeyResponseHandlerUtil(payload, formContext) {
 }
 
 /**
-    * @name invokeJourneyDropOffByParam
+    * @name nreNroInvokeJourneyDropOffByParam
     * @param {string} mobileNumber
     * @param {string} leadProfileId
     * @param {string} journeyId
     * @return {PROMISE}
     */
-const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
+const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
+  console.log("In NRE-NRO-Journey-Utils invoke journey drop off by param");
   const journeyJSONObj = {
     RequestPayload: {
       leadProfile: {
@@ -178,5 +179,5 @@ export {
   getCurrentContext,
   createJourneyId,
   journeyResponseHandlerUtil,
-  invokeJourneyDropOffByParam,
+  nreNroInvokeJourneyDropOffByParam,
 };

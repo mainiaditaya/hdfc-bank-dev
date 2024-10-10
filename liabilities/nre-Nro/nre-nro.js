@@ -10,6 +10,7 @@ import {
   resendOTP,
   customFocus,
   switchWizard,
+  setupBankUseSection,
 } from './nre-nroFunctions.js';
 
 import {
@@ -30,4 +31,5 @@ export {
   customFocus,
   otpValidationNRE,
   switchWizard,
+  setupBankUseSection,
 };
