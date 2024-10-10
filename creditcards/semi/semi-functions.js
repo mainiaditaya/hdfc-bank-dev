@@ -1,4 +1,5 @@
 import {
+  createJourneyId,
   getOTPV1,
   otpValV1,
   selectTenure,
@@ -25,10 +26,12 @@ import {
   invokeJourneyDropOff,
   invokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
+  handleWrongCCDetailsFlows,
   handleTadMadAlert,
 } from './smart-emi-functions.js';
 
 export {
+  createJourneyId,
   getOTPV1,
   otpValV1,
   selectTenure,
@@ -55,5 +58,6 @@ export {
   customDispatchEvent,
   getFlowSuccessPayload,
   reloadPage,
+  handleWrongCCDetailsFlows,
   handleTadMadAlert,
 };

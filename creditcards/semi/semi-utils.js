@@ -116,13 +116,18 @@ const validationField = () => {
   linkToPopupToggle('.field-aem-txnssummarytext a', '.field-aem-txnssummarypopupwrapper', '.field-aem-txnssummarypopup', '.field-aem-txnssummaryok');
 };
 
-const getNextMonthDate = (day) => {
-  // Get the current date
+const getBillingCycleDate = (day) => {
+  // Get the current day of the month in the Indian timezone
+  const options = { timeZone: 'Asia/Kolkata', day: 'numeric' };
+  const dayOfMonth = Number(new Intl.DateTimeFormat('en-US', options).format(new Date()));
+
   const date = new Date();
   // Set the provided day
   date.setDate(day);
-  // Move to the next month
-  date.setMonth(date.getMonth() + 1);
+  if (day <= dayOfMonth) {
+    // Move to the next month
+    date.setMonth(date.getMonth() + 1);
+  }
   // Extract the day, month, and year
   const dayPart = date.getDate();
   const monthPart = date.toLocaleString('en-US', { month: 'short' });
@@ -149,5 +154,5 @@ export {
   validationField,
   setSelectOptions,
   getUrlParamCaseInsensitive,
-  getNextMonthDate,
+  getBillingCycleDate,
 };
