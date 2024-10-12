@@ -15,6 +15,10 @@
     .field-consentsfragmentnrenro .checkbox-wrapper.field-checkboxconsent1label {
       flex-wrap: wrap;
 
+      @media (320px <=width <=480px) {
+        margin-bottom: 10px !important;
+      }
+
       .field-description {
         margin-top: -7px;
         margin-bottom: 5px;
@@ -26,24 +30,35 @@
 
     .field-consentsfragmentnrenro .checkbox-wrapper input[type="checkbox"] {
       border-radius: 5px;
+      border: 2px solid #ddd;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      padding: 0;
+
+      &:hover,
+      &:checked {
+        background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
+        border: none;
+        cursor: pointer;
+      }
     }
 
-    .cmp-container-container {
+    &>.cmp-container-container {
       width: 44%;
       background-color: white !important;
     }
 
-    .form form p {
+    .form form .field-letsgetstarted p {
       font-size: 28px !important;
       line-height: 36px;
       font-weight: 600;
       color: var(--color-interface-background-quaternary) !important;
+      margin-bottom: 0;
     }
-
     .form form .plain-text-wrapper.field-letsgetstarted p {
       margin-bottom: 5px;
     }
-
     .form form .field-wrapper.col-6 {
       grid-column: inherit !important;
     }
@@ -96,13 +111,17 @@
     }
 
     .form form .field-wrapper .button-wrapper {
-      margin: 0 !important;
+      /* margin: 0 !important; */
       text-align: left;
       position: relative;
       width: 272px;
+
+      @media (320px <=width <=991px) {
+        width: 100% !important;
+      }
     }
 
-    .form form .field-wrapper .button-wrapper::after {
+    .form form .field-wrapper .button-wrapper.field-submitotp::after {
       content: url("../../icons/Arrow.png");
       position: absolute;
       right: 27%;
@@ -126,17 +145,41 @@
         column-gap: 72px !important;
         text-align: center;
       }
+
+      @media (768px <=width <=991px) {
+        display: block;
+      }
     }
 
     .form form .panel-wrapper.field-stepstofollow p {
       font-size: 14px !important;
       line-height: 20px;
       font-weight: 400;
-      max-width: 134px !important;
+      max-width: 134px;
+
+      @media (768px <=width <=991px) {
+        max-width: initial;
+        text-align: left;
+        margin-left: 25px;
+        margin-top: 0px;
+      }
+    }
+
+    .form form .panel-wrapper.field-stepstofollow .field-step1panel p {
+      @media (768px <=width <=991px) {
+        margin-top: -5px;
+      }
     }
 
     .form form .panel-wrapper.field-loginfragmentnrenro.field-wrapper {
+
+      @media (320px <=width <=600px) {
+        margin-bottom: 20px;
+      }
+
       fieldset.panel-wrapper.field-mobilepanel.field-wrapper {
+        position: relative;
+
         @media screen and (min-width: 768px) {
           padding-top: 23px;
           border-top: 1px dotted var(--color-interface-border-secondary);
@@ -168,12 +211,22 @@
           margin-bottom: 40px;
           margin-top: 30px;
         }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
+        }
       }
 
       &.field-step2text {
         @media screen and (min-width: 768px) {
           margin-bottom: 40px;
           margin-top: 30px;
+        }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
         }
       }
 
@@ -182,6 +235,11 @@
           margin-bottom: 40px;
           margin-top: 30px;
         }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
+        }
       }
 
       &.field-step4text {
@@ -189,12 +247,22 @@
           margin-top: 0px;
           margin-top: 30px;
         }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
+        }
       }
 
       &.field-step5text {
         @media screen and (min-width: 768px) {
           margin-bottom: 42px;
           margin-top: 30px;
+        }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
         }
       }
     }
@@ -211,6 +279,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -15px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -226,6 +306,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -241,6 +333,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -256,6 +360,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -271,6 +387,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -298,23 +426,34 @@
       display: flex;
     }
 
-    /*  div.drop-down-wrapper.field-countrycode.field-wrapper {
-      width: 100px;
-    } */
     .form .field-countrycode {
       position: relative;
+      border: 1px solid var(--color-input-border-default);
+      width: 320px;
+      border-radius: 8px;
+
+      @media (768px <=width <=991px) {
+        width: 300px;
+      }
+
+      @media (320px <=width <=480px) {
+        width: 100%;
+      }
     }
 
     .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
-      width: 247px !important;
+      width: 225px !important;
       font-size: 18px !important;
       color: rgb(17, 24, 39);
       letter-spacing: 9px;
       border-color: var(--color-interface-border-secondary);
       border-left: 0;
-      padding-left: 20px;
+      padding-left: 0px;
+      margin: 0;
+      border: none;
+      background-color: transparent;
 
       &:focus-visible {
         outline: none;
@@ -337,6 +476,9 @@
       appearance: none;
       background: url('./../icons/select_arrow.png') no-repeat right center;
       background-size: 20px;
+      margin: 0;
+      position: relative;
+      border: none !important;
 
       &:focus-visible {
         outline: none;
@@ -349,8 +491,9 @@
       margin-left: 80px;
       padding-right: 5px;
       position: absolute;
-      top: 15px;
+      top: 7px;
       border-width: .5px;
+      z-index: 2;
     }
 
     .form :is([data-active="true"], [data-empty="false"], .date-wrapper):not(.field-joiningrenewalfee,
@@ -363,7 +506,8 @@
       .field-eligiblecreditlimitamount,
       .field-joiningfeeamt,
       .field-renewalfeeamt)>label {
-      margin-left: -75px;
+      margin-left: -90px;
+
     }
 
     .form.block {
@@ -383,8 +527,32 @@
       margin: inherit;
     }
 
-    .field-registeredmobilenumber {
-      margin-left: -21px !important;
+    .form .field-registeredmobilenumber {
+      position: absolute;
+      left: 95px;
+
+      @media (768px <=width <=991px) {
+        left: 0;
+      }
+
+      label {
+        top: -7px;
+        margin-left: 5px;
+
+        @media (768px <=width <=991px) {
+          left: 91px;
+          top: 17px;
+        }
+      }
+
+      input[name="registeredMobileNumber"] {
+        @media (768px <=width <=991px) {
+          left: 90px;
+          top: 24px;
+          width: 210px !important;
+          position: absolute;
+        }
+      }
     }
 
     .form-container {
@@ -444,7 +612,7 @@
       .field-numretries {
         position: absolute;
         margin-right: 100px;
-        margin-top: 2px;
+        margin-top: 0;
       }
     }
 
@@ -476,7 +644,7 @@
     width: 100%;
 
     p {
-      margin-top: -33px;
+      margin-top: -15px;
       font-size: 16px !important;
       line-height: 24px;
       font-weight: 400;
@@ -498,6 +666,10 @@
       max-width: 100% !important;
       grid-template-rows: auto;
       padding: 40px 40px 0 10px;
+
+      @media (320px <=width <=600px) {
+        padding: 40px 0px 0 0px;
+      }
 
       .field-otppanel {
         text-align: left;
@@ -531,16 +703,15 @@
         }
       }
 
-      .field-attempts p {
-        margin-top: 7px !important;
-        margin-left: 132px;
+      .field-attempts p p{
+        margin-top: -7px;
         color: #6b7280 !important;
         font-size: var(--body-sm-font-size) !important;
         font-weight: 400;
 
-        @media (320px <=width <=439px) {
+        @media (320px <=width <=600px) {
           margin-left: 38px;
-          margin-top: 18px !important;
+          margin-top: -5px !important;
         }
       }
 
@@ -563,6 +734,10 @@
       .field-otpnumber {
         margin: -28px 0 -18px;
 
+        @media (320px <=width <=991px) {
+          grid-column: span 12;
+        }
+
         input {
           width: 100% !important;
           max-width: 100%;
@@ -577,9 +752,31 @@
         }
       }
 
+      .field-otpsubpanel {
+        @media (768px <=width <=991px) {
+          grid-column: span 8;
+        }
+
+        @media (320px <=width <=600px) {
+          grid-column: span 8;
+        }
+
+        .field-numretries {
+          input {
+            @media (320px <=width <=600px) {
+              margin-top: 4px !important;
+            }
+          }
+        }
+      }
+
       .field-secondspanel {
         display: flex;
         flex-direction: row;
+
+        @media (320px <=width <=600px) {
+          grid-column: span 6;
+        }
 
         .field-seconds {
           input {
@@ -589,7 +786,11 @@
             font-size: var(--body-sm-font-size) !important;
             color: var(--color-interface-background-quaternary) !important;
             font-weight: 600;
-            /* margin-top: 12px; */
+            margin-top: 6px;
+
+            @media (320px <=width <=600px) {
+              margin-top: 8px;
+            }
           }
         }
 
@@ -599,7 +800,7 @@
       }
 
       .field-resendotplabel {
-        margin: 12px 0 0;
+        margin: 17px 0 0;
         width: fit-content;
 
         p {
@@ -626,19 +827,91 @@
 
       .field-sectext {
         width: fit-content;
-        margin: 12px 0 0 -54px;
+        margin: 17px 0 0 -54px;
 
         p {
           font-size: var(--body-fd-sm-font-size);
         }
       }
+
+      .field-maxattemptmessage[data-visible="true"] {
+        @media (768px <=width <=991px) {
+          grid-column: span 6;
+        }
+
+        @media (320px <=width <=600px) {
+          grid-column: span 12;
+          margin-top: 0;
+
+          p {
+            font-size: 12px !important;
+            margin-bottom: 0;
+
+          }
+        }
+
+        margin-top: 15px;
+
+        p {
+          font-size: 12px;
+          font-weight: 400;
+          color: var(--color-input-text-msg-error);
+          text-align: left;
+        }
+
+        &~.field-otpsubpanel {
+          margin-top: 0;
+          grid-column: span 5;
+
+          @media (768px <=width <=991px) {
+            grid-column: span 6;
+          }
+
+          @media (320px <=width <=600px) {
+            grid-column: span 12;
+            margin-top: -20px;
+          }
+        }
+      }
     }
   }
 
-  .field-otppanel:has(.field-secondspanel:not([data-visible="false"])) {
+  .field-otppanel:has(.field-secondspanel) {
     .field-otpsubpanel {
-      grid-column: span 3;
+      grid-column: span 6;
       margin: 5px 0 0;
+
+      @media (768px <=width <=991px) {
+        grid-column: span 8;
+      }
+
+      @media (320px <=width <=600px) {
+        grid-column: span 6;
+      }
+
+      .field-numretries {
+        input {
+          margin-top: 7px;
+        }
+      }
+    }
+  }
+
+
+  .field-otppanel:has(.field-secondspanel) {
+    .field-otpresend {
+      margin-top: 5px;
+
+      @media (320px <=width <=600px) {
+        grid-column: span 6;
+      }
+
+      &~.field-otpsubpanel {
+        @media (320px <=width <=600px) {
+          margin: -3px;
+
+        }
+      }
     }
   }
 
@@ -674,10 +947,10 @@ header {
       margin-left: 55px;
 
       @media (768px <=width <=991px) {
-        margin-left: 10px;
+        margin-left: 20px;
       }
 
-      @media (320px <=width <=439px) {
+      @media (320px <=width <=600px) {
         margin-left: 10px;
       }
     }
@@ -694,7 +967,6 @@ header {
   .cmp-container>div:nth-child(3) {
     position: absolute;
     width: 110px;
-    /*  right: -100px; */
     top: 0.5em;
     height: 32px;
     content: url(../icons/header-safe-secure.png);
@@ -721,7 +993,7 @@ main .form form .wizard.field-wizardnrenro {
 main .form fieldset.field-personaldetails,
 main .form fieldset.field-fatcadetails,
 main .form fieldset.field-financialdetails,
-main .form fieldset.field-nomineedetails{
+main .form fieldset.field-nomineedetails {
   border: 1px solid var(--color-interface-border-primary);
   border-radius: 20px;
   padding-bottom: 20px;
@@ -741,6 +1013,27 @@ main .form fieldset.field-nomineedetails{
 
   & .text-wrapper.field-wrapper {
     padding: 20px;
+  }
+}
+
+main .form fieldset.field-nomineedetails .field-wrapper{
+  legend.field-label{
+  display: none;
+  }
+
+  .plain-text-wrapper{
+    padding: 20px 20px 0 20px;
+   
+    p{
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-interface-text-primary);
+    }
+  }
+
+  &~.plain-text-wrapper{
+display: none;
   }
 }
 
@@ -906,16 +1199,16 @@ main .form form {
         color: var(--color-interface-text-primary);
         transform: none;
         position: inherit;
-        padding-left: 0;        
+        padding-left: 0;
         height: auto;
 
         @media (min-width: 768px) {
-          font-size: 24px;          
+          font-size: 24px;
           line-height: 32px;
         }
 
         @media (min-width: 992px) {
-          font-size: 28px;          
+          font-size: 28px;
           line-height: 36px;
         }
       }
@@ -959,13 +1252,15 @@ main .form form {
     }
 
     .field-wrapper.text-wrapper {
+
       &.field-customerid,
       &.field-accountnumber,
       &.field-accounttype,
       &.field-ifsc,
-      &.field-branch{
-      height: 60px;
-    }
+      &.field-branch {
+        height: 60px;
+      }
+
       @media (min-width: 768px) {
         font-size: 14px !important;
         line-height: 20px;
@@ -1034,7 +1329,7 @@ main .form form {
 
     .field-nreelitesavingsaccountpanel,
     .field-nreregularsavingsaccountpanel,
-    .field-nrecurrentaccountpanel{
+    .field-nrecurrentaccountpanel {
       border: 1px solid #D2D5DB;
       border-radius: 20px;
       padding: 20px;
@@ -1043,23 +1338,25 @@ main .form form {
       @media (min-width: 768px) {
         margin-bottom: 0;
       }
+
       @media (min-width: 900px) {
         width: 33%;
       }
 
-      &:hover, &.active{
+      &:hover,
+      &.active {
         background-color: var(--color-interface-background-quinary);
         border: 1px solid var(--color-action-border-primary-hover);
       }
-      
+
     }
 
     .field-elitesavingsaccount.checkbox-wrapper,
     .field-regularsavingsaccount.checkbox-wrapper,
-    .field-currentaccount.checkbox-wrapper {          
+    .field-currentaccount.checkbox-wrapper {
       display: flex;
       flex-direction: row-reverse;
-    
+
 
       & .field-label {
         font-size: 20px;
@@ -1068,10 +1365,10 @@ main .form form {
         color: var(--color-interface-text-primary)
       }
 
-      &~.plain-text-wrapper {   
+      &~.plain-text-wrapper {
 
         p ul {
-       
+
           margin: 0;
           border-top: 1px dotted var(--color-interface-border-secondary);
           padding: 30px 0 0 20px;
@@ -1119,7 +1416,7 @@ main .form form {
           padding: 0;
           width: auto;
           height: auto;
-          font-size: 18px;
+          font-size: 18px !important;
           line-height: 28px;
           font-weight: 500;
           color: var(--color-interface-background-quaternary);
@@ -1139,11 +1436,81 @@ main .form form {
         }
       }
     }
+
+    .field-needbankhelp{
+      margin-top: 20px;
+
+      .field-bankusetoggle{
+        display: flex;
+        align-items: center !important;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+
+        label{
+          font-size: 28px;
+          font-weight: 600;
+          line-height: 36px;
+          color: var(--color-interface-text-primary);
+          flex-basis: initial;
+        }
+      }
+
+      .field-lgcode, .field-lccode{
+        position: relative;
+        label.field-label{
+          margin: 0 0 0 15px;
+          top: 20px;        
+        }
+        input{
+        border: 1px solid var(--color-interface-border-secondary);
+        &:focus-visible{
+          outline: none;
+        }
+      }
+
+      &[data-active="true"]{
+        label.field-label{
+          margin: 20px 0 0 10px;
+        }
+      }
+      }
+
+      .field-confirmdetailsconsent1,
+      .field-confirmdetailsconsent2{
+        margin-top: 0;
+
+        label.field-label, label.field-label p{
+          font-size: 14px;
+          font-weight: 400;
+          color: var(--color-input-text-primary);
+          margin-bottom: 0;
+        }
+
+        input[type="checkbox"] {
+          border-radius: 5px;
+          border: 2px solid #ddd;
+          appearance: none;
+          -webkit-appearance: none;
+          outline: none;
+          padding: 0;
+    
+          &:hover,
+          &:checked {
+            background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
+            border: none;
+            cursor: pointer;
+          }
+        }
+      }
+      .field-confirmdetailsconsent2{
+        margin-top: -10px;
+      }
+    }
   }
 
 }
 
-@media (320px <=width <=439px) {
+@media (320px <=width <=600px) {
   .nre {
     main {
       flex-direction: column;
@@ -1176,9 +1543,9 @@ main .form form {
         width: 330px;
       }
 
-      .form form .field-wrapper .button-wrapper {
+      .form form .field-wrapper .button-wrapper.field-submitotp {
         width: 100%;
-        margin-top: 10px !important;
+      margin-top: 20px !important; 
       }
 
       .form form .panel-wrapper.field-stepstofollow fieldset {
@@ -1186,10 +1553,10 @@ main .form form {
         flex-direction: row;
       }
 
-      div.plain-text-wrapper.field-registermobilenumbererror {
+      /*  div.plain-text-wrapper.field-registermobilenumbererror {
         margin-top: 98px;
         margin-left: -391px;
-      }
+      } */
 
       div.plain-text-wrapper.field-doberrortext.field-wrapper,
       div.plain-text-wrapper.field-panerrortext.field-wrapper {
@@ -1238,22 +1605,22 @@ main .form form {
       }
 
       .form form .field-wrapper.col-6.field-mobilepanel {
-        flex-direction: row;
+        margin-bottom: 20px;
       }
 
-      .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
-        margin-top: 7px;
-        width: 300px !important;
-      }
+      /* .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
+        margin-top: 20px !important;
+      } */
 
       input[name="pan"] {
         width: 100% !important;
         max-width: 100% !important;
-        margin-top: 24px !important;
+        /*  margin-top: 24px !important; */
       }
 
-      .cmp-container-wrapper {
-        content: url("../../icons/nre_mobile_page_banner.png");
+      .cmp-container-container {
+        width: 100% !important;
+        content: url("../../icons/nre_mobile_page_banner.png") !important;
       }
 
       .form form .panel-wrapper.field-stepstofollowfragment {
@@ -1281,7 +1648,7 @@ main .form form {
         position: relative;
 
         div.image-wrapper.field-wrapper {
-          @media (320px <=width <=439px) {
+          @media (320px <=width <=600px) {
             margin-top: 50px;
             margin-right: 0;
             margin-left: 10px;
@@ -1387,6 +1754,7 @@ main .form form {
       & .cmp-container {
         div:nth-child(1) {
           text-align: left !important;
+          position: initial;
         }
       }
 
@@ -1396,7 +1764,7 @@ main .form form {
       }
 
       .cmp-container>div:nth-child(3) {
-        right: 0px;
+        right: 10px;
         display: block;
       }
     }
@@ -1476,10 +1844,10 @@ main .form form {
         grid-column: span 6 !important;
       }
 
-      .field-registeredmobilenumber {
+  /*     .field-registeredmobilenumber {
         grid-column: span 6 !important;
         margin-left: -292px !important;
-      }
+      } */
 
       .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
         width: 221px !important;
@@ -1511,7 +1879,7 @@ main .form form {
     }
 
     .cmp-container>div:nth-child(3) {
-      right: 20px;
+      right: 30px;
       display: block;
     }
   }
