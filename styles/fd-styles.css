@@ -8,6 +8,10 @@ main {
   background-color: var(--color-action-background-secondary-default);
 }
 
+.fdlien main:has(.field-fdbasedcreditcardwizard[data-visible='true']) {
+  padding-bottom: 30px !important;
+}
+
 .section > div {
   max-width: max-content;
   margin: 0 !important;
