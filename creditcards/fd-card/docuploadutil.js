@@ -120,6 +120,7 @@ const fileUploadUIHandler = () => {
       const fileList = parentDiv.querySelector('.files-list');
       const fileDescription = parentDiv.querySelector('.field-description');
       const uploadButton = parentDiv.querySelector('.file-attachButton');
+      const infoMsg = parentDiv.nextElementSibling;
 
       const validFileTypes = ['image/jpeg', 'image/png', 'application/pdf'];
       const fileSizeInMB = file.size / (1024 * 1024);
@@ -131,6 +132,10 @@ const fileUploadUIHandler = () => {
 
         if (fileList) {
           fileList.textContent = file.name;
+        }
+
+        if (infoMsg && infoMsg.classList.contains('plain-text-wrapper')) {
+          infoMsg.style.display = 'none';
         }
 
         if (uploadButton) {

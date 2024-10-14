@@ -1538,6 +1538,14 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   border: 1px solid var(--color-action-border-primary-default) !important;
 }
 
+.field-selectkycmethodoption1 {
+  .field-aadharbiometricverification {
+    .radio-wrapper {
+      align-items: flex-start !important;
+    }
+  }
+}
+
 .fdlien .field-fdbasedcreditcardwizard {
   .wizard-menu-items {
     position: absolute;
@@ -2228,9 +2236,9 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   .wrapper-disabled {
     label {
       margin-left: 5px;
-      font-size: var(--body-fd-sm-font-size);
-      font-weight: var(--font-weight-regular);
-      color: var(--color-interface-text-secondary);
+      font-size: var(--body-fd-sm-font-size) !important;
+      font-weight: var(--font-weight-regular) !important;
+      color: var(--color-interface-text-secondary) !important;
       transform: translateY(-22px);
     }
 
@@ -2251,6 +2259,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       &:hover {
         box-shadow: none;
       }
+    }
+
+    select:disabled {
+      background: none !important;
+      
     }
   }
 }
@@ -2275,10 +2288,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       text-align: right;
       align-content: center;
       justify-self: center;
-      color: var(--color-interface-text-primary);
+      color: var(--color-interface-text-primary) !important;
     }
 
-    input {
+    input, input:disabled {
       padding: 0;
       text-align: center;
       margin: 0;
@@ -2744,6 +2757,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         color: var(--color-interface-text-primary);
         font-weight: 600;
         font-size: 14px !important;
+        display: flex;
       }
 
       label::before {
@@ -2819,9 +2833,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
   }
 
-  .file-wrapper {
+  .field-docuploadfrontwrapper, .field-docuploadbackwrapper, .field-addressprooffile1wrapper, .field-addressprooffile2wrapper {
     grid-column: span 4;
+  }
 
+  .file-wrapper {
     .file-drag-area {
       border-radius: 8px;
       border: 1px dashed var(--color-input-text-disabled);
@@ -2855,6 +2871,13 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         transform: translateX(-50%);
       }
     }
+  }
+
+  .field-docuploadfrontmsg, .field-docuploadbackmsg, .field-addressprooffile1msg, .field-addressprooffile2msg {
+    font-size: var(--body-fd-sm-font-size);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-interface-text-secondary);
+    margin-top: -15px;
   }
 
   .file-wrapper.file-uploaded {
@@ -3624,9 +3647,13 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     left: 2%;
   }
 
+  .fdlien .field-selectkycoptionspanel {
+    padding: 0 20px;
+  }
+
   .field-selectkycoptionspanel fieldset[class*='field-selectkycmethodoption'] {
     grid-column: span 6 !important;
-  }
+  }  
 
   .fdlien .field-docuploadflow {
     padding: 0 20px 20px;
@@ -3637,7 +3664,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
     }
 
-    .file-wrapper {
+    .field-docuploadfrontwrapper, .field-docuploadbackwrapper, .field-addressprooffile1wrapper, .field-addressprooffile2wrapper {
       grid-column: span 6;
     }
 
@@ -4234,6 +4261,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
   }
 
+  .fdlien .field-selectkycoptionspanel {
+    padding: 0 20px;
+  }
+
   .fdlien
     .field-selectkycoptionspanel
     div[class*='field-identityverificationtext'] {
@@ -4291,6 +4322,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
     .file-wrapper {
       margin: 10px 0 0;
+    }
+
+    .field-docuploadfrontmsg, .field-docuploadbackmsg, .field-addressprooffile1msg, .field-addressprooffile2msg {
+      margin-top: 5px;
     }
 
     .field-uploadaddressproof {
