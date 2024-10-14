@@ -2912,6 +2912,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         transform: translateX(-50%);
       }
 
+      .file-size {
+        font-size: var(--body-x-sm-font-size);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-interface-text-secondary);
+      }
+
       .file-description {
         position: relative;
         top: -125px;
