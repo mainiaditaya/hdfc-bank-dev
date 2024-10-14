@@ -38,6 +38,33 @@ const validatePan = (mobileNumber, panNumber, dob, firstName, showLoader, hideLo
 };
 
 /**
+ * validatePan - creates PAN validation request and executes API.
+ * @param {string} mobileNumber
+ * @param {string} panNumber
+ * @param {object} dob
+ * @param {string} firstName
+ * @param {boolean} showLoader
+ * @param {boolean} hideLoader
+ * @returns {Promise} - pan validation response
+ */
+const fullNamePanValidation = (mobileNumber, panNumber, dob, name, showLoader, hideLoader) => {
+  const validatePanRequest = {
+    journeyName: currentFormContext.journeyName,
+    journeyID: currentFormContext.journeyID,
+    mobileNumber,
+    panInfo: {
+      panNumber: panNumber.replace(/\s+/g, ''),
+      panType: 'P',
+      dob: convertDateToDdMmYyyy(new Date(dob)),
+      name,
+    },
+  };
+  if (showLoader) formRuntime?.validatePanLoader();
+  const apiEndPoint = urlPath(endpoints.panValNameMatch);
+  return fetchJsonResponse(apiEndPoint, validatePanRequest, 'POST', hideLoader);
+};
+
+/**
 * panAPISuccesHandler
 * @param {string} panStatus
 * @returns {Promise} panResponse
@@ -60,4 +87,5 @@ function panAPISuccesHandler(panStatus) {
 export {
   validatePan,
   panAPISuccesHandler,
+  fullNamePanValidation,
 };

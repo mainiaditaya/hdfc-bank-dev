@@ -100,6 +100,8 @@ import { ratingButtonUI, copyToClipBoard } from './thankyouutil.js';
 
 import { hideLoaderGif } from '../domutils/domutils.js';
 
+import { fullNamePanValidation } from '../../common/panvalidation.js';
+
 setTimeout(() => import('./fd-delayedutils.js'), 2000);
 
 export {
@@ -166,4 +168,5 @@ export {
   checkPanValidation,
   panvalidationSuccessHandler,
   addressChangeHandler,
+  fullNamePanValidation,
 };

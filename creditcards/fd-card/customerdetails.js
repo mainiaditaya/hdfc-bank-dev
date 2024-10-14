@@ -24,7 +24,7 @@ import {
   OCCUPATION_MAP,
   ALLOWED_CHARACTERS,
 } from './constant.js';
-import { validatePan } from '../../common/functions.js';
+import { fullNamePanValidation } from '../../common/panvalidation.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
 const CUSTOMER_DETAILS_STATE = {
@@ -450,7 +450,7 @@ const fathersNameChangeHandler = (globals) => {
 
   if (isSingleName) {
     Object.assign(customerInfo, {
-      customerFullName: `${customerInfo.customerFirstName} ${middleName} ${lastName}`.trim().toUpperCase(),
+      customerFullName: [customerInfo.customerFirstName, middleName, lastName].filter(Boolean).join(' ').trim().toUpperCase(),
       customerMiddleName: middleName,
       customerLastName: lastName,
     });
@@ -460,6 +460,7 @@ const fathersNameChangeHandler = (globals) => {
   const { nameOnCard, nameOnCardDD } = personalDetails;
   globals.functions.setProperty(nameOnCard, { visible: nameOnCardVisible });
   globals.functions.setProperty(nameOnCardDD, { visible: !nameOnCardVisible });
+  globals.functions.setProperty(personalDetails.fullName, { value: [customerInfo.customerFirstName, middleName, lastName].filter(Boolean).join(' ') });
 
   CURRENT_FORM_CONTEXT.editFlags.nameOnCard = nameOnCardVisible;
 
@@ -486,7 +487,7 @@ const checkPanValidation = (fullName, pan, dob, globals) => {
   if (fullName && pan && isPanValidLength && dob && isPanCheckAllowed && !CUSTOMER_DETAILS_STATE.onLoad && CURRENT_FORM_CONTEXT?.customerInfo?.refCustItNum === '' && ageValidator(AGE_LIMIT.min, AGE_LIMIT.max, personalDetails.dateOfBirthPersonalDetails.$value)) {
     CUSTOMER_DETAILS_STATE.panCheckCount += 1;
     const mobileNumber = globals?.form?.loginMainPanel?.loginPanel?.mobilePanel?.registeredMobileNumber?.$value;
-    return validatePan(mobileNumber, pan, dob, fullName, false, false);
+    return fullNamePanValidation(mobileNumber, pan, dob, fullName, false, false);
   }
 
   CUSTOMER_DETAILS_STATE.onLoad = false;
