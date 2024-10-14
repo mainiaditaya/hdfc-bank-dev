@@ -157,6 +157,7 @@ body:not(.semi-form, .fdlien) header {
 
   .semi-form header {
     padding-left: 10px;
+
     .cmp-container {
       height: 120px;
     }
@@ -215,6 +216,7 @@ body:not(.semi-form, .fdlien) header {
   .semi-form {
     header {
       padding-left: 10px;
+
       .cmp-container {
         height: 140px;
       }
@@ -252,6 +254,7 @@ body:not(.semi-form, .fdlien) header {
       display: none;
     }
   }
+
   .semi-form header {
     padding-left: 10px;
   }
