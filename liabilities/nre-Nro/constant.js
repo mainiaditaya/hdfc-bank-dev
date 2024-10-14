@@ -14,7 +14,7 @@ const DOM_ELEMENT = {
     checkbox2ProductLabel: '.field-checkboxconsent2label',
     anchorTagClass: 'link',
   },
-}
+};
 export {
   CHANNEL,
   JOURNEY_NAME,
