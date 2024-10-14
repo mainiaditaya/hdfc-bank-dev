@@ -14,6 +14,19 @@ const { ENDPOINTS, CHANNEL, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTAN
 const { JOURNEY_NAME } = CC_CONSTANT;
 
 /**
+  * @name isValidJson
+  * @param {string} str
+  */
+function isValidJson(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
    * generates the journeyId
    * @param {string} visitMode - The visit mode (e.g., "online", "offline").
    * @param {string} journeyAbbreviation - The abbreviation for the journey.
@@ -30,19 +43,18 @@ function createJourneyId(visitMode, journeyAbbreviation, channel, globals) {
 const getCurrentContext = () => currentFormContext;
 
 /**
-   * @name invokeJourneyDropOff to log on success and error call backs of api calls
-   * @param {state} state
-   * @param {string} mobileNumber
-   * @param {Object} globals - globals variables object containing form configurations.
-   * @return {PROMISE}
-   */
+ * @name invokeJourneyDropOff to log on success and error call backs of api calls
+ * @param {state} state
+ * @param {string} mobileNumber
+ * @param {Object} globals - globals variables object containing form configurations.
+ * @return {PROMISE}
+ */
 const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
-  const DEFAULT_MOBILENO = '9999999999';
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
       leadProfile: {
-        mobileNumber: mobileNumber || DEFAULT_MOBILENO,
+        mobileNumber,
       },
       formData: {
         channel: CHANNEL,
@@ -60,8 +72,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
   };
   const url = urlPath(ENDPOINTS.journeyDropOff);
   const method = 'POST';
-  // return globals.functions.exportData().queryParams.leadId ? fetchJsonResponse(url, journeyJSONObj, method) : null;
-  return journeyJSONObj.RequestPayload.formData.journeyID ? fetchJsonResponse(url, journeyJSONObj, method) : null;
+  return fetchJsonResponse(url, journeyJSONObj, method);
 };
 
 /**
@@ -74,6 +85,8 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
    * @return {PROMISE}
    */
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
+  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || currentFormContext;
+  const formData = globals.functions.exportData();
   // temporary_hotfix_radioBtnValues_undefined_issue
   /* storing the radio btn values in current form context */
   if ((state === 'IDCOM_REDIRECTION_INITIATED') || (state === 'CUSTOMER_AADHAR_INIT')) {
@@ -92,7 +105,6 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
       cardDeliveryAddressOption1: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel.cardDeliveryAddressOption1.$value,
       cardDeliveryAddressOption2: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel.cardDeliveryAddressOption2.$value,
     };
-    const formContextCallbackData = globals.functions.exportData()?.currentFormContext || currentFormContext;
     const journeyType = formContextCallbackData?.executeInterfaceReqObj?.requestString?.journeyFlag;
     const biometricStatus = ((aadharBiometricVerification.$value || form.aadharBiometricVerification) && 'bioKyc') || ((aadharEKYCVerification.$value || form.aadharEKYCVerification) && 'aadhaar') || ((officiallyValidDocumentsMethod.$value || form.officiallyValidDocumentsMethod) && 'OVD');
     const etbAddressChange = formContextCallbackData?.executeInterfaceReqObj?.requestString?.addressEditFlag;
@@ -115,6 +127,10 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
       leadProfile: {
         mobileNumber,
         leadProfileId: leadProfileId?.toString(),
+        profile: {
+          dob: formContextCallbackData.dob || formData.form.dobPersonalDetails,
+          fullName: formContextCallbackData.fullName || ((formData.form.firstName && formData.form.lastName) ? `${formData.form.firstName} ${formData.form.lastName}` : undefined),
+        },
       },
       formData: {
         channel: CHANNEL,
@@ -133,7 +149,12 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   // sendSubmitClickEvent(mobileNumber, linkName, sanitizedFormData);
   const url = urlPath(ENDPOINTS.journeyDropOffUpdate);
   const method = 'POST';
-  return fetchJsonResponse(url, journeyJSONObj, method);
+  let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(journeyJSONObj))));
+  const decodedData = decodeURIComponent(escape(atob(finalPayload)));
+  if (!isValidJson(decodedData)) {
+    finalPayload = btoa((encodeURIComponent(JSON.stringify(journeyJSONObj))));
+  }
+  return fetchJsonResponse(url, finalPayload, method);
 };
 
 /**

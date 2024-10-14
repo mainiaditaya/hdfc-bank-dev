@@ -9,7 +9,6 @@ import {
   formUtil,
   urlPath,
   clearString,
-  santizedFormDataWithContext,
   ageValidator,
   removeSpecialCharacters,
   parseCustomerAddress,
@@ -18,18 +17,25 @@ import {
   createLabelInElement,
   decorateStepper,
   aadharLangChange,
+  getTimeStampNoSeconds,
 } from '../../common/formutils.js';
 import {
   restAPICall,
   displayLoader, hideLoaderGif,
   getJsonResponse,
+  fetchJsonResponse,
+  getJsonWithoutEncrypt,
 } from '../../common/makeRestAPI.js';
-import { sendAnalyticsEvent } from '../../common/analytics.js';
+import { sendAnalytics } from './analytics.js';
 import * as CONSTANT from '../../common/constants.js';
 import * as CC_CONSTANT from './constant.js';
 import { executeInterfacePostRedirect } from './executeinterfaceutils.js';
 
-setTimeout(() => import('./cc.js'), 1000);
+setTimeout(() => {
+  if (typeof window !== 'undefined') {
+    import('./cc.js');
+  }
+}, 1200);
 
 const {
   ENDPOINTS,
@@ -38,6 +44,7 @@ const {
 } = CONSTANT;
 const { JOURNEY_NAME, DOM_ELEMENT } = CC_CONSTANT;
 const journeyNameConstant = JOURNEY_NAME;
+
 // Initialize all Corporate Card Journey Context Variables.
 currentFormContext.journeyName = journeyNameConstant;
 currentFormContext.journeyType = 'NTB';
@@ -285,6 +292,7 @@ const existingCustomerCheck = (res) => {
     casa_asset_cc: 'ETB',
     cc_casa: 'ETB',
     cc_asset: 'ETB',
+    casa_asset: 'ETB',
   };
   // Extract customer information
   const customerInfo = res?.demogResponse?.BRECheckAndFetchDemogResponse;
@@ -314,12 +322,15 @@ const existingCustomerCheck = (res) => {
 
 const otpValHandler = (response, globals) => {
   const res = {};
+  const formCallBackContext = globals.functions.exportData();
   res.demogResponse = response;
   currentFormContext.isCustomerIdentified = res?.demogResponse?.errorCode === '0' ? 'Y' : 'N';
-  formRuntime.productCode = globals.functions.exportData().form.productCode;
-  currentFormContext.promoCode = globals.functions.exportData().form.promoCode;
+  formRuntime.productCode = globals.functions.exportData().form.productCode || formCallBackContext?.currentFormContext?.crmLeadResponse?.productCode || currentFormContext?.crmLeadResponse?.productCode;
+  currentFormContext.promoCode = globals.functions.exportData().form.promoCode || formCallBackContext?.currentFormContext?.crmLeadResponse?.promoCode || currentFormContext.crmLeadResponse.promoCode;
   currentFormContext.jwtToken = res?.demogResponse?.Id_token_jwt;
   currentFormContext.panFromDemog = res?.demogResponse?.BRECheckAndFetchDemogResponse?.VDCUSTITNBR;
+  currentFormContext.dob = res?.demogResponse?.BRECheckAndFetchDemogResponse?.DDCUSTDATEOFBIRTH;
+  currentFormContext.fullName = res?.demogResponse?.BRECheckAndFetchDemogResponse?.VDCUSTFIRSTNAME;
   const existingCustomer = existingCustomerCheck(res);
   if (existingCustomer) {
     currentFormContext.journeyType = 'ETB';
@@ -487,7 +498,7 @@ const pinmasterApi = async (globalObj, cityField, stateField, pincodeField) => {
   };
 
   try {
-    const response = await getJsonResponse(url, null, method);
+    const response = await getJsonWithoutEncrypt(url, null, method);
     globalObj.functions.setProperty(pincodeField, { valid: true });
     const [{ CITY, STATE }] = response;
     const [{ errorCode, errorMessage }] = response;
@@ -578,10 +589,9 @@ function journeyResponseHandler(payload) {
 }
 
 /**
-* logic hanlding during prefill of form.
-* @param {object} globals - The global object containing necessary globals form data.
-*/
-
+ * logic hanlding during prefill of form.
+ * @param {object} globals - The global object containing necessary globals form data.
+ */
 const prefillForm = (globals) => {
   const formData = globals?.functions?.exportData();
   const {
@@ -598,23 +608,13 @@ const prefillForm = (globals) => {
   } = globals.form;
   const showPanel = [resultPanel, errorMessageText]?.map((fieldName) => formUtil(globals, fieldName));
   const hidePanel = [loginPanel, welcomeText, consentFragment, getOTPbutton]?.map((fieldName) => formUtil(globals, fieldName));
-  if (!formData?.form?.login?.registeredMobileNumber) {
+  if (!formData.form.login.maskedMobileNumber) {
     // show error pannel if corporate credit card details not present
     showPanel?.forEach((panel) => panel.visible(true));
     hidePanel?.forEach((panel) => panel.visible(false));
-    invokeJourneyDropOff('CRM_LEAD_FAILURE', '9999999999', '', 'create', globals);
+    invokeJourneyDropOff('CRM_LEAD_FAILURE', '9999999999', globals);
   }
 };
-
-/**
-* sendAnalytics
-* @param {string} payload
-* @param {object} globals
-*/
-// eslint-disable-next-line no-unused-vars
-function sendAnalytics(payload, globals) {
-  sendAnalyticsEvent(payload, santizedFormDataWithContext(globals), currentFormContext);
-}
 
 /**
  * @name resendOTP
@@ -642,9 +642,10 @@ const resendOTP = (globals) => {
     if (!RESEND_OTP_COUNT) errorResendOtp(res, objectGlobals);
   };
 
+  const formData = globals.functions.exportData();
   const payload = {
     requestString: {
-      mobileNumber: String(mobileNo),
+      leadId: formData.queryParams.leadId,
       dateOfBith: dob || '',
       panNumber: panNo || '',
       journeyID: globals.form.runtime.journeyId.$value,
@@ -762,6 +763,7 @@ const setNameOnCard = (name, globals) => globals.functions.setProperty(globals.f
  */
 const aadharConsent123 = async (globals) => {
   try {
+    await Promise.resolve(sendAnalytics('kyc continue', { errorCode: '0000', errorMessage: 'Success' }, 'CUSTOMER_AADHAAR_INIT', globals));
     if (typeof window !== 'undefined') {
       const openModal = (await import('../../blocks/modal/modal.js')).default;
       const config = {
@@ -773,10 +775,11 @@ const aadharConsent123 = async (globals) => {
         formRuntime.aadharConfig = config;
       }
       await openModal(formRuntime.aadharConfig);
-      aadharLangChange(formRuntime.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage);
-      config?.content?.addEventListener('modalTriggerValue', (event) => {
+      aadharLangChange(formRuntime.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage, currentFormContext);
+      config?.content?.addEventListener('modalTriggerValue', async (event) => {
         const receivedData = event.detail;
         if (receivedData?.aadharConsentAgree) {
+          await Promise.resolve(sendAnalytics('i agree', { errorCode: '0000', errorMessage: 'Success' }, 'JOURNEYSTATE', globals));
           globals.functions.setProperty(globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel.ckycDetailsContinueETBPanel.triggerAadharAPI, { value: 1 });
         }
       });
@@ -826,21 +829,21 @@ function checkMode(globals) {
       globals.functions.setProperty(CurrentAddressDeclaration.currentResidenceAddress, { value: communicationAddress });
       invokeJourneyDropOffUpdate(
         'AADHAAR_REDIRECTION_SUCCESS',
-        formData.loginPanel.mobilePanel.registeredMobileNumber,
-        formData.runtime.leadProifileId,
-        formData.runtime.leadProifileId.journeyId,
+        formData?.loginPanel?.mobilePanel?.registeredMobileNumber,
+        formData?.runtime?.leadProifileId,
+        formData?.runtime?.leadProifileId?.journeyId,
         globals,
       );
     } catch (e) {
       invokeJourneyDropOffUpdate(
         'AADHAAR_REDIRECTION_FAILURE',
-        formData.loginPanel.mobilePanel.registeredMobileNumber,
-        formData.runtime.leadProifileId,
-        formData.runtime.leadProifileId.journeyId,
+        formData?.loginPanel?.mobilePanel?.registeredMobileNumber,
+        formData?.runtime?.leadProifileId,
+        formData?.runtime?.leadProifileId?.journeyId,
         globals,
       );
     }
-  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard')) { // debit card or credit card flow
+  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard') || (idcomVisit === 'NetBanking')) { // debit card or credit card or net banking flow
     const resultPanel = formUtil(globals, globals.form.resultPanel);
     resultPanel.visible(false);
     globals.functions.setProperty(globals.form.otpPanel, { visible: false });
@@ -854,22 +857,158 @@ function checkMode(globals) {
     const userRedirected = true;
     executeInterfacePostRedirect('idCom', userRedirected, globals);
   }
-  if (!formData?.form?.login?.registeredMobileNumber) {
+  if (!formData.form.login.maskedMobileNumber) {
     globals.functions.setProperty(globals.form.loginPanel, { visible: false });
     globals.functions.setProperty(globals.form.welcomeText, { visible: false });
     globals.functions.setProperty(globals.form.getOTPbutton, { visible: false });
     globals.functions.setProperty(globals.form.consentFragment, { visible: false });
     globals.functions.setProperty(globals.form.resultPanel, { visible: true });
     globals.functions.setProperty(globals.form.resultPanel.errorResultPanel, { visible: true });
-    invokeJourneyDropOff('CRM_LEAD_FAILURE', '9999999999', globals);
   }
 }
+
+/**
+ * @name crmResponseHandler - crm response handler
+ * @param {object} globals
+ */
+function crmResponseHandler(otpRes, globals) {
+  if (!otpRes) return;
+  const crmRes = otpRes?.crmLeadResponse;
+  globals.functions.setProperty(globals.form.loginPanel.mobilePanel.registeredMobileNumber, { value: crmRes.mobileNumber }); // working // mobNo
+  globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.employmentDetails.prefilledEmploymentDetails.companyName, { value: crmRes.company }); // companyNo
+  globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.employmentDetails.prefilledEmploymentDetails.employeeCode, { value: crmRes.employeeCode }); // employeeCode
+  globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.employmentDetails.prefilledEmploymentDetails.designation, { value: crmRes.designation }); // designation
+  globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.employmentDetails.prefilledEmploymentDetails.workEmailAddress, { value: crmRes.emailId }); // emailAddress
+  globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.employmentDetails.prefilledEmploymentDetails.relationshipNumber, { value: crmRes.relationshipNum }); // relationshipNum
+  globals.functions.setProperty(globals.form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.employmentDetails.prefilledEmploymentDetails.employmentType, { value: crmRes.employmentType }); // employmentType
+  currentFormContext.crmLeadResponse = {};
+  currentFormContext.crmLeadResponse.employmentType = crmRes.employmentType; // emptype - ie.salaried
+  currentFormContext.crmLeadResponse.relationshipNumber = crmRes.relationshipNum; // relationShipNo
+  currentFormContext.crmLeadResponse.productCode = crmRes.fieldId_11964; // productCode
+  currentFormContext.crmLeadResponse.promoCode = crmRes.promoCodeLevel1; // promoCode
+  currentFormContext.crmLeadResponse.leadGenerator = String(crmRes.fieldId_267); // leadGenerator
+  currentFormContext.crmLeadResponse.leadClosures = crmRes.fieldId_921; // leadClosure
+  currentFormContext.crmLeadResponse.lc2 = String(crmRes.fieldId_269); // lc2
+
+  /**
+  * below values will be availble in both forms and currentFormContext.crmLeadResponse
+  * 1.productCode - currentFormContext
+  * 2.lc2 - currentFormContext
+  * 3.leadGenerator - currentFormContext
+  * 4.employmentType - currentFormContext
+  * 5.leadClosure - currentFormContext
+  * 6.regMobNo - form
+  * 7.emailId - form
+  * 8.promoCode - currentFormContext
+  * 9.maskedMobNo - form
+  * 10.relastionNO - currentFormContext
+  * 11.companyName - form
+  * 12.designation - form
+  * 13.employeeCode - form
+  */
+}
+
+/**
+ * generates the otp
+ * @param {object} mobileNumber
+ * @param {object} pan
+ * @param {object} dob
+ * @param {object} globals
+ * @return {PROMISE}
+ */
+function getOTP(mobileNumber, pan, dob, globals) {
+  currentFormContext.action = 'getOTP';
+  currentFormContext.journeyID = globals.form.runtime.journeyId.$value;
+  currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
+  const formData = globals.functions.exportData();
+  const jsonObj = {
+    requestString: {
+      leadId: formData.queryParams.leadId,
+      dateOfBith: dob.$value || '',
+      panNumber: pan.$value || '',
+      journeyID: globals.form.runtime.journeyId.$value,
+      journeyName: journeyNameConstant,
+      identifierValue: pan.$value || dob.$value,
+      identifierName: pan.$value ? 'PAN' : 'DOB',
+    },
+  };
+  const path = urlPath(ENDPOINTS.otpGen);
+  formRuntime?.getOtpLoader();
+  return fetchJsonResponse(path, jsonObj, 'POST', true);
+}
+
+/**
+ * validates the otp
+ * @param {object} mobileNumber
+ * @param {object} pan
+ * @param {object} dob
+ * @return {PROMISE}
+ */
+function otpValidation(mobileNumber, pan, dob, otpNumber) {
+  const referenceNumber = `AD${getTimeStampNoSeconds(new Date())}` ?? '';
+  currentFormContext.referenceNumber = referenceNumber;
+  const jsonObj = {
+    requestString: {
+      mobileNumber: mobileNumber.$value,
+      passwordValue: otpNumber.$value,
+      dateOfBirth: clearString(dob.$value) || '',
+      panNumber: pan.$value || '',
+      channelSource: '',
+      journeyID: currentFormContext.journeyID,
+      journeyName: journeyNameConstant,
+      dedupeFlag: 'N',
+      referenceNumber: referenceNumber ?? '',
+    },
+  };
+  const path = urlPath(ENDPOINTS.otpValFetchAssetDemog);
+  formRuntime?.otpValLoader();
+  return fetchJsonResponse(path, jsonObj, 'POST', true);
+}
+
+/**
+ * getFormContext - returns form context.
+ * @returns {Promise} currentFormContext
+ */
+function getFormContext() {
+  return currentFormContext;
+}
+
+/**
+ * getWrappedFormContext - returns form context.
+ * @returns {Promise} currentFormContext
+ */
+function getWrappedFormContext() {
+  const formContext = {
+    formContext: currentFormContext,
+  };
+  return formContext;
+}
+
+/**
+* @name firstLastNameValidation - validate first name and last name in personal details
+* @param {string} firstName
+* @param {string} lastName
+* @param {object} globals
+*/
+const firstLastNameValidation = (fn, ln, globals) => {
+  const invalidMsg = {
+    fName: 'Please enter a valid First Name',
+    lName: 'Please enter a valid Last Name',
+  };
+  const MAX_LENGTH = 23;
+  const MIN_LENGTH = 3;
+  if (fn && (!((fn?.length <= MAX_LENGTH) && (fn?.length > MIN_LENGTH)))) {
+    globals.functions.markFieldAsInvalid('$form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.firstName', invalidMsg.fName, { useQualifiedName: true });
+  }
+  if (ln && (!((ln?.length <= MAX_LENGTH) && (ln?.length > MIN_LENGTH)))) {
+    globals.functions.markFieldAsInvalid('$form.corporateCardWizardView.yourDetailsPanel.yourDetailsPage.personalDetails.lastName', invalidMsg.lName, { useQualifiedName: true });
+  }
+};
 
 export {
   formRuntime,
   journeyResponseHandler,
   createJourneyId,
-  sendAnalytics,
   resendOTP,
   customSetFocus,
   validateLogin,
@@ -883,4 +1022,10 @@ export {
   getThisCard,
   aadharConsent123,
   checkMode,
+  crmResponseHandler,
+  getOTP,
+  otpValidation,
+  getFormContext,
+  getWrappedFormContext,
+  firstLastNameValidation,
 };

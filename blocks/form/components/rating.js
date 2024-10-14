@@ -65,22 +65,7 @@ export default function rating(fieldDiv) {
         ratingDiv.children[j].classList.remove('hover');
       }
     });
-    // show an emoji in the emoji element when the star element is hovered
-    // if the index of star element is less than or equal to 3 show sad emoji
-    // if the index of star element is greater than 3 show happy emoji
-    star.addEventListener('mouseover', () => {
-      const emojiElement = ratingDiv.querySelector('.emoji');
-      if (i <= 3) {
-        emojiElement.textContent = '😢';
-      } else {
-        emojiElement.textContent = '😊';
-      }
-    });
   }
-  // add the emoji element next to the last star element
-  const emoji = document.createElement('span');
-  emoji.classList.add('emoji');
-  ratingDiv.appendChild(emoji);
   // add a mouseleave event listener to the rating div
   ratingDiv.addEventListener('mouseleave', () => {
     // check if no star is selected
@@ -89,9 +74,6 @@ export default function rating(fieldDiv) {
       for (let j = 0; j < max; j += 1) {
         ratingDiv.children[j].classList.remove('hover');
       }
-      // remove the emoji from the emoji element
-      const emojiElement = ratingDiv.querySelector('.emoji');
-      emojiElement.textContent = '';
     }
   });
   // add the rating div to the fieldDiv

@@ -7,9 +7,8 @@ import {
 import fetchAuthCode from './idcomutils.js';
 
 import {
+// ssss
   urlPath,
-  getTimeStamp,
-  clearString,
   santizedFormDataWithContext,
   createLabelInElement,
   decorateStepper,
@@ -19,74 +18,28 @@ import {
   fetchJsonResponse, hideLoaderGif,
 } from './makeRestAPI.js';
 
+import { initRestAPIDataSecurityServiceES6 } from './apiDataSecurity.js';
+
 import * as CONSTANT from './constants.js';
-import { createJourneyId } from './journey-utils.js';
+import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
 
 const {
   ENDPOINTS,
   CURRENT_FORM_CONTEXT: currentFormContext,
-  FORM_RUNTIME: formRuntime,
-  CHANNEL,
 } = CONSTANT;
-
-// dynamically we can change according to journey
-
-/**
- * generates the otp
- * @param {object} mobileNumber
- * @param {object} pan
- * @param {object} dob
- * @param {object} globals
- * @return {PROMISE}
- */
-function getOTP(mobileNumber, pan, dob, globals) {
-  /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
-  const jidTemporary = createJourneyId('online', globals.form.runtime.journeyName.$value, CHANNEL, globals);
-  currentFormContext.action = 'getOTP';
-  currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
-  currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
-  const jsonObj = {
-    requestString: {
-      mobileNumber: mobileNumber.$value,
-      dateOfBith: dob.$value || '',
-      panNumber: pan.$value || '',
-      journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
-      journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
-      identifierValue: pan.$value || dob.$value,
-      identifierName: pan.$value ? 'PAN' : 'DOB',
-    },
-  };
-  const path = urlPath(ENDPOINTS.otpGen);
-  formRuntime?.getOtpLoader();
-  return fetchJsonResponse(path, jsonObj, 'POST', true);
-}
+const { JOURNEY_NAME: journeyNameConstant } = CC_CONSTANT;
 
 /**
- * validates the otp
- * @param {object} mobileNumber
- * @param {object} pan
- * @param {object} dob
- * @return {PROMISE}
- */
-function otpValidation(mobileNumber, pan, dob, otpNumber, globals) {
-  const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
-  currentFormContext.referenceNumber = referenceNumber;
-  const jsonObj = {
-    requestString: {
-      mobileNumber: mobileNumber.$value,
-      passwordValue: otpNumber.$value,
-      dateOfBirth: clearString(dob.$value) || '',
-      panNumber: pan.$value || '',
-      channelSource: '',
-      journeyID: currentFormContext.journeyID,
-      journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
-      dedupeFlag: 'N',
-      referenceNumber: referenceNumber ?? '',
-    },
-  };
-  const path = urlPath(ENDPOINTS.otpValFetchAssetDemog);
-  formRuntime?.otpValLoader();
-  return fetchJsonResponse(path, jsonObj, 'POST', true);
+  * @name isValidJson
+  * @param {string} str
+  */
+function isValidJson(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 /**
@@ -185,7 +138,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
       initParameters: {
         journeyId: currentFormContext.journeyID,
         transactionId: currentFormContext.journeyID.replace(/-/g, '').replace(/_/g, ''),
-        journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
+        journeyName: journeyNameConstant,
         userAgent: window.navigator.userAgent,
         mobileNumber: mobileNumber.$value,
         leadProfileId: globals?.form.runtime.leadProifileId.$value,
@@ -213,7 +166,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
         },
         journeyStateInfo: {
           state: 'CUSTOMER_AADHAR_VALIDATION',
-          stateInfo: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
+          stateInfo: journeyNameConstant,
           formData: santizedFormDataWithContext(globals, currentFormContext),
         },
         auditData: {
@@ -260,7 +213,12 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
     },
   };
 
-  const path = urlPath(ENDPOINTS.aadhaarInit?.[currentFormContext.journeyName]);
+  let path = urlPath(ENDPOINTS.aadhaarInit?.[currentFormContext.journeyName]);
+  const finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
+  const decodedData = decodeURIComponent(escape(atob(finalPayload)));
+  if (!isValidJson(decodedData)) {
+    path = `https://hdfc-dev-04.adobecqms.net${ENDPOINTS.aadhaarInit?.[currentFormContext.journeyName]}`;
+  }
   const response = fetchJsonResponse(path, jsonObj, 'POST');
   response
     .then((res) => {
@@ -373,28 +331,7 @@ function days(endDate, startDate) {
   return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 }
 
-/**
- * getFormContext - returns form context.
- * @returns {Promise} currentFormContext
- */
-function getFormContext() {
-  return currentFormContext;
-}
-
-/**
- * getWrappedFormContext - returns form context.
- * @returns {Promise} currentFormContext
- */
-function getWrappedFormContext() {
-  const formContext = {
-    formContext: currentFormContext,
-  };
-  return formContext;
-}
-
 export {
-  getOTP,
-  otpValidation,
   hideLoaderGif,
   validatePan,
   panAPISuccesHandler,
@@ -407,6 +344,5 @@ export {
   getFullName,
   onWizardInit,
   days,
-  getFormContext,
-  getWrappedFormContext,
+  initRestAPIDataSecurityServiceES6,
 };
