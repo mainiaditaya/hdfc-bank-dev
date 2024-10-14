@@ -16,13 +16,23 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
   const { inPersonBioKYCOptions } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance.inPersonBioKYCPanel;
   KYC_STATE.selectedKyc = selectedKyc;
   globals.functions.setProperty(runtime.formContext, { value: JSON.stringify(CURRENT_FORM_CONTEXT) });
-
+  const {
+    communicationAddress1,
+    communicationAddress2,
+    communicationAddress3,
+    communicationCity,
+    comCityZip,
+    communicationState,
+  } = CURRENT_FORM_CONTEXT.executeInterfaceRequest.requestString;
+  const fullCurrentAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip].filter(Boolean).join(',');
   switch (selectedKyc) {
     case 'BIOMETRIC':
+      globals.functions.setProperty(addressDeclarationPanel.currentAddressDeclarationAadhar, { visible: false });
+
       CURRENT_FORM_CONTEXT.selectedKyc = inPersonBioKYCOptions?._data.$_value === '0'
         ? 'bioinperson'
         : 'biokyc';
-      globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD, { visible: true });
+      globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD, { value: fullCurrentAddress, visible: true });
       break;
     case 'OVD':
       CURRENT_FORM_CONTEXT.selectedKyc = 'OVD';
