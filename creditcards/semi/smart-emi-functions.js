@@ -110,7 +110,6 @@ function createJourneyId(visitMode, journeyAbbreviation, channelValue, globals) 
  */
 function getOTPV1(mobileNumber, cardDigits, channel, globals) {
   if (!isNodeEnv) {
-    createJourneyId('a', 'b', 'c', globals);
     /* restrict to show otp-resend option once it reaches max-attemt and to show otptimer */
     const { otpPanel } = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel;
     if (resendOtpCount < DATA_LIMITS.maxOtpResendLimit) {
