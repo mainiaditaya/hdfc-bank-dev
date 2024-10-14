@@ -110,6 +110,7 @@ function createJourneyId(visitMode, journeyAbbreviation, channelValue, globals) 
  */
 function getOTPV1(mobileNumber, cardDigits, channel, globals) {
   if (!isNodeEnv) {
+    createJourneyId('a', 'b', 'c', globals);
     /* restrict to show otp-resend option once it reaches max-attemt and to show otptimer */
     const { otpPanel } = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel;
     if (resendOtpCount < DATA_LIMITS.maxOtpResendLimit) {
@@ -125,8 +126,8 @@ function getOTPV1(mobileNumber, cardDigits, channel, globals) {
     requestString: {
       mobileNo: mobileNumber,
       cardNo: cardDigits,
-      journeyID: globals.form.runtime.journeyId.$value,
-      journeyName: globals.form.runtime.journeyName.$value,
+      journeyID: globals.form.runtime.journeyId.$value || currentFormContext.journeyID,
+      journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
     },
   };
   if (channel === CHANNELS.adobeWhatsApp) {
@@ -153,15 +154,15 @@ function getOTPV1(mobileNumber, cardDigits, channel, globals) {
  * @param {object} globals
  * @return {PROMISE}
  */
-function otpValV1(mobileNumber, cardDigits, otpNumber) {
+function otpValV1(mobileNumber, cardDigits, otpNumber, globals) {
   const jsonObj = {
     requestString: {
       mobileNo: mobileNumber,
       cardNo: cardDigits,
       OTP: otpNumber,
       proCode: PRO_CODE,
-      journeyID: currentFormContext.journeyID,
-      journeyName: currentFormContext.journeyName,
+      journeyID: globals.form.runtime.journeyId.$value || currentFormContext.journeyID,
+      journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
     },
   };
   const path = semiEndpoints.otpVal;
@@ -446,7 +447,7 @@ function checkELigibilityHandler(resPayload1, globals) {
       ccUnBilledData = sortDataByAmount(ccUnBilledData, 'amount');
     }
     formContext.EligibilityResponse = resPayload;
-    globals.functions.setProperty(globals.form.runtime.formContext, { value: JSON.stringify({ ...formContext }) });
+    globals.functions.setProperty(globals.form.runtime.currentFormContext, { value: JSON.stringify({ ...formContext }) });
     const billedTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
     const unBilledTxnPanel = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
     const allTxn = ccBilledData.concat(ccUnBilledData);
