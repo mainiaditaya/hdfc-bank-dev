@@ -278,6 +278,8 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
     },
   };
 
+  addClassInBody();
+
   const path = urlPath(ENDPOINTS.otpValidationFatca);
   formRuntime?.otpValLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
@@ -355,6 +357,15 @@ function customFocus(numRetries, globals) {
     globals.functions.setProperty(numRetries, { value: `${MAX_COUNT}/${MAX_OTP_RESEND_COUNT}` });
   }
 }
+
+const addClassInBody = () => {
+     const aemForm = document.querySelector('form[data-rules="true"]');
+ 
+     if (aemForm) {
+         document.body.classList.add('wizardPanelBody');
+     }
+ 
+ }
 
 const switchWizard = () => moveWizardView('wizardNreNro', 'confirmDetails');
 export {
