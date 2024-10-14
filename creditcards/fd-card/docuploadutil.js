@@ -132,6 +132,10 @@ const fileUploadUIHandler = () => {
 
         if (fileList) {
           fileList.textContent = file.name;
+          const fileSizeSpan = document.createElement('span');
+          fileSizeSpan.classList.add('file-size');
+          fileSizeSpan.textContent = ` (${fileSizeInMB.toFixed(2)} MB)`;
+          fileList.appendChild(fileSizeSpan);
         }
 
         if (infoMsg && infoMsg.classList.contains('plain-text-wrapper')) {
