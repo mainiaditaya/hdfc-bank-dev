@@ -329,6 +329,7 @@ const checkModeFd = (globals) => {
 
       formData.currentFormContext.mobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'y';
       CURRENT_FORM_CONTEXT.mobileMatch = formData.currentFormContext.mobileMatch;
+      formData.currentFormContext.executeInterfaceRequest.requestString.ekycMobileMatch = formData.currentFormContext.mobileMatch ? 'Yes' : 'No';
       globals.functions.setProperty(proceedFromAddressDeclarationIdcom, { visible: !formData?.currentFormContext?.customerIdentityChange });
       globals.functions.setProperty(proceedFromAddressDeclaration, { visible: formData?.currentFormContext?.customerIdentityChange });
 
