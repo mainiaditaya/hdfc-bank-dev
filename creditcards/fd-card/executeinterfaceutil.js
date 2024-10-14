@@ -75,9 +75,6 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
   if (!CURRENT_FORM_CONTEXT?.editFlags?.nameOnCard) {
     nameOnCard = personalDetails.nameOnCardDD?.$value?.toUpperCase()?.replace(/\s+/g, ' ');
   }
-  if (source === 'confirmcard') {
-    CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode;
-  }
   const annualIncome = employmentDetails?.annualIncome?._data?.$_value || '';
   const empAssistanceToggle = employeeAssistanceToggle?._data?.$_value === 'on';
   const companyName = employmentDetails.employmentType._data.$_value === '1' || employmentDetails.employmentType._data.$_value === '2' ? customerInfo?.customerFullName : '';
@@ -155,7 +152,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       perAddressType: '2',
       perfiosTxnID: '',
       personalEmailId: personalDetails?.emailID.$value,
-      productCode: source === 'confirmcard' ? CURRENT_FORM_CONTEXT?.selectedProductCode : '',
+      productCode: '',
       resPhoneEditFlag: 'N',
       selectedFdDetails,
       selfConfirmation: 'Y',
@@ -176,16 +173,31 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
  * @returns {Promise<object>} A promise that resolves to the response of the interface request.
  */
 const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
-  const executeInterfaceRequest = createExecuteInterfaceRequest(payload, source, globals);
-  CURRENT_FORM_CONTEXT.executeInterfaceRequest = executeInterfaceRequest;
+  let executeInterfaceRequest = '';
+  if (source === 'reviewdetails') {
+    executeInterfaceRequest = createExecuteInterfaceRequest(payload, source, globals);
+    CURRENT_FORM_CONTEXT.executeInterfaceRequest = executeInterfaceRequest;
+  } else {
+    executeInterfaceRequest = CURRENT_FORM_CONTEXT.executeInterfaceRequest;
+  }
   Object.keys(executeInterfaceRequest).forEach((key) => {
     if (executeInterfaceRequest[key] === undefined) {
       executeInterfaceRequest[key] = '';
     }
   });
-  if (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectedKyc === 'bioinperson') {
-    executeInterfaceRequest.requestString.authMode = CURRENT_FORM_CONTEXT?.selectedKyc;
+  if (source === 'confirmcard') {
+    CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode;
+    executeInterfaceRequest.requestString.productCode = CURRENT_FORM_CONTEXT.selectedProductCode;
   }
+  if (source.includes('kyc')) {
+    const selectedKycButton = source.split('-')[1];
+    if (selectedKycButton === 'biometric') {
+      executeInterfaceRequest.requestString.authMode = 'OTP';
+    }
+  }
+  // if (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectedKyc === 'bioinperson') {
+  //   executeInterfaceRequest.requestString.authMode = CURRENT_FORM_CONTEXT?.selectedKyc;
+  // }
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   if (showLoader) FORM_RUNTIME.executeInterface();
   return fetchJsonResponse(apiEndPoint, executeInterfaceRequest, 'POST', hideLoader);
