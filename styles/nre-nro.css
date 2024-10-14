@@ -1,5 +1,25 @@
 @import url("../../styles/color-palette.css");
 
+.wizardPanelBody.nre {
+  & .cmp-container-container {
+    display: none;
+
+    &~.form-container {
+      width: 100%;
+      max-width: inherit !important;
+    }
+  }
+
+  & header {
+    height: 100px !important;
+
+    &~main {
+      overflow: initial;
+    }
+  }
+}
+
+
 .nre {
   main {
     display: flex;
@@ -45,8 +65,9 @@
     }
 
     &>.cmp-container-container {
-      width: 44%;
       background-color: white !important;
+      flex: 0 0 34%;
+      display: initial;
     }
 
     .form form .field-letsgetstarted p {
@@ -56,9 +77,11 @@
       color: var(--color-interface-background-quaternary) !important;
       margin-bottom: 0;
     }
+
     .form form .plain-text-wrapper.field-letsgetstarted p {
       margin-bottom: 5px;
     }
+
     .form form .field-wrapper.col-6 {
       grid-column: inherit !important;
     }
@@ -128,6 +151,7 @@
       top: 10px;
     }
 
+
     .form form .panel-wrapper.field-stepstofollowfragment {
       .field-stepstofollowtitle p {
         font-weight: 600;
@@ -175,6 +199,7 @@
 
       @media (320px <=width <=600px) {
         margin-bottom: 20px;
+        margin-top: 20px;
       }
 
       fieldset.panel-wrapper.field-mobilepanel.field-wrapper {
@@ -523,7 +548,7 @@
       border-bottom: none !important;
       content: url("../../icons/nre_nro_desktop_banner.png");
       width: 100% !important;
-      height: 40%;
+      /* max-height: 40%; */
       margin: inherit;
     }
 
@@ -557,6 +582,7 @@
 
     .form-container {
       margin: 0 !important;
+      flex: 1;
     }
 
     div.date-wrapper.field-dateofbirth.field-wrapper label {
@@ -703,7 +729,7 @@
         }
       }
 
-      .field-attempts p p{
+      .field-attempts p p {
         margin-top: -7px;
         color: #6b7280 !important;
         font-size: var(--body-sm-font-size) !important;
@@ -733,6 +759,7 @@
 
       .field-otpnumber {
         margin: -28px 0 -18px;
+        grid-column: span 12;
 
         @media (320px <=width <=991px) {
           grid-column: span 12;
@@ -773,6 +800,7 @@
       .field-secondspanel {
         display: flex;
         flex-direction: row;
+        grid-column: span 6;
 
         @media (320px <=width <=600px) {
           grid-column: span 6;
@@ -789,7 +817,7 @@
             margin-top: 6px;
 
             @media (320px <=width <=600px) {
-              margin-top: 8px;
+              margin-top: 3px;
             }
           }
         }
@@ -802,6 +830,10 @@
       .field-resendotplabel {
         margin: 17px 0 0;
         width: fit-content;
+
+        @media (320px <=width <=600px) {
+          margin: 11px 0 0;
+        }
 
         p {
           font-size: var(--body-sm-font-size) !important;
@@ -828,6 +860,11 @@
       .field-sectext {
         width: fit-content;
         margin: 17px 0 0 -54px;
+        font-weight: 600;
+
+        @media (320px <=width <=600px) {
+          margin: 12px 0 0 -54px;
+        }
 
         p {
           font-size: var(--body-fd-sm-font-size);
@@ -835,8 +872,12 @@
       }
 
       .field-maxattemptmessage[data-visible="true"] {
+        margin-top: 15px;
+        grid-column: span 6;
+
         @media (768px <=width <=991px) {
           grid-column: span 6;
+          margin-top: 13px;
         }
 
         @media (320px <=width <=600px) {
@@ -850,8 +891,6 @@
           }
         }
 
-        margin-top: 15px;
-
         p {
           font-size: 12px;
           font-weight: 400;
@@ -861,7 +900,7 @@
 
         &~.field-otpsubpanel {
           margin-top: 0;
-          grid-column: span 5;
+          grid-column: span 6;
 
           @media (768px <=width <=991px) {
             grid-column: span 6;
@@ -881,13 +920,13 @@
       grid-column: span 6;
       margin: 5px 0 0;
 
-      @media (768px <=width <=991px) {
-        grid-column: span 8;
-      }
+      /*  @media (768px <=width <=991px) {
+        grid-column: span 6;
+      } 
 
       @media (320px <=width <=600px) {
         grid-column: span 6;
-      }
+      }*/
 
       .field-numretries {
         input {
@@ -900,7 +939,12 @@
 
   .field-otppanel:has(.field-secondspanel) {
     .field-otpresend {
-      margin-top: 5px;
+      margin-top: 3px;
+      grid-column: span 6;
+
+      @media (768px <=width <=991px) {
+        margin-top: 4px;
+      }
 
       @media (320px <=width <=600px) {
         grid-column: span 6;
@@ -1016,15 +1060,15 @@ main .form fieldset.field-nomineedetails {
   }
 }
 
-main .form fieldset.field-nomineedetails .field-wrapper{
-  legend.field-label{
-  display: none;
+main .form fieldset.field-nomineedetails .field-wrapper {
+  legend.field-label {
+    display: none;
   }
 
-  .plain-text-wrapper{
+  .plain-text-wrapper {
     padding: 20px 20px 0 20px;
-   
-    p{
+
+    p {
       margin: 0;
       font-size: 16px;
       font-weight: 600;
@@ -1032,8 +1076,8 @@ main .form fieldset.field-nomineedetails .field-wrapper{
     }
   }
 
-  &~.plain-text-wrapper{
-display: none;
+  &~.plain-text-wrapper {
+    display: none;
   }
 }
 
@@ -1044,26 +1088,6 @@ main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] lab
   line-height: 20px;
   font-weight: 400;
 }
-
-.wizardPanelBody {
-  & .cmp-container-container {
-    display: none;
-
-    &~.form-container {
-      width: 100%;
-      max-width: inherit !important;
-    }
-  }
-
-  & header {
-    height: 100px !important;
-
-    &~main {
-      overflow: initial;
-    }
-  }
-}
-
 
 main .form form {
 
@@ -1181,6 +1205,10 @@ main .form form {
         display: block;
       }
     }
+
+    /* .wizard-button-wrapper {
+      display: none !important;
+    } */
   }
 
   /* select account screen */
@@ -1437,16 +1465,16 @@ main .form form {
       }
     }
 
-    .field-needbankhelp{
+    .field-needbankhelp {
       margin-top: 20px;
 
-      .field-bankusetoggle{
+      .field-bankusetoggle {
         display: flex;
         align-items: center !important;
         flex-direction: row-reverse;
         justify-content: flex-end;
 
-        label{
+        label {
           font-size: 28px;
           font-weight: 600;
           line-height: 36px;
@@ -1455,31 +1483,36 @@ main .form form {
         }
       }
 
-      .field-lgcode, .field-lccode{
+      .field-lgcode,
+      .field-lccode {
         position: relative;
-        label.field-label{
-          margin: 0 0 0 15px;
-          top: 20px;        
-        }
-        input{
-        border: 1px solid var(--color-interface-border-secondary);
-        &:focus-visible{
-          outline: none;
-        }
-      }
 
-      &[data-active="true"]{
-        label.field-label{
-          margin: 20px 0 0 10px;
+        label.field-label {
+          margin: 0 0 0 15px;
+          top: 20px;
         }
-      }
+
+        input {
+          border: 1px solid var(--color-interface-border-secondary);
+
+          &:focus-visible {
+            outline: none;
+          }
+        }
+
+        &[data-active="true"] {
+          label.field-label {
+            margin: 20px 0 0 10px;
+          }
+        }
       }
 
       .field-confirmdetailsconsent1,
-      .field-confirmdetailsconsent2{
+      .field-confirmdetailsconsent2 {
         margin-top: 0;
 
-        label.field-label, label.field-label p{
+        label.field-label,
+        label.field-label p {
           font-size: 14px;
           font-weight: 400;
           color: var(--color-input-text-primary);
@@ -1493,7 +1526,7 @@ main .form form {
           -webkit-appearance: none;
           outline: none;
           padding: 0;
-    
+
           &:hover,
           &:checked {
             background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
@@ -1502,7 +1535,8 @@ main .form form {
           }
         }
       }
-      .field-confirmdetailsconsent2{
+
+      .field-confirmdetailsconsent2 {
         margin-top: -10px;
       }
     }
@@ -1545,7 +1579,7 @@ main .form form {
 
       .form form .field-wrapper .button-wrapper.field-submitotp {
         width: 100%;
-      margin-top: 20px !important; 
+        margin-top: 20px !important;
       }
 
       .form form .panel-wrapper.field-stepstofollow fieldset {
@@ -1612,10 +1646,15 @@ main .form form {
         margin-top: 20px !important;
       } */
 
+      .field-pan {
+        @media (320px <=width <=439px) {
+          margin-top: 25px !important;
+        }
+      }
+
       input[name="pan"] {
         width: 100% !important;
         max-width: 100% !important;
-        /*  margin-top: 24px !important; */
       }
 
       .cmp-container-container {
@@ -1844,7 +1883,7 @@ main .form form {
         grid-column: span 6 !important;
       }
 
-  /*     .field-registeredmobilenumber {
+      /*     .field-registeredmobilenumber {
         grid-column: span 6 !important;
         margin-left: -292px !important;
       } */
