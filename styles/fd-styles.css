@@ -2704,14 +2704,14 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
     .field-confirmcardtnc2 {
       .field-description {
-        top: 85px;
+        top: 100px;
       }
     }
 
     .field-confirmcardtnc3 {
       .field-description {
-        top: 110px;
-        left: 30%;
+        top: 140px;
+        left: 28%;
       }
     }
   }
