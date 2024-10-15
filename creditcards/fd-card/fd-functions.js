@@ -102,6 +102,8 @@ import { hideLoaderGif } from '../domutils/domutils.js';
 
 import { fullNamePanValidation } from '../../common/panvalidation.js';
 
+import { formatIndian } from '../../common/formutils.js';
+
 setTimeout(() => import('./fd-delayedutils.js'), 2000);
 
 export {
@@ -169,4 +171,5 @@ export {
   panvalidationSuccessHandler,
   addressChangeHandler,
   fullNamePanValidation,
+  formatIndian,
 };
