@@ -3,7 +3,7 @@ export const formIdPathMapping = {
   // cc
   // '/content/forms/af/hdfc_haf/cards/fdlien/forms/fdlien-dev': '../../../common/functions.js', // fd
   '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
-  '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro-nomineeno': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
+  '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro2test': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
 };
 
 
