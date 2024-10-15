@@ -203,6 +203,15 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
     executeInterfaceRequest.requestString.authMode = authModeMap[selectedKycButton] || '';
   }
 
+  if (source === 'addressdeclarationproceed') {
+    const {
+      currentResidenceAddressBiometricOVDConfirmation,
+    } = globals.form.addressDeclarationPanel.currentResidenceAddressBiometricOVD;
+    if (currentResidenceAddressBiometricOVDConfirmation?._data?.$_value === '1') {
+      executeInterfaceRequest.requestString.etbAddressEditDeclaration = new Date().toISOString();
+    }
+  }
+
   // if (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectedKyc === 'bioinperson') {
   //   executeInterfaceRequest.requestString.authMode = CURRENT_FORM_CONTEXT?.selectedKyc;
   // }

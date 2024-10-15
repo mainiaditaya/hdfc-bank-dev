@@ -29,10 +29,11 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
     case 'BIOMETRIC':
       globals.functions.setProperty(addressDeclarationPanel.currentAddressDeclarationAadhar, { visible: false });
 
-      CURRENT_FORM_CONTEXT.selectedKyc = inPersonBioKYCOptions?._data.$_value === '0'
+      CURRENT_FORM_CONTEXT.selectedKyc = inPersonBioKYCOptions?._data.$_value === '0' && !CURRENT_FORM_CONTEXT.aadhaarFailed
         ? 'bioinperson'
         : 'biokyc';
-      globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD, { value: fullCurrentAddress, visible: true });
+      globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD, { visible: true });
+      globals.functions.setProperty(addressDeclarationPanel.currentResidenceAddressBiometricOVD.currentResAddressBiometricOVD, { value: fullCurrentAddress });
       break;
     case 'OVD':
       CURRENT_FORM_CONTEXT.selectedKyc = 'OVD';
