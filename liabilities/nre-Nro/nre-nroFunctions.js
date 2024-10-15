@@ -323,8 +323,9 @@ function prefillCustomerDetails(response, globals) {
   };
   // not getting txtPermadrAdd1
   setFormValue(customerName, response.customerShortName);
-  setFormValue(accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
   setFormValue(customerID, maskNumber(response.customerId, 4));
+  setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
+  setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
   setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].prodTypeDesc);
   setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
   setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
