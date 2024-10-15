@@ -144,6 +144,7 @@ const bindCustomerDetails = async (globals) => {
     state: '',
   };
   CUSTOMER_DATA_BINDING_CHECK = false;
+  CURRENT_FORM_CONTEXT.aadhaarFailed = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
