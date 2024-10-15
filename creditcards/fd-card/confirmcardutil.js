@@ -35,6 +35,9 @@ const confirmCardClickHandler = (globals) => {
   && employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions._data.$_value === '0') {
     globals.functions.setProperty(aadharBiometricVerification, { value: '0' });
   }
+  if (employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions._data.$_value === '1') {
+    globals.functions.setProperty(selectKYCOptionsPanel.selectKYCMethodOption1, { visible: false });
+  }
   if (addressDetails.mailingAddressToggle._data.$_value === 'on' && CURRENT_FORM_CONTEXT.customerIdentityChange) {
     globals.functions.setProperty(docUploadFlow, { visible: true });
     globals.functions.setProperty(docUploadFlow.uploadAddressProof, { visible: false });
