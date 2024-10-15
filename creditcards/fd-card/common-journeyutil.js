@@ -1,6 +1,5 @@
 import { CHANNEL, ENDPOINTS } from '../../common/constants.js';
 import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
-import { createJourneyId } from '../../common/journey-utils.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 
 /**
@@ -24,7 +23,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, journeyName, globals) =
       formData: {
         channel: CHANNEL,
         journeyName,
-        journeyID: globals.form.runtime.journeyId.$value || createJourneyId('online', journeyName, CHANNEL, globals),
+        journeyID: globals.form.runtime.journeyId.$value,
         journeyStateInfo: [
           {
             state,
