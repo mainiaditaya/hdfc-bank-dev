@@ -2195,6 +2195,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .field-invalidaddressnote {
+        margin-top: -3%;
+
         input {
           color: var(--color-input-text-msg-error);
           font-size: var(--body-fd-sm-font-size);
@@ -2387,8 +2389,9 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         font-weight: var(--font-weight-bold);
 
         &::after {
-          background: url('../icons/Arrow-Expand.svg') no-repeat !important;
+          background: url('../icons/arrow-right-blue.svg') no-repeat !important;
           margin: 0 0 -3px 6px;
+          vertical-align: text-top !important;
         }
       }
 

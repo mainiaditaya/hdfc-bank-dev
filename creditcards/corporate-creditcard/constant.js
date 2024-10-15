@@ -2,6 +2,7 @@
 // impoted as CC_CONSTANT key name in all files.
 
 const JOURNEY_NAME = 'CORPORATE_CARD_JOURNEY';
+const FORM_NAME = 'Corporate Credit Card';
 
 const DOM_ELEMENT = {
   identifyYourself: {
@@ -48,4 +49,5 @@ export {
   JOURNEY_NAME,
   DOM_ELEMENT,
   NAME_ON_CARD_MAX_LENGTH,
+  FORM_NAME,
 };

@@ -1,7 +1,8 @@
 import { ENDPOINTS, CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constants.js';
-import { urlPath } from '../../common/formutils.js';
+import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
 import { invokeJourneyDropOffUpdate } from './journey-utils.js';
 import { restAPICall } from '../../common/makeRestAPI.js';
+import { sendPageloadEvent } from './analytics.js';
 
 const getCurrentDateAndTime = (dobFormatNo) => {
   /*
@@ -33,23 +34,45 @@ const getCurrentDateAndTime = (dobFormatNo) => {
   return formatedTime;
 };
 
-const fetchFiller4 = (mobileMatch, kycStatus, journeyType) => {
+const fetchFiller4 = (mobileMatch, kycStatus, journeyType, kycFillers) => {
   let filler4Value = null;
-  switch (kycStatus) {
-    case 'aadhaar':
-      // eslint-disable-next-line no-nested-ternary
-      filler4Value = (journeyType === 'NTB') ? `VKYC${getCurrentDateAndTime(3)}` : ((currentFormContext?.journeyType === 'ETB') && mobileMatch) ? `NVKYC${getCurrentDateAndTime(3)}` : `VKYC${getCurrentDateAndTime(3)}`;
-      break;
-    case 'bioKYC':
-      filler4Value = 'bioKYC';
-      break;
-    case 'OVD':
-      filler4Value = 'OVD';
-      break;
-    default:
-      filler4Value = null;
+  if (kycFillers === null) {
+    filler4Value = `NVKYC${getCurrentDateAndTime(3)}`;
+  } else {
+    switch (kycStatus) {
+      case 'aadhaar':
+        // eslint-disable-next-line no-nested-ternary
+        if (journeyType === 'NTB') {
+          filler4Value = `VKYC${getCurrentDateAndTime(3)}`;
+        }
+        if (journeyType === 'ETB') {
+          filler4Value = (mobileMatch === 'y') ? `NVKYC${getCurrentDateAndTime(3)}` : `VKYC${getCurrentDateAndTime(3)}`;
+        }
+        // filler4Value = `${(mobileMatch === 'y') ? 'NVKYC' : 'VKYC'}${getCurrentDateAndTime(3)}`;
+
+        break;
+      case 'bioKYC':
+        filler4Value = 'bioKYC';
+        break;
+      case 'OVD':
+        filler4Value = 'OVD';
+        break;
+      default:
+        filler4Value = null;
+    }
   }
   return filler4Value;
+};
+
+const kycFillCheck = (customerInfo, kycFill) => {
+  let kycFillerVal;
+  if ((customerInfo.journeyFlag === 'ETB')) {
+    kycFillerVal = (customerInfo.addressEditFlag === 'Y') ? kycFill.KYC_STATUS : null;
+  }
+  if ((customerInfo.journeyFlag === 'NTB')) {
+    kycFillerVal = kycFill.KYC_STATUS;
+  }
+  return kycFillerVal;
 };
 /**
  * Creates a DAP request object based on the provided global data.
@@ -72,9 +95,13 @@ const createDapRequestObj = (globals) => {
         || null,
   };
 
-  const journeyType = (globals.functions.exportData()?.currentFormContext?.breDemogResponse?.BREFILLER2 === 'D101') ? 'ETB' : 'NTB';
+  const kycFillers = kycFillCheck(customerInfo, kycFill);
+  const journeyType = formContextCallbackData?.breDemogResponse?.BREFILLER2 === 'D101' ? 'ETB' : 'NTB';
   const mobileMatch = globals.functions.exportData()?.aadhaar_otp_val_data?.result?.mobileValid !== undefined;
-  const VKYCConsent = fetchFiller4(mobileMatch, kycFill.KYC_STATUS, journeyType);
+  const biometricStatus = kycFillers ?? '';
+  const ekycConsent = ((kycFillers === 'aadhaar')) ? `${getCurrentDateAndTime(3)}YEnglishxeng1x0` : '';
+  const mobileMatchAadharData = globals.functions.exportData()?.aadhaar_otp_val_data?.result?.mobileValid;
+  const VKYCConsent = fetchFiller4(mobileMatchAadharData, kycFill.KYC_STATUS, journeyType, kycFillers);
   const ekycSuccess = mobileMatch ? `${formData?.aadhaar_otp_val_data?.result?.ADVRefrenceKey}X${formData?.aadhaar_otp_val_data.result?.RRN}` : '';
   const finalDapPayload = {
     requestString: {
@@ -95,10 +122,12 @@ const createDapRequestObj = (globals) => {
       journeyName: currentFormContext.journeyName,
       filler7: '',
       Segment: segment,
-      biometricStatus: kycFill.KYC_STATUS,
+      biometricStatus,
       ekycSuccess,
       VKYCConsent,
-      ekycConsent: `${getCurrentDateAndTime(3)}YEnglishxeng1x0`,
+      ekycConsent,
+      idcom_token: formData?.queryParams?.idcom_token ?? '',
+      journeyType,
     },
   };
   return finalDapPayload;
@@ -111,8 +140,13 @@ const throughDomSetArnNum = (arnNumRef, mobileNumber, leadProfileId, journeyId, 
   const arnNumberElement = arnRefNumPanel.querySelector(classNamefieldArnNo);
   if (arnNumberElement) {
     // Manipulate the content of the <p> tag inside '.field-newarnnumber'
-    arnNumberElement.querySelector('p').textContent = arnNumRef;
-    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, globals);
+    const para = arnNumberElement.querySelector('p');
+    if (para) {
+      para.textContent = arnNumRef;
+    } else {
+      arnNumberElement.textContent = arnNumRef;
+    }
+    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', mobileNumber, leadProfileId, journeyId, globals);
   } else {
     invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_FAILURE', mobileNumber, leadProfileId, journeyId, globals);
   }
@@ -151,11 +185,11 @@ const finalDap = (userRedirected, globals) => {
             globals.functions.setProperty(globals.form.resultPanel.successResultPanel.vkycProceedButton, { visible: true });
             currentFormContext.isVideoKyc = true;
           }
-          throughDomSetArnNum(response.applicationNumber, mobileNumber, journeyId, leadProfileId, globals);
-          // Temporaly commented out and will be enabled after analytics changes.
-          // setTimeout(async (globalObj) => {
-          //   await Promise.resolve(sendPageloadEvent('CONFIRMATION_JOURNEY_STATE', globalObj));
-          // }, 5000, globals);
+          throughDomSetArnNum(response.applicationNumber, mobileNumber, leadProfileId, journeyId, globals);
+          setTimeout(async (globalObj) => {
+            const santizedFormData = santizedFormDataWithContext(globalObj);
+            await Promise.resolve(sendPageloadEvent('CONFIRMATION_JOURNEY_STATE', santizedFormData, 'CONFIRMATION_PAGE_NAME'));
+          }, 5000, globals);
         }
       } else {
         invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_FAILURE', mobileNumber, leadProfileId, journeyId, globals);
@@ -173,6 +207,8 @@ const finalDap = (userRedirected, globals) => {
       invokeJourneyDropOffUpdate('CUSTOMER_FINAL_DAP_FAILURE', mobileNumber, leadProfileId, journeyId, globalObj);
     },
   };
+  // const res = {};
+  // updatePanelVisibility(res, globals);
   restAPICall(globals, 'POST', payload, apiEndPoint, eventHandlers.successCallBack, eventHandlers.errorCallback);
 };
 export default finalDap;

@@ -13,8 +13,17 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
-const FORM_MAIN_CLASS = ['fdlien'];
-
+const FORM_MAIN_CLASS = [
+  {
+    // SEMI
+    form: 'semi',
+    class: 'semi-form',
+  },
+  {
+    form: 'fdlien',
+    class: 'fdlien',
+  },
+];
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -90,8 +99,8 @@ async function loadEager(doc) {
     }
     const currentUrl = window.location.href;
     FORM_MAIN_CLASS.some((item) => {
-      if (currentUrl.includes(item)) {
-        document.body.classList.add(item);
+      if (currentUrl.includes(item.form)) {
+        document.body.classList.add(item.class);
         return true;
       }
       return false;
