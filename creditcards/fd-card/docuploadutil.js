@@ -165,7 +165,7 @@ const fileUploadUIHandler = () => {
 };
 
 const docUploadBiometricHandler = (globals) => {
-  const { vkycConfirmationPanel } = globals.form.resultPanel.successResultPanel;
+  const { vkycConfirmationPanel } = globals.form.resultPanel.successResultPanel.tqSuccessWrapper;
   globals.functions.setProperty(vkycConfirmationPanel, { visible: false });
   creditCardSummary(globals);
   finalPagePanelVisibility('success', CURRENT_FORM_CONTEXT.executeInterfaceResponse.APS_APPL_REF_NUM, globals);
