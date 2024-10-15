@@ -174,7 +174,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
  * @returns {Promise<object>} A promise that resolves to the response of the interface request.
  */
 const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
-  let executeInterfaceRequest = CURRENT_FORM_CONTEXT.executeInterfaceRequest || '';
+  let executeInterfaceRequest = CURRENT_FORM_CONTEXT?.executeInterfaceRequest || globals.functions.exportData()?.currentFormContext?.executeInterfaceRequest || '';
 
   if (source === 'reviewdetails') {
     executeInterfaceRequest = createExecuteInterfaceRequest(payload, source, globals);
