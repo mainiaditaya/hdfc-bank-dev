@@ -62,7 +62,9 @@ const docUploadClickHandler = async (globals) => {
     docUploadPanel,
     uploadAddressProof,
   } = globals.form.docUploadFlow;
-  const identityDocType = docUploadPanel.docUploadDropdown.$value;
+  const { docUploadDropdown, DocUploadFrontWrapper, DocUploadBackWrapper } = docUploadPanel;
+  const { addressProofFile1Wrapper, addressProofFile2Wrapper } = uploadAddressProof;
+  const identityDocType = docUploadDropdown.$value;
   const addressDocType = uploadAddressProof.docTypeDropdown.$value;
   const mobileNumber = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
@@ -73,12 +75,12 @@ const docUploadClickHandler = async (globals) => {
 
   const documents = [
     ...(CURRENT_FORM_CONTEXT?.identityDocUploadFlag ? [
-      { docValue: docUploadPanel?.DocUploadFront, docType: identityDocType, fileId: '1_FS' },
-      { docValue: docUploadPanel?.DocUploadBack, docType: identityDocType, fileId: '1_BS' },
+      { docValue: DocUploadFrontWrapper?.DocUploadFront, docType: identityDocType, fileId: '1_FS' },
+      { docValue: DocUploadBackWrapper?.DocUploadBack, docType: identityDocType, fileId: '1_BS' },
     ] : []),
     ...(CURRENT_FORM_CONTEXT?.addressDocUploadFlag ? [
-      { docValue: uploadAddressProof?.addressProofFile1, docType: addressDocType, fileId: '1_ADF' },
-      { docValue: uploadAddressProof?.addressProofFile2, docType: addressDocType, fileId: '1_ADB' },
+      { docValue: addressProofFile1Wrapper?.addressProofFile1, docType: addressDocType, fileId: '1_ADF' },
+      { docValue: addressProofFile2Wrapper?.addressProofFile2, docType: addressDocType, fileId: '1_ADB' },
     ] : []),
   ];
 
