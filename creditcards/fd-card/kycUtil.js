@@ -54,7 +54,7 @@ const addressDeclarationProceedHandler = (globals) => {
   if (CURRENT_FORM_CONTEXT.journeyID === undefined) {
     Object.assign(CURRENT_FORM_CONTEXT, JSON.parse(globals?.functions?.exportData()?.formContext));
   }
-  if (CURRENT_FORM_CONTEXT?.customerIdentityChange && (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectKyc === 'bioinperson' || CURRENT_FORM_CONTEXT?.selectedKyc === 'aadhaar')) {
+  if (CURRENT_FORM_CONTEXT?.customerIdentityChange && (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectedKyc === 'bioinperson' || CURRENT_FORM_CONTEXT?.selectedKyc === 'aadhaar')) {
     const { docUploadPanel, uploadAddressProof } = docUploadFlow;
     globals.functions.setProperty(addressDeclarationPanel, { visible: false });
     globals.functions.setProperty(docUploadFlow, { visible: true });
