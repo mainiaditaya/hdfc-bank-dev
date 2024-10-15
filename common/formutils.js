@@ -661,6 +661,17 @@ const fetchFiller3 = (authMode) => {
   }
   return '';
 };
+
+const formatIndian = (amount) => {
+  const str = amount.toString();
+  let lastThree = str.slice(-3);
+  const otherNumbers = str.slice(0, -3);
+  if (otherNumbers) {
+    lastThree = `,${lastThree}`;
+  }
+  const formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThree;
+  return `₹${formatted}`;
+};
 /**
  * Creates a deep copy of the given blueprint object.
  *
@@ -713,4 +724,5 @@ export {
   pincodeCheck,
   attachRedirectOnClick,
   createDeepCopyFromBlueprint,
+  formatIndian,
 };
