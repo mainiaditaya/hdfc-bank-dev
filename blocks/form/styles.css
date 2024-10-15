@@ -775,9 +775,11 @@ main .form .field-resultpanel {
     .field-successresulttextlabel {
       margin-bottom: 12px;
     }
+
     .field-arnrefnumpanel::before {
       left: 24%;
     }
+
     .field-arnrefnumpanel {
       margin-left: -25px;
     }
@@ -786,10 +788,12 @@ main .form .field-resultpanel {
     .field-newarnnumber p {
       line-height: 45px;
     }
+
     .field-arnrefnumlabel,
     .field-newarnnumber {
       left: 36%;
     }
+
     .field-ratingpanel .field-rating .rating.hover {
       margin-top: 0 !important;
     }
