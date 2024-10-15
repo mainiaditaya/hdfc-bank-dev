@@ -7,7 +7,7 @@ import {
 import fetchAuthCode from './idcomutils.js';
 
 import {
-//ssss
+// ssss
   urlPath,
   santizedFormDataWithContext,
   createLabelInElement,
@@ -214,10 +214,10 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
   };
 
   let path = urlPath(ENDPOINTS.aadharInit);
-  let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
+  const finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
   const decodedData = decodeURIComponent(escape(atob(finalPayload)));
   if (!isValidJson(decodedData)) {
-    path = 'https://hdfc-dev-04.adobecqms.net/content/hdfc_haf/api/aadhaarInit.json'
+    path = 'https://hdfc-dev-04.adobecqms.net/content/hdfc_haf/api/aadhaarInit.json';
   }
   const response = fetchJsonResponse(path, jsonObj, 'POST');
   response
