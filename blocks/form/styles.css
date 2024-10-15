@@ -4,7 +4,7 @@
 @import url('../../creditcards/corporate-creditcard/creditcards.css');
 
 :root {
-  --loader-image-url: url('loader.gif');
+  --loader-image-url: url('../../common/loader.gif');
 }
 
 a:any-link,
@@ -155,6 +155,7 @@ main .form form {
   .field-permanentaddresstoggle,
   .field-ckyctoggle,
   .field-currentaddresstoggle,
+  .field-aem-bankassistedtoggle,
   .field-employeeassistancetoggle,
   .field-mailingaddresstoggle {
     align-items: center !important;
@@ -184,7 +185,8 @@ main .form form {
     }
   }
 
-  .field-currentaddresstoggle {
+  .field-currentaddresstoggle,
+  .field-aem-bankassistedtoggle {
     flex-direction: row-reverse;
     width: fit-content;
 
@@ -197,6 +199,7 @@ main .form form {
   .field-permanentaddresstoggle input[type='checkbox'],
   .field-currentaddresstoggle input[type='checkbox'],
   .field-ckyctoggle input[type='checkbox'],
+  .field-aem-bankassistedtoggle input[type='checkbox'],
   .field-employeeassistancetoggle input[type='checkbox'],
   .field-mailingaddresstoggle input[type='checkbox'] {
     display: none;
@@ -205,6 +208,7 @@ main .form form {
   .field-permanentaddresstoggle input[type='checkbox']:checked + .field-label,
   .field-currentaddresstoggle input[type='checkbox']:checked + .field-label,
   .field-ckyctoggle input[type='checkbox']:checked + .field-label,
+  .field-aem-bankassistedtoggle input[type='checkbox']:checked + .field-label,
   .field-employeeassistancetoggle input[type='checkbox']:checked + .field-label,
   .field-mailingaddresstoggle input[type='checkbox']:checked + .field-label {
     background-color: #1c3fca;
@@ -217,6 +221,9 @@ main .form form {
     input[type='checkbox']:checked
     + .field-label::before,
   .field-ckyctoggle input[type='checkbox']:checked + .field-label::before,
+  .field-aem-bankassistedtoggle
+    input[type='checkbox']:checked
+    + .field-label::before,
   .field-employeeassistancetoggle
     input[type='checkbox']:checked
     + .field-label::before,
@@ -319,6 +326,35 @@ main .form .bi-eye-slash {
   margin-left: -30px;
   cursor: pointer;
   width: 21px;
+}
+
+/* Date picker for only iOS devices */
+
+@supports (-webkit-touch-callout: none) {
+  input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+  }
+
+  input[type='date'] {
+    position: relative;
+
+    &::after {
+      content: url('../../icons/date-picker.svg');
+      position: absolute;
+      right: 5px;
+      bottom: 10px;
+      background-color: var(--color-interface-background-primary);
+    }
+  }
 }
 
 /* Style for labels when input is active or not empty */
@@ -434,7 +470,8 @@ main .form .field-otphelptext p {
   margin: 0;
 }
 
-main .field-incorrectotptext {
+main .field-incorrectotptext,
+main .field-aem-incorrectotptextconfirmation {
   padding: 0 16px;
   border-radius: 8px;
   background: var(--color-interface-error-box-primary);
@@ -743,6 +780,15 @@ main .form .field-resultpanel {
       left: 24%;
     }
 
+    .field-arnrefnumpanel {
+      margin-left: -25px;
+    }
+
+    .field-newarnnumber,
+    .field-newarnnumber p {
+      line-height: 45px;
+    }
+
     .field-arnrefnumlabel,
     .field-newarnnumber {
       left: 36%;
@@ -775,6 +821,17 @@ main .form .field-resultpanel {
   }
 
   main .form .field-otppanel {
+    display: grid;
+
+    > legend {
+      width: 265px;
+
+      p,
+      b {
+        width: 265px;
+      }
+    }
+
     .field-otpnumber {
       input {
         padding: 0 0 0 2vw;
@@ -811,6 +868,15 @@ main .form .field-resultpanel {
 
   main .form.block .field-otppanel {
     display: grid;
+
+    > legend {
+      width: 265px;
+
+      p,
+      b {
+        width: 265px;
+      }
+    }
 
     .field-otpnumber {
       input {
@@ -856,6 +922,15 @@ main .form .field-resultpanel {
   }
 
   main .form.block .field-otppanel {
+    > legend {
+      width: 265px;
+
+      p,
+      b {
+        width: 265px;
+      }
+    }
+
     .field-otpsubpanel {
       display: flex;
       flex-direction: row;

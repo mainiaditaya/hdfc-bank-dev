@@ -14,7 +14,19 @@ export const defaultErrorMessages = {
   required: 'Please fill in this field.',
 };
 
-let submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
+let submitBaseUrl = '';
+
+const localDev = ['aem.live', 'aem.page', 'localhost', 'hlx.live', 'hlx.page'];
+
+function isLocalDev() {
+  // eslint-disable-next-line no-restricted-globals
+  const { hostname } = location;
+  return localDev.some((dev) => hostname.includes(dev));
+}
+
+if (isLocalDev()) {
+  submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
+}
 
 export function setSubmitBaseUrl(url) {
   submitBaseUrl = url;
@@ -26,9 +38,3 @@ export const emailPattern = '([A-Za-z0-9][._]?)+[A-Za-z0-9]@[A-Za-z0-9]+(\.?[A-Z
 export function getSubmitBaseUrl() {
   return submitBaseUrl;
 }
-
-export const formIdPathMapping = {
-  '/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', // cc
-  '/content/forms/af/hdfc_haf/cards/fdlien/forms/fdlien-dev': '../../../creditcards/fd-card/fd-functions.js', // fd
-  '/content/forms/af/hdfc_haf/fdlien/fdlien-dev': '../../../creditcards/fd-card/fd-functions.js', // fd
-};

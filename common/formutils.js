@@ -13,6 +13,7 @@ const {
   addDisableClass,
   createLabelInElement,
   decorateStepper,
+  attachRedirectOnClick,
 } = DOM_API; // DOM_MANIPULATE_CODE_FUNCTION
 
 const { BASEURL, PIN_CODE_LENGTH } = CONSTANT;
@@ -84,7 +85,7 @@ const formUtil = (globalObj, panelName) => ({
   setValue: (val, changeDataAttr) => {
     globalObj.functions.setProperty(panelName, { value: val });
     if (changeDataAttr?.attrChange && val) {
-      const element = document.getElementsByName(panelName._data.$_name)?.[0];
+      const element = document.getElementsByName(panelName._data.$_name)?.[0] || document.getElementsByName(panelName.$name)?.[0];
       if (element) {
         const closestAncestor = element.closest(`.${ANCESTOR_CLASS_NAME}`);
         if (closestAncestor) {
@@ -109,7 +110,7 @@ const formUtil = (globalObj, panelName) => ({
    */
   resetField: () => {
     globalObj.functions.setProperty(panelName, { value: '' });
-    const element = document.getElementsByName(panelName._data.$_name)?.[0];
+    const element = document.getElementsByName(panelName._data.$_name)?.[0] || document.getElementsByName(panelName.$name)?.[0];
     if (element) {
       const closestAncestor = element.closest(`.${ANCESTOR_CLASS_NAME}`);
       if (closestAncestor) {
@@ -135,6 +136,24 @@ const getTimeStamp = (currentTime) => {
     + pad(currentTime.getHours())
     + pad(currentTime.getMinutes())
     + pad(currentTime.getSeconds());
+  return formattedDatetime;
+};
+
+/**
+ * Gets a formatted timestamp from the provided current time without seconds.
+ *
+ * @param {Date} currentTime The current time to generate the timestamp from.
+ * @returns {string} The formatted timestamp in 'YYYYMMDDHHmm' format.
+ */
+const getTimeStampNoSeconds = (currentTime) => {
+  // Function to pad single digit numbers with leading zero
+  const pad = (number) => ((number < 10) ? `0${number}` : number);
+  // Format the datetime as desired
+  const formattedDatetime = currentTime.getFullYear()
+    + pad(currentTime.getMonth() + 1)
+    + pad(currentTime.getDate())
+    + pad(currentTime.getHours())
+    + pad(currentTime.getMinutes());
   return formattedDatetime;
 };
 
@@ -322,7 +341,6 @@ const santizedFormDataWithContext = (globals, currentFormContext) => {
     }
     return formData;
   } catch (ex) {
-    console.error(ex);
     return null;
   }
 };
@@ -580,7 +598,6 @@ const extractJSONFromHTMLString = (htmlString) => {
     const jsonObject = JSON.parse(jsonString);
     return jsonObject;
   } catch (error) {
-    console.error('Invalid JSON string', error);
     return null;
   }
 };
@@ -645,12 +662,36 @@ const fetchFiller3 = (authMode) => {
   return '';
 };
 
+const formatIndian = (amount) => {
+  const str = amount.toString();
+  let lastThree = str.slice(-3);
+  const otherNumbers = str.slice(0, -3);
+  if (otherNumbers) {
+    lastThree = `,${lastThree}`;
+  }
+  const formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThree;
+  return `₹${formatted}`;
+};
+/**
+ * Creates a deep copy of the given blueprint object.
+ *
+ * This function returns a new object that is a deep copy of the blueprint object,
+ * ensuring that nested objects are also copied rather than referenced.
+ *
+ * @param {Object} blueprint - The blueprint object to copy.
+ * @returns {Object} A deep copy of the blueprint object.
+ */
+function createDeepCopyFromBlueprint(blueprint) {
+  return JSON.parse(JSON.stringify(blueprint));
+}
+
 export {
   urlPath,
   maskNumber,
   clearString,
   formUtil,
   getTimeStamp,
+  getTimeStampNoSeconds,
   convertDateToMmmDdYyyy,
   setDataAttributeOnClosestAncestor,
   convertDateToDdMmYyyy,
@@ -681,4 +722,7 @@ export {
   sanitizeName,
   fetchFiller3,
   pincodeCheck,
+  attachRedirectOnClick,
+  createDeepCopyFromBlueprint,
+  formatIndian,
 };

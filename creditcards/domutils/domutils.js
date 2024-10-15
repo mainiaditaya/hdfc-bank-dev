@@ -79,9 +79,10 @@ const moveWizardView = (source, target) => {
  * Changes the language of the Aadhar content to the specified language.
  * @param {Object} content - The content configuration for Aadhar.
  * @param {string} defaultLang - The language to show us default.
+ * @param {Object} currentFormContext - current form context to store the language selected for aadhar
  */
 // select dropdow-aadhar
-const aadharLangChange = (adharContentDom, defaultLang) => {
+const aadharLangChange = async (adharContentDom, defaultLang, currentFormContext) => {
   const selectOp = adharContentDom.querySelector(`[name= ${'selectLanguage'}]`);
   const findFieldSet = adharContentDom?.querySelectorAll('fieldset');
   const selectedClass = 'selected-language';
@@ -98,11 +99,13 @@ const aadharLangChange = (adharContentDom, defaultLang) => {
     });
   };
   applySelected(findFieldSet, defaultOptionClass, selectedClass);
+  currentFormContext.languageSelected = defaultLang;
   selectOp.value = defaultLang;
   selectOp?.addEventListener('change', (e) => {
     e.preventDefault();
     const { value: valueSelected } = e.target;
     selectOp.value = valueSelected;
+    currentFormContext.languageSelected = valueSelected;
     const optionClass = `field-aadharconsent-${valueSelected?.toLowerCase()}`;
     applySelected(findFieldSet, optionClass, selectedClass);
   });
@@ -310,6 +313,13 @@ const validatePhoneNumber = (inputField, validStartingDigits) => {
   inputField.value = value;
 };
 
+const validateTextInputOnPaste = (inputField, fieldRegex) => {
+  const { value } = inputField;
+  if (!fieldRegex.test(value)) {
+    inputField.value = '';
+  }
+};
+
 const validatePanInput = (panNumber) => {
   if (panNumber.length <= 5) {
     if (/^[a-zA-Z]+$/.test(panNumber) && (panNumber.length !== 4 || panNumber[3].toLowerCase() === 'p')) {
@@ -335,14 +345,7 @@ const validateTextInput = (inputField, fieldRegex, length) => {
   }
 };
 
-const validateTextInputOnPaste = (inputField, fieldRegex) => {
-  const { value } = inputField;
-  if (!fieldRegex.test(value)) {
-    inputField.value = '';
-  }
-};
-
-export function imageClickable(selector, url, target) {
+const imageClickable = (selector, url, target) => {
   const element = document.querySelector(selector);
   if (element) {
     element.addEventListener('click', (event) => {
@@ -350,7 +353,7 @@ export function imageClickable(selector, url, target) {
       window.open(url, target);
     });
   }
-}
+};
 
 const setArnNumberInResult = (arnNumRef, arnNumberPanel, arnNumberFieldName) => {
   const arnRefNumPanel = document.querySelector(`[name= ${arnNumberPanel}]`);
@@ -362,6 +365,46 @@ const addClassToElement = (selector, classNames) => {
   document.querySelector(selector)?.classList?.add(...classNames.split(' '));
 };
 
+const validateCardDigits = (inputField) => {
+  let { value } = inputField;
+
+  // Ensure the input starts with a valid digit
+  if (value.length > 0 && !/\d/.test(value[0])) {
+    inputField.value = '';
+    return;
+  }
+
+  // Remove invalid characters (non-digits) from the entire input
+  value = value.replace(/\D/g, '');
+
+  inputField.value = value;
+};
+
+const validateOTPInput = (inputField) => {
+  const { value } = inputField;
+
+  // Ensure the input values are digits
+  if (!/^\d+$/.test(value)) {
+    inputField.value = inputField.value.slice(0, -1);
+  }
+};
+
+/**
+ * Attaches a click handler to an element that redirects to a specified URL.
+ *
+ * @param {string} selector - The CSS selector for the element to make clickable.
+ * @param {string} url - The URL to navigate to when the element is clicked.
+ * @param {string} [target='_blank'] - The target window or tab for the URL (e.g., '_blank', '_self').
+ */
+const attachRedirectOnClick = (selector, url, target = '_blank') => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.addEventListener('click', (event) => {
+      event.preventDefault();
+      window?.open(url, target);
+    });
+  }
+};
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -382,4 +425,8 @@ export {
   validateTextInputOnPaste,
   setArnNumberInResult,
   addClassToElement,
+  validateCardDigits,
+  validateOTPInput,
+  attachRedirectOnClick,
+  imageClickable,
 };

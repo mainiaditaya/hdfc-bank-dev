@@ -189,6 +189,14 @@ function applyRuleEngine(htmlForm, form, captcha) {
     // console.log(JSON.stringify(form.exportData(), null, 2));
   });
 
+  htmlForm.addEventListener('input', (e) => {
+    const field = e.target;
+    const {
+      id, value,
+    } = field;
+    form.getElement(id).value = value;
+  });
+
   htmlForm.addEventListener('click', async (e) => {
     if (e.target.tagName === 'BUTTON') {
       const element = form.getElement(e.target.id);
@@ -229,7 +237,8 @@ export async function loadRuleEngine(formDef, htmlForm, captcha, genFormRenditio
 async function fetchData({ id }) {
   try {
     const { search = '' } = window.location;
-    const url = externalize(`/adobe/forms/af/data/${id}${search}`);
+    const date_token = new Date().getTime();
+    const url = externalize(`/adobe/forms/af/data/${id}${search}&ifsc=${date_token}`);
     const response = await fetch(url);
     const json = await response.json();
     const { data } = json;

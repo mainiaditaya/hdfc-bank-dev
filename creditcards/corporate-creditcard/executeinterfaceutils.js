@@ -22,6 +22,8 @@ import {
 } from '../../common/constants.js';
 import { NAME_ON_CARD_MAX_LENGTH } from './constant.js';
 
+import { sendAnalytics } from './analytics.js';
+
 const GENDER_MAP = {
   M: '1',
   F: '2',
@@ -127,7 +129,7 @@ const createExecuteInterfaceRequestObj = (globals) => {
     if (currentAddressNTB.permanentAddress.permanentAddressToggle.$value === 'on') {
       permanentAddress = { ...currentAddress };
     } else {
-      permanentAddress.address1 = permanentAddressPanel.permanentAddressAddress1.$value;
+      permanentAddress.address1 = permanentAddressPanel.permanentAddressLine1.$value;
       permanentAddress.address2 = permanentAddressPanel.permanentAddressLine2.$value;
       permanentAddress.address3 = permanentAddressPanel.permanentAddressLine3.$value;
       permanentAddress.city = permanentAddressPanel.permanentAddressCity.$value;
@@ -178,13 +180,13 @@ const createExecuteInterfaceRequestObj = (globals) => {
       officeCity: employmentDetails.officeAddressCity.$value,
       officeZipCode: employmentDetails.officeAddressPincode.$value,
       officeState: employmentDetails.officeAddressState.$value,
-      productCode: '',
-      leadClosures: globals.functions.exportData().form.leadClosures,
-      leadGenerater: globals.functions.exportData().form.leadGenerator,
+      productCode: currentFormContext?.crmLeadResponse?.productCode,
+      leadClosures: globals.functions.exportData()?.form?.leadClosures || globals.functions.exportData()?.currentFormContext?.crmLeadResponse?.leadClosures || currentFormContext?.crmLeadResponse?.leadClosures,
+      leadGenerater: globals.functions.exportData()?.form?.leadGenerator || globals.functions.exportData()?.currentFormContext?.crmLeadResponse?.leadGenerator || currentFormContext?.crmLeadResponse?.leadGenerator,
       applyingBranch: 'N',
       smCode: '',
       dseCode: '',
-      lc2: globals.functions.exportData().form.lc2,
+      lc2: globals.functions.exportData()?.form?.lc2 || globals.functions.exportData()?.currentFormContext?.crmLeadResponse?.lc2 || currentFormContext?.crmLeadResponse?.lc2,
       filler6: '',
       branchName: '',
       branchCity: '',
@@ -213,6 +215,7 @@ const createExecuteInterfaceRequestObj = (globals) => {
       annualIncomeOrItrAmount: '100000',
       comResidenceType: '2',
       ...compNameRelNum,
+      mobileMatch: '',
     },
   };
   return requestObj;
@@ -253,9 +256,8 @@ const executeInterfaceApiFinal = (globals) => {
   const formCallBackContext = globals.functions.exportData()?.currentFormContext;
   const requestObj = currentFormContext.executeInterfaceReqObj || formCallBackContext?.executeInterfaceReqObj;
   requestObj.requestString.nameOnCard = globals.form.corporateCardWizardView.confirmCardPanel.cardBenefitsPanel.CorporatetImageAndNamePanel.nameOnCardDropdown.$value?.toUpperCase();
-  requestObj.requestString.productCode = formRuntime.productCode || formCallBackContext?.formRuntime?.productCode;
+  requestObj.requestString.productCode = formRuntime.productCode || formCallBackContext?.formRuntime?.productCode || formCallBackContext?.crmLeadResponse?.productCode || currentFormContext?.crmLeadResponse?.productCode;
   const apiEndPoint = urlPath(endpoints.executeInterface);
-  // restAPICall('', 'POST', requestObj, apiEndPoint, eventHandlers.successCallBack, eventHandlers.errorCallBack, 'Loading');
   formRuntime?.getOtpLoader();
   return fetchJsonResponse(apiEndPoint, requestObj, 'POST', true);
 };
@@ -263,9 +265,12 @@ const executeInterfaceApiFinal = (globals) => {
 /**
  * @name executeInterfaceResponseHandler
  * @param {object} resPayload
+
+ * @param {object} globals
  */
-const executeInterfaceResponseHandler = (resPayload) => {
+const executeInterfaceResponseHandler = (resPayload, globals) => {
   currentFormContext.executeInterfaceResPayload = resPayload;
+  sendAnalytics('get this card', resPayload, 'CUSTOMER_CARD_SELECTED', globals);
 };
 
 /**
@@ -306,7 +311,7 @@ const ipaRequestApi = (eRefNumber, mobileNumber, applicationRefNumber, idTokenJw
       userAgent: navigator.userAgent,
       journeyID: currentFormContext.journeyID,
       journeyName: currentFormContext.journeyName,
-      productCode: formRuntime.productCode,
+      productCode: formRuntime.productCode || currentFormContext.crmLeadResponse.productCode,
     },
   };
   const apiEndPoint = urlPath(endpoints.ipa);
@@ -401,6 +406,13 @@ const comAddressType = (globals, userRedirected) => {
   return cardDelivery?.office ? '1' : '2';
 };
 
+const addressDeclrFlag = (globals, executeInterfaceReqObj) => {
+  const addressEditFlag = (executeInterfaceReqObj?.requestString?.addressEditFlag === 'Y');
+  const currentAddessToggle = (globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.AddressDeclarationAadhar.currentAddressToggleConfirmpage.$value === '1'); // check radio btn - 'yes'
+  const currentAddresCheck = (globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.CurrentAddressDeclaration.currentResidenceAddressDeclaration.$value === 'on'); // declerationCheck
+  return (addressEditFlag && currentAddessToggle && currentAddresCheck) ? 'Y' : 'N';
+};
+
 /**
  * Executes an interface post request with the appropriate authentication mode based on the response.
  *
@@ -414,11 +426,27 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
     const mobileMatch = globals.functions.exportData()?.aadhaar_otp_val_data?.result?.mobileValid === 'y';
     if (mobileMatch) {
       requestObj.requestString.authMode = 'EKYCIDCOM';
+      requestObj.requestString.mobileMatch = 'Y';
     } else {
       requestObj.requestString.authMode = 'IDCOM';
+      requestObj.requestString.mobileMatch = 'N';
     }
   }
+  const { selectKYCMethodOption1: { aadharEKYCVerification }, selectKYCMethodOption2: { aadharBiometricVerification }, selectKYCMethodOption3: { officiallyValidDocumentsMethod } } = globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel;
+  const formData = globals.functions.exportData();
+  const radioBtnValues = globals.functions.exportData()?.currentFormContext?.radioBtnValues;
+  const kycFill = {
+    KYC_STATUS:
+        ((aadharEKYCVerification.$value || formData?.form?.aadharEKYCVerification || radioBtnValues?.kycMethod?.aadharEKYCVerification) && 'aadhaar')
+        || ((aadharBiometricVerification.$value || formData?.form?.aadharBiometricVerification || radioBtnValues?.kycMethod?.aadharBiometricVerification) && 'bioKYC')
+        || ((officiallyValidDocumentsMethod.$value || formData?.form?.officiallyValidDocumentsMethod || radioBtnValues?.kycMethod?.officiallyValidDocumentsMethod) && 'OVD')
+        || null,
+  };
+  if ((source === 'NO_IDCOM_REDIRECTION') && (kycFill.KYC_STATUS === 'bioKYC')) {
+    requestObj.requestString.authMode = 'OTP';
+  }
   requestObj.requestString.comAddressType = comAddressType(globals, userRedirected); // set com address type
+  requestObj.requestString.AddrDeclarationFlag = addressDeclrFlag(globals, requestObj); // path variable set
   const apiEndPoint = urlPath(endpoints.executeInterface);
   const eventHandlers = {
     successCallBack: (response) => {

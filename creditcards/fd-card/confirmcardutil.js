@@ -53,7 +53,7 @@ const setknowMoreBenefitsPanelData = (moreFeatures, knowMoreBenefitsPanel, globa
   const transformedMoreFeatures = moreFeatures.map((feature) => ({
     cardBenefitsText: feature,
   }));
-  globals.functions.importData({ items: transformedMoreFeatures }, knowMoreBenefitsPanel.$qualifiedName);
+  globals.functions.importData(transformedMoreFeatures, knowMoreBenefitsPanel.$qualifiedName);
 };
 
 const knowMoreCardClickHandler = (globals) => {

@@ -208,7 +208,6 @@ const resendOTP = async (globals) => {
     }
     return getOTP(mobileNo, panValue, dobValue, globals);
   }
-
   return null;
 };
 
