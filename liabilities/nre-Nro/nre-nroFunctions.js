@@ -21,9 +21,10 @@ import {
 import * as CONSTANT from '../../common/constants.js';
 import * as NRE_CONSTANT from './constant.js';
 
-setTimeout(() => {
+setTimeout(async () => {
   if (typeof window !== 'undefined') {
-    import('./nre-nro-dom-functions.js');
+    const { addGaps } = await import('./nre-nro-dom-functions.js');
+    addGaps();
   }
 }, 1200);
 
@@ -294,7 +295,6 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
 function prefillCustomerDetails(response, globals) {
   const {
     customerName,
-    accountNumber,
     customerID,
     singleAccount,
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount;
