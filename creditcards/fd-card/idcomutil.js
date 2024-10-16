@@ -10,10 +10,9 @@ import { IDCOM } from './constant.js';
  */
 const createIdComRequestObj = (globals) => {
   const {
-    addressDetails,
     personalDetails,
   } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
-  const scope = addressDetails.mailingAddressToggle._data.$_value === 'on' ? IDCOM.scope.addressNotChanged : IDCOM.scope.addressChanged;
+  const scope = globals.functions.exportData()?.currentFormContext?.executeInterfaceRequest?.requestString?.addressEditFlag === 'Y' ? IDCOM.scope.addressChanged : IDCOM.scope.addressNotChanged;
   const idComObj = {
     requestString: {
       mobileNumber: `${globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber._data.$_value}`,
