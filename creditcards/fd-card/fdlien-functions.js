@@ -321,7 +321,8 @@ const checkModeFd = (globals) => {
         TnCAadhaarNoMobMatchLabel, TnCAadhaarNoMobMatch, proceedFromAddressDeclarationIdcom, proceedFromAddressDeclaration,
       } = addressDeclarationPanel;
 
-      globals.functions.setProperty(aadhaarAddressDeclaration, { value: aadharAddress, visible: true });
+      globals.functions.setProperty(aadhaarAddressDeclaration, { visible: true });
+      globals.functions.setProperty(aadhaarAddressDeclaration.aadhaarAddressPrefilled, { value: aadharAddress });
       globals.functions.setProperty(currentAddressDeclarationAadhar.currentResidenceAddressAadhaar, { value: communicationAddress });
       globals.functions.setProperty(currentResidenceAddressBiometricOVD.currentResAddressBiometricOVD, { value: communicationAddress });
       globals.functions.setProperty(addressDeclarationPanel, { visible: true });
