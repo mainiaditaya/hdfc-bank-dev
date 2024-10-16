@@ -133,6 +133,102 @@ main {
   color: var(--color-interface-text-primary) !important;
 }
 
+/* Session Popup */
+.fdlien:has(.field-resumejourneywrapper[data-visible='true']) {
+  overflow: hidden;
+}
+
+.field-resumejourneywrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--color-interface-popup-background);
+
+  .field-resumejourneypopup {
+    margin: auto !important;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    background: var(--color-interface-background-primary);
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 525px;
+    height: 210px;
+
+    .plain-text-wrapper {
+      text-align: center;
+
+      p {
+        font-weight: var(--font-weight-bold);
+        font-size: var(--body-fd-sm-font-size);
+        margin: 0;
+      }
+    }
+
+    .radio-group-wrapper.field-resumejourneyoptions {
+      margin-top: -20px;
+    
+      .radio-wrapper.field-resumejourneyoptions {
+        margin: 10px 0 0;
+        position: relative;
+        padding-left: 30px;    
+        
+        input[type="radio"] {
+          display: none;
+        }    
+        
+        label {
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid var(--color-interface-border-secondary);
+            transition: all 0.3s ease;
+            cursor: pointer
+          }    
+
+          input[type="radio"]:checked + &::before {
+            border: 2px solid var(--color-interface-icon-highlight);
+          }
+          
+          input[type="radio"]:checked + &::after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--color-interface-icon-highlight);
+            transition: all 0.3s ease;
+          }    
+          
+          &:hover::before {
+            border-color: var(--color-interface-icon-highlight);
+          }
+        }
+      }
+    }
+    
+
+    .field-resumejourneycontinue {
+      margin-top: -20px;
+      text-align: right !important;
+    }
+  }
+}
+
 /* Popup Basic Styling */
 .fdlien:has(.field-aadharconsent[data-visible='true']) {
   overflow: hidden;
