@@ -12,6 +12,7 @@ import {
   switchWizard,
   setupBankUseSection,
   idComRedirection,
+  addPageNameClassInBody,
 } from './nre-nroFunctions.js';
 
 import {
@@ -34,4 +35,5 @@ export {
   switchWizard,
   setupBankUseSection,
   idComRedirection,
+  addPageNameClassInBody,
 };
