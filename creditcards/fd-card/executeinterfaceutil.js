@@ -174,25 +174,32 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
  * @returns {Promise<object>} A promise that resolves to the response of the interface request.
  */
 const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
-  let executeInterfaceRequest = CURRENT_FORM_CONTEXT?.executeInterfaceRequest || globals.functions.exportData()?.currentFormContext?.executeInterfaceRequest || '';
+  const { functions, form } = globals;
+  let executeInterfaceRequest = CURRENT_FORM_CONTEXT?.executeInterfaceRequest || functions.exportData()?.currentFormContext?.executeInterfaceRequest || '';
 
   if (source === 'reviewdetails') {
     executeInterfaceRequest = createExecuteInterfaceRequest(payload, source, globals);
     CURRENT_FORM_CONTEXT.executeInterfaceRequest = executeInterfaceRequest;
   }
 
+  // Ensure all keys in the request object have values, defaulting to an empty string
   Object.keys(executeInterfaceRequest).forEach((key) => {
-    executeInterfaceRequest[key] = executeInterfaceRequest[key] ?? '';
+    if (executeInterfaceRequest[key] == null) {
+      executeInterfaceRequest[key] = '';
+    }
   });
 
+  // Handle card confirmation source
   if (source === 'confirmcard') {
-    const selectedCard = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex];
+    const selectedCard = IPA_RESPONSE?.productDetails?.[confirmCardState?.selectedCardIndex];
     if (selectedCard) {
-      CURRENT_FORM_CONTEXT.selectedProductCode = selectedCard.cardProductCode;
-      executeInterfaceRequest.requestString.productCode = CURRENT_FORM_CONTEXT.selectedProductCode;
+      const productCode = selectedCard.cardProductCode;
+      CURRENT_FORM_CONTEXT.selectedProductCode = productCode;
+      executeInterfaceRequest.requestString.productCode = productCode;
     }
   }
 
+  // Handle KYC source types
   if (source.startsWith('kyc')) {
     const selectedKycButton = source.split('-')[1];
     const authModeMap = {
@@ -203,19 +210,23 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
     executeInterfaceRequest.requestString.authMode = authModeMap[selectedKycButton] || '';
   }
 
-  if (source === 'addressdeclarationproceed') {
-    const {
-      currentResidenceAddressBiometricOVD,
-      aadhaarAddressDeclaration,
-    } = globals.form.addressDeclarationPanel;
-    if (currentResidenceAddressBiometricOVD.currentResidenceAddressBiometricOVDConfirmation?._data?.$_value === '1' || aadhaarAddressDeclaration.aadharAddressConfirmation?._data?.$_value === '1') {
+  if (['addressdeclarationproceed', 'addressdeclarationidcomm'].includes(source)) {
+    const { currentResidenceAddressBiometricOVD, aadhaarAddressDeclaration } = form.addressDeclarationPanel;
+    const selectedKyc = functions.exportData()?.currentFormContext?.selectedKyc;
+
+    // Check OVD biometric confirmation
+    if (currentResidenceAddressBiometricOVD.currentResidenceAddressBiometricOVDConfirmation?._data?.$_value === '1') {
       executeInterfaceRequest.requestString.etbAddressEditDeclaration = new Date().toISOString();
     }
-  }
 
-  // if (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectedKyc === 'bioinperson') {
-  //   executeInterfaceRequest.requestString.authMode = CURRENT_FORM_CONTEXT?.selectedKyc;
-  // }
+    // Aadhaar address confirmation
+    if (selectedKyc === 'aadhaar') {
+      executeInterfaceRequest.requestString.ekycMobileMatch = form?.selectKYCOptionsPanel?.aadhaarMobileMatch?._data?.$_value;
+      if (aadhaarAddressDeclaration.aadharAddressConfirmation?._data?.$_value === '1') {
+        executeInterfaceRequest.requestString.etbAddressEditDeclaration = new Date().toISOString();
+      }
+    }
+  }
 
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   if (showLoader) FORM_RUNTIME.executeInterface();
