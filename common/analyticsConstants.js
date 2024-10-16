@@ -6,6 +6,7 @@ const data = {
   },
   'submit otp': {
     error: '',
+    linkPosition: 'Form',
   },
   'check offers': {
     linkType: 'button',
@@ -143,6 +144,10 @@ const PAGE_NAME = {
     'start kyc': 'Confirmation',
     'submit review': 'Confirmation',
     'thank you screen': 'Confirmation',
+  },
+  fd: {
+    getOtp: 'Identify Yourself',
+    submitOtp: 'Verify with OTP',
   },
 };
 export {

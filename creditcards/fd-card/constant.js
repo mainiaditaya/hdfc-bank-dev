@@ -63,6 +63,54 @@ const DOM_ELEMENT = {
   },
 };
 
+const ANALYTICS = {
+  formName: 'Fixed Deposit Lien Credit Card',
+  JOURNEY_NAME: 'FD_Lien_CC_Journey',
+  event: {
+    formLoad: {
+      type: 'page load',
+      name: 'Form Load',
+      pageName: 'Home page',
+      journeyState: 'CRM_LEAD_SUCCESS',
+    },
+    getOtp: {
+      type: 'click',
+      name: 'otp click',
+      pageName: 'Identify Yourself',
+      journeyState: 'CUSTOMER_IDENTITY_RESOLVED',
+      nextPage: 'submitOtp',
+    },
+    submitOtp: {
+      type: 'click',
+      name: 'submit otp',
+      pageName: 'Verify with OTP',
+      journeyState: 'CUSTOMER_IDENTITY_RESOLVED',
+      nextPage: 'selectCustomerId',
+    },
+    selectCustomerId: {
+      type: 'click',
+      name: 'Select Customer ID',
+      pageName: 'Select Customer ID',
+      journeyState: '',
+      nextPage: 'selectFD',
+    },
+    selectFd: {
+      type: 'click',
+      name: 'Select FD',
+      pageName: 'Select FD',
+      journeyState: 'CUSTOMER_LEAD_QUALIFIED',
+      nextPage: 'reviewDetails',
+    },
+    reviewDetails: {
+      type: 'click',
+      name: 'Select FD',
+      pageName: 'Select FD',
+      journeyState: '',
+      nextPage: 'reviewDetails',
+    },
+  },
+};
+
 const GENDER_MAP = {
   Male: '1', Female: '2', Others: '3', 'Third Gender': '3',
 };
@@ -98,6 +146,7 @@ export {
   MIN_ADDRESS_LENGTH,
   DOM_ELEMENT,
   IDCOM,
+  ANALYTICS,
   GENDER_MAP,
   OCCUPATION_MAP,
   ALLOWED_CHARACTERS,

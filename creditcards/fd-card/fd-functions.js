@@ -97,10 +97,13 @@ import {
 } from './kycUtil.js';
 
 import { ratingButtonUI, copyToClipBoard } from './thankyouutil.js';
+import sendFDAnalytics from './analytics.js';
 
 import { hideLoaderGif } from '../domutils/domutils.js';
 
 import { fullNamePanValidation } from '../../common/panvalidation.js';
+
+setTimeout(() => import('./launch-dev.min.js'), 100);
 
 setTimeout(() => import('./fd-delayedutils.js'), 2000);
 
@@ -163,6 +166,7 @@ export {
   executeInterfacePostRedirect,
   ratingButtonUI,
   copyToClipBoard,
+  sendFDAnalytics,
   fullNameChangeHandler,
   hideLoaderGif,
   checkPanValidation,
