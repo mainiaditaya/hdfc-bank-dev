@@ -1228,6 +1228,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
             box-sizing: border-box;
             display: inherit;
 
+            .field-selectedfdnum {
+              padding: 0;
+            }
+
             .field-selectedfdnum:not(p) {
               font-size: var(--body-fd-lg-font-size);
               font-weight: var(--font-weight-medium);
@@ -1239,6 +1243,15 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               font-size: var(--body-fd-lg-font-size);
               font-weight: var(--font-weight-medium);
               color: var(--color-interface-text-primary);
+            }
+
+            .field-selectedfdnum input[type="text"] {
+              font-size: var(--body-fd-lg-font-size);
+              font-weight: var(--font-weight-medium);
+              color: var(--color-interface-text-primary);
+              padding: 0;
+              margin: 0;
+              height: auto !important;
             }
           }
         }
@@ -2510,24 +2523,33 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
-      .field-cardbenefitstext {
-        text-align: left;
-        font-size: var(--body-fd-md-font-size);
-        color: var(--color-input-text-primary);
-        line-height: var(--font-linehight-large);
-        font-weight: var(--font-weight-regular);
+      .field-knowmorebenefitspanel {
+        .field-wrapper {          
+          &:not(:first-child) {
+            margin-top: -15px;
+          }
 
-        p {
-          font-size: var(--body-fd-md-font-size);
-          color: var(--color-input-text-primary);
-          line-height: var(--font-linehight-large);
-          font-weight: var(--font-weight-regular);
-          margin: 0;
-        }
+          .field-cardbenefitstext {  
+            input[type="text"] {
+              font-size: var(--body-fd-md-font-size);
+              color: var(--color-input-text-primary);
+              line-height: var(--font-linehight-large);
+              font-weight: var(--font-weight-regular);
+              margin: 0;
+              border: none;
+              height: auto !important;
+              padding: 0;
 
-        b {
-          color: var(--color-input-text-default);
-        }
+              &:hover {
+                box-shadow: none;
+              }
+            }
+    
+            b {
+              color: var(--color-input-text-default);
+            }
+          }
+      }
       }
     }
   }
