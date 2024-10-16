@@ -754,4 +754,5 @@ export {
   validFDPan,
   switchWizard,
   setupBankUseSection,
+  idComRedirection,
 };

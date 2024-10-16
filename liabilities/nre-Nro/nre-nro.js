@@ -11,6 +11,7 @@ import {
   customFocus,
   switchWizard,
   setupBankUseSection,
+  idComRedirection,
 } from './nre-nroFunctions.js';
 
 import {
@@ -32,4 +33,5 @@ export {
   otpValidationNRE,
   switchWizard,
   setupBankUseSection,
+  idComRedirection,
 };
