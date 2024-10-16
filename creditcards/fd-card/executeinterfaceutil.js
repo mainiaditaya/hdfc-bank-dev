@@ -205,9 +205,10 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
 
   if (source === 'addressdeclarationproceed') {
     const {
-      currentResidenceAddressBiometricOVDConfirmation,
-    } = globals.form.addressDeclarationPanel.currentResidenceAddressBiometricOVD;
-    if (currentResidenceAddressBiometricOVDConfirmation?._data?.$_value === '1') {
+      currentResidenceAddressBiometricOVD,
+      aadhaarAddressDeclaration,
+    } = globals.form.addressDeclarationPanel;
+    if (currentResidenceAddressBiometricOVD.currentResidenceAddressBiometricOVDConfirmation?._data?.$_value === '1' || aadhaarAddressDeclaration.aadharAddressConfirmation?._data?.$_value === '1') {
       executeInterfaceRequest.requestString.etbAddressEditDeclaration = new Date().toISOString();
     }
   }
