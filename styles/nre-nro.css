@@ -1,6 +1,6 @@
 @import url("../../styles/color-palette.css");
 
- body.wizardPanelBody.nre {
+body.wizardPanelBody.nre {
   & .cmp-container-container {
     display: none;
 
@@ -19,7 +19,7 @@
   }
 }
 
-body.errorPageBody.nre{
+body.errorPageBody.nre {
   & .cmp-container-container {
     display: none;
 
@@ -148,7 +148,6 @@ body.errorPageBody.nre{
     }
 
     .form form .field-wrapper .button-wrapper {
-      /* margin: 0 !important; */
       text-align: left;
       position: relative;
       width: 272px;
@@ -158,14 +157,12 @@ body.errorPageBody.nre{
       }
     }
 
-    .form form .field-wrapper .button-wrapper.field-submitotp{
-      .button{
+    .form form .field-wrapper .button-wrapper.field-submitotp {
+      .button {
         &::after {
           content: url("../../icons/Arrow.png");
           position: absolute;
           margin-top: 1px;
-          /* right: 27%;
-          top: 10px; */
         }
       }
     }
@@ -483,28 +480,6 @@ body.errorPageBody.nre{
       @media (320px <=width <=480px) {
         width: 100%;
       }
-
-      /*  &.errorInput{
-        border: 1px solid var(--color-input-text-msg-error);
-
-        & ~ .field-registeredmobilenumber{
-          label{
-          color: var(--color-input-text-msg-error);
-        }
-        }
-  
-      }
-      
-      &.validInput{
-        border: 1px solid var(--color-action-border-primary-default);
-
-        &~.field-registeredmobilenumber{
-          label{
-          color: var(--color-action-border-primary-default);
-        }
-       }
-      } */
-
     }
 
     .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
@@ -529,16 +504,13 @@ body.errorPageBody.nre{
     .form .field-countrycode select[name="countryCode"] {
       border-top-right-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
-      /*  padding-left: 0 !important; */
       padding-right: 0 !important;
       border-color: var(--color-interface-border-secondary) !important;
       max-width: 75px;
       width: 75px;
       border-right: 0 !important;
       -moz-appearance: none;
-      /* Firefox */
       -webkit-appearance: none;
-      /* Safari and Chrome */
       appearance: none;
       background: url('./../icons/select_arrow.png') no-repeat right center;
       background-size: 20px;
@@ -593,7 +565,6 @@ body.errorPageBody.nre{
       border-bottom: none !important;
       content: url("../../icons/nre_nro_desktop_banner.png");
       width: 100% !important;
-      /* max-height: 40%; */
       margin: inherit;
     }
 
@@ -719,14 +690,6 @@ body.errorPageBody.nre{
       }
     }
   }
-
-  /* main .form.block .field-otppanel {
-    & .field-otpresend {
-      .button {
-        margin-left: 15px;
-      }
-    }
-  } */
 
   div.plain-text-wrapper.field-registermobilenumbererror {
     display: block;
@@ -983,14 +946,6 @@ body.errorPageBody.nre{
       grid-column: span 6;
       margin: 5px 0 0;
 
-      /*  @media (768px <=width <=991px) {
-        grid-column: span 6;
-      } 
-
-      @media (320px <=width <=600px) {
-        grid-column: span 6;
-      }*/
-
       .field-numretries {
         input {
           margin-top: 7px;
@@ -1040,309 +995,126 @@ body.errorPageBody.nre{
     height: 20px;
     width: 20px !important;
   }
-}
 
-header {
-  background: var(--color-interface-fd-background-primary);
 
-  .cmp-container {
-    max-width: none;
-  }
+  header {
+    background: var(--color-interface-fd-background-primary);
 
-  .cmp-container>div:nth-child(1) {
-    picture img {
-      margin-left: 55px;
+    .cmp-container {
+      max-width: none;
+    }
 
-      @media (768px <=width <=991px) {
+    .cmp-container>div:nth-child(1) {
+      picture img {
+        margin-left: 55px;
+
+        @media (768px <=width <=991px) {
+          margin-left: 20px;
+        }
+
+        @media (320px <=width <=600px) {
+          margin-left: 10px;
+        }
+      }
+
+      @media screen and (min-width: 768px) {
         margin-left: 20px;
       }
+    }
 
-      @media (320px <=width <=600px) {
-        margin-left: 10px;
+    .cmp-container>div:nth-child(2) {
+      display: none;
+    }
+
+    .cmp-container>div:nth-child(3) {
+      position: absolute;
+      width: 110px;
+      top: 0.5em;
+      height: 32px;
+      content: url(../icons/header-safe-secure.png);
+      padding: 0;
+    }
+  }
+
+  footer {
+    background: var(--color-interface-fd-background-primary);
+
+    & .cmp-container {
+      div>div {
+        margin-right: -25px;
+        text-align: center;
       }
     }
-
-    @media screen and (min-width: 768px) {
-      margin-left: 20px;
-    }
   }
 
-  .cmp-container>div:nth-child(2) {
-    display: none;
-  }
-
-  .cmp-container>div:nth-child(3) {
-    position: absolute;
-    width: 110px;
-    top: 0.5em;
-    height: 32px;
-    content: url(../icons/header-safe-secure.png);
+  /* personal details */
+  main .form form .wizard.field-wizardnrenro {
     padding: 0;
   }
-}
 
-footer {
-  background: var(--color-interface-fd-background-primary);
+  main .form fieldset.field-personaldetails,
+  main .form fieldset.field-fatcadetails,
+  main .form fieldset.field-financialdetails,
+  main .form fieldset.field-nomineedetails {
+    border: 1px solid var(--color-interface-border-primary);
+    border-radius: 15px;
+    padding-bottom: 30px;
 
-  & .cmp-container {
-    div>div {
-      margin-right: -25px;
-      text-align: center;
-    }
-  }
-}
-
-/* personal details */
-main .form form .wizard.field-wizardnrenro {
-  padding: 0;
-}
-
-main .form fieldset.field-personaldetails,
-main .form fieldset.field-fatcadetails,
-main .form fieldset.field-financialdetails,
-main .form fieldset.field-nomineedetails {
-  border: 1px solid var(--color-interface-border-primary);
-  border-radius: 20px;
-  padding-bottom: 30px;
-
-  legend {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 32px;
-    letter-spacing: -0.02em;
-    color: var(--color-interface-text-primary);
-    padding: 15px 30px;
-    background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    margin-bottom: 0;
-    position: relative;
-    height: 70px;
-    display: flex;
-    align-items: center;
-
-    &::after {
-      content: '';
-      position: absolute;
-      right: 30px;
-      width: 22px;
-      height: 13px;
-      background: url("../icons/accordian-arrow-up.png") no-repeat top center;
-      transition: 0.4s;
-      background-size: contain;
+    @media (320px <=width <=439px) {
+      margin-bottom: 20px !important;
     }
 
-    &.accordion-collapse {
-      border-radius: 15px;
-
-      &::after {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  &:has(legend.accordion-collapse) {
-    padding-bottom: 0;
-  }
-
-  & .text-wrapper.field-wrapper,
-  & .multiline-wrapper {
-    padding: 20px 30px;
-  }
-
-  .multiline-wrapper {
-    position: relative;
-
-    label {
-      margin: 2px 0 0 0;
-      padding: 0;
-    }
-
-    textarea {
-      border: none;
-      background: none;
-      margin: 0;
-      padding: 0;
-      width: 100% !important;
-      height: auto !important;
-      font-size: 18px;
-      line-height: 28px;
-      font-weight: 500;
-      color: var(--color-interface-background-quaternary);
-      position: absolute;
-      resize: none;
-
-      &:focus-visible {
-        outline: none;
-      }
-    }
-  }
-
-}
-
-main .form fieldset.field-nomineedetails .field-wrapper {
-  legend.field-label {
-    display: none;
-  }
-
-  .plain-text-wrapper {
-    padding: 20px 20px 0 20px;
-
-    p {
-      margin: 0;
-      font-size: 16px;
+    legend {
+      font-size: 24px;
       font-weight: 600;
+      line-height: 32px;
+      letter-spacing: -0.02em;
       color: var(--color-interface-text-primary);
-    }
-  }
-
-  &~.plain-text-wrapper {
-    display: none;
-  }
-}
-
-main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
-  margin: 0;
-  font-size: 14px;
-  color: #6B7280;
-  line-height: 20px;
-  font-weight: 400;
-}
-
-main .form form {
-
-  .field-wizardnrenro,
-  .field-wizardpanel {
-    .wizard-menu-items {
-      height: 84px;
-      border-radius: 20px;
-      border: 1px solid #ECEDF3;
+      padding: 15px 30px;
+      background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      margin-bottom: 0;
+      position: relative;
+      height: 70px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding-bottom: 0;
-      margin-top: -50px;
-      background: #fff;
-      gap: 25px;
 
-      @media (min-width: 768px) {
-        gap: 80px;
-        margin-top: -70px;
+      &::after {
+        content: '';
+        position: absolute;
+        right: 30px;
+        width: 22px;
+        height: 13px;
+        background: url("../icons/accordian-arrow-up.png") no-repeat top center;
+        transition: 0.4s;
+        background-size: contain;
       }
 
-      @media (min-width: 992px) {
-        gap: 80px;
-        margin-top: -84px;
-      }
-
-      .wizard-menu-item {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 20px;
-        color: var(--color-interface-text-primary);
-        position: relative;
-
-        @media (min-width: 768px) {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 28px;
-        }
-
-        @media (min-width: 992px) {
-          font-size: 18px;
-          font-weight: 400;
-          line-height: 28px;
-        }
-
-        &:first-child {
-          &::before {
-            background: url('../icons/step_select_account-select.png') no-repeat center center;
-            border-color: var(--color-action-border-primary-default);
-          }
-
-          &.wizard-menu-active-item {
-            color: var(--color-interface-icon-highlight);
-            font-weight: 600;
-
-            &::before {
-              background: var(--color-input-border-focus) url('../icons/step_select_account.png') no-repeat center center;
-              border: 2px solid #c6d4ff;
-            }
-          }
-        }
-
-        &:nth-child(2) {
-          &::before {
-            background: url('../icons/step-confirm-details.png') no-repeat center center;
-            /* border: 2px solid #c6d4ff; */
-          }
-
-          &.wizard-menu-active-item {
-            &::before {
-              background: var(--color-input-border-focus) url('../icons/step-confirm-details-select.png') no-repeat center center;
-            }
-          }
-        }
-
-        &:nth-child(3) {
-          &::before {
-            background: url('../icons/step-verify.png') no-repeat center center;
-          }
-
-          &::after {
-            display: none;
-          }
-        }
-
-        &::before {
-          border: 1.5px solid var(--color-interface-border-secondary);
-          border-radius: 15px;
-          color: transparent;
-        }
+      &.accordion-collapse {
+        border-radius: 15px;
 
         &::after {
-          content: '';
-          border-top: 3px solid var(--color-interface-border-primary);
-          height: 0px;
-          width: 40px;
-          position: absolute;
-          top: 18px;
-          right: -58px;
+          transform: rotate(180deg);
         }
-
       }
     }
 
-    .field-confirmdetails {
-      margin-top: 20px;
-
-      &>.field-label {
-        font-size: 28px;
-        font-weight: 600;
-        line-height: 36px;
-        color: var(--color-interface-text-primary);
-        margin-bottom: 35px;
-        display: block;
-      }
+    &:has(legend.accordion-collapse) {
+      padding-bottom: 0;
     }
 
-    .wizard-button-wrapper {
-      display: none !important;
+    & .text-wrapper.field-wrapper,
+    & .multiline-wrapper {
+      padding: 20px 30px;
     }
-  }
-
-  /* select account screen */
-
-  .field-selectaccount {
 
     .multiline-wrapper {
       position: relative;
-      height: 70px;
 
       label {
-        margin-top: 2px;
+        margin: 2px 0 0 0;
         padding: 0;
-        margin-left: 0 !important;
       }
 
       textarea {
@@ -1356,8 +1128,7 @@ main .form form {
         line-height: 28px;
         font-weight: 500;
         color: var(--color-interface-background-quaternary);
-        min-height: auto !important;
-        /*  position: absolute; */
+        position: absolute;
         resize: none;
 
         &:focus-visible {
@@ -1366,63 +1137,275 @@ main .form form {
       }
     }
 
-    .field-customername.field-wrapper.text-wrapper {
-      display: flex;
-      margin-top: 20px;
-      @media (320px <=width <=439px) {
-        margin-bottom: 5px;
-      }
+  }
 
-      .field-label,
-      input[type="text"] {
+  main .form fieldset.field-nomineedetails .field-wrapper {
+    legend.field-label {
+      display: none;
+    }
+
+    .plain-text-wrapper {
+      padding: 20px 20px 0 20px;
+
+      p {
         margin: 0;
-        font-size: 20px !important;
-        line-height: 28px !important;
-        font-weight: 600 !important;
+        font-size: 16px;
+        font-weight: 600;
         color: var(--color-interface-text-primary);
-        transform: none;
-        position: inherit;
-        padding-left: 0;
-        height: auto;
+      }
+    }
+
+    &~.plain-text-wrapper {
+      display: none;
+    }
+  }
+
+  main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
+    margin: 0;
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 20px;
+    font-weight: 400;
+  }
+
+  main .form form {
+
+    .field-wizardnrenro,
+    .field-wizardpanel {
+      .wizard-menu-items {
+        height: 84px;
+        border-radius: 20px;
+        border: 1px solid #ECEDF3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 0;
+        margin-top: -50px;
+        background: #fff;
+        gap: 25px;
 
         @media (min-width: 768px) {
-          font-size: 24px;
-          line-height: 32px;
+          gap: 80px;
+          margin-top: -70px;
         }
 
         @media (min-width: 992px) {
-          font-size: 28px;
-          line-height: 36px;
+          gap: 80px;
+          margin-top: -84px;
+        }
+
+        .wizard-menu-item {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          color: var(--color-interface-text-primary);
+          position: relative;
+
+          @media (min-width: 768px) {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 28px;
+          }
+
+          @media (min-width: 992px) {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+          }
+
+          &:first-child {
+            &::before {
+              background: url('../icons/step_select_account-select.png') no-repeat center center;
+              border-color: var(--color-action-border-primary-default);
+            }
+
+            &.wizard-menu-active-item {
+              color: var(--color-interface-icon-highlight);
+              font-weight: 600;
+
+              &::before {
+                background: var(--color-input-border-focus) url('../icons/step_select_account.png') no-repeat center center;
+                border: 2px solid #c6d4ff;
+              }
+            }
+          }
+
+          &:nth-child(2) {
+            &::before {
+              background: url('../icons/step-confirm-details.png') no-repeat center center;
+            }
+
+            &.wizard-menu-active-item {
+              &::before {
+                background: var(--color-input-border-focus) url('../icons/step-confirm-details-select.png') no-repeat center center;
+              }
+            }
+          }
+
+          &:nth-child(3) {
+            &::before {
+              background: url('../icons/step-verify.png') no-repeat center center;
+            }
+
+            &::after {
+              display: none;
+            }
+          }
+
+          &::before {
+            border: 1.5px solid var(--color-interface-border-secondary);
+            border-radius: 15px;
+            color: transparent;
+          }
+
+          &::after {
+            content: '';
+            border-top: 3px solid var(--color-interface-border-primary);
+            height: 0px;
+            width: 40px;
+            position: absolute;
+            top: 18px;
+            right: -58px;
+          }
+
         }
       }
 
-      input[type="text"] {
-        padding: 2px 0 0 5px;
-        height: auto;
-        border: none;
-        margin-top: -10px;
+      .field-confirmdetails {
+        margin-top: 20px;
+
+        &>.field-label {
+          font-size: 28px;
+          font-weight: 600;
+          line-height: 36px;
+          color: var(--color-interface-text-primary);
+          margin-bottom: 35px;
+          display: block;
+        }
+      }
+
+      .wizard-button-wrapper {
+        display: none !important;
+      }
+    }
+
+    /* select account screen */
+
+    .field-selectaccount {
+
+      .multiline-wrapper {
+        position: relative;
+        height: 70px;
+        margin-top: -20px;
+
+        label {
+          margin-top: 2px;
+          padding: 0;
+          margin-left: 0 !important;
+        }
+
+        textarea {
+          border: none;
+          background: none;
+          margin: 0;
+          padding: 0;
+          width: 100% !important;
+          height: auto !important;
+          font-size: 18px;
+          line-height: 28px;
+          font-weight: 500;
+          color: var(--color-interface-background-quaternary);
+          min-height: auto !important;
+          resize: none;
+
+          &:focus-visible {
+            outline: none;
+          }
+        }
+      }
+
+      .field-customername.field-wrapper.text-wrapper {
+        display: flex;
+        margin-top: 20px;
 
         @media (320px <=width <=439px) {
-          margin-top: -1px;
+          margin-bottom: 5px;
         }
 
-        @media (min-width: 768px) {
-          margin-top: 0;
+        .field-label,
+        input[type="text"] {
+          margin: 0;
+          font-size: 20px !important;
+          line-height: 28px !important;
+          font-weight: 600 !important;
+          color: var(--color-interface-text-primary);
+          transform: none;
+          position: inherit;
+          padding-left: 0;
+          height: auto;
+
+          @media (min-width: 768px) {
+            font-size: 24px;
+            line-height: 32px;
+          }
+
+          @media (min-width: 992px) {
+            font-size: 28px;
+            line-height: 36px;
+          }
         }
 
+        input[type="text"] {
+          padding: 2px 0 0 5px;
+          height: auto;
+          border: none;
+          margin-top: -10px;
 
-        &:focus-visible {
-          outline: none;
+          @media (320px <=width <=439px) {
+            margin-top: -1px;
+          }
+
+          @media (min-width: 768px) {
+            margin-top: 0;
+          }
+
+
+          &:focus-visible {
+            outline: none;
+          }
+        }
+
+        &~.plain-text-wrapper p {
+          color: var(--color-input-text-primary) !important;
+          font-size: 12px !important;
+          line-height: 20px;
+          font-weight: 400;
+          margin-top: -5px;
+          margin-bottom: 30px;
+
+          @media (min-width: 768px) {
+            font-size: 14px !important;
+            line-height: 20px;
+            margin-top: -20px;
+          }
+
+          @media (min-width: 992px) {
+            font-size: 16px !important;
+            line-height: 24px;
+            font-weight: 400;
+          }
         }
       }
 
-      &~.plain-text-wrapper p {
-        color: var(--color-input-text-primary) !important;
-        font-size: 12px !important;
-        line-height: 20px;
-        font-weight: 400;
-        margin-top: -5px;
-        margin-bottom: 30px;
+      .field-wrapper.text-wrapper {
+
+        &.field-customerid,
+        &.field-accountnumber,
+        &.field-accounttype,
+        &.field-ifsc,
+        &.field-branch {
+          height: 70px;
+        }
 
         @media (min-width: 768px) {
           font-size: 14px !important;
@@ -1435,226 +1418,22 @@ main .form form {
           line-height: 24px;
           font-weight: 400;
         }
-      }
-    }
 
-    .field-wrapper.text-wrapper {
-
-      &.field-customerid,
-      &.field-accountnumber,
-      &.field-accounttype,
-      &.field-ifsc,
-      &.field-branch {
-        height: 70px;
-      }
-
-      @media (min-width: 768px) {
-        font-size: 14px !important;
-        line-height: 20px;
-        margin-top: -20px;
-      }
-
-      @media (min-width: 992px) {
-        font-size: 16px !important;
-        line-height: 24px;
-        font-weight: 400;
-      }
-
-      .field-label {
-        margin: 0;
-        padding: 0;
-        transition: none;
-        position: inherit;
-        font-size: 12px;
-        line-height: 20px;
-        font-weight: 400;
-        color: var(--color-interface-text-secondary);
-        transform: none;
-        display: block;
-
-        @media (min-width: 768px) {
-          font-size: 14px;
-        }
-      }
-
-      input {
-        border: none;
-        background: none;
-        margin: 0;
-        padding: 0;
-        width: auto;
-        height: auto;
-        font-size: 18px;
-        line-height: 28px;
-        font-weight: 500;
-        color: var(--color-interface-background-quaternary);
-
-        position: absolute;
-
-        &:focus-visible {
-          outline: none;
-        }
-      }
-
-      &[data-active="true"] {
-        label {
-          margin: 0;
-          transform: none;
-        }
-      }
-    }
-
-
-    /* second block multipleAccounts  */
-    .field-multipleaccounts {
-      border: 1px dashed var(--color-interface-border-secondary);
-    }
-
-    .field-nro-account-type-pannel {
-      border-top: 1px dashed var(--color-interface-border-secondary);
-      /* margin-top: 30px; */
-      padding-top: 30px;
-
-      @media (320px  <=width <=991px) {
-        display: initial;
-      }
-
-      .plain-text-wrapper {
-        h3 {
-          margin-top: 0;
-          font-size: 28px;
-          font-weight: 600;
-          line-height: 36px;
-          color: var(--color-interface-text-primary);
-        }
-      }
-    }
-
-    .field-elitesavingsaccountpanel,
-    .field-regularsavingsaccountpanel,
-    .field-currentaccountpanel {
-      border: 1px solid #D2D5DB;
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 20px !important;
-      position: relative;
-      display: initial;
-
-      @media (min-width: 768px) {
-        margin-bottom: 0;
-      }
-
-      &.active {
-        background-color: var(--color-interface-background-quinary);
-        border: 1px solid var(--color-action-border-primary-hover);
-      }
-
-      &:has(input[type="checkbox"]:checked) {
-        background-color: var(--color-interface-background-quinary);
-        border: 1px solid var(--color-action-border-primary-hover);
-      }
-
-    }
-
-    .field-elitesavingsaccount.checkbox-wrapper,
-    .field-regularsavingsaccount.checkbox-wrapper,
-    .field-currentaccount.checkbox-wrapper {
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: space-between;
-      margin-bottom: 20px;
-
-
-      & .field-label {
-        font-size: 20px;
-        line-height: 28px;
-        font-weight: 600;
-        color: var(--color-interface-text-primary);
-        max-width: 80%;
-      }
-
-      & input[type="checkbox"] {
-        border-radius: 100%;
-        border: 1px solid var(--color-interface-border-secondary);
-        appearance: none;
-        -webkit-appearance: none;
-        outline: none;
-        padding: 0;
-        width: 24px !important;
-        height: 24px !important;
-
-        &:checked {
-          cursor: pointer;
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid var(--color-interface-icon-highlight);
-
-          &::before {
-            content: '';
-            border-radius: 100%;
-            width: 12px !important;
-            height: 12px !important;
-            background-color: var(--color-interface-icon-highlight);
-            position: absolute;
-          }
-        }
-      }
-
-      &~.plain-text-wrapper {
-        /*  border: 1px solid red;
-         display: flex; */
-
-        p ul {
-
-          margin: 0;
-          border-top: 1px dashed var(--color-interface-border-secondary);
-          padding: 30px 0 0 20px;
-
-          @media (min-width: 900px) {
-            max-width: 80%;
-          }
-
-          li {
-            font-size: 16px;
-            line-height: 24px;
-            font-weight: 400;
-            color: var(--color-input-text-primary);
-
-            a {
-              color: var(--color-input-text-primary);
-              text-decoration: underline;
-              font-weight: 400;
-            }
-          }
-        }
-      }
-    }
-
-  }
-
-  /* confirm details screen */
-
-  .field-confirmdetails {
-
-    .field-confirmdetailsaccordion {
-
-      .text-wrapper.field-wrapper,
-      .multiline-wrapper {
-        height: 70px;
-
-        &>label.field-label {
+        .field-label {
           margin: 0;
           padding: 0;
           transition: none;
           position: inherit;
-          font-size: 14px;
+          font-size: 12px;
           line-height: 20px;
           font-weight: 400;
           color: var(--color-interface-text-secondary);
           transform: none;
           display: block;
+
+          @media (min-width: 768px) {
+            font-size: 14px;
+          }
         }
 
         input {
@@ -1664,11 +1443,11 @@ main .form form {
           padding: 0;
           width: auto;
           height: auto;
-          font-size: 18px !important;
+          font-size: 18px;
           line-height: 28px;
           font-weight: 500;
           color: var(--color-interface-background-quaternary);
-          margin-top: -2px;
+
           position: absolute;
 
           &:focus-visible {
@@ -1683,84 +1462,170 @@ main .form form {
           }
         }
       }
-    }
 
-    .field-needbankhelp {
-      margin-top: 20px;
 
-      .field-bankusetoggle {
-        display: flex;
-        align-items: center !important;
-        flex-direction: row-reverse;
-        justify-content: flex-end;
+      /* second block multipleAccounts  */
+      .field-multipleaccounts {
+        border: 1px dashed var(--color-interface-border-secondary);
+      }
 
-        label {
-          font-size: 28px;
-          font-weight: 600;
-          line-height: 36px;
-          color: var(--color-interface-text-primary);
-          flex-basis: initial;
+      .field-nro-account-type-pannel {
+        border-top: 1px dashed var(--color-interface-border-secondary);
+        padding-top: 30px;
+
+        @media (320px <=width <=991px) {
+          display: initial;
         }
 
-        input[type="checkbox"] {
-          width: 45px !important;
-          height: 28px !important;
-          padding: 0;
-          box-sizing: content-box;
-          border-radius: 16px;
-          background-color: var(--color-interface-icon-highlight);
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          appearance: none;
-          cursor: pointer;
-          position: relative;
-          transition: background-color 0.3s, background-position 0.3s;
+        .plain-text-wrapper {
+          h3 {
+            margin-top: 0;
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 36px;
+            color: var(--color-interface-text-primary);
+          }
+        }
+      }
+
+      .field-elitesavingsaccountpanel,
+      .field-regularsavingsaccountpanel,
+      .field-currentaccountpanel {
+        border: 1px solid #D2D5DB;
+        border-radius: 20px;
+        padding: 20px;
+        margin-bottom: 20px !important;
+        position: relative;
+        display: initial;
+
+        @media (min-width: 768px) {
+          margin-bottom: 0;
         }
 
-        input[type="checkbox"]::after {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 4px;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: white;
-          transform: translateY(-50%);
-          transition: transform 0.3s;
+        &.active {
+          background-color: var(--color-interface-background-quinary);
+          border: 1px solid var(--color-action-border-primary-hover);
         }
 
-        input[type="checkbox"]:checked::after {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 4px;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: white;
-          transform: translateY(-50%) translateX(17px);
-          transition: transform 0.3s;
+        &:has(input[type="checkbox"]:checked) {
+          background-color: var(--color-interface-background-quinary);
+          border: 1px solid var(--color-action-border-primary-hover);
         }
-
 
       }
 
-      .field-mainbankusepanel {
+      .field-elitesavingsaccount.checkbox-wrapper,
+      .field-regularsavingsaccount.checkbox-wrapper,
+      .field-currentaccount.checkbox-wrapper {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        margin-bottom: 20px;
 
-        .field-lgcode,
-        .field-lccode {
-          position: relative;
-          grid-column: span 6 !important;
 
-          label.field-label {
-            margin: 0 0 0 15px;
-            top: 20px;
+        & .field-label {
+          font-size: 20px;
+          line-height: 28px;
+          font-weight: 600;
+          color: var(--color-interface-text-primary);
+          max-width: 80%;
+        }
+
+        & input[type="checkbox"] {
+          border-radius: 100%;
+          border: 1px solid var(--color-interface-border-secondary);
+          appearance: none;
+          -webkit-appearance: none;
+          outline: none;
+          padding: 0;
+          width: 24px !important;
+          height: 24px !important;
+
+          &:checked {
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--color-interface-icon-highlight);
+
+            &::before {
+              content: '';
+              border-radius: 100%;
+              width: 12px !important;
+              height: 12px !important;
+              background-color: var(--color-interface-icon-highlight);
+              position: absolute;
+            }
+          }
+        }
+
+        &~.plain-text-wrapper {
+
+          p ul {
+
+            margin: 0;
+            border-top: 1px dashed var(--color-interface-border-secondary);
+            padding: 30px 0 0 20px;
+
+            @media (min-width: 900px) {
+              max-width: 80%;
+            }
+
+            li {
+              font-size: 16px;
+              line-height: 24px;
+              font-weight: 400;
+              color: var(--color-input-text-primary);
+
+              a {
+                color: var(--color-input-text-primary);
+                text-decoration: underline;
+                font-weight: 400;
+              }
+            }
+          }
+        }
+      }
+
+    }
+
+    /* confirm details screen */
+
+    .field-confirmdetails {
+
+      .field-confirmdetailsaccordion {
+
+        .text-wrapper.field-wrapper,
+        .multiline-wrapper {
+          height: 70px;
+
+          &>label.field-label {
+            margin: 0;
+            padding: 0;
+            transition: none;
+            position: inherit;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
+            color: var(--color-interface-text-secondary);
+            transform: none;
+            display: block;
           }
 
           input {
-            border: 1px solid var(--color-interface-border-secondary);
-            margin-bottom: 0;
+            border: none;
+            background: none;
+            margin: 0;
+            padding: 0;
+            width: auto;
+            height: auto;
+            font-size: 18px !important;
+            line-height: 28px;
+            font-weight: 500;
+            color: var(--color-interface-background-quaternary);
+            margin-top: -2px;
+            position: absolute;
 
             &:focus-visible {
               outline: none;
@@ -1768,208 +1633,300 @@ main .form form {
           }
 
           &[data-active="true"] {
-            label.field-label {
-              margin: 2px 0 0 10px;
+            label {
+              margin: 0;
+              transform: none;
             }
           }
         }
       }
 
-      .field-confirmdetailsconsent1,
-      .field-confirmdetailsconsent2 {
-        margin-top: 0;
+      .field-needbankhelp {
+        margin-top: 20px;
 
-        label.field-label,
-        label.field-label p {
-          font-size: 14px;
-          font-weight: 400;
-          color: var(--color-input-text-primary);
-          margin-bottom: 0;
+        .field-bankusetoggle {
+          display: flex;
+          align-items: center !important;
+          flex-direction: row-reverse;
+          justify-content: flex-end;
+
+          label {
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 36px;
+            color: var(--color-interface-text-primary);
+            flex-basis: initial;
+          }
+
+          input[type="checkbox"] {
+            width: 45px !important;
+            height: 28px !important;
+            padding: 0;
+            box-sizing: content-box;
+            border-radius: 16px;
+            background-color: var(--color-interface-icon-highlight);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s, background-position 0.3s;
+          }
+
+          input[type="checkbox"]::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            transform: translateY(-50%);
+            transition: transform 0.3s;
+          }
+
+          input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            transform: translateY(-50%) translateX(17px);
+            transition: transform 0.3s;
+          }
+
+
         }
 
-        input[type="checkbox"] {
-          border-radius: 5px;
-          border: 2px solid #ddd;
-          appearance: none;
-          -webkit-appearance: none;
-          outline: none;
-          padding: 0;
+        .field-mainbankusepanel {
 
+          .field-lgcode,
+          .field-lccode {
+            position: relative;
+            grid-column: span 6 !important;
 
-          &:checked {
-            background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
-            border: none;
-            cursor: pointer;
+            label.field-label {
+              margin: 0 0 0 15px;
+              top: 20px;
+            }
+
+            input {
+              border: 1px solid var(--color-interface-border-secondary);
+              margin-bottom: 0;
+
+              &:focus-visible {
+                outline: none;
+              }
+            }
+
+            &[data-active="true"] {
+              label.field-label {
+                margin: 2px 0 0 10px;
+              }
+            }
           }
         }
-      }
 
-      .field-confirmdetailsconsent2 {
-        margin-top: -10px;
-      }
+        .field-confirmdetailsconsent1,
+        .field-confirmdetailsconsent2 {
+          margin-top: 0;
 
-      .field-resetallbtn {
-        width: auto;
-        text-align: right;
+          label.field-label,
+          label.field-label p {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--color-input-text-primary);
+            margin-bottom: 0;
+          }
 
-        .button {
-          background: none;
-          color: var(--color-action-background-primary-default);
-          max-width: fit-content;
-          font-size: 16px;
-          font-weight: 600;
-          line-height: 24px;
-          height: auto;
+          input[type="checkbox"] {
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            padding: 0;
+
+
+            &:checked {
+              background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
+              border: none;
+              cursor: pointer;
+            }
+          }
         }
+
+        .field-confirmdetailsconsent2 {
+          margin-top: -10px;
+        }
+
+        .field-resetallbtn {
+          width: auto;
+          text-align: right;
+
+          .button {
+            background: none;
+            color: var(--color-action-background-primary-default);
+            max-width: fit-content;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            height: auto;
+          }
+        }
+
       }
 
+      .field-confirmbutton {
+        margin-top: 10px;
+      }
     }
 
-    .field-confirmbutton {
-      margin-top: 10px;
-    }
-  }
+
+    /* error page */
+    .field-errorpanel {
+      .field-errorresults {
+
+        .field-itsnotyoupanel {
+          .image-wrapper {
+            &::before {
+              content: '';
+              background: url('../icons/can-not-open-account-icon.png') no-repeat center center;
+              width: 182px;
+              height: 156px;
+              display: flex;
+              margin: 0px auto;
+            }
+          }
+
+          .plain-text-wrapper:nth-child(3) p {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 32px;
+            color: var(--color-interface-text-primary);
+            text-align: center;
+          }
+
+          .plain-text-wrapper:nth-child(4) p {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            color: var(--color-input-text-primary);
+            text-align: center;
+          }
+
+          .plain-text-wrapper:nth-child(5) p {
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 28px;
+            color: var(--color-input-text-primary);
+            text-align: center;
+            margin-bottom: 0;
+          }
+
+          .plain-text-wrapper:nth-child(6) {
+            border: 1px solid var(--color-interface-border-primary);
+            padding: 10px 20px;
+            border-radius: 24px;
+            margin: 0 auto;
+
+            p {
+              font-size: 16px;
+              font-weight: 400;
+              line-height: 24px;
+              color: var(--color-interface-text-primary);
+              margin-bottom: 0;
+
+              a {
+                font-weight: 700;
+              }
+            }
+          }
+        }
+
+        /* incorrect OTP enter */
+        .field-incorrectotppanel {
+          .image-wrapper {
+            &::before {
+              content: '';
+              background: url('../icons/incorrect-otp.png') no-repeat center center;
+              width: 176px;
+              height: 145px;
+              margin: 0 auto 10px auto;
+              display: flex;
+            }
+          }
+
+          .plain-text-wrapper:nth-child(3) p {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 32px;
+            color: var(--color-interface-text-primary);
+            text-align: center;
+          }
 
 
-  /* error page */
-  .field-errorpanel {
-    .field-errorresults {
-
-      .field-itsnotyoupanel {
-        .image-wrapper {
-          &::before {
-            content: '';
-            background: url('../icons/can-not-open-account-icon.png') no-repeat center center;
-            width: 182px;
-            height: 156px;
-            display: flex;
+          .plain-text-wrapper:nth-child(4) p,
+          .plain-text-wrapper:nth-child(5) p {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            color: var(--color-input-text-primary);
+            text-align: center;
+            max-width: 70%;
             margin: 0px auto;
           }
-        }
 
-        .plain-text-wrapper:nth-child(3) p {
-          font-size: 24px;
-          font-weight: 600;
-          line-height: 32px;
-          color: var(--color-interface-text-primary);
-          text-align: center;
-        }
+          .plain-text-wrapper:nth-child(4) p {
+            margin: -20px auto;
+          }
 
-        .plain-text-wrapper:nth-child(4) p {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 24px;
-          color: var(--color-input-text-primary);
-          text-align: center;
-        }
-
-        .plain-text-wrapper:nth-child(5) p {
-          font-size: 20px;
-          font-weight: 500;
-          line-height: 28px;
-          color: var(--color-input-text-primary);
-          text-align: center;
-          margin-bottom: 0;
-        }
-
-        .plain-text-wrapper:nth-child(6) {
-          border: 1px solid var(--color-interface-border-primary);
-          padding: 10px 20px;
-          border-radius: 24px;
-          margin: 0 auto;
-
-          p {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 24px;
-            color: var(--color-interface-text-primary);
-            margin-bottom: 0;
+          .plain-text-wrapper:nth-child(5) p {
+            width: 60%;
+            margin-top: 20px;
 
             a {
-              font-weight: 700;
+              font-weight: 600;
+              text-decoration: underline;
             }
           }
-        }
-      }
-     
-      /* incorrect OTP enter */
-      .field-incorrectotppanel {
-        .image-wrapper {
-          &::before {
-            content: '';
-            background: url('../icons/incorrect-otp.png') no-repeat center center;
-            width: 176px;
-            height: 145px;
-            margin: 0 auto 10px auto;
-            display: flex;
-          }
-        }
 
-        .plain-text-wrapper:nth-child(3) p {
-          font-size: 24px;
-          font-weight: 600;
-          line-height: 32px;
-          color: var(--color-interface-text-primary);
-          text-align: center;
-        }
-
-   
-        .plain-text-wrapper:nth-child(4) p,
-        .plain-text-wrapper:nth-child(5) p  {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 24px;
-          color: var(--color-input-text-primary);
-          text-align: center;
-          max-width: 70%;
-          margin: 0px auto;
-        }
-
-        .plain-text-wrapper:nth-child(4) p{
-          margin: -20px auto;
-        }
-
-        .plain-text-wrapper:nth-child(5) p{
-          width: 60%;
-          margin-top: 20px;
-          a {
-            font-weight: 600;
-            text-decoration: underline;
-          }
-        }
-
-        .plain-text-wrapper:nth-child(6) p {
-          font-size:16px;
-          font-weight: 400;
-          line-height: 24px;
-          color: var(--color-input-text-primary);
-          text-align: center;
-          margin-bottom: 0;
-        }
-
-        .plain-text-wrapper:nth-child(7) {
-          border: 1px solid var(--color-interface-border-primary);
-          padding: 10px 30px;
-          border-radius: 24px;
-          margin: 0 auto;
-          background: url("../icons/arrow-right.png") no-repeat 99% center;
-
-          p {
+          .plain-text-wrapper:nth-child(6) p {
             font-size: 16px;
             font-weight: 400;
             line-height: 24px;
-            color: var(--color-interface-text-primary);
+            color: var(--color-input-text-primary);
+            text-align: center;
             margin-bottom: 0;
+          }
 
-            a {
-              font-weight: 700;
+          .plain-text-wrapper:nth-child(7) {
+            border: 1px solid var(--color-interface-border-primary);
+            padding: 10px 30px;
+            border-radius: 24px;
+            margin: 0 auto;
+            background: url("../icons/arrow-right.png") no-repeat 99% center;
+
+            p {
+              font-size: 16px;
+              font-weight: 400;
+              line-height: 24px;
+              color: var(--color-interface-text-primary);
+              margin-bottom: 0;
+
+              a {
+                font-weight: 700;
+              }
             }
           }
         }
       }
     }
   }
-
 }
 
 @media (320px <=width <=600px) {
@@ -2014,11 +1971,6 @@ main .form form {
         display: flex;
         flex-direction: row;
       }
-
-      /*  div.plain-text-wrapper.field-registermobilenumbererror {
-        margin-top: 98px;
-        margin-left: -391px;
-      } */
 
       div.plain-text-wrapper.field-doberrortext.field-wrapper,
       div.plain-text-wrapper.field-panerrortext.field-wrapper {
@@ -2069,10 +2021,6 @@ main .form form {
       .form form .field-wrapper.col-6.field-mobilepanel {
         margin-bottom: 20px;
       }
-
-      /* .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
-        margin-top: 20px !important;
-      } */
 
       .field-pan {
         @media (320px <=width <=439px) {
@@ -2280,13 +2228,13 @@ main .form form {
         right: 36% !important;
       }
     }
-  }
 
-  footer {
-    .cmp-container {
-      div>div {
-        margin-left: 257px;
-        text-align: center;
+    footer {
+      .cmp-container {
+        div>div {
+          margin-left: 257px;
+          text-align: center;
+        }
       }
     }
   }
@@ -2310,11 +2258,6 @@ main .form form {
       div.drop-down-wrapper.field-countrycode.field-wrapper {
         grid-column: span 6 !important;
       }
-
-      /*     .field-registeredmobilenumber {
-        grid-column: span 6 !important;
-        margin-left: -292px !important;
-      } */
 
       .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
         width: 221px !important;
