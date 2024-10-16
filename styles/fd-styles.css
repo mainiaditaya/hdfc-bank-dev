@@ -2524,22 +2524,29 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .field-knowmorebenefitspanel {
-        .field-wrapper {          
+        .field-wrapper {     
+          display: grid;
+
           &:not(:first-child) {
-            margin-top: -15px;
+            margin-top: -5px;
           }
 
           .field-cardbenefitstext {  
-            input[type="text"] {
+            textarea {
               font-size: var(--body-fd-md-font-size);
               color: var(--color-input-text-primary);
-              line-height: var(--font-linehight-large);
+              line-height: var(--font-linehight-regular);
               font-weight: var(--font-weight-regular);
               margin: 0;
-              border: none;
-              height: auto !important;
               padding: 0;
-
+              height: auto;
+              min-height: 1.5em;
+              max-height: none;
+              overflow-y: hidden;
+              resize: none;
+              box-sizing: border-box;
+              border: none;
+              
               &:hover {
                 box-shadow: none;
               }
