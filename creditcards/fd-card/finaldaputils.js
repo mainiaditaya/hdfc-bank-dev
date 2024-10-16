@@ -8,6 +8,20 @@ import { FD_ENDPOINTS } from './constant.js';
 import { finalPagePanelVisibility } from './thankyouutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
 
+const fdFiller4 = (userRedirected, mobileMatch = '', selectedKyc = '') => {
+  let filler4 = '';
+  if (!userRedirected) {
+    filler4 = 'bioInperson';
+  } else {
+    filler4 = fetchFiller4(
+      mobileMatch,
+      selectedKyc,
+      'ETB',
+    );
+  }
+  return filler4;
+};
+
 /**
  * Creates a DAP request object based on the provided global data.
  * @param {Object} globals - The global object containing necessary data for DAP request.
@@ -33,9 +47,9 @@ const createDapRequestObj = (userRedirected, globals) => {
   } else {
     visitType = formData?.queryParams?.authmode;
   }
-  const filler2 = visitType?.toLowerCase === 'aadhaarotp' ? 'ADVxRRN' : '';
+  const filler2 = visitType?.toLowerCase === 'aadhaarotp' || formContextCallbackData?.selectedKyc === 'aadhaar' ? 'ADVxRRN' : '';
   const filler3 = fetchFiller3(formData?.queryParams?.authmode);
-  const filler4 = !userRedirected ? 'bioInperson' : '';
+  const filler4 = fdFiller4(userRedirected, formData.currentFormContext?.mobileMatch, formContextCallbackData?.selectedKyc);
   return {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
