@@ -1,7 +1,9 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { displayLoader, hideLoaderGif, setArnNumberInResult } from '../domutils/domutils.js';
 import { invokeJourneyDropOffByJourneyId } from './common-journeyutil.js';
+import { ANALYTICS } from './constant.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
+import sendFDAnalytics from './analytics.js';
 
 const delayedUtilState = {
   visitType: '',
@@ -93,6 +95,15 @@ const finalDapFetchRes = async () => {
 };
 
 const pageRedirected = () => {
+  if (!delayedUtilState.aadharRedirect && !delayedUtilState.idComRedirect) {
+    const { formLoad } = ANALYTICS.event;
+    const journeyData = {};
+    // eslint-disable-next-line no-underscore-dangle, no-undef
+    journeyData.journeyId = myForm.resolveQualifiedName('$form.runtime.journeyId')._data.$_value;
+    // journeyData.journeyName = CURRENT_FORM_CONTEXT.journeyName;
+    journeyData.journeyName = ANALYTICS.JOURNEY_NAME;
+    sendFDAnalytics(formLoad.type, formLoad.pageName, {}, formLoad.journeyState, journeyData);
+  }
   if (delayedUtilState.idComRedirect) {
     displayLoader();
     setTimeout(() => {
