@@ -234,9 +234,9 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
   const requestObj = formCallBackContext?.executeInterfaceRequest;
 
   if (source === 'idCom') {
-    if (requestObj?.requestString?.addressEditFlag?.toUpperCase() === 'Y') {
-      requestObj.requestString.authMode = 'eKYCIDCOM';
-    } else requestObj.requestString.authMode = 'IDCOM';
+    if (requestObj?.requestString?.addressEditFlag?.toUpperCase() !== 'Y') {
+      requestObj.requestString.authMode = 'IDCOM';
+    }
   }
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   const eventHandlers = {
