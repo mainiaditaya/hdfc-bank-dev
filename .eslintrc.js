@@ -18,6 +18,7 @@ module.exports = {
     'import/extensions': ['error', {
       js: 'always',
     }],
+    'import/no-unresolved': ['error', { ignore: ['^https://'] }],
     'max-len': ['error', { code: 300 }],
   },
 };

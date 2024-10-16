@@ -25,6 +25,7 @@ import {
   ALLOWED_CHARACTERS,
 } from './constant.js';
 import { fullNamePanValidation } from '../../common/panvalidation.js';
+import sendFDAnalytics from './analytics.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
 const CUSTOMER_DETAILS_STATE = {
@@ -284,6 +285,7 @@ const bindCustomerDetails = async (globals) => {
   setTimeout(() => {
     addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
   }, 100);
+  sendFDAnalytics('selectFd', 'Select FD', {}, 'CUSTOMER_LEAD_QUALIFIED', globals);
 };
 
 /**
