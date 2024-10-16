@@ -2551,10 +2551,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
                 box-shadow: none;
               }
             }
-    
-            b {
-              color: var(--color-input-text-default);
-            }
           }
       }
       }
