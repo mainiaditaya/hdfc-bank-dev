@@ -24,8 +24,8 @@ const validateOtpInput = () => {
   });
 };
 
-const addGaps = (elSelector) => {
-  const panInputField = document.querySelector(elSelector);
+const addGaps = () => {
+  const panInputField = document.querySelector('.field-pan input');
   panInputField.addEventListener('input', () => {
     panInputField.value = panInputField.value.toUpperCase();
     const validInput = validatePanInput(panInputField.value.replace(/\s+/g, ''));
@@ -40,9 +40,22 @@ const addGaps = (elSelector) => {
 };
 
 const addMobileValidation = () => {
-  const validFirstDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  const countryCode = document.querySelector('.field-countrycode select');
   const inputField = document.querySelector('.field-registeredmobilenumber input');
-  inputField.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
+  const validateInput = () => {
+    const countryCodeValue = countryCode.value.replace(/[^a-zA-Z0-9]/g, '');
+    let validFirstDigits;
+    if (countryCodeValue === '91') {
+      validFirstDigits = ['5', '6', '7', '8', '9'];
+      inputField.setAttribute('maxlength', '10');
+    } else {
+      validFirstDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+      inputField.setAttribute('maxlength', '15');
+    }
+    validatePhoneNumber(inputField, validFirstDigits);
+  };
+  countryCode.addEventListener('input', validateInput);
+  inputField.addEventListener('input', validateInput);
 };
 
 /**
@@ -182,7 +195,6 @@ const consent2RequestProductTxtConfig = {
 linkModalFunction(consent2RequestProductTxtConfig);
 
 setTimeout(() => {
-  addGaps('.field-pan.char-gap-4 input');
   addMobileValidation();
 }, 1200);
 
