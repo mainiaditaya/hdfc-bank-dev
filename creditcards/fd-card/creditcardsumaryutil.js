@@ -29,7 +29,7 @@ const creditCardSummary = (globals) => {
     return acc;
   }, []);
 
-  importData({ items: formattedFDs }, tqSummarySection?.tqSelectedFDs?.selectedFdsRepeatable?.$qualifiedName);
+  importData(formattedFDs, tqSummarySection?.tqSelectedFDs?.selectedFdsRepeatable?.$qualifiedName);
 };
 
 export default creditCardSummary;
