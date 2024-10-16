@@ -8,6 +8,11 @@ const data = {
     error: '',
     linkPosition: 'Form',
   },
+  'select fd': {
+    linkType: 'button',
+    linkName: 'Select FD',
+    linkPosition: 'Form',
+  },
   'check offers': {
     linkType: 'button',
     linkName: 'Check Offers',

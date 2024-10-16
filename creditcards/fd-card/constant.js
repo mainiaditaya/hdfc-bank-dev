@@ -96,7 +96,7 @@ const ANALYTICS = {
     },
     selectFd: {
       type: 'click',
-      name: 'Select FD',
+      name: 'select fd',
       pageName: 'Select FD',
       journeyState: 'CUSTOMER_LEAD_QUALIFIED',
       nextPage: 'reviewDetails',

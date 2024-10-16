@@ -58,7 +58,7 @@ const sendSubmitClickEvent = (eventType, formData, journeyState, digitalData) =>
     case 'submitOtp':
       digitalData.event.status = 1;
       _satellite.track('submit');
-      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName);
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName, ANALYTICS.event.submitOtp.nextPage);
       break;
     case 'selectCustomerId':
       digitalData.event.status = '';
