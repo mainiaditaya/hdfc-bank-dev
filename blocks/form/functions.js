@@ -5,6 +5,7 @@ export const formIdPathMapping = {
   '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
   '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro-idcomm':'../../../liabilities/nre-Nro/nre-nro.js',
   '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro2': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
+  '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro2test': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
 };
 
 

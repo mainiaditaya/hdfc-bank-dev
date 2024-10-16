@@ -61,8 +61,15 @@ formRuntime.hideLoader = (typeof window !== 'undefined') ? hideLoaderGif : false
  */
 const maskedEmail = (email) => {
   const [localPart, domain] = email.split('@');
+  let maskedLocalPart;
 
-  const maskedLocalPart = `${localPart.substring(0, 2)}****${localPart[localPart.length - 1]}`;
+  if (localPart.length === 1) {
+    maskedLocalPart = '****';
+  } else if (localPart.length < 5) {
+    maskedLocalPart = `${localPart.slice(0, localPart.length - 2)}****${localPart.slice(-1)}`;
+  } else {
+    maskedLocalPart = `${localPart.slice(0, 3)}****${localPart.slice(-1)}`;
+  }
 
   return `${maskedLocalPart}@${domain}`;
 };
@@ -259,6 +266,14 @@ function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
   globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)} & email ID ${maskedEmail(email)}.` });
 }
 
+const addClassInBody = () => {
+  const aemForm = document.querySelector('form[data-rules="true"]');
+
+  if (aemForm) {
+    document.body.classList.add('wizardPanelBody');
+  }
+};
+
 /**
  * validates the otp
  * @param {object} mobileNumber
@@ -280,6 +295,8 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
       referenceNumber: referenceNumber ?? '',
     },
   };
+
+  addClassInBody();
 
   const path = urlPath(ENDPOINTS.otpValidationFatca);
   formRuntime?.otpValLoader();
@@ -335,19 +352,59 @@ function prefillCustomerDetails(response, globals) {
     singleAccount,
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount;
 
+  const {
+    personalDetails,
+    fatcaDetails,
+    financialDetails,
+    nomineeDetails,
+  } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
+
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
 
   const setFormValue = (field, value) => {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-
+  // not getting txtPermadrAdd1
   setFormValue(customerName, response.customerShortName);
-  setFormValue(accountNumber, response.accountNumber);
-  setFormValue(customerID, response.customerId);
-  setFormValue(singleAccount.accountType, response.prodTypeDesc);
-  setFormValue(singleAccount.branch, response.branchName);
-  setFormValue(singleAccount.ifsc, response.ifscCode);
+  setFormValue(customerID, maskNumber(response.customerId, 4));
+  setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
+  setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
+  setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].prodTypeDesc);
+  setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
+  setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
+  setFormValue(personalDetails.emailID, response.refCustEmail);
+  setFormValue(personalDetails.fullName, response.customerFullName);
+  setFormValue(personalDetails.mobileNumber, response.rmPhoneNo);
+  setFormValue(personalDetails.pan, response.refCustItNum);
+  setFormValue(personalDetails.telephoneNumber, response.refCustTelex);
+  setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1} ${response.txtCustadrAdd2} ${response.txtCustadrAdd3} ${response.namCustadrCity} ${response.namCustadrState} ${response.namCustadrCntry} ${response.txtCustadrZip}`);
+  setFormValue(personalDetails.permanentAddress, `${response.txtPermadrAdd1} ${response.txtPermadrAdd2} ${response.txtPermadrAdd3} ${response.namPermadrCity} ${response.namPermadrState} ${response.namPermadrCntry} ${response.txtPermadrZip}`);
+  setFormValue(fatcaDetails.nationality, response.txtCustNATNLTY);
+  setFormValue(fatcaDetails.countryTaxResidence, response.customerFATCADtlsDTO[0].codTaxCntry1);
+  setFormValue(fatcaDetails.taxIdNumber, response.customerFATCADtlsDTO[0].tinNo1);
+  setFormValue(fatcaDetails.addressForTaxPurpose, response.customerFATCADtlsDTO[0].typAddrTax1);
+  setFormValue(fatcaDetails.cityOfBirth, response.customerFATCADtlsDTO[0].namCityBirth);
+  setFormValue(fatcaDetails.countryOfBirth, response.customerFATCADtlsDTO[0].codCntryBirth);
+  setFormValue(fatcaDetails.fathersName, response.customerFATCADtlsDTO[0].namCustFather);
+  setFormValue(fatcaDetails.mothersName, response.namMotherMaiden);
+  setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namSpouseCust);
+  setFormValue(fatcaDetails.taxIdType, response.customerFATCADtlsDTO[0].typTinNo1);
+  setFormValue(financialDetails.sourceOfFunds, response.customerAMLDetailsDTO[0].incomeSource);
+  setFormValue(financialDetails.occupation, response.customerFATCADtlsDTO[0].txtCustOccuptn);
+  setFormValue(financialDetails.employeerName, response.customerFATCADtlsDTO[0].namCustEmp);
+  setFormValue(financialDetails.selfEmployedProfessional, response.customerAMLDetailsDTO[0].txtProfessionDesc);
+  setFormValue(financialDetails.selfEmployedSince, response.customerAMLDetailsDTO[0].selfEmpFrom);
+  setFormValue(financialDetails.dateOfIncorporation, response.datIncorporated);
+  setFormValue(financialDetails.natureOfBusiness, response.customerAMLDetailsDTO[0].natureOfBus);
+  setFormValue(financialDetails.typeOfCompoanyFirm, response.customerAMLDetailsDTO[0].typCompany);
+  setFormValue(financialDetails.residenceType, response.customerAMLDetailsDTO[0].typResidence);
+  setFormValue(financialDetails.currencyName, response.customerAMLDetailsDTO[0].namCcy);
+  setFormValue(financialDetails.grossAnnualIncome, response.customerAMLDetailsDTO[0].annualTurnover);
+  setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
+  setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[0].nomineeName);
+  setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[0].nomineeDOB);
+  setFormValue(nomineeDetails.relation, response.customerAccountDetailsDTO[0].nomineeName);
 }
 
 /**

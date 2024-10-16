@@ -1,5 +1,25 @@
 @import url("../../styles/color-palette.css");
 
+.wizardPanelBody.nre {
+  & .cmp-container-container {
+    display: none;
+
+    &~.form-container {
+      width: 100%;
+      max-width: inherit !important;
+    }
+  }
+
+  & header {
+    height: 100px !important;
+
+    &~main {
+      overflow: initial;
+    }
+  }
+}
+
+
 .nre {
   main {
     display: flex;
@@ -15,29 +35,47 @@
     .field-consentsfragmentnrenro .checkbox-wrapper.field-checkboxconsent1label {
       flex-wrap: wrap;
 
+      @media (320px <=width <=480px) {
+        margin-bottom: 10px !important;
+      }
+
       .field-description {
         margin-top: -7px;
         margin-bottom: 5px;
         line-height: 24px;
         font-weight: 400;
-        color: #e22853;
+        color: var(--color-input-text-msg-error);
       }
     }
 
     .field-consentsfragmentnrenro .checkbox-wrapper input[type="checkbox"] {
       border-radius: 5px;
+      border: 2px solid #ddd;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      padding: 0;
+
+
+      &:checked {
+        background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
+        border: none;
+        cursor: pointer;
+      }
     }
 
-    .cmp-container-container {
-      width: 44%;
+    &>.cmp-container-container {
       background-color: white !important;
+      flex: 0 0 34%;
+      display: initial;
     }
 
-    .form form p {
+    .form form .field-letsgetstarted p {
       font-size: 28px !important;
       line-height: 36px;
       font-weight: 600;
       color: var(--color-interface-background-quaternary) !important;
+      margin-bottom: 0;
     }
 
     .form form .plain-text-wrapper.field-letsgetstarted p {
@@ -73,7 +111,7 @@
       font-size: 20px !important;
       color: rgb(17, 24, 39);
       letter-spacing: 6px;
-      border-color: #D2D5DB;
+      border-color: var(--color-interface-border-secondary);
       margin-bottom: 0;
 
       &:focus-visible {
@@ -96,18 +134,23 @@
     }
 
     .form form .field-wrapper .button-wrapper {
-      margin: 0 !important;
+      /* margin: 0 !important; */
       text-align: left;
       position: relative;
       width: 272px;
+
+      @media (320px <=width <=991px) {
+        width: 100% !important;
+      }
     }
 
-    .form form .field-wrapper .button-wrapper::after {
+    .form form .field-wrapper .button-wrapper.field-submitotp::after {
       content: url("../../icons/Arrow.png");
       position: absolute;
       right: 27%;
       top: 10px;
     }
+
 
     .form form .panel-wrapper.field-stepstofollowfragment {
       .field-stepstofollowtitle p {
@@ -126,20 +169,45 @@
         column-gap: 72px !important;
         text-align: center;
       }
+
+      @media (768px <=width <=991px) {
+        display: block;
+      }
     }
 
     .form form .panel-wrapper.field-stepstofollow p {
       font-size: 14px !important;
       line-height: 20px;
       font-weight: 400;
-      max-width: 134px !important;
+      max-width: 134px;
+
+      @media (768px <=width <=991px) {
+        max-width: initial;
+        text-align: left;
+        margin-left: 25px;
+        margin-top: 0px;
+      }
+    }
+
+    .form form .panel-wrapper.field-stepstofollow .field-step1panel p {
+      @media (768px <=width <=991px) {
+        margin-top: -5px;
+      }
     }
 
     .form form .panel-wrapper.field-loginfragmentnrenro.field-wrapper {
+
+      @media (320px <=width <=600px) {
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+
       fieldset.panel-wrapper.field-mobilepanel.field-wrapper {
+        position: relative;
+
         @media screen and (min-width: 768px) {
           padding-top: 23px;
-          border-top: 1px dotted #D2D5DB;
+          border-top: 1px dashed var(--color-interface-border-secondary);
         }
 
         @media (768px <=width <=991px) {
@@ -168,12 +236,22 @@
           margin-bottom: 40px;
           margin-top: 30px;
         }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
+        }
       }
 
       &.field-step2text {
         @media screen and (min-width: 768px) {
           margin-bottom: 40px;
           margin-top: 30px;
+        }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
         }
       }
 
@@ -182,6 +260,11 @@
           margin-bottom: 40px;
           margin-top: 30px;
         }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
+        }
       }
 
       &.field-step4text {
@@ -189,12 +272,22 @@
           margin-top: 0px;
           margin-top: 30px;
         }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
+        }
       }
 
       &.field-step5text {
         @media screen and (min-width: 768px) {
           margin-bottom: 42px;
           margin-top: 30px;
+        }
+
+        @media (768px <=width <=991px) {
+          margin-bottom: 0px;
+          margin-top: 0px;
         }
       }
     }
@@ -211,6 +304,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -15px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -226,6 +331,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -241,6 +358,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -256,6 +385,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -271,6 +412,18 @@
           top: -28px;
           left: 50px;
         }
+
+        @media (768px <=width <=991px) {
+          top: 0;
+          left: 0;
+          margin-top: -10px;
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @media (768px <=width <=991px) {
+        margin-bottom: 25px;
       }
     }
 
@@ -298,23 +451,56 @@
       display: flex;
     }
 
-    /*  div.drop-down-wrapper.field-countrycode.field-wrapper {
-      width: 100px;
-    } */
     .form .field-countrycode {
       position: relative;
+      border: 1px solid var(--color-input-border-default);
+      width: 352px;
+      border-radius: 8px;
+
+      @media (768px <=width <=991px) {
+        width: 300px;
+      }
+
+      @media (320px <=width <=480px) {
+        width: 100%;
+      }
+
+      /*  &.errorInput{
+        border: 1px solid var(--color-input-text-msg-error);
+
+        & ~ .field-registeredmobilenumber{
+          label{
+          color: var(--color-input-text-msg-error);
+        }
+        }
+  
+      }
+      
+      &.validInput{
+        border: 1px solid var(--color-action-border-primary-default);
+
+        &~.field-registeredmobilenumber{
+          label{
+          color: var(--color-action-border-primary-default);
+        }
+       }
+      } */
+
     }
 
     .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
-      width: 247px !important;
+      width: 250px !important;
       font-size: 18px !important;
       color: rgb(17, 24, 39);
       letter-spacing: 9px;
-      border-color: #D2D5DB;
+      border-color: var(--color-interface-border-secondary);
       border-left: 0;
-      padding-left: 20px;
+      padding-left: 0px;
+      margin: 0;
+      border: none;
+      background-color: transparent;
 
       &:focus-visible {
         outline: none;
@@ -326,7 +512,7 @@
       border-bottom-right-radius: 0 !important;
       /*  padding-left: 0 !important; */
       padding-right: 0 !important;
-      border-color: #D2D5DB !important;
+      border-color: var(--color-interface-border-secondary) !important;
       max-width: 75px;
       width: 75px;
       border-right: 0 !important;
@@ -337,6 +523,13 @@
       appearance: none;
       background: url('./../icons/select_arrow.png') no-repeat right center;
       background-size: 20px;
+      margin: 0;
+      position: relative;
+      border: none !important;
+
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
 
       &:focus-visible {
         outline: none;
@@ -349,8 +542,9 @@
       margin-left: 80px;
       padding-right: 5px;
       position: absolute;
-      top: 15px;
+      top: 7px;
       border-width: .5px;
+      z-index: 2;
     }
 
     .form :is([data-active="true"], [data-empty="false"], .date-wrapper):not(.field-joiningrenewalfee,
@@ -363,7 +557,8 @@
       .field-eligiblecreditlimitamount,
       .field-joiningfeeamt,
       .field-renewalfeeamt)>label {
-      margin-left: -75px;
+      margin-left: -90px;
+
     }
 
     .form.block {
@@ -379,16 +574,59 @@
       border-bottom: none !important;
       content: url("../../icons/nre_nro_desktop_banner.png");
       width: 100% !important;
-      height: 40%;
+      /* max-height: 40%; */
       margin: inherit;
     }
 
-    .field-registeredmobilenumber {
-      margin-left: -21px !important;
+    .form .field-registeredmobilenumber {
+      position: absolute;
+      left: 95px;
+
+      @media (768px <=width <=991px) {
+        left: 0;
+      }
+
+      label {
+        top: -9px;
+        margin-left: 5px;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 28px;
+        color: var(--color-interface-text-secondary);
+
+        @media (768px <=width <=991px) {
+          left: 91px;
+          top: 17px;
+        }
+      }
+
+      input[name="registeredMobileNumber"] {
+        @media (768px <=width <=991px) {
+          left: 90px;
+          top: 24px;
+          width: 210px !important;
+          position: absolute;
+        }
+      }
+
+      &[data-active="true"] {
+        label {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+        }
+      }
+    }
+
+    :is([data-active='true'], [data-empty='false'], .date-wrapper):not(.field-joiningrenewalfee)>label {
+      font-size: 14px !important;
+      font-weight: 400 !important;
+      line-height: 20px !important;
     }
 
     .form-container {
       margin: 0 !important;
+      flex: 1;
     }
 
     div.date-wrapper.field-dateofbirth.field-wrapper label {
@@ -415,11 +653,11 @@
     }
 
     div.plain-text-wrapper.field-doberrortext.field-wrapper p {
-      margin-top: -33px;
-      font-size: 14px !important;
+      margin-top: -12px;
+      font-size: 16px !important;
       line-height: 24px;
       font-weight: 400;
-      color: #e22853 !important;
+      color: var(--color-input-text-msg-error) !important;
     }
 
     div.plain-text-wrapper.field-panerrortext.field-wrapper p {
@@ -427,7 +665,7 @@
       font-size: 14px !important;
       line-height: 24px;
       font-weight: 400;
-      color: #e22853 !important;
+      color: var(--color-input-text-msg-error) !important;
     }
   }
 
@@ -444,7 +682,21 @@
       .field-numretries {
         position: absolute;
         margin-right: 100px;
-        margin-top: 7px;
+        margin-top: 0;
+      }
+    }
+
+    .field-maxattemptmessage[data-visible="true"] {
+      p {
+        font-size: 12px !important;
+        color: var(--color-input-text-msg-error) !important;
+        font-weight: 400;
+      }
+
+      &~.field-otpsubpanel {
+        .field-attempts p {
+          margin-left: 102px;
+        }
       }
     }
   }
@@ -462,11 +714,11 @@
     width: 100%;
 
     p {
-      margin-top: -33px;
+      margin-top: -12px;
       font-size: 16px !important;
       line-height: 24px;
       font-weight: 400;
-      color: #e22853 !important;
+      color: var(--color-input-text-msg-error) !important;
     }
   }
 
@@ -484,6 +736,10 @@
       max-width: 100% !important;
       grid-template-rows: auto;
       padding: 40px 40px 0 10px;
+
+      @media (320px <=width <=600px) {
+        padding: 40px 0px 0 0px;
+      }
 
       .field-otppanel {
         text-align: left;
@@ -517,16 +773,15 @@
         }
       }
 
-      .field-attempts p {
+      .field-attempts p p {
         margin-top: -7px;
-        margin-left: 132px;
         color: #6b7280 !important;
         font-size: var(--body-sm-font-size) !important;
         font-weight: 400;
 
-        @media (320px <=width <=439px) {
+        @media (320px <=width <=600px) {
           margin-left: 38px;
-          margin-top: 18px !important;
+          margin-top: -5px !important;
         }
       }
 
@@ -548,6 +803,11 @@
 
       .field-otpnumber {
         margin: -28px 0 -18px;
+        grid-column: span 12;
+
+        @media (320px <=width <=991px) {
+          grid-column: span 12;
+        }
 
         input {
           width: 100% !important;
@@ -563,9 +823,32 @@
         }
       }
 
+      .field-otpsubpanel {
+        @media (768px <=width <=991px) {
+          grid-column: span 8;
+        }
+
+        @media (320px <=width <=600px) {
+          grid-column: span 8;
+        }
+
+        .field-numretries {
+          input {
+            @media (320px <=width <=600px) {
+              margin-top: 4px !important;
+            }
+          }
+        }
+      }
+
       .field-secondspanel {
         display: flex;
         flex-direction: row;
+        grid-column: span 6;
+
+        @media (320px <=width <=600px) {
+          grid-column: span 6;
+        }
 
         .field-seconds {
           input {
@@ -575,7 +858,11 @@
             font-size: var(--body-sm-font-size) !important;
             color: var(--color-interface-background-quaternary) !important;
             font-weight: 600;
-            margin-top: 12px;
+            margin-top: 6px;
+
+            @media (320px <=width <=600px) {
+              margin-top: 3px;
+            }
           }
         }
 
@@ -588,10 +875,15 @@
         margin: 17px 0 0;
         width: fit-content;
 
+        @media (320px <=width <=600px) {
+          margin: 11px 0 0;
+        }
+
         p {
           font-size: var(--body-sm-font-size) !important;
           color: #6b7280 !important;
           padding: 0;
+          font-weight: 400;
         }
       }
 
@@ -612,18 +904,102 @@
       .field-sectext {
         width: fit-content;
         margin: 17px 0 0 -54px;
+        font-weight: 600;
+
+        @media (320px <=width <=600px) {
+          margin: 12px 0 0 -54px;
+        }
 
         p {
           font-size: var(--body-fd-sm-font-size);
         }
       }
+
+      .field-maxattemptmessage[data-visible="true"] {
+        margin-top: 15px;
+        grid-column: span 6;
+
+        @media (768px <=width <=991px) {
+          grid-column: span 6;
+          margin-top: 13px;
+        }
+
+        @media (320px <=width <=600px) {
+          grid-column: span 12;
+          margin-top: 0;
+
+          p {
+            font-size: 12px !important;
+            margin-bottom: 0;
+
+          }
+        }
+
+        p {
+          font-size: 12px;
+          font-weight: 400;
+          color: var(--color-input-text-msg-error);
+          text-align: left;
+        }
+
+        &~.field-otpsubpanel {
+          margin-top: 0;
+          grid-column: span 6;
+
+          @media (768px <=width <=991px) {
+            grid-column: span 6;
+          }
+
+          @media (320px <=width <=600px) {
+            grid-column: span 12;
+            margin-top: -20px;
+          }
+        }
+      }
     }
   }
 
-  .field-otppanel:has(.field-secondspanel:not([data-visible="false"])) {
+  .field-otppanel:has(.field-secondspanel) {
     .field-otpsubpanel {
-      grid-column: span 3;
+      grid-column: span 6;
       margin: 5px 0 0;
+
+      /*  @media (768px <=width <=991px) {
+        grid-column: span 6;
+      } 
+
+      @media (320px <=width <=600px) {
+        grid-column: span 6;
+      }*/
+
+      .field-numretries {
+        input {
+          margin-top: 7px;
+        }
+      }
+    }
+  }
+
+
+  .field-otppanel:has(.field-secondspanel) {
+    .field-otpresend {
+      margin-top: 3px;
+      grid-column: span 6;
+
+      @media (768px <=width <=991px) {
+        margin-top: 4px;
+      }
+
+      @media (320px <=width <=600px) {
+        grid-column: span 6;
+      }
+
+      &~.field-otpsubpanel {
+        @media (320px <=width <=600px) {
+          margin: -3px;
+
+        }
+      }
     }
   }
 
@@ -658,7 +1034,11 @@ header {
     picture img {
       margin-left: 55px;
 
-      @media (320px <=width <=439px) {
+      @media (768px <=width <=991px) {
+        margin-left: 20px;
+      }
+
+      @media (320px <=width <=600px) {
         margin-left: 10px;
       }
     }
@@ -675,7 +1055,6 @@ header {
   .cmp-container>div:nth-child(3) {
     position: absolute;
     width: 110px;
-    /*  right: -100px; */
     top: 0.5em;
     height: 32px;
     content: url(../icons/header-safe-secure.png);
@@ -694,8 +1073,787 @@ footer {
   }
 }
 
+/* personal details */
+main .form form .wizard.field-wizardnrenro {
+  padding: 0;
+}
 
-@media (320px <=width <=439px) {
+main .form fieldset.field-personaldetails,
+main .form fieldset.field-fatcadetails,
+main .form fieldset.field-financialdetails,
+main .form fieldset.field-nomineedetails {
+  border: 1px solid var(--color-interface-border-primary);
+  border-radius: 20px;
+  padding-bottom: 30px;
+
+  legend {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+    letter-spacing: -0.02em;
+    color: var(--color-interface-text-primary);
+    padding: 15px 30px;
+    background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-bottom: 0;
+    position: relative;
+    height:70px;
+    display: flex;
+    align-items: center;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 30px;
+      width: 26px;
+      height: 30px;
+      background: url("../icons/accordian-arrow-up.png") no-repeat;
+      transition: 0.4s;
+      background-size: contain;
+    }
+
+    &.accordion-collapse {
+      border-radius: 15px;
+      &::after {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &:has(legend.accordion-collapse) {
+    padding-bottom: 0;
+  }
+
+  & .text-wrapper.field-wrapper, & .multiline-wrapper {
+    padding: 20px 30px;
+  }
+
+  .multiline-wrapper{
+    position: relative;
+    label{
+      margin: 2px 0 0 0;
+      padding: 0;
+    }
+    textarea{
+      border: none;
+      background: none;
+      margin: 0;
+      padding: 0;
+      width: 100% !important;
+      height: auto !important;
+      font-size: 18px;
+      line-height: 28px;
+      font-weight: 500;
+      color: var(--color-interface-background-quaternary);
+      position: absolute;
+      resize: none;
+
+      &:focus-visible {
+        outline: none;
+      }
+    }
+  }
+
+}
+
+main .form fieldset.field-nomineedetails .field-wrapper {
+  legend.field-label {
+    display: none;
+  }
+
+  .plain-text-wrapper {
+    padding: 20px 20px 0 20px;
+
+    p {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-interface-text-primary);
+    }
+  }
+
+  &~.plain-text-wrapper {
+    display: none;
+  }
+}
+
+main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
+  margin: 0;
+  font-size: 14px;
+  color: #6B7280;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+main .form form {
+
+  .field-wizardnrenro,
+  .field-wizardpanel {
+    .wizard-menu-items {
+      height: 84px;
+      border-radius: 20px;
+      border: 1px solid #ECEDF3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 0;
+      margin-top: -50px;
+      background: #fff;
+      gap: 25px;
+
+      @media (min-width: 768px) {
+        gap: 80px;
+        margin-top: -70px;
+      }
+
+      @media (min-width: 992px) {
+        gap: 80px;
+        margin-top: -84px;
+      }
+
+      .wizard-menu-item {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: var(--color-interface-text-primary);
+        position: relative;
+
+        @media (min-width: 768px) {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 28px;
+        }
+
+        @media (min-width: 992px) {
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 28px;
+        }
+
+        &:first-child {
+          &::before {
+            background: url('../icons/step_select_account-select.png') no-repeat center center;
+            border-color: var(--color-action-border-primary-default);
+          }
+
+          &.wizard-menu-active-item {
+            color: var(--color-interface-icon-highlight);
+            font-weight: 600;
+
+            &::before {
+              background: var(--color-input-border-focus) url('../icons/step_select_account.png') no-repeat center center;
+              border: 2px solid #c6d4ff;
+            }
+          }
+        }
+
+        &:nth-child(2) {
+          &::before {
+            background: url('../icons/step-confirm-details.png') no-repeat center center;
+            /* border: 2px solid #c6d4ff; */
+          }
+
+          &.wizard-menu-active-item {
+            &::before {
+              background: var(--color-input-border-focus) url('../icons/step-confirm-details-select.png') no-repeat center center;
+            }
+          }
+        }
+
+        &:nth-child(3) {
+          &::before {
+            background: url('../icons/step-verify.png') no-repeat center center;
+          }
+
+          &::after {
+            display: none;
+          }
+        }
+
+        &::before {
+          border: 1.5px solid var(--color-interface-border-secondary);
+          border-radius: 15px;
+          color: transparent;
+        }
+
+        &::after {
+          content: '';
+          border-top: 3px solid var(--color-interface-border-primary);
+          height: 0px;
+          width: 40px;
+          position: absolute;
+          top: 18px;
+          right: -58px;
+        }
+
+      }
+    }
+
+    .field-confirmdetails {
+      margin-top: 20px;
+
+      &>.field-label {
+        font-size: 28px;
+        font-weight: 600;
+        line-height: 36px;
+        color: var(--color-interface-text-primary);
+        margin-bottom: 35px;
+        display: block;
+      }
+    }
+
+    .wizard-button-wrapper {
+      display: none !important;
+    }
+  }
+
+  /* select account screen */
+
+  .field-selectaccount {
+
+    .multiline-wrapper{
+      position: relative;
+      height: 70px;
+
+      label{
+        margin-top: 2px;
+        padding: 0;
+        margin-left: 0 !important;
+      }
+      textarea{
+        border: none;
+        background: none;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        height: auto !important;
+        font-size: 18px;
+        line-height: 28px;
+        font-weight: 500;
+        color: var(--color-interface-background-quaternary);
+        min-height: auto !important;
+       /*  position: absolute; */
+        resize: none;
+
+        &:focus-visible {
+          outline: none;
+        }
+      }
+    }
+    .field-customername.field-wrapper.text-wrapper {
+      display: flex;
+      margin-top: 20px;
+
+      .field-label,
+      input[type="text"] {
+        margin: 0;
+        font-size: 20px !important;
+        line-height: 28px !important;
+        font-weight: 600 !important;
+        color: var(--color-interface-text-primary);
+        transform: none;
+        position: inherit;
+        padding-left: 0;
+        height: auto;
+
+        @media (min-width: 768px) {
+          font-size: 24px;
+          line-height: 32px;
+        }
+
+        @media (min-width: 992px) {
+          font-size: 28px;
+          line-height: 36px;
+        }
+      }
+
+      input[type="text"] {
+        padding: 2px 0 0 5px;
+        height: auto;
+        border: none;
+        margin-top: -10px;
+
+        @media (min-width: 768px) {
+          margin-top: 0;
+        }
+
+
+        &:focus-visible {
+          outline: none;
+        }
+      }
+
+      &~.plain-text-wrapper p {
+        color: var(--color-input-text-primary) !important;
+        font-size: 12px !important;
+        line-height: 20px;
+        font-weight: 400;
+        margin-top: -5px;
+        margin-bottom: 30px;
+
+        @media (min-width: 768px) {
+          font-size: 14px !important;
+          line-height: 20px;
+          margin-top: -20px;
+        }
+
+        @media (min-width: 992px) {
+          font-size: 16px !important;
+          line-height: 24px;
+          font-weight: 400;
+        }
+      }
+    }
+
+    .field-wrapper.text-wrapper {
+
+      &.field-customerid,
+      &.field-accountnumber,
+      &.field-accounttype,
+      &.field-ifsc,
+      &.field-branch {
+        height: 70px;
+      }
+
+      @media (min-width: 768px) {
+        font-size: 14px !important;
+        line-height: 20px;
+        margin-top: -20px;
+      }
+
+      @media (min-width: 992px) {
+        font-size: 16px !important;
+        line-height: 24px;
+        font-weight: 400;
+      }
+
+      .field-label {
+        margin: 0;
+        padding: 0;
+        transition: none;
+        position: inherit;
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: 400;
+        color: var(--color-interface-text-secondary);
+        transform: none;
+        display: block;
+
+        @media (min-width: 768px) {
+          font-size: 14px;
+        }
+      }
+
+      input {
+        border: none;
+        background: none;
+        margin: 0;
+        padding: 0;
+        width: auto;
+        height: auto;
+        font-size: 18px;
+        line-height: 28px;
+        font-weight: 500;
+        color: var(--color-interface-background-quaternary);
+
+        position: absolute;
+
+        &:focus-visible {
+          outline: none;
+        }
+      }
+
+      &[data-active="true"] {
+        label {
+          margin: 0;
+          transform: none;
+        }
+      }
+    }
+   
+
+    /* second block multipleAccounts  */
+    .field-multipleaccounts {
+      border: 1px dashed var(--color-interface-border-secondary);
+    }
+
+    .field-nro-account-type-pannel {
+      border-top: 1px dashed var(--color-interface-border-secondary);
+      /* margin-top: 30px; */
+      padding-top: 30px;
+
+      .plain-text-wrapper {
+        h3 {
+          margin-top: 0;
+          font-size: 28px;
+          font-weight: 600;
+          line-height: 36px;
+          color: var(--color-interface-text-primary);
+        }
+      }
+    }
+
+    .field-elitesavingsaccountpanel,
+    .field-regularsavingsaccountpanel,
+    .field-currentaccountpanel {
+      border: 1px solid #D2D5DB;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px !important;
+      position: relative;
+      display: initial;
+
+      @media (min-width: 768px) {
+        margin-bottom: 0;
+      }
+
+      &.active {
+        background-color: var(--color-interface-background-quinary);
+        border: 1px solid var(--color-action-border-primary-hover);
+      }
+      &:has(input[type="checkbox"]:checked) {
+        background-color: var(--color-interface-background-quinary);
+        border: 1px solid var(--color-action-border-primary-hover);       
+      }
+
+    }
+
+    .field-elitesavingsaccount.checkbox-wrapper,
+    .field-regularsavingsaccount.checkbox-wrapper,
+    .field-currentaccount.checkbox-wrapper {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+
+      & .field-label {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 600;
+        color: var(--color-interface-text-primary);
+        max-width: 80%;
+      }
+
+      & input[type="checkbox"] {
+        border-radius: 100%;
+        border: 1px solid var(--color-interface-border-secondary);
+        appearance: none;
+        -webkit-appearance: none;
+        outline: none;
+        padding: 0;
+        width: 24px !important;
+        height: 24px !important;
+
+        &:checked {
+          cursor: pointer;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid var(--color-interface-icon-highlight);
+
+          &::before {
+            content: '';
+            border-radius: 100%;
+            width: 12px !important;
+            height: 12px !important;
+            background-color: var(--color-interface-icon-highlight);
+            position: absolute;
+          }
+        }
+      }
+
+      &~.plain-text-wrapper {
+        /*  border: 1px solid red;
+         display: flex; */
+
+        p ul {
+
+          margin: 0;
+          border-top: 1px dashed var(--color-interface-border-secondary);
+          padding: 30px 0 0 20px;
+
+          @media (min-width: 900px) {
+            max-width: 80%;
+          }
+
+          li {
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: var(--color-input-text-primary);
+
+            a{
+              color: var(--color-input-text-primary);
+              text-decoration: underline;
+              font-weight: 400;
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  /* confirm details screen */
+
+  .field-confirmdetails {
+
+    .field-confirmdetailsaccordion {
+      .text-wrapper.field-wrapper,
+      .multiline-wrapper {
+        height: 70px;
+        
+        &>label.field-label {
+          margin: 0;
+          padding: 0;
+          transition: none;
+          position: inherit;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 400;
+          color: var(--color-interface-text-secondary);
+          transform: none;
+          display: block;
+        }
+
+        input {
+          border: none;
+          background: none;
+          margin: 0;
+          padding: 0;
+          width: auto;
+          height: auto;
+          font-size: 18px !important;
+          line-height: 28px;
+          font-weight: 500;
+          color: var(--color-interface-background-quaternary);
+          margin-top: -2px;
+          position: absolute;
+
+          &:focus-visible {
+            outline: none;
+          }
+        }
+
+        &[data-active="true"] {
+          label {
+            margin: 0;
+            transform: none;
+          }
+        }
+      }
+    }
+
+    .field-needbankhelp {
+      margin-top: 20px;
+
+      .field-bankusetoggle {
+        display: flex;
+        align-items: center !important;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+
+        label {
+          font-size: 28px;
+          font-weight: 600;
+          line-height: 36px;
+          color: var(--color-interface-text-primary);
+          flex-basis: initial;
+        }
+
+        input[type="checkbox"] {
+          width: 45px !important;
+          height: 28px !important;
+          padding: 0;
+          box-sizing: content-box;
+          border-radius: 16px;
+          background-color: var(--color-interface-icon-highlight);
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          cursor: pointer;
+          position: relative;
+          transition: background-color 0.3s, background-position 0.3s;
+        }
+
+        input[type="checkbox"]::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 4px;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: white;
+          transform: translateY(-50%);
+          transition: transform 0.3s;
+        }
+
+        input[type="checkbox"]:checked::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 4px;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: white;
+          transform: translateY(-50%) translateX(17px);
+          transition: transform 0.3s;
+        }
+
+
+      }
+
+      .field-mainbankusepanel{
+      
+      .field-lgcode,
+      .field-lccode {
+        position: relative;
+        grid-column: span 6 !important;
+
+        label.field-label {
+          margin: 0 0 0 15px;
+          top: 20px;
+        }
+
+        input {
+          border: 1px solid var(--color-interface-border-secondary);
+          margin-bottom: 0;
+
+          &:focus-visible {
+            outline: none;
+          }
+        }
+
+        &[data-active="true"] {
+          label.field-label {
+            margin: 2px 0 0 10px;
+          }
+        }
+      }
+    }
+
+      .field-confirmdetailsconsent1,
+      .field-confirmdetailsconsent2 {
+        margin-top: 0;
+
+        label.field-label,
+        label.field-label p {
+          font-size: 14px;
+          font-weight: 400;
+          color: var(--color-input-text-primary);
+          margin-bottom: 0;
+        }
+
+        input[type="checkbox"] {
+          border-radius: 5px;
+          border: 2px solid #ddd;
+          appearance: none;
+          -webkit-appearance: none;
+          outline: none;
+          padding: 0;
+
+
+          &:checked {
+            background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
+            border: none;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .field-confirmdetailsconsent2 {
+        margin-top: -10px;
+      }   
+
+      .field-resetallbtn {
+        width: auto;
+        text-align: right;
+
+        .button{
+          background: none;
+          color: var(--color-action-background-primary-default);
+          max-width: fit-content;
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 24px;
+          height: auto;
+        }
+      }
+    
+    }
+    .field-confirmbutton{
+      margin-top: 10px;
+    }
+  }
+
+  /* error page */
+  .field-errorpanel {
+    .field-errorresults {
+      .field-itsnotyoupanel {
+        .image-wrapper {
+          &::before {
+            content: '';
+            background: url('../icons/can-not-open-account-icon.png') no-repeat center center;
+            width: 182px;
+            height: 156px;
+            display: flex;
+            margin: 30px auto;
+          }
+        }
+
+        .plain-text-wrapper:nth-child(3) p {
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 32px;
+          color: var(--color-interface-text-primary);
+          text-align: center;
+        }
+
+        .plain-text-wrapper:nth-child(4) p {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+          color: var(--color-input-text-primary);
+          text-align: center;
+        }
+
+        .plain-text-wrapper:nth-child(5) p {
+          font-size: 20px;
+          font-weight: 500;
+          line-height: 28px;
+          color: var(--color-input-text-primary);
+          text-align: center;
+          margin-bottom: 0;
+        }
+
+        .plain-text-wrapper:nth-child(6) {
+          border: 1px solid var(--color-interface-border-primary);
+          padding: 10px 20px;
+          border-radius: 24px;
+          margin: 0 auto;
+
+          p {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            color: var(--color-interface-text-primary);
+
+            a {
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (320px <=width <=600px) {
   .nre {
     main {
       flex-direction: column;
@@ -728,9 +1886,9 @@ footer {
         width: 330px;
       }
 
-      .form form .field-wrapper .button-wrapper {
+      .form form .field-wrapper .button-wrapper.field-submitotp {
         width: 100%;
-        margin-top: 10px !important;
+        margin-top: 20px !important;
       }
 
       .form form .panel-wrapper.field-stepstofollow fieldset {
@@ -738,10 +1896,10 @@ footer {
         flex-direction: row;
       }
 
-      div.plain-text-wrapper.field-registermobilenumbererror {
+      /*  div.plain-text-wrapper.field-registermobilenumbererror {
         margin-top: 98px;
         margin-left: -391px;
-      }
+      } */
 
       div.plain-text-wrapper.field-doberrortext.field-wrapper,
       div.plain-text-wrapper.field-panerrortext.field-wrapper {
@@ -790,22 +1948,27 @@ footer {
       }
 
       .form form .field-wrapper.col-6.field-mobilepanel {
-        flex-direction: row;
+        margin-bottom: 20px;
       }
 
-      .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
-        margin-top: 7px;
-        width: 300px !important;
+      /* .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
+        margin-top: 20px !important;
+      } */
+
+      .field-pan {
+        @media (320px <=width <=439px) {
+          margin-top: 25px !important;
+        }
       }
 
       input[name="pan"] {
         width: 100% !important;
         max-width: 100% !important;
-        margin-top: 24px !important;
       }
 
-      .cmp-container-wrapper {
-        content: url("../../icons/nre_mobile_page_banner.png");
+      .cmp-container-container {
+        width: 100% !important;
+        content: url("../../icons/nre_mobile_page_banner.png") !important;
       }
 
       .form form .panel-wrapper.field-stepstofollowfragment {
@@ -833,7 +1996,7 @@ footer {
         position: relative;
 
         div.image-wrapper.field-wrapper {
-          @media (320px <=width <=439px) {
+          @media (320px <=width <=600px) {
             margin-top: 50px;
             margin-right: 0;
             margin-left: 10px;
@@ -906,12 +2069,40 @@ footer {
           margin-left: 10px;
         }
       }
+
+      .wizard-menu-item {
+        &::before {
+          border: 1.5px solid var(--color-interface-border-secondary);
+          border-radius: 15px;
+          color: transparent;
+        }
+      }
+
+      .wizard-menu-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-width: 21%;
+
+        &::before {
+          display: flex !important;
+          margin-right: 0 !important;
+          width: 32px !important;
+          height: 32px !important;
+        }
+
+        &::after {
+          right: -25px !important;
+        }
+      }
     }
 
     header {
       & .cmp-container {
         div:nth-child(1) {
           text-align: left !important;
+          position: initial;
         }
       }
 
@@ -1001,10 +2192,10 @@ footer {
         grid-column: span 6 !important;
       }
 
-      .field-registeredmobilenumber {
+      /*     .field-registeredmobilenumber {
         grid-column: span 6 !important;
         margin-left: -292px !important;
-      }
+      } */
 
       .form .field-registeredmobilenumber input[name="registeredMobileNumber"] {
         width: 221px !important;
@@ -1036,7 +2227,7 @@ footer {
     }
 
     .cmp-container>div:nth-child(3) {
-      right: 10px;
+      right: 30px;
       display: block;
     }
   }
