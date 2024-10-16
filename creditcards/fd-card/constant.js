@@ -101,6 +101,13 @@ const ANALYTICS = {
       journeyState: 'CUSTOMER_LEAD_QUALIFIED',
       nextPage: 'reviewDetails',
     },
+    reviewDetailsBack: {
+      type: 'click',
+      name: 'review details back',
+      pageName: 'Select FD',
+      journeyState: 'CUSTOMER_LEAD_QUALIFIED',
+      nextPage: 'reviewDetails',
+    },
     reviewDetails: {
       type: 'click',
       name: 'Select FD',

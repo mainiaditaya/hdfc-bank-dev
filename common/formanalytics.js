@@ -56,8 +56,18 @@ const getValidationMethod = (formContext) => {
   return '';
 };
 
+async function hashPhoneNumber(phoneNumber) {
+  const encoder = new TextEncoder();
+  const rawdata = encoder.encode(phoneNumber);
+  const hash = await crypto.subtle.digest('SHA-256', rawdata);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 export {
   setAnalyticClickGenericProps,
   setAnalyticPageLoadProps,
   getValidationMethod,
+  hashPhoneNumber,
 };

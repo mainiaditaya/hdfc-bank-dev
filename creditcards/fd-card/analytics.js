@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { ANALYTICS_PAGE_LOAD_OBJECT, ANALYTICS_CLICK_OBJECT, PAGE_NAME } from '../../common/analyticsConstants.js';
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import { setAnalyticPageLoadProps, setAnalyticClickGenericProps } from '../../common/formanalytics.js';
+import { setAnalyticPageLoadProps, setAnalyticClickGenericProps, hashPhoneNumber } from '../../common/formanalytics.js';
 import { createDeepCopyFromBlueprint, santizedFormDataWithContext } from '../../common/formutils.js';
 import { ANALYTICS } from './constant.js';
 
@@ -41,7 +41,7 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
  * @param {string} journeyState
  * @param {object} digitalData
  */
-const sendSubmitClickEvent = (eventType, formData, journeyState, digitalData) => {
+const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalData) => {
   formData.etbFlowSelected = 'on';
   setAnalyticClickGenericProps(ANALYTICS.event[eventType].name, ANALYTICS.event[eventType].type, formData, journeyState, digitalData, ANALYTICS.formName);
   digitalData.form.name = ANALYTICS.formName;
@@ -51,7 +51,7 @@ const sendSubmitClickEvent = (eventType, formData, journeyState, digitalData) =>
     case 'getOtp':
       digitalData.event.status = '';
       digitalData.event.validationMethod = (formData.form.login.panDobSelection === '0') ? 'DOB' : 'PAN';
-      digitalData.event.phone = formData.form.login.registeredMobileNumber;
+      digitalData.event.phone = await hashPhoneNumber(formData.form.login.registeredMobileNumber);
       _satellite.track('submit');
       sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName, ANALYTICS.event.getOtp.nextPage);
       break;
@@ -66,8 +66,10 @@ const sendSubmitClickEvent = (eventType, formData, journeyState, digitalData) =>
       sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName);
       break;
     case 'selectFd':
-      digitalData.formDetails.FDSelected = '';
-      digitalData.card.newLimit = '';
+      digitalData.formDetails.FDSelected = formData.FDlienCard.fdNumberSelection
+        .filter((fd) => fd.fdAccSelect === 'on')
+        .map((fd) => fd.fdNumber);
+      digitalData.card.newLimit = formData.maxCreditLimit;
       _satellite.track('submit');
       sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName);
       break;
