@@ -180,6 +180,7 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
       getEmail: 'Y',
     },
   };
+
   const path = urlPath(ENDPOINTS.customerOtpGen);
   formRuntime?.getOtpLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
@@ -266,14 +267,6 @@ function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
   globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)} & email ID ${maskedEmail(email)}.` });
 }
 
-const addClassInBody = () => {
-  const aemForm = document.querySelector('form[data-rules="true"]');
-
-  if (aemForm) {
-    document.body.classList.add('wizardPanelBody');
-  }
-};
-
 /**
  * validates the otp
  * @param {object} mobileNumber
@@ -295,8 +288,6 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
       referenceNumber: referenceNumber ?? '',
     },
   };
-
-  addClassInBody();
 
   const path = urlPath(ENDPOINTS.otpValidationFatca);
   formRuntime?.otpValLoader();
@@ -726,6 +717,15 @@ const nreNroPageRedirected = (aadhar, idCom) => {
 // Currently nreNroPageRedirected is being called from the setTimeOut. When idcomredirection is set from forms, we can call this from here
 // nreNroPageRedirected(aadharRedirect, idComRedirect);
 
+const addPageNameClassInBody = (pageName) => {
+  if (pageName === 'Get_OTP_Page' || pageName === 'Submit_OTP') {
+    document.body.classList.add('errorPageBody');
+  }
+  if (pageName === 'Select_Account') {
+    document.body.classList.add('wizardPanelBody');
+  }
+};
+
 const switchWizard = () => moveWizardView('wizardNreNro', 'confirmDetails');
 
 setTimeout(async function(globals) {
@@ -754,4 +754,5 @@ export {
   validFDPan,
   switchWizard,
   setupBankUseSection,
+  addPageNameClassInBody,
 };
