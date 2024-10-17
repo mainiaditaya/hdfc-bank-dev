@@ -243,7 +243,8 @@ const successPannelMethod = async (data, stateInfoData) => {
   }
   currentFormContext.action = 'confirmation';
   currentFormContext.pageGotRedirected = true;
-  Promise.resolve(sendPageloadEvent('CONFIRMATION_JOURNEY_STATE', stateInfoData, 'CONFIRMATION_Page_name'));
+
+  Promise.resolve(sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETE', stateInfoData, 'CONFIRMATION_Page_name'));
   const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
   const leadProfileId = stateInfoData.leadProifileId;
   const journeyId = stateInfoData.currentFormContext.journeyID;
