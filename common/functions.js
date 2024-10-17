@@ -212,10 +212,10 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
       },
     },
   };
-
   const path = urlPath(ENDPOINTS.aadharInit);
   let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
   const decodedData = decodeURIComponent(escape(atob(finalPayload)));
+
   const response = fetchJsonResponse(path, jsonObj, 'POST');
   response
     .then((res) => {

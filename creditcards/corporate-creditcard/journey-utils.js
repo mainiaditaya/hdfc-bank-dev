@@ -31,6 +31,7 @@ function isValidJson(str) {
    * @param {string} visitMode - The visit mode (e.g., "online", "offline").
    * @param {string} journeyAbbreviation - The abbreviation for the journey.
    * @param {string} channel - The channel through which the journey is initiated test cache clear.
+
    * @param {object} globals
    */
 function createJourneyId(visitMode, journeyAbbreviation, channel, globals) {
