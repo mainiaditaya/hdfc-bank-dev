@@ -168,6 +168,7 @@ const bindCustomerDetails = async (globals) => {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
   setFormValue(personalDetails.fullName, customerInfo.customerFullName);
+  setFormValue(personalDetails.firstName, customerInfo.customerFullName);
   setFormValue(personalDetails.gender, GENDER_MAP[customerInfo.genderDescription]);
   if (customerInfo.datBirthCust) { setFormValue(personalDetails.dateOfBirthPersonalDetails, customerInfo.datBirthCust); }
   if (customerInfo.refCustItNum) {
@@ -274,6 +275,8 @@ const bindCustomerDetails = async (globals) => {
     CURRENT_FORM_CONTEXT.editFlags.nameOnCard = false;
     if (hasNoMiddleOrLastName) {
       globals.functions.setProperty(personalDetails.fathersFullName, { visible: true });
+      globals.functions.setProperty(personalDetails.firstName, { visible: true });
+      globals.functions.setProperty(personalDetails.fullName, { visible: false });
     }
 
     initializeNameOnCardDdOptions(globals, personalDetails, customerFirstName, customerMiddleName, customerLastName);
@@ -463,7 +466,7 @@ const fathersNameChangeHandler = (globals) => {
   const { nameOnCard, nameOnCardDD } = personalDetails;
   globals.functions.setProperty(nameOnCard, { visible: nameOnCardVisible });
   globals.functions.setProperty(nameOnCardDD, { visible: !nameOnCardVisible });
-
+  globals.functions.setProperty(personalDetails.fullName, { value: customerInfo.customerFullName });
   CURRENT_FORM_CONTEXT.editFlags.nameOnCard = nameOnCardVisible;
 
   if (nameOnCardVisible) {
