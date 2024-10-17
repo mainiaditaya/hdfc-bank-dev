@@ -288,7 +288,7 @@ const pincodeChangeHandler = (pincode, globals) => {
 const checkModeFd = (globals) => {
   const formData = globals.functions.exportData();
   const { authmode: idcomVisit, visitType: aadhaarVisit } = formData?.queryParams || {};
-  const { addressDeclarationPanel } = globals.form;
+  const { addressDeclarationPanel, resultPanel } = globals.form;
   if (!idcomVisit && !aadhaarVisit) return;
 
   const { bannerImagePanel, loginMainPanel } = globals.form;
@@ -297,8 +297,17 @@ const checkModeFd = (globals) => {
   creditCardSummary(globals);
 
   if (idcomVisit) {
-    executeInterfacePostRedirect('idCom', true, globals);
-    return;
+    if (globals?.functions?.exportData()?.queryParams?.errorCode === FD_CONSTANT.IDCOM.response.sessionExpired.errorCode) {
+      const { errorMessageText, errResDealerPanel } = resultPanel.errorResultPanel;
+      globals.functions.setProperty(resultPanel, { visible: true });
+      globals.functions.setProperty(resultPanel.errorResultPanel, { visible: true });
+      globals.functions.setProperty(errorMessageText, { value: FD_CONSTANT.ERROR_MSG.sessionExpired });
+      const arnNum = formData?.currentFormContext?.executeInterfaceResponse?.APS_APPL_REF_NUM;
+      globals.functions.setProperty(errResDealerPanel?.errResDealerText2, { value: `${FD_CONSTANT.ERROR_MSG.branchVisitWithRefNum} ${arnNum}` });
+    } else {
+      executeInterfacePostRedirect('idCom', true, globals);
+      return;
+    }
   }
 
   const aadhaarSuccess = aadhaarVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message?.toLowerCase() === 'aadhaar otp validate success';

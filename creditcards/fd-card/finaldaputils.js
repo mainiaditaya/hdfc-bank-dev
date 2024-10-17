@@ -48,7 +48,7 @@ const createDapRequestObj = (userRedirected, globals) => {
     visitType = formData?.queryParams?.authmode;
   }
   const filler2 = visitType?.toLowerCase === 'aadhaarotp' || formContextCallbackData?.selectedKyc === 'aadhaar' ? 'ADVxRRN' : '';
-  const filler3 = fetchFiller3(formData?.queryParams?.authmode);
+  const filler3 = fetchFiller3(formData?.queryParams?.authmode, formData?.queryParams?.success);
   const filler4 = fdFiller4(userRedirected, formData.currentFormContext?.mobileMatch, formContextCallbackData?.selectedKyc);
   return {
     requestString: {
@@ -83,6 +83,10 @@ const finalDap = (userRedirected, globals) => {
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsexecutefinaldap);
   const formData = globals.functions.exportData();
   const payload = createDapRequestObj(userRedirected, globals);
+  if (globals?.functions?.exportData()?.queryParams?.success === 'false') {
+    payload.requestString.filler8 = 'IDCOMFAIL';
+    payload.requestString.filler4 = 'bioKYC';
+  }
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
   const { journeyId } = formData;
