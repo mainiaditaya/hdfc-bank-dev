@@ -13,8 +13,36 @@ body.wizardPanelBody.nre {
   & header {
     height: 100px !important;
 
+    @media (768px <=width <=991px) {
+      height: 150px !important;
+    }
+
+    @media (320px <=width <=600px) {
+      height: 140px !important;
+    }
+
     &~main {
       overflow: initial;
+    }
+
+    .cmp-container>div:nth-child(1) {
+      picture img {
+        @media (768px <=width <=991px) {
+          margin-left: 5px;
+        }
+
+        @media (320px <=width <=600px) {
+          margin-left: 15px;
+          margin-top: 15px;
+        }
+      }
+    }
+
+    .cmp-container>div:nth-child(3) {
+      @media (320px <=width <=600px) {
+        right: 15px;
+        top: 11px;
+      }
     }
   }
 }
@@ -32,8 +60,75 @@ body.errorPageBody.nre {
 
 
 .nre {
+
+  header {
+    background: var(--color-interface-fd-background-primary);
+
+    .cmp-container {
+      max-width: none;
+    }
+
+    .cmp-container>div:nth-child(1) {
+      picture img {
+        margin-left: 55px;
+
+        @media (768px <=width <=991px) {
+          margin-left: 20px;
+        }
+
+        @media (320px <=width <=600px) {
+          margin-left: 10px;
+        }
+      }
+
+      @media screen and (min-width: 768px) {
+        margin-left: 20px;
+      }
+    }
+
+    .cmp-container>div:nth-child(2) {
+      display: none;
+    }
+
+    .cmp-container>div:nth-child(3) {
+      position: absolute;
+      width: 110px;
+      top: 0.5em;
+      height: 32px;
+      content: url(../icons/header-safe-secure.png);
+      padding: 0;     
+    }
+  }
+
+  footer {
+    background: var(--color-interface-fd-background-primary);
+
+    & .cmp-container {
+      div>div {
+        margin-right: -25px;
+        text-align: center;
+      }
+    }
+  }
+
   main {
     display: flex;
+
+    @media (320px <=width <=991px) {
+      height: calc(100vh - 48px);
+    }
+
+    &>.cmp-container-container {
+      background-color: white !important;
+      /*  flex: 0 0 34%; */
+      display: initial;
+      background-color: var(--color-interface-fd-background-secondary) !important;
+    }
+
+    &>.form-container {
+      margin: 0 !important;
+      flex: 1;
+    }
 
     & .field-invalid:has(.field-description) {
       input {
@@ -75,12 +170,6 @@ body.errorPageBody.nre {
       }
     }
 
-    &>.cmp-container-container {
-      background-color: white !important;
-      flex: 0 0 34%;
-      display: initial;
-      background-color: var(--color-interface-fd-background-secondary) !important;
-    }
 
     .form form .field-letsgetstarted p {
       font-size: 28px !important;
@@ -119,7 +208,7 @@ body.errorPageBody.nre {
     }
 
     .form input[name="dateOfBirth"] {
-      max-width: 320px !important;
+      max-width: 352px !important;
       font-size: 18px !important;
       font-weight: 400;
       line-height: 28px;
@@ -132,9 +221,9 @@ body.errorPageBody.nre {
         outline: none;
       }
 
-      @media (768px <=width <=991px) {
+      /*   @media (768px <=width <=991px) {
         max-width: 298px !important;
-      }
+      } */
     }
 
     .form form .panel-wrapper.field-consentsfragmentnrenro.field-wrapper p {
@@ -153,20 +242,27 @@ body.errorPageBody.nre {
       width: 272px;
 
       @media (320px <=width <=991px) {
-        width: 100% !important;
+        width: 222px;
       }
     }
 
-    .form form .field-wrapper .button-wrapper.field-submitotp {
+    .form form .field-wrapper .button-wrapper {
       .button {
         &::after {
           content: url("../../icons/Arrow.png");
           position: absolute;
-          margin-top: 1px;
+          margin-top: 2px;
+        }
+      }
+
+      &.field-otpresend {
+        .button {
+          &::after {
+            display: none;
+          }
         }
       }
     }
-
 
     .form form .panel-wrapper.field-stepstofollowfragment {
       .field-stepstofollowtitle p {
@@ -222,7 +318,7 @@ body.errorPageBody.nre {
         position: relative;
 
         @media screen and (min-width: 768px) {
-          padding-top: 23px;
+          padding-top: 30px;
           border-top: 1px dashed var(--color-interface-border-secondary);
         }
 
@@ -469,13 +565,13 @@ body.errorPageBody.nre {
 
     .form .field-countrycode {
       position: relative;
-      border: 1px solid var(--color-input-border-default);
+      border: 1px solid var(--color-interface-border-secondary);
       width: 352px;
       border-radius: 8px;
 
-      @media (768px <=width <=991px) {
+      /*    @media (768px <=width <=991px) {
         width: 300px;
-      }
+      } */
 
       @media (320px <=width <=480px) {
         width: 100%;
@@ -586,14 +682,17 @@ body.errorPageBody.nre {
 
         @media (768px <=width <=991px) {
           left: 91px;
-          top: 17px;
+          top: 22px;
         }
       }
 
       input[name="registeredMobileNumber"] {
+        color: var(--color-interface-text-primary);
+        font-weight: 500;
+
         @media (768px <=width <=991px) {
-          left: 90px;
-          top: 24px;
+          left: 95px;
+          top: 32px;
           width: 210px !important;
           position: absolute;
         }
@@ -612,11 +711,6 @@ body.errorPageBody.nre {
       font-size: 14px !important;
       font-weight: 400 !important;
       line-height: 20px !important;
-    }
-
-    .form-container {
-      margin: 0 !important;
-      flex: 1;
     }
 
     div.date-wrapper.field-dateofbirth.field-wrapper label {
@@ -657,651 +751,423 @@ body.errorPageBody.nre {
       font-weight: 400;
       color: var(--color-input-text-msg-error) !important;
     }
-  }
 
-  main .form.block .field-otppanel {
-    & .field-otpsubpanel {
-      .plain-text-wrapper {
-        width: max-content;
-      }
-    }
-  }
 
-  main .form.block .field-otppanel {
-    & .field-otpsubpanel {
-      .field-numretries {
-        position: absolute;
-        margin-right: 100px;
-        margin-top: 0;
-      }
-    }
-
-    .field-maxattemptmessage[data-visible="true"] {
-      p {
-        font-size: 12px !important;
-        color: var(--color-input-text-msg-error) !important;
-        font-weight: 400;
-      }
-
-      &~.field-otpsubpanel {
-        .field-attempts p {
-          margin-left: 102px;
+    .form.block .field-otppanel {
+      & .field-otpsubpanel {
+        .plain-text-wrapper {
+          width: max-content;
         }
       }
     }
-  }
 
-  div.plain-text-wrapper.field-registermobilenumbererror {
-    display: block;
-    width: 100%;
-
-    p {
-      margin-top: -12px;
-      font-size: 16px !important;
-      line-height: 24px;
-      font-weight: 400;
-      color: var(--color-input-text-msg-error) !important;
-    }
-  }
-
-  /* OTP Panel Styling */
-
-  .field-otppanelwrapper {
-    grid-template-rows: auto auto 270px;
-
-    input[name="otpNnumber"] {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .field-otppanel {
-      max-width: 100% !important;
-      grid-template-rows: auto;
-      padding: 40px 40px 0 10px;
-
-      @media (320px <=width <=600px) {
-        padding: 40px 0px 0 0px;
-      }
-
-      .field-otppanel {
-        text-align: left;
-
-        .field-otpsubpanel {
-          width: 100%;
-          max-width: 100%;
-          margin-left: 169px;
-          margin-top: -25px;
-
-          .field-numretries {
-            margin: -6px -14px 0 -30px;
-
-            input {
-              font-size: var(--body-fd-sm-font-size) !important;
-              letter-spacing: normal !important;
-              color: var(--color-interface-text-secondary) !important;
-            }
-          }
-        }
-      }
-
-      legend {
-        text-align: left;
-
-        b {
-          color: var(--color-interface-background-quaternary);
-          font-size: 28px;
-          line-height: 36px;
-          font-weight: 600;
-        }
-      }
-
-      .field-attempts p p {
-        margin-top: -7px;
-        color: #6b7280 !important;
-        font-size: var(--body-sm-font-size) !important;
-        font-weight: 400;
-
-        @media (320px <=width <=600px) {
-          margin-left: 38px;
-          margin-top: -5px !important;
-        }
-      }
-
-      .field-otphelptext {
-        margin-top: -60px;
-        font-size: 12px !important;
-        line-height: 20px;
-        font-weight: 400;
-        text-align: left;
-
-        p {
-          color: var(--color-input-text-primary);
-          font-size: 12px !important;
-          line-height: 20px;
-          font-weight: 400;
-          display: inline-block;
-        }
-      }
-
-      .field-otpnumber {
-        margin: -28px 0 -18px;
-        grid-column: span 12;
-
-        @media (320px <=width <=991px) {
-          grid-column: span 12;
-        }
-
-        input {
-          width: 100% !important;
-          max-width: 100%;
-          letter-spacing: 65px !important;
-          height: 60px !important;
-        }
-
-        input::placeholder {
-          font-size: 36px !important;
-          letter-spacing: 51px !important;
-          color: var(--color-input-text-placeholder-default);
-        }
-      }
-
-      .field-otpsubpanel {
-        @media (768px <=width <=991px) {
-          grid-column: span 8;
-        }
-
-        @media (320px <=width <=600px) {
-          grid-column: span 8;
-        }
-
+    .form.block .field-otppanel {
+      & .field-otpsubpanel {
         .field-numretries {
-          input {
-            @media (320px <=width <=600px) {
-              margin-top: 4px !important;
-            }
-          }
-        }
-      }
-
-      .field-secondspanel {
-        display: flex;
-        flex-direction: row;
-        grid-column: span 6;
-
-        @media (320px <=width <=600px) {
-          grid-column: span 6;
-        }
-
-        .field-seconds {
-          input {
-            border: none;
-            padding-left: 0;
-            width: 55px;
-            font-size: var(--body-sm-font-size) !important;
-            color: var(--color-interface-background-quaternary) !important;
-            font-weight: 600;
-            margin-top: 6px;
-
-            @media (320px <=width <=600px) {
-              margin-top: 3px;
-            }
-          }
-        }
-
-        .field-sectext p {
-          font-size: var(--body-sm-font-size) !important;
-        }
-      }
-
-      .field-resendotplabel {
-        margin: 17px 0 0;
-        width: fit-content;
-
-        @media (320px <=width <=600px) {
-          margin: 11px 0 0;
-        }
-
-        p {
-          font-size: var(--body-sm-font-size) !important;
-          color: #6b7280 !important;
-          padding: 0;
-          font-weight: 400;
-        }
-      }
-
-      .field-seconds {
-        margin: -1px 0 0 -15px;
-        width: fit-content;
-
-        input[type="number"] {
-          border: none;
-          width: 50px;
-          margin: 0;
-          padding: 0;
-          pointer-events: none;
-          appearance: none;
-        }
-      }
-
-      .field-sectext {
-        width: fit-content;
-        margin: 17px 0 0 -54px;
-        font-weight: 600;
-
-        @media (320px <=width <=600px) {
-          margin: 12px 0 0 -54px;
-        }
-
-        p {
-          font-size: var(--body-fd-sm-font-size);
+          position: absolute;
+          margin-right: 100px;
+          margin-top: 0;
         }
       }
 
       .field-maxattemptmessage[data-visible="true"] {
-        margin-top: 15px;
-        grid-column: span 6;
-
-        @media (768px <=width <=991px) {
-          grid-column: span 6;
-          margin-top: 13px;
-        }
-
-        @media (320px <=width <=600px) {
-          grid-column: span 12;
-          margin-top: 0;
-
-          p {
-            font-size: 12px !important;
-            margin-bottom: 0;
-
-          }
-        }
-
         p {
-          font-size: 12px;
+          font-size: 12px !important;
+          color: var(--color-input-text-msg-error) !important;
           font-weight: 400;
-          color: var(--color-input-text-msg-error);
-          text-align: left;
         }
 
         &~.field-otpsubpanel {
-          margin-top: 0;
+          .field-attempts p {
+            margin-left: 102px;
+          }
+        }
+      }
+    }
+
+    div.plain-text-wrapper.field-registermobilenumbererror {
+      display: block;
+      width: 100%;
+
+      p {
+        margin-top: -12px;
+        font-size: 16px !important;
+        line-height: 24px;
+        font-weight: 400;
+        color: var(--color-input-text-msg-error) !important;
+      }
+    }
+
+    /* OTP Panel Styling */
+
+    .field-otppanelwrapper {
+      grid-template-rows: auto auto 270px;
+
+      input[name="otpNnumber"] {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .field-otppanel {
+        max-width: 100% !important;
+        grid-template-rows: auto;
+        padding: 40px 40px 0 10px;
+
+        @media (320px <=width <=600px) {
+          padding: 40px 0px 0 0px;
+        }
+
+        .field-otppanel {
+          text-align: left;
+
+          .field-otpsubpanel {
+            width: 100%;
+            max-width: 100%;
+            margin-left: 169px;
+            margin-top: -25px;
+
+            .field-numretries {
+              margin: -6px -14px 0 -30px;
+
+              input {
+                font-size: var(--body-fd-sm-font-size) !important;
+                letter-spacing: normal !important;
+                color: var(--color-interface-text-secondary) !important;
+              }
+            }
+          }
+        }
+
+        legend {
+          text-align: left;
+
+          b {
+            color: var(--color-interface-background-quaternary);
+            font-size: 28px;
+            line-height: 36px;
+            font-weight: 600;
+          }
+        }
+
+        .field-attempts p p {
+          margin-top: -7px;
+          color: #6b7280 !important;
+          font-size: var(--body-sm-font-size) !important;
+          font-weight: 400;
+
+          @media (320px <=width <=600px) {
+            margin-left: 38px;
+            margin-top: 17px !important;
+          }
+        }
+
+        .field-otphelptext {
+          margin-top: -60px;
+          font-size: 12px !important;
+          line-height: 20px;
+          font-weight: 400;
+          text-align: left;
+
+          p {
+            color: var(--color-input-text-primary);
+            font-size: 12px !important;
+            line-height: 20px;
+            font-weight: 400;
+            display: inline-block;
+          }
+        }
+
+        .field-otpnumber {
+          margin: -28px 0 -18px;
+          grid-column: span 12;
+
+          @media (320px <=width <=991px) {
+            grid-column: span 12;
+          }
+
+          input {
+            width: 100% !important;
+            max-width: 100%;
+            letter-spacing: 65px !important;
+            height: 60px !important;
+          }
+
+          input::placeholder {
+            font-size: 36px !important;
+            letter-spacing: 51px !important;
+            color: var(--color-input-text-placeholder-default);
+          }
+        }
+
+        .field-otpsubpanel {
+          @media (768px <=width <=991px) {
+            grid-column: span 8;
+          }
+
+          @media (320px <=width <=600px) {
+            grid-column: span 8;
+          }
+
+          .field-numretries {
+            input {
+              @media (320px <=width <=600px) {
+                margin-top: 4px !important;
+              }
+            }
+          }
+        }
+
+        .field-secondspanel {
+          display: flex;
+          flex-direction: row;
+          grid-column: span 6;
+
+          @media (320px <=width <=600px) {
+            grid-column: span 6;
+          }
+
+          .field-seconds {
+            input {
+              border: none;
+              padding-left: 0;
+              width: 55px;
+              font-size: var(--body-sm-font-size) !important;
+              color: var(--color-interface-background-quaternary) !important;
+              font-weight: 600;
+              margin-top: 6px;
+
+              @media (320px <=width <=600px) {
+                margin-top: 3px;
+              }
+            }
+          }
+
+          .field-sectext p {
+            font-size: var(--body-sm-font-size) !important;
+          }
+        }
+
+        .field-resendotplabel {
+          margin: 17px 0 0;
+          width: fit-content;
+
+          @media (320px <=width <=600px) {
+            margin: 15px 0 0;
+          }
+
+          p {
+            font-size: var(--body-sm-font-size) !important;
+            color: #6b7280 !important;
+            padding: 0;
+            font-weight: 400;
+          }
+        }
+
+        .field-seconds {
+          margin: -1px 0 0 -15px;
+          width: fit-content;
+
+          input[type="number"] {
+            border: none;
+            width: 50px;
+            margin: 0;
+            padding: 0;
+            pointer-events: none;
+            appearance: none;
+          }
+        }
+
+        .field-sectext {
+          width: fit-content;
+          margin: 17px 0 0 -54px;
+          font-weight: 600;
+
+          @media (320px <=width <=600px) {
+            margin: 14px 0 0 -54px;
+          }
+
+          p {
+            font-size: var(--body-fd-sm-font-size);
+          }
+        }
+
+        .field-maxattemptmessage[data-visible="true"] {
+          margin-top: 15px;
           grid-column: span 6;
 
           @media (768px <=width <=991px) {
             grid-column: span 6;
+            margin-top: 13px;
           }
 
           @media (320px <=width <=600px) {
             grid-column: span 12;
-            margin-top: -20px;
+            margin-top: 0;
+
+            p {
+              font-size: 12px !important;
+              margin-bottom: 0;
+
+            }
+          }
+
+          p {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--color-input-text-msg-error);
+            text-align: left;
+          }
+
+          &~.field-otpsubpanel {
+            margin-top: 0;
+            grid-column: span 6;
+
+            @media (768px <=width <=991px) {
+              grid-column: span 6;
+            }
+
+            @media (320px <=width <=600px) {
+              grid-column: span 12;
+              margin-top: -20px;
+            }
           }
         }
       }
     }
-  }
 
-  .field-otppanel:has(.field-secondspanel) {
-    .field-otpsubpanel {
-      grid-column: span 6;
-      margin: 5px 0 0;
-
-      .field-numretries {
-        input {
-          margin-top: 7px;
-        }
-      }
-    }
-  }
-
-
-  .field-otppanel:has(.field-secondspanel) {
-    .field-otpresend {
-      margin-top: 3px;
-      grid-column: span 6;
-
-      @media (768px <=width <=991px) {
-        margin-top: 4px;
-      }
-
-      @media (320px <=width <=600px) {
+    .field-otppanel:has(.field-secondspanel) {
+      .field-otpsubpanel {
         grid-column: span 6;
-      }
+        margin: 5px 0 0;
 
-      &~.field-otpsubpanel {
-        @media (320px <=width <=600px) {
-          margin: -3px;
-
+        .field-numretries {
+          input {
+            margin-top: 7px;
+          }
         }
       }
     }
-  }
 
-  .field-submitotp {
-    padding: 0 20px 40px;
-    margin-left: 100px;
-    margin-top: 0 !important;
-    width: 100% !important;
-    text-align: center !important;
-
-    button {
-      width: 272px;
-    }
-  }
-
-  .field-submitotp::after {
-    right: 42% !important;
-    top: 10px;
-    height: 20px;
-    width: 20px !important;
-  }
-
-
-  header {
-    background: var(--color-interface-fd-background-primary);
-
-    .cmp-container {
-      max-width: none;
-    }
-
-    .cmp-container>div:nth-child(1) {
-      picture img {
-        margin-left: 55px;
+    .field-otppanel:has(.field-secondspanel) {
+      .field-otpresend {
+        margin-top: 3px;
+        grid-column: span 6;
 
         @media (768px <=width <=991px) {
-          margin-left: 20px;
+          margin-top: 5px;
         }
 
         @media (320px <=width <=600px) {
-          margin-left: 10px;
+          grid-column: span 6;
+          margin-top: 5px !important;
+        }
+
+        &~.field-otpsubpanel {
+          @media (320px <=width <=600px) {
+            margin: -3px;
+          }
         }
       }
+    }
 
-      @media screen and (min-width: 768px) {
-        margin-left: 20px;
+    .field-submitotp {
+      padding: 0 20px 40px;
+      margin-left: 100px;
+      margin-top: 0 !important;
+      width: 100% !important;
+      text-align: center !important;
+
+      button {
+        width: 272px;
       }
     }
 
-    .cmp-container>div:nth-child(2) {
-      display: none;
+    .field-submitotp::after {
+      right: 42% !important;
+      top: 10px;
+      height: 20px;
+      width: 20px !important;
     }
 
-    .cmp-container>div:nth-child(3) {
-      position: absolute;
-      width: 110px;
-      top: 0.5em;
-      height: 32px;
-      content: url(../icons/header-safe-secure.png);
+    /* personal details */
+    .form form .wizard.field-wizardnrenro {
       padding: 0;
     }
-  }
 
-  footer {
-    background: var(--color-interface-fd-background-primary);
+    .form fieldset.field-personaldetails,
+    .form fieldset.field-fatcadetails,
+    .form fieldset.field-financialdetails,
+    .form fieldset.field-nomineedetails {
+      border: 1px solid var(--color-interface-border-primary);
+      border-radius: 15px;
+      padding-bottom: 30px;
 
-    & .cmp-container {
-      div>div {
-        margin-right: -25px;
-        text-align: center;
-      }
-    }
-  }
-
-  /* personal details */
-  main .form form .wizard.field-wizardnrenro {
-    padding: 0;
-  }
-
-  main .form fieldset.field-personaldetails,
-  main .form fieldset.field-fatcadetails,
-  main .form fieldset.field-financialdetails,
-  main .form fieldset.field-nomineedetails {
-    border: 1px solid var(--color-interface-border-primary);
-    border-radius: 15px;
-    padding-bottom: 30px;
-
-    @media (320px <=width <=439px) {
-      margin-bottom: 20px !important;
-    }
-
-    legend {
-      font-size: 24px;
-      font-weight: 600;
-      line-height: 32px;
-      letter-spacing: -0.02em;
-      color: var(--color-interface-text-primary);
-      padding: 15px 30px;
-      background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
-      margin-bottom: 0;
-      position: relative;
-      height: 70px;
-      display: flex;
-      align-items: center;
-
-      &::after {
-        content: '';
-        position: absolute;
-        right: 30px;
-        width: 22px;
-        height: 13px;
-        background: url("../icons/accordian-arrow-up.png") no-repeat top center;
-        transition: 0.4s;
-        background-size: contain;
+      @media (320px <=width <=600px) {
+        margin-bottom: 20px !important;
       }
 
-      &.accordion-collapse {
-        border-radius: 15px;
-
-        &::after {
-          transform: rotate(180deg);
-        }
-      }
-    }
-
-    &:has(legend.accordion-collapse) {
-      padding-bottom: 0;
-    }
-
-    & .text-wrapper.field-wrapper,
-    & .multiline-wrapper {
-      padding: 20px 30px;
-    }
-
-    .multiline-wrapper {
-      position: relative;
-
-      label {
-        margin: 2px 0 0 0;
-        padding: 0;
-      }
-
-      textarea {
-        border: none;
-        background: none;
-        margin: 0;
-        padding: 0;
-        width: 100% !important;
-        height: auto !important;
-        font-size: 18px;
-        line-height: 28px;
-        font-weight: 500;
-        color: var(--color-interface-background-quaternary);
-        position: absolute;
-        resize: none;
-
-        &:focus-visible {
-          outline: none;
-        }
-      }
-    }
-
-  }
-
-  main .form fieldset.field-nomineedetails .field-wrapper {
-    legend.field-label {
-      display: none;
-    }
-
-    .plain-text-wrapper {
-      padding: 20px 20px 0 20px;
-
-      p {
-        margin: 0;
-        font-size: 16px;
+      legend {
+        font-size: 24px;
         font-weight: 600;
+        line-height: 32px;
+        letter-spacing: -0.02em;
         color: var(--color-interface-text-primary);
-      }
-    }
-
-    &~.plain-text-wrapper {
-      display: none;
-    }
-  }
-
-  main .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
-    margin: 0;
-    font-size: 14px;
-    color: #6B7280;
-    line-height: 20px;
-    font-weight: 400;
-  }
-
-  main .form form {
-
-    .field-wizardnrenro,
-    .field-wizardpanel {
-      .wizard-menu-items {
-        height: 84px;
-        border-radius: 20px;
-        border: 1px solid #ECEDF3;
+        padding: 15px 30px;
+        background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        margin-bottom: 0;
+        position: relative;
+        height: 70px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        padding-bottom: 0;
-        margin-top: -50px;
-        background: #fff;
-        gap: 25px;
 
-        @media (min-width: 768px) {
-          gap: 80px;
-          margin-top: -70px;
+        @media (768px <=width <=991px) {
+          font-size: 24px;
+          line-height: 32px;
         }
 
-        @media (min-width: 992px) {
-          gap: 80px;
-          margin-top: -84px;
+        @media (320px <=width <=600px) {
+          font-size: 18px;
+          line-height: 24px;
+          padding: 15px;
         }
 
-        .wizard-menu-item {
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 20px;
-          color: var(--color-interface-text-primary);
-          position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          right: 30px;
+          width: 22px;
+          height: 13px;
+          background: url("../icons/accordian-arrow-up.png") no-repeat top center;
+          transition: 0.4s;
+          background-size: contain;
+        }
 
-          @media (min-width: 768px) {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 28px;
-          }
-
-          @media (min-width: 992px) {
-            font-size: 18px;
-            font-weight: 400;
-            line-height: 28px;
-          }
-
-          &:first-child {
-            &::before {
-              background: url('../icons/step_select_account-select.png') no-repeat center center;
-              border-color: var(--color-action-border-primary-default);
-            }
-
-            &.wizard-menu-active-item {
-              color: var(--color-interface-icon-highlight);
-              font-weight: 600;
-
-              &::before {
-                background: var(--color-input-border-focus) url('../icons/step_select_account.png') no-repeat center center;
-                border: 2px solid #c6d4ff;
-              }
-            }
-          }
-
-          &:nth-child(2) {
-            &::before {
-              background: url('../icons/step-confirm-details.png') no-repeat center center;
-            }
-
-            &.wizard-menu-active-item {
-              &::before {
-                background: var(--color-input-border-focus) url('../icons/step-confirm-details-select.png') no-repeat center center;
-              }
-            }
-          }
-
-          &:nth-child(3) {
-            &::before {
-              background: url('../icons/step-verify.png') no-repeat center center;
-            }
-
-            &::after {
-              display: none;
-            }
-          }
-
-          &::before {
-            border: 1.5px solid var(--color-interface-border-secondary);
-            border-radius: 15px;
-            color: transparent;
-          }
+        &.accordion-collapse {
+          border-radius: 15px;
 
           &::after {
-            content: '';
-            border-top: 3px solid var(--color-interface-border-primary);
-            height: 0px;
-            width: 40px;
-            position: absolute;
-            top: 18px;
-            right: -58px;
+            transform: rotate(180deg);
           }
-
         }
       }
 
-      .field-confirmdetails {
-        margin-top: 20px;
-
-        &>.field-label {
-          font-size: 28px;
-          font-weight: 600;
-          line-height: 36px;
-          color: var(--color-interface-text-primary);
-          margin-bottom: 35px;
-          display: block;
-        }
+      &:has(legend.accordion-collapse) {
+        padding-bottom: 0;
       }
 
-      .wizard-button-wrapper {
-        display: none !important;
+      & .text-wrapper.field-wrapper,
+      & .multiline-wrapper {
+        padding: 20px 30px;
       }
-    }
-
-    /* select account screen */
-
-    .field-selectaccount {
 
       .multiline-wrapper {
         position: relative;
-        height: 70px;
-        margin-top: -20px;
 
         label {
-          margin-top: 2px;
+          margin: 2px 0 0 0;
           padding: 0;
-          margin-left: 0 !important;
         }
 
         textarea {
@@ -1315,8 +1181,13 @@ body.errorPageBody.nre {
           line-height: 28px;
           font-weight: 500;
           color: var(--color-interface-background-quaternary);
-          min-height: auto !important;
+          position: absolute;
           resize: none;
+
+          @media (320px <=width <=600px) {
+            font-size: 14px;
+            line-height: 20px;
+          }
 
           &:focus-visible {
             outline: none;
@@ -1324,64 +1195,335 @@ body.errorPageBody.nre {
         }
       }
 
-      .field-customername.field-wrapper.text-wrapper {
-        display: flex;
-        margin-top: 20px;
+    }
 
-        @media (320px <=width <=439px) {
-          margin-bottom: 5px;
+    .form fieldset.field-nomineedetails .field-wrapper {
+      legend.field-label {
+        display: none;
+      }
+
+      .plain-text-wrapper {
+        padding: 20px 20px 0 20px;
+
+        p {
+          margin: 0;
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--color-interface-text-primary);
+        }
+      }
+
+      &~.plain-text-wrapper {
+        display: none;
+      }
+    }
+
+    .form fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
+      margin: 0;
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 20px;
+      font-weight: 400;
+    }
+
+    .form form {
+
+      .field-wizardnrenro,
+      .field-wizardpanel {
+
+        .field-wizardtitle {
+          position: absolute;
+          top: 10px;
+          left: 240px;
+          padding-left: 15px;
+          border-left: 1px solid var(--color-interface-fd-title-border);
+
+          p {
+            margin: 0;
+            font-size: 20px;
+            line-height: 28px;
+            font-weight: 600;
+            color: #FFFFFF;
+
+            @media (768px <=width <=991px) {
+              font-size: 18px;
+              line-height: 24px;
+            }
+
+            @media (320px <=width <=600px) {
+              font-size: 16px;
+            }
+          }
+
+          @media (768px <=width <=991px) {
+            left: 10px;
+            top: 55px;
+            border-left: none;
+          }
+
+          @media (320px <=width <=600px) {
+            left: 5px;
+            top: 55px;
+            border-left: none;
+          }
         }
 
-        .field-label,
-        input[type="text"] {
-          margin: 0;
-          font-size: 20px !important;
-          line-height: 28px !important;
-          font-weight: 600 !important;
-          color: var(--color-interface-text-primary);
-          transform: none;
-          position: inherit;
-          padding-left: 0;
-          height: auto;
+        .wizard-menu-items {
+          height: 84px;
+          border-radius: 20px;
+          border: 1px solid #ECEDF3;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding-bottom: 0;
+          margin-top: -50px;
+          background: #fff;
+          gap: 25px;
 
           @media (min-width: 768px) {
-            font-size: 24px;
-            line-height: 32px;
+            gap: 80px;
+            margin-top: -70px;
           }
 
           @media (min-width: 992px) {
+            gap: 80px;
+            margin-top: -84px;
+          }
+
+          @media (320px <=width <=600px) {
+            margin-top: -60px;
+          }
+
+          .wizard-menu-item {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            color: var(--color-interface-text-primary);
+            position: relative;
+
+            @media (min-width: 768px) {
+              font-size: 16px;
+              font-weight: 400;
+              line-height: 28px;
+            }
+
+            @media (min-width: 992px) {
+              font-size: 18px;
+              font-weight: 400;
+              line-height: 28px;
+            }
+
+            &:first-child {
+              &::before {
+                background: url('../icons/step_select_account-select.png') no-repeat center center;
+                border-color: var(--color-action-border-primary-default);
+              }
+
+              &.wizard-menu-active-item {
+                color: var(--color-interface-icon-highlight);
+                font-weight: 600;
+
+                &::before {
+                  background: var(--color-input-border-focus) url('../icons/step_select_account.png') no-repeat center center;
+                  border: 2px solid #c6d4ff;
+                }
+              }
+            }
+
+            &:nth-child(2) {
+              &::before {
+                background: url('../icons/step-confirm-details.png') no-repeat center center;
+              }
+
+              &.wizard-menu-active-item {
+                &::before {
+                  background: var(--color-input-border-focus) url('../icons/step-confirm-details-select.png') no-repeat center center;
+                }
+              }
+            }
+
+            &:nth-child(3) {
+              &::before {
+                background: url('../icons/step-verify.png') no-repeat center center;
+              }
+
+              &::after {
+                display: none;
+              }
+            }
+
+            &::before {
+              border: 1.5px solid var(--color-interface-border-secondary);
+              border-radius: 15px;
+              color: transparent;
+            }
+
+            &::after {
+              content: '';
+              border-top: 3px solid var(--color-interface-border-primary);
+              height: 0px;
+              width: 40px;
+              position: absolute;
+              top: 18px;
+              right: -58px;
+            }
+
+          }
+        }
+
+        .field-confirmdetails {
+          margin-top: 20px;
+
+          @media (320px <=width <=600px) {
+            padding-bottom: 30px;
+          }
+
+          &>.field-label {
             font-size: 28px;
+            font-weight: 600;
             line-height: 36px;
+            color: var(--color-interface-text-primary);
+            margin-bottom: 35px;
+            display: block;
+
+            @media (768px <=width <=991px) {
+              font-size: 24px;
+              line-height: 32px;
+            }
+
+            @media (320px <=width <=600px) {
+              font-size: 20px;
+              line-height: 28px;
+            }
           }
         }
 
-        input[type="text"] {
-          padding: 2px 0 0 5px;
-          height: auto;
-          border: none;
-          margin-top: -10px;
+        .wizard-button-wrapper {
+          display: none !important;
+        }
+      }
 
-          @media (320px <=width <=439px) {
-            margin-top: -1px;
+      /* select account screen */
+
+      .field-selectaccount {
+
+        @media (320px <=width <=600px) {
+          padding-bottom: 30px;
+        }
+
+        .multiline-wrapper {
+          position: relative;
+          height: 70px;
+          margin-top: -20px;
+
+          label {
+            margin-top: 2px;
+            padding: 0;
+            margin-left: 0 !important;
           }
 
-          @media (min-width: 768px) {
-            margin-top: 0;
-          }
+          textarea {
+            border: none;
+            background: none;
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            height: auto !important;
+            font-size: 18px;
+            line-height: 28px;
+            font-weight: 500;
+            color: var(--color-interface-background-quaternary);
+            min-height: auto !important;
+            resize: none;
 
-
-          &:focus-visible {
-            outline: none;
+            &:focus-visible {
+              outline: none;
+            }
           }
         }
 
-        &~.plain-text-wrapper p {
-          color: var(--color-input-text-primary) !important;
-          font-size: 12px !important;
-          line-height: 20px;
-          font-weight: 400;
-          margin-top: -5px;
-          margin-bottom: 30px;
+        .field-customername.field-wrapper.text-wrapper {
+          display: flex;
+          margin-top: 20px;
+
+          @media (320px <=width <=600px) {
+            margin-bottom: 5px;
+          }
+
+          .field-label,
+          input[type="text"] {
+            margin: 0;
+            font-size: 20px !important;
+            line-height: 28px !important;
+            font-weight: 600 !important;
+            color: var(--color-interface-text-primary);
+            transform: none;
+            position: inherit;
+            padding-left: 0;
+            height: auto;
+
+            @media (min-width: 768px) {
+              font-size: 24px;
+              line-height: 32px;
+            }
+
+            @media (min-width: 992px) {
+              font-size: 28px;
+              line-height: 36px;
+            }
+          }
+
+          input[type="text"] {
+            padding: 2px 0 0 5px;
+            height: auto;
+            border: none;
+            margin-top: -10px;
+
+            @media (320px <=width <=600px) {
+              margin-top: -1px;
+            }
+
+            @media (min-width: 768px) {
+              margin-top: 0;
+            }
+
+
+            &:focus-visible {
+              outline: none;
+            }
+          }
+
+          &~.plain-text-wrapper p {
+            color: var(--color-input-text-primary) !important;
+            font-size: 12px !important;
+            line-height: 20px;
+            font-weight: 400;
+            margin-top: -5px;
+            margin-bottom: 30px;
+
+            @media (min-width: 768px) {
+              font-size: 14px !important;
+              line-height: 20px;
+              margin-top: -20px;
+            }
+
+            @media (min-width: 992px) {
+              font-size: 16px !important;
+              line-height: 24px;
+              font-weight: 400;
+            }
+          }
+        }
+
+        .field-wrapper.text-wrapper {
+
+          &.field-customerid,
+          &.field-accountnumber,
+          &.field-accounttype,
+          &.field-ifsc,
+          &.field-branch {
+            height: 70px;
+          }
 
           @media (min-width: 768px) {
             font-size: 14px !important;
@@ -1394,223 +1536,22 @@ body.errorPageBody.nre {
             line-height: 24px;
             font-weight: 400;
           }
-        }
-      }
 
-      .field-wrapper.text-wrapper {
-
-        &.field-customerid,
-        &.field-accountnumber,
-        &.field-accounttype,
-        &.field-ifsc,
-        &.field-branch {
-          height: 70px;
-        }
-
-        @media (min-width: 768px) {
-          font-size: 14px !important;
-          line-height: 20px;
-          margin-top: -20px;
-        }
-
-        @media (min-width: 992px) {
-          font-size: 16px !important;
-          line-height: 24px;
-          font-weight: 400;
-        }
-
-        .field-label {
-          margin: 0;
-          padding: 0;
-          transition: none;
-          position: inherit;
-          font-size: 12px;
-          line-height: 20px;
-          font-weight: 400;
-          color: var(--color-interface-text-secondary);
-          transform: none;
-          display: block;
-
-          @media (min-width: 768px) {
-            font-size: 14px;
-          }
-        }
-
-        input {
-          border: none;
-          background: none;
-          margin: 0;
-          padding: 0;
-          width: auto;
-          height: auto;
-          font-size: 18px;
-          line-height: 28px;
-          font-weight: 500;
-          color: var(--color-interface-background-quaternary);
-
-          position: absolute;
-
-          &:focus-visible {
-            outline: none;
-          }
-        }
-
-        &[data-active="true"] {
-          label {
-            margin: 0;
-            transform: none;
-          }
-        }
-      }
-
-
-      /* second block multipleAccounts  */
-      .field-multipleaccounts {
-        border: 1px dashed var(--color-interface-border-secondary);
-      }
-
-      .field-nro-account-type-pannel {
-        border-top: 1px dashed var(--color-interface-border-secondary);
-        padding-top: 30px;
-
-        @media (320px <=width <=991px) {
-          display: initial;
-        }
-
-        .plain-text-wrapper {
-          h3 {
-            margin-top: 0;
-            font-size: 28px;
-            font-weight: 600;
-            line-height: 36px;
-            color: var(--color-interface-text-primary);
-          }
-        }
-      }
-
-      .field-elitesavingsaccountpanel,
-      .field-regularsavingsaccountpanel,
-      .field-currentaccountpanel {
-        border: 1px solid #D2D5DB;
-        border-radius: 20px;
-        padding: 20px;
-        margin-bottom: 20px !important;
-        position: relative;
-        display: initial;
-
-        @media (min-width: 768px) {
-          margin-bottom: 0;
-        }
-
-        &.active {
-          background-color: var(--color-interface-background-quinary);
-          border: 1px solid var(--color-action-border-primary-hover);
-        }
-
-        &:has(input[type="checkbox"]:checked) {
-          background-color: var(--color-interface-background-quinary);
-          border: 1px solid var(--color-action-border-primary-hover);
-        }
-
-      }
-
-      .field-elitesavingsaccount.checkbox-wrapper,
-      .field-regularsavingsaccount.checkbox-wrapper,
-      .field-currentaccount.checkbox-wrapper {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        margin-bottom: 20px;
-
-
-        & .field-label {
-          font-size: 20px;
-          line-height: 28px;
-          font-weight: 600;
-          color: var(--color-interface-text-primary);
-          max-width: 80%;
-        }
-
-        & input[type="checkbox"] {
-          border-radius: 100%;
-          border: 1px solid var(--color-interface-border-secondary);
-          appearance: none;
-          -webkit-appearance: none;
-          outline: none;
-          padding: 0;
-          width: 24px !important;
-          height: 24px !important;
-
-          &:checked {
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--color-interface-icon-highlight);
-
-            &::before {
-              content: '';
-              border-radius: 100%;
-              width: 12px !important;
-              height: 12px !important;
-              background-color: var(--color-interface-icon-highlight);
-              position: absolute;
-            }
-          }
-        }
-
-        &~.plain-text-wrapper {
-
-          p ul {
-
-            margin: 0;
-            border-top: 1px dashed var(--color-interface-border-secondary);
-            padding: 30px 0 0 20px;
-
-            @media (min-width: 900px) {
-              max-width: 80%;
-            }
-
-            li {
-              font-size: 16px;
-              line-height: 24px;
-              font-weight: 400;
-              color: var(--color-input-text-primary);
-
-              a {
-                color: var(--color-input-text-primary);
-                text-decoration: underline;
-                font-weight: 400;
-              }
-            }
-          }
-        }
-      }
-
-    }
-
-    /* confirm details screen */
-
-    .field-confirmdetails {
-
-      .field-confirmdetailsaccordion {
-
-        .text-wrapper.field-wrapper,
-        .multiline-wrapper {
-          height: 70px;
-
-          &>label.field-label {
+          .field-label {
             margin: 0;
             padding: 0;
             transition: none;
             position: inherit;
-            font-size: 14px;
+            font-size: 12px;
             line-height: 20px;
             font-weight: 400;
             color: var(--color-interface-text-secondary);
             transform: none;
             display: block;
+
+            @media (min-width: 768px) {
+              font-size: 14px;
+            }
           }
 
           input {
@@ -1620,15 +1561,19 @@ body.errorPageBody.nre {
             padding: 0;
             width: auto;
             height: auto;
-            font-size: 18px !important;
+            font-size: 18px;
             line-height: 28px;
             font-weight: 500;
             color: var(--color-interface-background-quaternary);
-            margin-top: -2px;
             position: absolute;
 
             &:focus-visible {
               outline: none;
+            }
+
+            @media (320px <=width <=600px) {
+              font-size: 14px;
+            line-height: 20px;
             }
           }
 
@@ -1639,84 +1584,211 @@ body.errorPageBody.nre {
             }
           }
         }
-      }
 
-      .field-needbankhelp {
-        margin-top: 20px;
 
-        .field-bankusetoggle {
-          display: flex;
-          align-items: center !important;
-          flex-direction: row-reverse;
-          justify-content: flex-end;
+        /* second block multipleAccounts  */
+        .field-multipleaccounts {
+          border: 1px dashed var(--color-interface-border-secondary);
+        }
 
-          label {
-            font-size: 28px;
-            font-weight: 600;
-            line-height: 36px;
-            color: var(--color-interface-text-primary);
-            flex-basis: initial;
+        .field-nro-account-type-pannel {
+          border-top: 1px dashed var(--color-interface-border-secondary);
+          padding-top: 30px;
+
+          @media (320px <=width <=991px) {
+            display: initial;
           }
 
-          input[type="checkbox"] {
-            width: 45px !important;
-            height: 28px !important;
-            padding: 0;
-            box-sizing: content-box;
-            border-radius: 16px;
-            background-color: var(--color-interface-icon-highlight);
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            cursor: pointer;
-            position: relative;
-            transition: background-color 0.3s, background-position 0.3s;
+          .plain-text-wrapper {
+            h3 {
+              margin-top: 0;
+              font-size: 28px;
+              font-weight: 600;
+              line-height: 36px;
+              color: var(--color-interface-text-primary);
+
+              @media (768px <=width <=991px) {
+                font-size: 24px;
+                line-height: 32px;
+                margin-bottom: 30px;
+              }
+
+              @media (320px <=width <=600px) {
+                font-size: 20px;
+                line-height: 28px;
+                margin-bottom: 30px;
+              }
+            }
+          }
+        }
+
+        .field-elitesavingsaccountpanel,
+        .field-regularsavingsaccountpanel,
+        .field-currentaccountpanel {
+          border: 1px solid #D2D5DB;
+          border-radius: 20px;
+          padding: 20px;
+          margin-bottom: 20px !important;
+          position: relative;
+          display: initial;
+
+          @media (min-width: 768px) {
+            margin-bottom: 0;
           }
 
-          input[type="checkbox"]::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 4px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            transform: translateY(-50%);
-            transition: transform 0.3s;
+          &.active {
+            background-color: var(--color-interface-background-quinary);
+            border: 1px solid var(--color-action-border-primary-hover);
           }
 
-          input[type="checkbox"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 4px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            transform: translateY(-50%) translateX(17px);
-            transition: transform 0.3s;
+          &:has(input[type="checkbox"]:checked) {
+            background-color: var(--color-interface-background-quinary);
+            border: 1px solid var(--color-action-border-primary-hover);
           }
-
 
         }
 
-        .field-mainbankusepanel {
+        .field-elitesavingsaccount.checkbox-wrapper,
+        .field-regularsavingsaccount.checkbox-wrapper,
+        .field-currentaccount.checkbox-wrapper {
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          @media (320px <=width <=600px) {
+            margin-bottom: 10px;
+          }
 
-          .field-lgcode,
-          .field-lccode {
-            position: relative;
-            grid-column: span 6 !important;
+          & .field-label {
+            font-size: 20px;
+            line-height: 28px;
+            font-weight: 600;
+            color: var(--color-interface-text-primary);
+            max-width: 80%;
 
-            label.field-label {
-              margin: 0 0 0 15px;
-              top: 20px;
+            @media (768px <=width <=991px) {
+              font-size: 18px;
+              line-height: 24px;
+            }
+
+            @media (320px <=width <=600px) {
+              font-size: 16px;
+            }
+          }
+
+          & input[type="checkbox"] {
+            border-radius: 100%;
+            border: 1px solid var(--color-interface-border-secondary);
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            padding: 0;
+            width: 24px !important;
+            height: 24px !important;
+
+            &:checked {
+              cursor: pointer;
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: 1px solid var(--color-interface-icon-highlight);
+
+              &::before {
+                content: '';
+                border-radius: 100%;
+                width: 12px !important;
+                height: 12px !important;
+                background-color: var(--color-interface-icon-highlight);
+                position: absolute;
+              }
+            }
+          }
+
+          &~.plain-text-wrapper {
+
+            p ul {
+
+              margin: 0;
+              border-top: 1px dashed var(--color-interface-border-secondary);
+              padding: 30px 0 0 20px;
+
+              @media (768px <=width <=991px) {
+                border: none;
+                padding-top: 0;
+              }
+
+              @media (min-width: 900px) {
+                max-width: 80%;
+              }
+
+              @media (320px <=width <=600px) {
+                padding-top: 10px;
+              }
+
+              li {
+                font-size: 16px;
+                line-height: 24px;
+                font-weight: 400;
+                color: var(--color-input-text-primary);
+
+                @media (320px <=width <=991px) {
+                  font-size: 12px;
+                  line-height: 20px;
+                }
+
+                a {
+                  color: var(--color-input-text-primary);
+                  text-decoration: underline;
+                  font-weight: 400;
+                }
+              }
+            }
+          }
+        }
+
+      }
+
+      /* confirm details screen */
+
+      .field-confirmdetails {
+
+        .field-confirmdetailsaccordion {
+
+          .text-wrapper.field-wrapper,
+          .multiline-wrapper {
+            height: 70px;
+
+            @media (320px <=width <=600px) {
+              height: auto;
+            }
+
+            &>label.field-label {
+              margin: 0;
+              padding: 0;
+              transition: none;
+              position: inherit;
+              font-size: 14px;
+              line-height: 20px;
+              font-weight: 400;
+              color: var(--color-interface-text-secondary);
+              transform: none;
+              display: block;
             }
 
             input {
-              border: 1px solid var(--color-interface-border-secondary);
-              margin-bottom: 0;
+              border: none;
+              background: none;
+              margin: 0;
+              padding: 0;
+              width: auto;
+              height: auto;
+              font-size: 18px !important;
+              line-height: 28px;
+              font-weight: 500;
+              color: var(--color-interface-background-quaternary);
+              margin-top: -2px;
+              position: absolute;
 
               &:focus-visible {
                 outline: none;
@@ -1724,203 +1796,405 @@ body.errorPageBody.nre {
             }
 
             &[data-active="true"] {
-              label.field-label {
-                margin: 2px 0 0 10px;
+              label {
+                margin: 0;
+                transform: none;
               }
             }
           }
         }
 
-        .field-confirmdetailsconsent1,
-        .field-confirmdetailsconsent2 {
-          margin-top: 0;
+        .field-needbankhelp {
+          margin-top: 10px;
 
-          label.field-label,
-          label.field-label p {
-            font-size: 14px;
-            font-weight: 400;
-            color: var(--color-input-text-primary);
-            margin-bottom: 0;
+          .field-bankusetoggle {
+            display: flex;
+            align-items: center;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+
+            @media (320px <=width <=600px) {
+              margin-bottom: 20px;
+              align-items: flex-start;
+            }
+
+            label {
+              font-size: 28px;
+              font-weight: 600;
+              line-height: 36px;
+              color: var(--color-interface-text-primary);
+              flex-basis: initial;
+
+              @media (768px <=width <=991px) {
+                font-size: 24px;
+                line-height: 28px;
+              }
+
+              @media (320px <=width <=600px) {
+                font-size: 18px;
+                line-height: 24px;
+              }
+            }
+
+            input[type="checkbox"] {
+              width: 45px !important;
+              height: 28px !important;
+              padding: 0;
+              box-sizing: content-box;
+              border-radius: 16px;
+              background-color: var(--color-interface-icon-highlight);
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              appearance: none;
+              cursor: pointer;
+              position: relative;
+              transition: background-color 0.3s, background-position 0.3s;
+              margin-top: 5px;
+            }
+
+            input[type="checkbox"]::after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 4px;
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background: white;
+              transform: translateY(-50%);
+              transition: transform 0.3s;
+            }
+
+            input[type="checkbox"]:checked::after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 4px;
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background: white;
+              transform: translateY(-50%) translateX(17px);
+              transition: transform 0.3s;
+            }
+
+
           }
 
-          input[type="checkbox"] {
-            border-radius: 5px;
-            border: 2px solid #ddd;
-            appearance: none;
-            -webkit-appearance: none;
-            outline: none;
-            padding: 0;
+          .field-mainbankusepanel {
 
+            .field-lgcode,
+            .field-lccode {
+              position: relative;
+              grid-column: span 6 !important;
 
-            &:checked {
-              background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
-              border: none;
-              cursor: pointer;
+              label.field-label {
+                margin: 0 0 0 15px;
+                top: 20px;
+                color: var(--color-input-text-disabled);
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 400;
+              }
+
+              input {
+                border: 1px solid var(--color-interface-border-secondary);
+                margin-bottom: 0;
+                color: var(--color-input-text-disabled);
+                font-size: 18px;
+                line-height: 28px;
+                font-weight: 400;
+
+                &:focus-visible {
+                  outline: none;
+                }
+              }
+
+              &[data-active="true"] {
+                label.field-label {
+                  margin: 2px 0 0 10px;
+                }
+              }
             }
           }
-        }
 
-        .field-confirmdetailsconsent2 {
-          margin-top: -10px;
-        }
+          .field-confirmdetailsconsent1,
+          .field-confirmdetailsconsent2 {
+            margin-top: 0;
 
-        .field-resetallbtn {
-          width: auto;
-          text-align: right;
+            label.field-label,
+            label.field-label p {
+              font-size: 14px;
+              font-weight: 400;
+              color: var(--color-input-text-primary);
+              margin-bottom: 0;
+            }
 
-          .button {
-            background: none;
-            color: var(--color-action-background-primary-default);
-            max-width: fit-content;
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 24px;
-            height: auto;
+            input[type="checkbox"] {
+              border-radius: 5px;
+              border: 2px solid #ddd;
+              appearance: none;
+              -webkit-appearance: none;
+              outline: none;
+              padding: 0;
+
+
+              &:checked {
+                background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
+                border: none;
+                cursor: pointer;
+              }
+            }
           }
+
+          .field-confirmdetailsconsent2 {
+            margin-top: -10px;
+
+            @media (320px <=width <=600px) {
+              margin-top: 10px;
+            }
+          }
+
+          .field-resetallbtn {
+            width: auto;
+            text-align: right;
+
+            .button {
+              background: none;
+              color: var(--color-action-background-primary-default);
+              max-width: fit-content;
+              font-size: 16px;
+              font-weight: 600;
+              line-height: 24px;
+              height: auto;
+
+              &::after {
+                display: none;
+              }
+            }
+          }
+
         }
 
+        .field-confirmbutton {
+          margin-top: 10px;
+        }
       }
 
-      .field-confirmbutton {
-        margin-top: 10px;
-      }
     }
 
-
-    /* error page */
-    .field-errorpanel {
-      .field-errorresults {
-
-        .field-itsnotyoupanel {
-          .image-wrapper {
-            &::before {
-              content: '';
-              background: url('../icons/can-not-open-account-icon.png') no-repeat center center;
-              width: 182px;
-              height: 156px;
-              display: flex;
-              margin: 0px auto;
-            }
+    /* consent dialog */
+    .modal {
+      .modal-content {
+        .panel-wrapper {
+          @media (320px <=width <=600px) {
+            padding: 0;
           }
+        }
+      }
+    }
+  }
 
-          .plain-text-wrapper:nth-child(3) p {
-            font-size: 24px;
-            font-weight: 600;
-            line-height: 32px;
-            color: var(--color-interface-text-primary);
-            text-align: center;
-          }
+  /* main tag close */
 
-          .plain-text-wrapper:nth-child(4) p {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 24px;
-            color: var(--color-input-text-primary);
-            text-align: center;
-          }
+  /* error page */
+  &.errorPageBody .field-errorpanel {
+    @media (320px <=width <=991px) {
+      display: flex;
+      align-items: center;
+      height: 90vh;
+    }
 
-          .plain-text-wrapper:nth-child(5) p {
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 28px;
-            color: var(--color-input-text-primary);
-            text-align: center;
-            margin-bottom: 0;
-          }
+    @media (320px <=width <=600px) {
+      justify-content: center;
+    }
 
-          .plain-text-wrapper:nth-child(6) {
-            border: 1px solid var(--color-interface-border-primary);
-            padding: 10px 20px;
-            border-radius: 24px;
-            margin: 0 auto;
+    @media (768px <=width <=991px) {
+      padding-top: 10%;
+    }
 
-            p {
-              font-size: 16px;
-              font-weight: 400;
-              line-height: 24px;
-              color: var(--color-interface-text-primary);
-              margin-bottom: 0;
+    .field-errorresults {
 
-              a {
-                font-weight: 700;
-              }
+      .field-itsnotyoupanel {
+
+        .image-wrapper {
+          &::before {
+            content: '';
+            background: url('../icons/can-not-open-account-icon.png') no-repeat center center;
+            width: 182px;
+            height: 156px;
+            display: flex;
+            margin: 0px auto;
+
+            @media (320px <=width <=600px) {
+              width: 129px;
+              height: 111px;
             }
           }
         }
 
-        /* incorrect OTP enter */
-        .field-incorrectotppanel {
-          .image-wrapper {
-            &::before {
-              content: '';
-              background: url('../icons/incorrect-otp.png') no-repeat center center;
-              width: 176px;
-              height: 145px;
-              margin: 0 auto 10px auto;
-              display: flex;
-            }
+        .plain-text-wrapper:nth-child(3) p {
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 32px;
+          color: var(--color-interface-text-primary);
+          text-align: center;
+
+          @media (320px <=width <=600px) {
+            margin-top: 20px;
+          }
+        }
+
+        .plain-text-wrapper:nth-child(4) p {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+          color: var(--color-input-text-primary);
+          text-align: center;
+        }
+
+        .plain-text-wrapper:nth-child(5) p {
+          font-size: 20px;
+          font-weight: 500;
+          line-height: 28px;
+          color: var(--color-input-text-primary);
+          text-align: center;
+          margin-bottom: 0;
+
+          @media (320px <=width <=600px) {
+            display: none;
+          }
+        }
+
+        .plain-text-wrapper:nth-child(6) {
+          border: 1px solid var(--color-interface-border-primary);
+          padding: 10px 20px;
+          border-radius: 24px;
+          margin: 0 auto;
+
+          @media (320px <=width <=600px) {
+            margin-top: 20px;
           }
 
-          .plain-text-wrapper:nth-child(3) p {
-            font-size: 24px;
-            font-weight: 600;
-            line-height: 32px;
-            color: var(--color-interface-text-primary);
-            text-align: center;
-          }
-
-
-          .plain-text-wrapper:nth-child(4) p,
-          .plain-text-wrapper:nth-child(5) p {
+          p {
             font-size: 16px;
             font-weight: 400;
             line-height: 24px;
-            color: var(--color-input-text-primary);
-            text-align: center;
-            max-width: 70%;
-            margin: 0px auto;
-          }
-
-          .plain-text-wrapper:nth-child(4) p {
-            margin: -20px auto;
-          }
-
-          .plain-text-wrapper:nth-child(5) p {
-            width: 60%;
-            margin-top: 20px;
+            color: var(--color-interface-text-primary);
+            margin-bottom: 0;
 
             a {
-              font-weight: 600;
-              text-decoration: underline;
+              font-weight: 700;
             }
           }
+        }
+      }
 
-          .plain-text-wrapper:nth-child(6) p {
+      /* incorrect OTP enter */
+      .field-incorrectotppanel {
+        .image-wrapper {
+          &::before {
+            content: '';
+            background: url('../icons/incorrect-otp.png') no-repeat center center;
+            width: 176px;
+            height: 145px;
+            margin: 0 auto 10px auto;
+            display: flex;
+          }
+        }
+
+        .plain-text-wrapper:nth-child(3) p {
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 32px;
+          color: var(--color-interface-text-primary);
+          text-align: center;
+
+          @media (320px <=width <=600px) {
+            margin-top: 30px;
+          }
+        }
+
+
+        .plain-text-wrapper:nth-child(4) p,
+        .plain-text-wrapper:nth-child(5) p {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+          color: var(--color-input-text-primary);
+          text-align: center;
+          max-width: 70%;
+          margin: 0px auto;
+
+          @media (768px <=width <=991px) {
+            max-width: 88%;
+          }
+
+          @media (320px <=width <=600px) {
+            max-width: initial;
+          }
+        }
+
+        .plain-text-wrapper:nth-child(4) p {
+          margin: -20px auto;
+
+          @media (320px <=width <=600px) {
+            margin: 0 auto;
+
+          }
+        }
+
+        .plain-text-wrapper:nth-child(5) p {
+          width: 60%;
+          margin-top: 20px;
+
+          @media (768px <=width <=991px) {
+            width: 88%;
+          }
+
+          @media (320px <=width <=600px) {
+            width: initial;
+          }
+
+          a {
+            font-weight: 600;
+            text-decoration: underline;
+          }
+        }
+
+        .plain-text-wrapper:nth-child(6) p {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+          color: var(--color-input-text-primary);
+          text-align: center;
+          margin-bottom: 0;
+
+          @media (320px <=width <=600px) {
+            display: none;
+          }
+        }
+
+        .plain-text-wrapper:nth-child(7) {
+          border: 1px solid var(--color-interface-border-primary);
+          padding: 10px 30px;
+          border-radius: 24px;
+          margin: 0 auto;
+          background: url("../icons/arrow-right.png") no-repeat 99% center;
+
+          @media (320px <=width <=600px) {
+            display: none;
+          }
+
+          p {
             font-size: 16px;
             font-weight: 400;
             line-height: 24px;
-            color: var(--color-input-text-primary);
-            text-align: center;
+            color: var(--color-interface-text-primary);
             margin-bottom: 0;
-          }
 
-          .plain-text-wrapper:nth-child(7) {
-            border: 1px solid var(--color-interface-border-primary);
-            padding: 10px 30px;
-            border-radius: 24px;
-            margin: 0 auto;
-            background: url("../icons/arrow-right.png") no-repeat 99% center;
-
-            p {
-              font-size: 16px;
-              font-weight: 400;
-              line-height: 24px;
-              color: var(--color-interface-text-primary);
-              margin-bottom: 0;
-
-              a {
-                font-weight: 700;
-              }
+            a {
+              font-weight: 700;
             }
           }
         }
@@ -1928,6 +2202,8 @@ body.errorPageBody.nre {
     }
   }
 }
+
+/* .nre close */
 
 @media (320px <=width <=600px) {
   .nre {
@@ -1947,11 +2223,11 @@ body.errorPageBody.nre {
         display: block;
       }
 
-      .form form p {
+      /*  .form form p {
         font-size: 20px !important;
         line-height: 28px;
       }
-
+ */
       .form input[name="dateOfBirth"] {
         width: 100% !important;
         max-width: 100% !important;
@@ -2023,7 +2299,7 @@ body.errorPageBody.nre {
       }
 
       .field-pan {
-        @media (320px <=width <=439px) {
+        @media (320px <=width <=600px) {
           margin-top: 25px !important;
         }
       }
@@ -2229,14 +2505,14 @@ body.errorPageBody.nre {
       }
     }
 
-    footer {
+    /*  footer {
       .cmp-container {
         div>div {
           margin-left: 257px;
           text-align: center;
         }
       }
-    }
+    } */
   }
 }
 
@@ -2291,6 +2567,10 @@ body.errorPageBody.nre {
     .cmp-container>div:nth-child(3) {
       right: 30px;
       display: block;
+
+      @media (768px <=width <=991px) {
+        right: 22px;
+      }
     }
   }
 }
