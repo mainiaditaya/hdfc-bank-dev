@@ -1,6 +1,4 @@
-
-//check
-
+// check
 
 import {
   createButton, createFieldWrapper, createLabel, getHTMLRenderType,
@@ -443,6 +441,12 @@ function cleanUp(content) {
   });
 }
 
+function addMapping(formDef) {
+  formDef.properties = formDef.properties || {};
+  formDef.properties.placementFieldMappings = '[{"fieldId":"textinput-e5794cf2a0","fieldName":"discountMSG","placementId":"dps:offer-placement:1959366aeeac9793"}]';
+  formDef.properties.offerCharacteristicMapping = '[{"fieldId":"numberinput-57112102a5","fieldName":"discount","offerAttributeId":"discount"}]';
+}
+
 export default async function decorate(block) {
   let container = block.querySelector('a[href$=".json"]');
   let formDef;
@@ -462,6 +466,7 @@ export default async function decorate(block) {
   let rules = true;
   let form;
   if (formDef) {
+    addMapping(formDef);
     formDef.action = getSubmitBaseUrl() + (formDef.action || '');
     if (isDocumentBasedForm(formDef)) {
       const transform = new DocBasedFormToAF();
