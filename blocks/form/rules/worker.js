@@ -1,3 +1,4 @@
+import { fieldChanged } from './index.js';
 export default async function initializeRuleEngineWorker(formDef, renderHTMLForm) {
   if (typeof Worker === 'undefined') {
     const ruleEngine = await import('./model/afb-runtime.js');
@@ -16,8 +17,16 @@ export default async function initializeRuleEngineWorker(formDef, renderHTMLForm
     myWorker.addEventListener('message', async (e) => {
       if (e.data.name === 'init') {
         form = await renderHTMLForm(e.data.payload, e.data.payload.data);
+        myWorker.postMessage({
+          name:'initComplete'
+        }); // informing the worker that html form rendition is complete
         // myWorker.terminate();
         resolve(form);
+      }
+      
+      if (e.data.name === 'fieldChanged') {
+        const { generateFormRendition } = await import('../form.js');
+        await fieldChanged(e.data.payload, form, generateFormRendition);
       }
     });
   });

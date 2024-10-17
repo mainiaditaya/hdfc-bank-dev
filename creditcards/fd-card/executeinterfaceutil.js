@@ -1,8 +1,10 @@
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
-import { urlPath } from '../../common/formutils.js';
+import { parseCustomerAddress, pincodeCheck, urlPath } from '../../common/formutils.js';
 import { fetchJsonResponse, restAPICall } from '../../common/makeRestAPI.js';
 import { confirmCardState } from './confirmcardutil.js';
-import { JOURNEY_NAME, FD_ENDPOINTS, EMPLOYEE_MAP } from './constant.js';
+import {
+  JOURNEY_NAME, FD_ENDPOINTS, EMPLOYEE_MAP, MIN_ADDRESS_LENGTH,
+} from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
 import { SELECT_FD_STATE } from './fddetailsutil.js';
@@ -173,7 +175,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
  * @param {object} globals - The global context object.
  * @returns {Promise<object>} A promise that resolves to the response of the interface request.
  */
-const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
+const executeInterface = async (payload, showLoader, hideLoader, source, globals) => {
   const { functions, form } = globals;
   let executeInterfaceRequest = CURRENT_FORM_CONTEXT?.executeInterfaceRequest || functions.exportData()?.currentFormContext?.executeInterfaceRequest || '';
 
@@ -224,6 +226,33 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
       executeInterfaceRequest.requestString.ekycMobileMatch = form?.selectKYCOptionsPanel?.aadhaarMobileMatch?._data?.$_value;
       if (aadhaarAddressDeclaration.aadharAddressConfirmation?._data?.$_value === '1') {
         executeInterfaceRequest.requestString.etbAddressEditDeclaration = new Date().toISOString();
+      }
+      const formData = globals.functions.exportData();
+      const {
+        Address1, Address2, Address3, City, State, Zipcode,
+      } = formData?.aadhaar_otp_val_data.result || {};
+
+      const isValidAadhaarPincode = await pincodeCheck(Zipcode, City, State);
+      let aadhaarAddress = '';
+      let parsedAadhaarAddress = '';
+      if (isValidAadhaarPincode.result === 'true') {
+        aadhaarAddress = [Address1, Address2, Address3].filter(Boolean).join(' ');
+        if (aadhaarAddress.length < MIN_ADDRESS_LENGTH) {
+          aadhaarAddress.Address2 = City;
+        } else {
+          parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
+          const [permanentAddress1, permanentAddress2, permanentAddress3] = parsedAadhaarAddress;
+
+          Object.assign(executeInterfaceRequest.requestString, {
+            permanentAddress1,
+            permanentAddress2,
+            permanentAddress3,
+            permanentCity: City,
+            permanentState: State,
+            permanentZipCode: Zipcode,
+            perAddressType: '4',
+          });
+        }
       }
     }
   }
