@@ -463,7 +463,6 @@ const fathersNameChangeHandler = (globals) => {
   const { nameOnCard, nameOnCardDD } = personalDetails;
   globals.functions.setProperty(nameOnCard, { visible: nameOnCardVisible });
   globals.functions.setProperty(nameOnCardDD, { visible: !nameOnCardVisible });
-  globals.functions.setProperty(personalDetails.fullName, { value: [customerInfo.customerFirstName, middleName, lastName].filter(Boolean).join(' ') });
 
   CURRENT_FORM_CONTEXT.editFlags.nameOnCard = nameOnCardVisible;
 
