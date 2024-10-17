@@ -213,7 +213,6 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
       },
     },
   };
-
   const path = urlPath(ENDPOINTS.aadharInit);
   const finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
   const decodedData = decodeURIComponent(escape(atob(finalPayload)));

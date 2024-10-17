@@ -19,8 +19,8 @@ function isLocalDev() {
 }
 
 if (isLocalDev()) {
-  submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
-}
+  submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
+} 
 
 export function setSubmitBaseUrl(url) {
   submitBaseUrl = url;
