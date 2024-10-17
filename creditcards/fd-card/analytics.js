@@ -20,8 +20,8 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
     case 'selectCustomerId':
       digitalData.formDetails.eligibleCustomerID = '';
       break;
-    case 'reviewDetails':
-      digitalData.formDetails.eligibleCustomerID = '';
+    case 'selectCard':
+      digitalData.card.eligibleCard = '';
       break;
     default:
       // do nothing
@@ -63,7 +63,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
     case 'selectCustomerId':
       digitalData.event.status = '';
       _satellite.track('submit');
-      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName);
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName, ANALYTICS.event.selectCustomerId.nextPage);
       break;
     case 'selectFd':
       digitalData.formDetails.FDSelected = formData.FDlienCard.fdNumberSelection
@@ -71,7 +71,38 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
         .map((fd) => fd.fdNumber);
       digitalData.card.newLimit = formData.maxCreditLimit;
       _satellite.track('submit');
-      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName);
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
+      break;
+    case 'reviewDetailsBack':
+      digitalData.event.status = '1';
+      _satellite.track('submit');
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
+      break;
+    case 'reviewDetails':
+      digitalData.user.gender = (formData.FDlienCard.gender === '1') ? 'Male' : 'Female';
+      digitalData.user.email = formData.emailID;
+      digitalData.assisted = {};
+      digitalData.assisted.flag = formData.employeeAssistanceToggle;
+      digitalData.formDetails.pincode = formData.newCurentAddressPin;
+      digitalData.formDetails.city = formData.newCurentAddressCity;
+      digitalData.formDetails.state = formData.newCurentAddressState;
+      digitalData.formDetails.employmentType = formData.employmentType;
+      digitalData.formDetails.AnnualIncome = formData.FDlienCard.annualIncome;
+      digitalData.assisted.flag = formData.employeeAssistanceToggle;
+      digitalData.assisted.lg = formData.lgCode;
+      digitalData.assisted.lc = formData.lc1Code;
+      digitalData.assisted.channel = formData.channel;
+      digitalData.assisted.dsa = formData.dsaCode;
+      digitalData.assisted.sm = formData.smCode;
+      digitalData.assisted.lc2 = formData.lc2Code;
+      _satellite.track('submit');
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.reviewDetails.nextPage);
+      break;
+    case 'selectCard':
+      digitalData.card.selectedCard = '1';
+      digitalData.card.annualFee = '';
+      _satellite.track('submit');
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
       break;
     default:
   }

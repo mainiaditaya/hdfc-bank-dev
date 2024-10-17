@@ -104,16 +104,23 @@ const ANALYTICS = {
     reviewDetailsBack: {
       type: 'click',
       name: 'review details back',
-      pageName: 'Select FD',
+      pageName: 'Review Details',
       journeyState: 'CUSTOMER_LEAD_QUALIFIED',
-      nextPage: 'reviewDetails',
+      nextPage: 'selectFD',
     },
     reviewDetails: {
       type: 'click',
-      name: 'Select FD',
-      pageName: 'Select FD',
+      name: 'review details',
+      pageName: 'Review Details',
       journeyState: '',
-      nextPage: 'reviewDetails',
+      nextPage: 'selectCard',
+    },
+    selectCard: {
+      type: 'click',
+      name: 'select card',
+      pageName: 'Select Card',
+      journeyState: '',
+      nextPage: 'selectCard',
     },
   },
 };
