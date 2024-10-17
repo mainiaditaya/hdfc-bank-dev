@@ -1,7 +1,7 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { displayLoader, hideLoaderGif, setArnNumberInResult } from '../domutils/domutils.js';
 import { invokeJourneyDropOffByJourneyId } from './common-journeyutil.js';
-import { ANALYTICS } from './constant.js';
+import { ANALYTICS, IDCOM } from './constant.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
 import sendFDAnalytics from './analytics.js';
 
@@ -104,7 +104,7 @@ const pageRedirected = () => {
     journeyData.journeyName = ANALYTICS.JOURNEY_NAME;
     sendFDAnalytics(formLoad.type, formLoad.pageName, {}, formLoad.journeyState, journeyData);
   }
-  if (delayedUtilState.idComRedirect) {
+  if (delayedUtilState.idComRedirect && delayedUtilState?.errorCode !== IDCOM.response.sessionExpired.errorCode) {
     displayLoader();
     setTimeout(() => {
       finalDapFetchRes();
@@ -117,6 +117,7 @@ const pageRedirected = () => {
   delayedUtilState.visitType = searchParam.get('visitType');
   delayedUtilState.authMode = searchParam.get('authmode');
   delayedUtilState.journeyId = searchParam.get('journeyId');
+  delayedUtilState.errorCode = searchParam.get('errorCode');
   delayedUtilState.aadharRedirect = delayedUtilState.visitType && (delayedUtilState.visitType === 'EKYC_AUTH');
   delayedUtilState.idComRedirect = delayedUtilState.authMode && ((delayedUtilState.authMode === 'DebitCard') || (delayedUtilState.authMode === 'CreditCard')); // debit card or credit card flow
   pageRedirected();

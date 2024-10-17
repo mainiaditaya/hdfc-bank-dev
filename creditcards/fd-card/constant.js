@@ -20,6 +20,8 @@ const ERROR_MSG = {
   matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
   shorAddressNote: 'Note: Address is too short, please enter valid address.',
   invalidPinNote: 'Note: Pincode is not matching with the city in address as per the bank records, please provide correct address.',
+  sessionExpired: 'Session expired',
+  branchVisitWithRefNum: 'Visit your nearest dealership or HDFC Bank branch with reference number:',
 };
 
 const FD_ENDPOINTS = {
@@ -52,6 +54,12 @@ const IDCOM = {
   scope: {
     addressNotChanged: 'AACC_FDCC',
     addressChanged: 'ADOBE_FDCC',
+  },
+  response: {
+    sessionExpired: {
+      errorCode: '9997',
+      errorMsg: 'Session expired',
+    },
   },
 };
 
