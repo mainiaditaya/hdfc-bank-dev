@@ -649,14 +649,14 @@ const pincodeCheck = async (pincode, city, state) => {
   }
 };
 
-const fetchFiller3 = (authMode) => {
-  if (authMode?.toLowerCase() === 'debitcard') {
+const fetchFiller3 = (authMode, status) => {
+  if (authMode?.toLowerCase() === 'debitcard' && status?.toLowerCase() === 'true') {
     return 'DCPINSUCCESS';
   }
-  if (authMode?.toLowerCase() === 'netbanking') {
+  if (authMode?.toLowerCase() === 'netbanking' && status?.toLowerCase() === 'true') {
     return 'NBSUCCESS';
   }
-  if (authMode?.toLowerCase() === 'aadhaarotp') {
+  if (authMode?.toLowerCase() === 'aadhaarotp' && status?.toLowerCase() === 'true') {
     return 'AADHAARSUCCESS';
   }
   return '';
