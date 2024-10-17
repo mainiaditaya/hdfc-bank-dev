@@ -99,8 +99,8 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.reviewDetails.nextPage);
       break;
     case 'selectCard':
-      digitalData.card.selectedCard = '1';
-      digitalData.card.annualFee = '';
+      digitalData.card.selectedCard = formData.currentFormContext.selectedCreditCard.cardProductCode;
+      digitalData.card.annualFee = formData.currentFormContext.selectedCreditCard.annualFee;
       _satellite.track('submit');
       sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
       break;
