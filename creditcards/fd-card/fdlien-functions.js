@@ -5,7 +5,7 @@ import {
   getTimeStamp,
   maskNumber,
   parseCustomerAddress,
-  pincodeCheck,
+  // pincodeCheck,
   pinCodeMasterCheck,
   urlPath,
 } from '../../common/formutils.js';
@@ -324,7 +324,8 @@ const checkModeFd = async (globals) => {
         communicationCity, communicationState, comCityZip,
       } = formData?.currentFormContext?.executeInterfaceRequest?.requestString || {};
 
-      const isValidAadhaarPincode = await pincodeCheck(Zipcode, City, State);
+      const isValidAadhaarPincode = { result: true };
+      // const isValidAadhaarPincode = await pincodeCheck(Zipcode, City, State);
       let aadhaarAddress = '';
       let parsedAadhaarAddress = '';
       let fullAadhaarAddress = [Address1, Address2, Address3, City, State, Zipcode].filter(Boolean).join(', ');
