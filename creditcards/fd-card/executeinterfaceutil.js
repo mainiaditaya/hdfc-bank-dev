@@ -212,7 +212,11 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
 
   if (['addressdeclarationproceed', 'addressdeclarationidcomm'].includes(source)) {
     const { currentResidenceAddressBiometricOVD, aadhaarAddressDeclaration } = form.addressDeclarationPanel;
-    const selectedKyc = functions.exportData()?.currentFormContext?.selectedKyc;
+    let selectedKyc = functions.exportData()?.currentFormContext?.selectedKyc;
+    if (globals.functions.exportData()?.queryParams?.visitType === 'EKYC_AUTH_FAILED') {
+      CURRENT_FORM_CONTEXT.aadhaarFailed = true;
+      selectedKyc = CURRENT_FORM_CONTEXT.selectedKyc;
+    }
 
     // Check OVD biometric confirmation
     if (currentResidenceAddressBiometricOVD.currentResidenceAddressBiometricOVDConfirmation?._data?.$_value === '1') {
@@ -221,10 +225,17 @@ const executeInterface = (payload, showLoader, hideLoader, source, globals) => {
 
     // Aadhaar address confirmation
     if (selectedKyc === 'aadhaar') {
+      executeInterfaceRequest.requestString.authMode = 'eKYCIDCOM';
       executeInterfaceRequest.requestString.ekycMobileMatch = form?.selectKYCOptionsPanel?.aadhaarMobileMatch?._data?.$_value;
       if (aadhaarAddressDeclaration.aadharAddressConfirmation?._data?.$_value === '1') {
         executeInterfaceRequest.requestString.etbAddressEditDeclaration = new Date().toISOString();
       }
+    }
+    if (selectedKyc === 'biokyc') {
+      executeInterfaceRequest.requestString.authMode = 'OTP';
+    }
+    if (selectedKyc === 'OVD') {
+      executeInterfaceRequest.requestString.authMode = 'IDCOM';
     }
   }
 

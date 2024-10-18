@@ -1,5 +1,7 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import { displayLoader, hideLoaderGif, setArnNumberInResult } from '../domutils/domutils.js';
+import {
+  displayLoader, hideLoaderGif, setArnNumberInResult, updateInnerHtml,
+} from '../domutils/domutils.js';
 import { invokeJourneyDropOffByJourneyId } from './common-journeyutil.js';
 import { ANALYTICS, IDCOM } from './constant.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
@@ -110,6 +112,9 @@ const pageRedirected = () => {
       finalDapFetchRes();
     }, 5000);
   }
+  if (delayedUtilState.aadharRedirect && delayedUtilState?.visitType === 'EKYC_AUTH_FAILED') {
+    updateInnerHtml('.field-aadharbiometricverification label', 'Aadhaar Biometric KYC at your Doorstep');
+  }
 };
 
 (() => {
@@ -118,7 +123,7 @@ const pageRedirected = () => {
   delayedUtilState.authMode = searchParam.get('authmode');
   delayedUtilState.journeyId = searchParam.get('journeyId');
   delayedUtilState.errorCode = searchParam.get('errorCode');
-  delayedUtilState.aadharRedirect = delayedUtilState.visitType && (delayedUtilState.visitType === 'EKYC_AUTH');
+  delayedUtilState.aadharRedirect = delayedUtilState.visitType && (delayedUtilState.visitType === 'EKYC_AUTH' || delayedUtilState.visitType === 'EKYC_AUTH_FAILED');
   delayedUtilState.idComRedirect = delayedUtilState.authMode && ((delayedUtilState.authMode === 'DebitCard') || (delayedUtilState.authMode === 'CreditCard')); // debit card or credit card flow
   pageRedirected();
 })();

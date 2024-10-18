@@ -15,7 +15,14 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
   } = globals.form;
   const { inPersonBioKYCOptions } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance.inPersonBioKYCPanel;
   KYC_STATE.selectedKyc = selectedKyc;
-  globals.functions.setProperty(runtime.formContext, { value: JSON.stringify(CURRENT_FORM_CONTEXT) });
+  if (CURRENT_FORM_CONTEXT.journeyID !== undefined) globals.functions.setProperty(runtime.formContext, { value: JSON.stringify(CURRENT_FORM_CONTEXT) });
+  else {
+    globals.functions.setProperty(runtime.formContext, { value: JSON.stringify(globals.functions.exportData()?.currentFormContext) });
+    Object.assign(CURRENT_FORM_CONTEXT, globals.functions.exportData()?.currentFormContext);
+  }
+  if (!CURRENT_FORM_CONTEXT.executeInterfaceRequest) {
+    CURRENT_FORM_CONTEXT.executeInterfaceRequest = globals.functions.exportData()?.currentFormContext?.executeInterfaceRequest;
+  }
   const {
     communicationAddress1,
     communicationAddress2,
@@ -24,6 +31,7 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
     comCityZip,
     communicationState,
   } = CURRENT_FORM_CONTEXT.executeInterfaceRequest.requestString;
+  CURRENT_FORM_CONTEXT.aadhaarFailed = globals?.functions?.exportData()?.queryParamsvisitType === 'EKYC_AUTH_FAILED';
   const fullCurrentAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip].filter(Boolean).join(',');
   switch (selectedKyc) {
     case 'BIOMETRIC':
