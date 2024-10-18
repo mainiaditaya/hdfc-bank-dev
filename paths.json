@@ -1,9 +1,10 @@
 {
    "mappings": [
     "/content/forms/af/hdfc_haf/digital/:/digital/",
-    "/content/hdfc_haf/config.json:/.helix/config.json"
+    "/content/hdfc_haf/config.json:/.helix/config.json",
+     "/content/hdfc_haf/redirects.json:/redirects.json"
   ],
   "includes": [
-     
+
   ]
 }
