@@ -13,6 +13,21 @@ const data = {
     linkName: 'Select FD',
     linkPosition: 'Form',
   },
+  'review details': {
+    linkType: 'button',
+    linkName: 'Review Details',
+    linkPosition: 'Form',
+  },
+  'review details back': {
+    linkType: 'button',
+    linkName: 'Review Details',
+    linkPosition: 'Form',
+  },
+  'select card': {
+    linkType: 'button',
+    linkName: 'Select Card',
+    linkPosition: 'Form',
+  },
   'check offers': {
     linkType: 'button',
     linkName: 'Check Offers',

@@ -20,6 +20,8 @@ const ERROR_MSG = {
   matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
   shorAddressNote: 'Note: Address is too short, please enter valid address.',
   invalidPinNote: 'Note: Pincode is not matching with the city in address as per the bank records, please provide correct address.',
+  sessionExpired: 'Session expired',
+  branchVisitWithRefNum: 'Visit your nearest dealership or HDFC Bank branch with reference number:',
 };
 
 const FD_ENDPOINTS = {
@@ -36,6 +38,7 @@ const FD_ENDPOINTS = {
   hdfccardsgetrefidfdcc: '/content/hdfc_hafcards/api/hdfccardsgetrefidfdcc.json',
   hdfccardsgetfdeligibilitystatus: '/content/hdfc_hafcards/api/hdfccardsgetfdeligibilitystatus.json',
   hdfccardsexecutefinaldap: '/content/hdfc_hafcards/api/hdfccardsexecutefinaldap.json',
+  documentupload: '/content/hdfc_hafcards/api/documentUpload.json',
 };
 
 const OTP_TIMER = 30;
@@ -46,12 +49,19 @@ const MAXIMUM_CREDIT_AMOUNT = 800000;
 const NAME_ON_CARD_LENGTH = 19;
 const MAX_ADDRESS_LENGTH = 90;
 const MIN_ADDRESS_LENGTH = 30;
+const MAX_FULLNAME_LENGTH = 30;
 
 const IDCOM = {
   productCode: 'CCPREISS',
   scope: {
     addressNotChanged: 'AACC_FDCC',
     addressChanged: 'ADOBE_FDCC',
+  },
+  response: {
+    sessionExpired: {
+      errorCode: '9997',
+      errorMsg: 'Session expired',
+    },
   },
 };
 
@@ -104,16 +114,30 @@ const ANALYTICS = {
     reviewDetailsBack: {
       type: 'click',
       name: 'review details back',
-      pageName: 'Select FD',
+      pageName: 'Review Details',
       journeyState: 'CUSTOMER_LEAD_QUALIFIED',
-      nextPage: 'reviewDetails',
+      nextPage: 'selectFD',
     },
     reviewDetails: {
       type: 'click',
-      name: 'Select FD',
-      pageName: 'Select FD',
+      name: 'review details',
+      pageName: 'Review Details',
+      journeyState: 'CUSTOMER_BUREAU_OFFER_AVAILABLE',
+      nextPage: 'selectCard',
+    },
+    selectCard: {
+      type: 'click',
+      name: 'select card',
+      pageName: 'Select Card',
+      journeyState: 'CUSTOMER_CARD_SELECTED',
+      nextPage: 'addressDetails',
+    },
+    addressDetails: {
+      type: 'click',
+      name: 'address details',
+      pageName: 'Address Details',
       journeyState: '',
-      nextPage: 'reviewDetails',
+      nextPage: 'idcom',
     },
   },
 };
@@ -158,4 +182,5 @@ export {
   OCCUPATION_MAP,
   ALLOWED_CHARACTERS,
   EMPLOYEE_MAP,
+  MAX_FULLNAME_LENGTH,
 };

@@ -10,7 +10,7 @@ import creditCardSummary from './creditcardsumaryutil.js';
 
 const fdFiller4 = (userRedirected, mobileMatch = '', selectedKyc = '') => {
   let filler4 = '';
-  if (!userRedirected) {
+  if (!userRedirected && !CURRENT_FORM_CONTEXT.aadhaarFailed) {
     filler4 = 'bioInperson';
   } else {
     filler4 = fetchFiller4(
@@ -34,10 +34,10 @@ const createDapRequestObj = (userRedirected, globals) => {
   const ekycSuccess = (!formData.currentFormContext?.mobileMatch && aadhaarData?.ADVRefrenceKey !== undefined)
     ? `${aadhaarData.ADVRefrenceKey}X${aadhaarData.RRN}`
     : '';
-
+  const selectedKyc = CURRENT_FORM_CONTEXT.aadhaarFailed ? CURRENT_FORM_CONTEXT?.selectedKyc : formContextCallbackData?.selectedKyc;
   const VKYCConsent = fetchFiller4(
     formData.currentFormContext?.mobileMatch,
-    formContextCallbackData?.selectedKyc,
+    selectedKyc,
     'ETB',
   );
   let visitType = '';
@@ -47,9 +47,9 @@ const createDapRequestObj = (userRedirected, globals) => {
   } else {
     visitType = formData?.queryParams?.authmode;
   }
-  const filler2 = visitType?.toLowerCase === 'aadhaarotp' || formContextCallbackData?.selectedKyc === 'aadhaar' ? 'ADVxRRN' : '';
-  const filler3 = fetchFiller3(formData?.queryParams?.authmode);
-  const filler4 = fdFiller4(userRedirected, formData.currentFormContext?.mobileMatch, formContextCallbackData?.selectedKyc);
+  const filler2 = visitType?.toLowerCase === 'aadhaarotp' || selectedKyc === 'aadhaar' ? 'ADVxRRN' : '';
+  const filler3 = fetchFiller3(formData?.queryParams?.authmode, formData?.queryParams?.success);
+  const filler4 = fdFiller4(userRedirected, formData.currentFormContext?.mobileMatch, selectedKyc);
   return {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
@@ -69,7 +69,7 @@ const createDapRequestObj = (userRedirected, globals) => {
       filler1: '',
       filler3,
       filler4,
-      biometricStatus: formContextCallbackData?.selectedKyc || '',
+      biometricStatus: selectedKyc || '',
       ekycConsent: `${getCurrentDateAndTime(3)}YEnglishxeng1x0`,
       ekycSuccess,
       VKYCConsent,
@@ -83,6 +83,10 @@ const finalDap = (userRedirected, globals) => {
   const apiEndPoint = urlPath(FD_ENDPOINTS.hdfccardsexecutefinaldap);
   const formData = globals.functions.exportData();
   const payload = createDapRequestObj(userRedirected, globals);
+  if (globals?.functions?.exportData()?.queryParams?.success === 'false') {
+    payload.requestString.filler8 = 'IDCOMFAIL';
+    payload.requestString.filler4 = 'bioKYC';
+  }
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
   const { journeyId } = formData;

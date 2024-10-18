@@ -290,7 +290,7 @@ const pincodeChangeHandler = (pincode, globals) => {
 const checkModeFd = async (globals) => {
   const formData = globals.functions.exportData();
   const { authmode: idcomVisit, visitType: aadhaarVisit } = formData?.queryParams || {};
-  const { addressDeclarationPanel } = globals.form;
+  const { addressDeclarationPanel, resultPanel, selectKYCOptionsPanel } = globals.form;
   if (!idcomVisit && !aadhaarVisit) return;
 
   const { bannerImagePanel, loginMainPanel } = globals.form;
@@ -299,12 +299,21 @@ const checkModeFd = async (globals) => {
   creditCardSummary(globals);
 
   if (idcomVisit) {
-    executeInterfacePostRedirect('idCom', true, globals);
-    return;
+    if (globals?.functions?.exportData()?.queryParams?.errorCode === FD_CONSTANT.IDCOM.response.sessionExpired.errorCode) {
+      const { errorMessageText, errResDealerPanel } = resultPanel.errorResultPanel;
+      globals.functions.setProperty(resultPanel, { visible: true });
+      globals.functions.setProperty(resultPanel.errorResultPanel, { visible: true });
+      globals.functions.setProperty(errorMessageText, { value: FD_CONSTANT.ERROR_MSG.sessionExpired });
+      const arnNum = formData?.currentFormContext?.executeInterfaceResponse?.APS_APPL_REF_NUM;
+      globals.functions.setProperty(errResDealerPanel?.errResDealerText2, { value: `${FD_CONSTANT.ERROR_MSG.branchVisitWithRefNum} ${arnNum}` });
+    } else {
+      executeInterfacePostRedirect('idCom', true, globals);
+      return;
+    }
   }
 
   const aadhaarSuccess = aadhaarVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message?.toLowerCase() === 'aadhaar otp validate success';
-
+  const aadhaarFail = aadhaarVisit === 'EKYC_AUTH_FAILED';
   if (aadhaarSuccess) {
     try {
       const {
@@ -377,6 +386,14 @@ const checkModeFd = async (globals) => {
         globals,
       );
     }
+  }
+  if (aadhaarFail) {
+    const { selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3 } = selectKYCOptionsPanel;
+    globals.functions.setProperty(selectKYCOptionsPanel, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption1, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption2, { visible: false });
+    globals.functions.setProperty(selectKYCMethodOption3, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption1.aadharBiometricVerification, { value: '0' });
   }
 };
 
