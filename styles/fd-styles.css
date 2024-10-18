@@ -2489,6 +2489,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         background: url('/content/dam/fd-lien/folderopen.svg') no-repeat;
       }
 
+      .field-cardfeatures1, .field-cardfeatures2 {
+        margin-bottom: 5px;
+      }
+
       .field-knowmorelink {
         margin: 0;
       }
