@@ -1,6 +1,7 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 import {
   createJourneyId,
+  invokeJourneyDropOffUpdate,
 } from './nre-nro-journey-utils.js';
 import {
   moveWizardView,
@@ -95,6 +96,7 @@ const validateLogin = (globals) => {
   const isdNumberPattern = /^(?!0)([5-9]\d{9})$/;
   const panIsValid = validFDPan(panValue);
   const nonISDNumberPattern = /^(?!0)\d{3,15}$/;
+  currentFormContext.isdCode = isdCode;
   globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
 
   const panInput = document.querySelector(`[name=${'pan'} ]`);
@@ -164,13 +166,17 @@ const validateLogin = (globals) => {
 const getOtpNRE = (mobileNumber, pan, dob, globals) => {
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
+  const [day, month, year] = dob.$value.split('/');
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
+  currentFormContext.mobileNumber = mobileNumber.$value;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
+  currentFormContext.journeyName = globals.form.runtime.journeyName.$value;
   const jsonObj = {
     requestString: {
-      mobileNumber: mobileNumber.$value,
-      dateOfBirth: clearString(dob.$value) || '',
+      mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
+      dateOfBirth: year + month + day,
+      // dateOfBirth: clearString(dob.$value) || '',
       panNumber: pan.$value || '',
       journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
@@ -275,9 +281,10 @@ function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
 function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
+  currentFormContext.leadProfileId = globals.form.runtime.leadProifileId.$value;
   const jsonObj = {
     requestString: {
-      mobileNumber: mobileNumber.$value,
+      mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
       passwordValue: otpNumber.$value,
       dateOfBirth: clearString(dob.$value) || '',
       panNumber: pan.$value || '',
@@ -312,19 +319,20 @@ function prefillCustomerDetails(response, globals) {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-  // not getting txtPermadrAdd1
+
   setFormValue(customerName, response.customerShortName);
   setFormValue(customerID, maskNumber(response.customerId, 4));
   setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
   setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
-  setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].prodTypeDesc);
+  setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].prodName);
   setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
   setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
   setFormValue(personalDetails.emailID, response.refCustEmail);
   setFormValue(personalDetails.fullName, response.customerFullName);
   setFormValue(personalDetails.mobileNumber, response.rmPhoneNo);
   setFormValue(personalDetails.pan, response.refCustItNum);
-  setFormValue(personalDetails.telephoneNumber, response.refCustTelex);
+  if (!response.refCustTelex) globals.functions.setProperty(personalDetails.telephoneNumber, { visible: false });
+  else setFormValue(personalDetails.telephoneNumber, response.refCustTelex);
   setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1} ${response.txtCustadrAdd2} ${response.txtCustadrAdd3} ${response.namCustadrCity} ${response.namCustadrState} ${response.namCustadrCntry} ${response.txtCustadrZip}`);
   setFormValue(personalDetails.permanentAddress, `${response.txtPermadrAdd1} ${response.txtPermadrAdd2} ${response.txtPermadrAdd3} ${response.namPermadrCity} ${response.namPermadrState} ${response.namPermadrCntry} ${response.txtPermadrZip}`);
   setFormValue(fatcaDetails.nationality, response.txtCustNATNLTY);
@@ -413,7 +421,17 @@ const addPageNameClassInBody = (pageName) => {
   }
 };
 
-const switchWizard = () => moveWizardView('wizardNreNro', 'confirmDetails');
+const switchWizard = (globals) => {
+  const {
+    mobileNumber,
+    leadProfileId,
+    journeyID,
+  } = currentFormContext;
+
+  invokeJourneyDropOffUpdate('CUSTOMER_ACCOUNT_VARIANT_SELECTED', mobileNumber, leadProfileId, journeyID, globals);
+  moveWizardView('wizardNreNro', 'confirmDetails');
+};
+
 export {
   validateLogin,
   getOtpNRE,
