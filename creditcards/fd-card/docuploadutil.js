@@ -6,9 +6,10 @@ import {
   chainedFetchAsyncCall,
 } from '../../common/makeRestAPI.js';
 import { urlPath, generateUUID } from '../../common/formutils.js';
-import { ENDPOINTS, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
+import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { finalPagePanelVisibility } from './thankyouutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
+import { FD_ENDPOINTS } from './constant.js';
 /**
  * Creates a FormData payload for document upload.
  *
@@ -70,7 +71,7 @@ const docUploadClickHandler = async (globals) => {
   const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const leadProfileId = globals.functions.exportData().leadProifileId || globals.form.runtime.leadProifileId.$value || '';
   const journeyId = formContextCallbackData.journeyID;
-  const apiEndPoint = urlPath(ENDPOINTS.docUpload);
+  const apiEndPoint = urlPath(FD_ENDPOINTS.documentupload);
   const method = 'POST';
 
   const documents = [
