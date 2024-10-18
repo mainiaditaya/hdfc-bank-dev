@@ -23,6 +23,7 @@ import {
   GENDER_MAP,
   OCCUPATION_MAP,
   ALLOWED_CHARACTERS,
+  MAX_FULLNAME_LENGTH,
 } from './constant.js';
 import { fullNamePanValidation } from '../../common/panvalidation.js';
 import sendFDAnalytics from './analytics.js';
@@ -150,7 +151,7 @@ const bindCustomerDetails = async (globals) => {
   bindEmployeeAssistanceField(globals);
   const { customerInfo } = CURRENT_FORM_CONTEXT;
 
-  const { firstName, middleName, lastName } = parseName(customerInfo.customerFullName);
+  const { firstName, middleName, lastName } = parseName(customerInfo.customerFullName, MAX_FULLNAME_LENGTH);
   customerInfo.customerFirstName = firstName;
   customerInfo.customerMiddleName = middleName;
   customerInfo.customerLastName = lastName;
@@ -448,17 +449,32 @@ const fathersNameChangeHandler = (globals) => {
 
   CURRENT_FORM_CONTEXT.customerIdentityChange = true;
 
-  const fathersNameArr = (personalDetails.fathersFullName._data.$_value || '').toUpperCase().split(' ');
+  const fathersNameArr = (personalDetails?.fathersFullName?._data?.$_value?.trim() || '').toUpperCase().split(' ');
   const [middleName = '', lastName = fathersNameArr[0] || ''] = fathersNameArr.length === 1 ? ['', fathersNameArr[0]] : fathersNameArr;
 
   const customerFullName = personalDetails?.fullName?._data?.$_value?.trim() || '';
   const isSingleName = customerFullName.split(' ').length <= 1;
 
-  if (isSingleName) {
+  if (isSingleName || CURRENT_FORM_CONTEXT.customerIdentityChange) {
+    customerInfo.customerFullName = [customerInfo.customerFirstName, middleName, lastName]
+      .filter(Boolean)
+      .join(' ')
+      .trim()
+      .toUpperCase();
+    customerInfo.customerMiddleName = middleName;
+    customerInfo.customerLastName = lastName;
+  }
+
+  if (customerInfo.customerFullName.length > MAX_FULLNAME_LENGTH) {
+    const parsedName = parseName(customerInfo.customerFullName, MAX_FULLNAME_LENGTH);
     Object.assign(customerInfo, {
-      customerFullName: [customerInfo.customerFirstName, middleName, lastName].filter(Boolean).join(' ').trim().toUpperCase(),
-      customerMiddleName: middleName,
-      customerLastName: lastName,
+      customerFirstName: parsedName.firstName,
+      customerMiddleName: parsedName.middleName,
+      customerLastName: parsedName.lastName,
+      customerFullName: [parsedName.firstName, parsedName.middleName, parsedName.lastName]
+        .filter(Boolean)
+        .join(' ')
+        .trim(),
     });
   }
 
