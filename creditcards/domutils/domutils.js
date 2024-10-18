@@ -405,6 +405,11 @@ const attachRedirectOnClick = (selector, url, target = '_blank') => {
     });
   }
 };
+
+const updateInnerHtml = (selectorName, updatedValue) => {
+  document.querySelector(selectorName).innerHTML = updatedValue;
+};
+
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -429,4 +434,5 @@ export {
   validateOTPInput,
   attachRedirectOnClick,
   imageClickable,
+  updateInnerHtml,
 };

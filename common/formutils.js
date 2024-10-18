@@ -427,7 +427,7 @@ const splitName = (fullName) => {
   return name;
 };
 
-const parseName = (fullName) => {
+const parseName = (fullName, maxlength) => {
   // eslint-disable-next-line prefer-const
   let [firstName, middleName = '', lastName = ''] = sanitizeName(fullName).trim().split(/\s+/).slice(0, 3);
   if (!lastName) {
@@ -435,11 +435,11 @@ const parseName = (fullName) => {
     middleName = '';
   }
   let combinedName = `${firstName}${middleName ? ` ${middleName}` : ''}${lastName ? ` ${lastName}` : ''}`;
-  if (combinedName.length <= 30) {
+  if (combinedName.length <= maxlength) {
     return { firstName, middleName, lastName };
   }
   combinedName = `${firstName} ${lastName}`;
-  return combinedName.length > 30
+  return combinedName.length > maxlength
     ? { firstName, middleName: '', lastName: `${lastName.charAt(0)}` }
     : { firstName, middleName: '', lastName };
 };
@@ -580,6 +580,9 @@ const fetchFiller4 = (mobileMatch, kycStatus, journeyType) => {
       break;
     case 'bioKYC':
       filler4Value = 'bioKYC';
+      break;
+    case 'biokyc':
+      filler4Value = 'biokyc';
       break;
     case 'OVD':
       filler4Value = 'OVD';

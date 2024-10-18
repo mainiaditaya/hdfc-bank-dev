@@ -38,6 +38,7 @@ const FD_ENDPOINTS = {
   hdfccardsgetrefidfdcc: '/content/hdfc_hafcards/api/hdfccardsgetrefidfdcc.json',
   hdfccardsgetfdeligibilitystatus: '/content/hdfc_hafcards/api/hdfccardsgetfdeligibilitystatus.json',
   hdfccardsexecutefinaldap: '/content/hdfc_hafcards/api/hdfccardsexecutefinaldap.json',
+  documentupload: '/content/hdfc_hafcards/api/documentUpload.json',
 };
 
 const OTP_TIMER = 30;
@@ -48,6 +49,7 @@ const MAXIMUM_CREDIT_AMOUNT = 800000;
 const NAME_ON_CARD_LENGTH = 19;
 const MAX_ADDRESS_LENGTH = 90;
 const MIN_ADDRESS_LENGTH = 30;
+const MAX_FULLNAME_LENGTH = 30;
 
 const IDCOM = {
   productCode: 'CCPREISS',
@@ -180,4 +182,5 @@ export {
   OCCUPATION_MAP,
   ALLOWED_CHARACTERS,
   EMPLOYEE_MAP,
+  MAX_FULLNAME_LENGTH,
 };

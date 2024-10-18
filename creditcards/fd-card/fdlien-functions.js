@@ -4,6 +4,8 @@ import {
   clearString,
   getTimeStamp,
   maskNumber,
+  parseCustomerAddress,
+  pincodeCheck,
   pinCodeMasterCheck,
   urlPath,
 } from '../../common/formutils.js';
@@ -285,10 +287,10 @@ const pincodeChangeHandler = (pincode, globals) => {
  * @name checkModeFd
  * @param {object} globals
  */
-const checkModeFd = (globals) => {
+const checkModeFd = async (globals) => {
   const formData = globals.functions.exportData();
   const { authmode: idcomVisit, visitType: aadhaarVisit } = formData?.queryParams || {};
-  const { addressDeclarationPanel, resultPanel } = globals.form;
+  const { addressDeclarationPanel, resultPanel, selectKYCOptionsPanel } = globals.form;
   if (!idcomVisit && !aadhaarVisit) return;
 
   const { bannerImagePanel, loginMainPanel } = globals.form;
@@ -311,7 +313,7 @@ const checkModeFd = (globals) => {
   }
 
   const aadhaarSuccess = aadhaarVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message?.toLowerCase() === 'aadhaar otp validate success';
-
+  const aadhaarFail = aadhaarVisit === 'EKYC_AUTH_FAILED';
   if (aadhaarSuccess) {
     try {
       const {
@@ -322,7 +324,27 @@ const checkModeFd = (globals) => {
         communicationCity, communicationState, comCityZip,
       } = formData?.currentFormContext?.executeInterfaceRequest?.requestString || {};
 
-      const aadharAddress = [Address1, Address2, Address3, City, State, Zipcode].filter(Boolean).join(', ');
+      const isValidAadhaarPincode = await pincodeCheck(Zipcode, City, State);
+      let aadhaarAddress = '';
+      let parsedAadhaarAddress = '';
+      let fullAadhaarAddress = [Address1, Address2, Address3, City, State, Zipcode].filter(Boolean).join(', ');
+      if (isValidAadhaarPincode.result === 'true') {
+        aadhaarAddress = [Address1, Address2, Address3].filter(Boolean).join(' ');
+        if (aadhaarAddress.length < FD_CONSTANT.MIN_ADDRESS_LENGTH) {
+          aadhaarAddress.Address2 = City;
+        } else {
+          parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
+          const [permanentAddress1, permanentAddress2, permanentAddress3] = parsedAadhaarAddress;
+
+          Object.assign(formData.currentFormContext.executeInterfaceRequest.requestString, {
+            permanentAddress1,
+            permanentAddress2,
+            permanentAddress3,
+            perAddressType: '4',
+          });
+        }
+        fullAadhaarAddress = `${parsedAadhaarAddress.join(', ')} ${City} ${State} ${Zipcode}`;
+      }
       const communicationAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip].filter(Boolean).join(', ');
 
       const {
@@ -331,7 +353,7 @@ const checkModeFd = (globals) => {
       } = addressDeclarationPanel;
 
       globals.functions.setProperty(aadhaarAddressDeclaration, { visible: true });
-      globals.functions.setProperty(aadhaarAddressDeclaration.aadhaarAddressPrefilled, { value: aadharAddress });
+      globals.functions.setProperty(aadhaarAddressDeclaration.aadhaarAddressPrefilled, { value: fullAadhaarAddress });
       globals.functions.setProperty(currentAddressDeclarationAadhar.currentResidenceAddressAadhaar, { value: communicationAddress });
       globals.functions.setProperty(currentResidenceAddressBiometricOVD.currentResAddressBiometricOVD, { value: communicationAddress });
       globals.functions.setProperty(addressDeclarationPanel, { visible: true });
@@ -364,6 +386,14 @@ const checkModeFd = (globals) => {
         globals,
       );
     }
+  }
+  if (aadhaarFail) {
+    const { selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3 } = selectKYCOptionsPanel;
+    globals.functions.setProperty(selectKYCOptionsPanel, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption1, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption2, { visible: false });
+    globals.functions.setProperty(selectKYCMethodOption3, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption1.aadharBiometricVerification, { value: '0' });
   }
 };
 

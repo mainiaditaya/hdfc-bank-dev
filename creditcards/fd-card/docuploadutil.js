@@ -6,9 +6,10 @@ import {
   chainedFetchAsyncCall,
 } from '../../common/makeRestAPI.js';
 import { urlPath, generateUUID } from '../../common/formutils.js';
-import { ENDPOINTS, CURRENT_FORM_CONTEXT } from '../../common/constants.js';
+import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { finalPagePanelVisibility } from './thankyouutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
+import { FD_ENDPOINTS } from './constant.js';
 /**
  * Creates a FormData payload for document upload.
  *
@@ -70,13 +71,16 @@ const docUploadClickHandler = async (globals) => {
   const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const leadProfileId = globals.functions.exportData().leadProifileId || globals.form.runtime.leadProifileId.$value || '';
   const journeyId = formContextCallbackData.journeyID;
-  const apiEndPoint = urlPath(ENDPOINTS.docUpload);
+  const apiEndPoint = urlPath(FD_ENDPOINTS.documentupload);
   const method = 'POST';
 
   const documents = [
-    ...(CURRENT_FORM_CONTEXT?.identityDocUploadFlag ? [
+    ...(CURRENT_FORM_CONTEXT?.identityDocUploadFlag && identityDocType !== '40_464' ? [
       { docValue: DocUploadFrontWrapper?.DocUploadFront, docType: identityDocType, fileId: '1_FS' },
       { docValue: DocUploadBackWrapper?.DocUploadBack, docType: identityDocType, fileId: '1_BS' },
+    ] : []),
+    ...(CURRENT_FORM_CONTEXT?.identityDocUploadFlag && identityDocType === '40_464' ? [
+      { docValue: DocUploadFrontWrapper?.DocUploadFront, docType: identityDocType, fileId: '1_FS' },
     ] : []),
     ...(CURRENT_FORM_CONTEXT?.addressDocUploadFlag ? [
       { docValue: addressProofFile1Wrapper?.addressProofFile1, docType: addressDocType, fileId: '1_ADF' },
@@ -112,7 +116,7 @@ const docUploadClickHandler = async (globals) => {
  */
 const fileUploadUIHandler = () => {
   const fileInputs = document.querySelectorAll('input[type="file"]');
-  const MAX_FILE_SIZE_MB = 2;
+  const MAX_FILE_SIZE_MB = 1;
 
   fileInputs.forEach((fileInput) => {
     // Check if the current file input has a file selected
@@ -136,7 +140,7 @@ const fileUploadUIHandler = () => {
           fileList.textContent = file.name;
           const fileSizeSpan = document.createElement('span');
           fileSizeSpan.classList.add('file-size');
-          fileSizeSpan.textContent = ` (${fileSizeInMB.toFixed(2)} MB)`;
+          fileSizeSpan.textContent = ` (${fileSizeInMB.toFixed(1)} MB)`;
           fileList.appendChild(fileSizeSpan);
         }
 

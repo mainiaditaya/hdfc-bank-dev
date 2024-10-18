@@ -21,7 +21,7 @@ function compare(fieldVal, htmlVal, type) {
   return fieldVal === htmlVal;
 }
 
-async function fieldChanged(payload, form, generateFormRendition) {
+export async function fieldChanged(payload, form, generateFormRendition) {
   const { changes, field: fieldModel } = payload;
   changes.forEach((change) => {
     const {
