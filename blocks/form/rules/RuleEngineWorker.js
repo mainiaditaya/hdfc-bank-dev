@@ -5,13 +5,21 @@ let customFunctionRegistered = false;
 
 export default class RuleEngine {
   rulesOrder = {};
+  fieldChanges = [];
 
   constructor(formDef) {
     this.form = createFormInstance(formDef);
+    this.form.subscribe((e) => {
+      this.fieldChanges.push(e._action.payload)
+    }, 'fieldChanged');
   }
 
   getState() {
     return this.form.getState(true);
+  }
+
+  getFieldChanges() {
+    return this.fieldChanges;
   }
 }
 
@@ -34,6 +42,16 @@ onmessage = (e) => {
       default:
         break;
     }
+  }
+  
+   // sending the fieldChange events back to main thread once html form is rendered
+   if(e.data.name === 'initComplete' && ruleEngine) {
+    ruleEngine.getFieldChanges().forEach((changes) => {
+      postMessage({
+        name: 'fieldChanged',
+        payload: changes,
+      });
+    })
   }
 
   if (!customFunctionRegistered) {
