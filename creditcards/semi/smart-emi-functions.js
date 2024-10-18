@@ -49,8 +49,6 @@ const {
   CHANNELS,
   ERROR_MSG,
   FLOWS_ERROR_MESSAGES,
-  // eslint-disable-next-line no-unused-vars
-  RESPONSE_PAYLOAD,
 } = SEMI_CONSTANT;
 
 const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;

@@ -17,9 +17,9 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
 const FORM_CONSTANT = [
   {
     // SEMI
-    formPath: ['semi', 'smart-emi', 'smart emi', 'smart_emi'],
+    formPath: ['semi', 'smart-emi', 'smart emi', 'smart_emi', 'smartemi'],
     class: 'semi-form',
-    urlKey: ['semi', 'smart-emi', 'smart emi'],
+    urlKey: ['semi', 'smart-emi', 'smart emi', 'smartemi'],
     launchScript: {
       dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-94203efd95a9-staging.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-94203efd95a9-staging.js',
@@ -38,6 +38,7 @@ const FORM_CONSTANT = [
   },
 ];
 const ENV = 'dev'; // take it from common constant to denote
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
