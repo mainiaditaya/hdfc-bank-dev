@@ -360,7 +360,7 @@ const checkModeFd = async (globals) => {
 
       formData.currentFormContext.mobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'y';
       CURRENT_FORM_CONTEXT.mobileMatch = formData.currentFormContext.mobileMatch;
-      globals.functions.setProperty(globals.form.selectKYCOptionsPanel.aadhaarMobileMatch, { value: formData.currentFormContext.mobileMatch ? 'Yes' : 'No' });
+      globals.functions.setProperty(globals.form?.selectKYCOptionsPanel?.aadhaarMobileMatch, { value: formData.currentFormContext.mobileMatch ? 'Yes' : 'No' });
 
       globals.functions.setProperty(proceedFromAddressDeclarationIdcom, { visible: !formData?.currentFormContext?.customerIdentityChange });
       globals.functions.setProperty(proceedFromAddressDeclaration, { visible: formData?.currentFormContext?.customerIdentityChange });
