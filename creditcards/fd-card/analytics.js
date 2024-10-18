@@ -83,9 +83,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       digitalData.user.email = formData.emailID;
       digitalData.assisted = {};
       digitalData.assisted.flag = formData.employeeAssistanceToggle;
-      digitalData.formDetails.pincode = formData.newCurentAddressPin;
-      digitalData.formDetails.city = formData.newCurentAddressCity;
-      digitalData.formDetails.state = formData.newCurentAddressState;
+      digitalData.formDetails.pincode = formData.currentFormContext.executeInterfaceRequest.requestString.permanentZipCode;
+      digitalData.formDetails.city = formData.currentFormContext.executeInterfaceRequest.requestString.permanentCity;
+      digitalData.formDetails.state = formData.currentFormContext.executeInterfaceRequest.requestString.permanentState;
       digitalData.formDetails.employmentType = formData.employmentType;
       digitalData.formDetails.AnnualIncome = formData.FDlienCard.annualIncome;
       digitalData.assisted.flag = formData.employeeAssistanceToggle;
@@ -102,7 +102,16 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       digitalData.card.selectedCard = formData.currentFormContext.selectedCreditCard.cardProductCode;
       digitalData.card.annualFee = formData.currentFormContext.selectedCreditCard.annualFee;
       _satellite.track('submit');
-      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
+      break;
+    case 'validationMethodKYC':
+      if (formData.form.aadharEKYCVerification && formData.form.aadharEKYCVerification === '0') {
+        digitalData.event.validationMethod = 'aadharEKYCVerification';
+      } else if (formData.form.officiallyValidDocumentsMethod && formData.form.officiallyValidDocumentsMethod === '0') {
+        digitalData.event.validationMethod = 'officiallyValidDocumentsMethod';
+      }
+      _satellite.track('submit');
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
       break;
     default:
   }

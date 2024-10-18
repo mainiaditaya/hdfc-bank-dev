@@ -128,12 +128,12 @@ const ANALYTICS = {
       name: 'select card',
       pageName: 'Select Card',
       journeyState: 'CUSTOMER_CARD_SELECTED',
-      nextPage: 'addressDetails',
+      nextPage: 'validationMethodKYC',
     },
-    addressDetails: {
+    validationMethodKYC: {
       type: 'click',
-      name: 'address details',
-      pageName: 'Address Details',
+      name: 'validation method kyc',
+      pageName: 'Validation Method KYC',
       journeyState: '',
       nextPage: 'idcom',
     },

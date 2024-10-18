@@ -112,7 +112,7 @@ const docUploadClickHandler = async (globals) => {
  */
 const fileUploadUIHandler = () => {
   const fileInputs = document.querySelectorAll('input[type="file"]');
-  const MAX_FILE_SIZE_MB = 2;
+  const MAX_FILE_SIZE_MB = 1;
 
   fileInputs.forEach((fileInput) => {
     // Check if the current file input has a file selected

@@ -3028,6 +3028,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       min-height: 90px;
       padding-top: 45px;
       line-height: var(--font-linehight-regular);
+      word-wrap: break-word;
 
       &::before {
         content: '';
