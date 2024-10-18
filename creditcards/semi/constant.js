@@ -1399,6 +1399,7 @@ const RESPONSE_PAYLOAD = {
     },
   },
 };
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,

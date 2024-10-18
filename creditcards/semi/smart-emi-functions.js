@@ -32,6 +32,11 @@ import {
 import { invokeJourneyDropOffByParam } from '../../common/journey-utils.js';
 import { invokeJourneyDropOffUpdate, invokeJourneyDropOff } from './semi-journey-utils.js';
 import { reloadPage } from '../../common/functions.js';
+import {
+  sendAnalytics,
+  sendErrorAnalytics,
+} from './semi-analytics.js';
+import { ANALYTICS_JOURNEY_STATE } from './semi-analytics-constant.js';
 
 const {
   CURRENT_FORM_CONTEXT: currentFormContext,
@@ -60,6 +65,27 @@ let tnxPopupAlertOnce = 0; // flag alert for the pop to show only once on click 
 let resendOtpCount = 0;
 let resendOtpCount2 = 0;
 const userPrevSelect = {};
+
+const onPageLoadAnalytics = async () => {
+  const journeyData = {};
+  if (typeof window !== 'undefined') {
+    // eslint-disable-next-line no-underscore-dangle, no-undef
+    journeyData.journeyId = myForm.resolveQualifiedName('$form.runtime.journeyId')._data.$_value;
+    journeyData.journeyName = journeyName;
+    sendAnalytics(
+      'page load',
+      {},
+      ANALYTICS_JOURNEY_STATE['page load'],
+      journeyData,
+    );
+  }
+};
+
+setTimeout(() => {
+  if (typeof window !== 'undefined') {
+    onPageLoadAnalytics();
+  }
+}, 5000);
 
 /**
  * For Web returing currentFormContext as defined in variable
@@ -429,8 +455,8 @@ function checkELigibilityHandler(resPayload1, globals) {
     formContext.tadMinusMadValue = ((parseFloat(resPayload.blockCode.tad) / 100) - (parseFloat(resPayload.blockCode.mad) / 100));
     /* continue btn disabling code added temorary, can be removed after form authoring */
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnSelectionContinue, { enabled: false });
-    let ccBilledData = resPayload?.ccBilledTxnResponse?.responseString || [];
-    let ccUnBilledData = resPayload?.ccUnBilledTxnResponse?.responseString || [];
+    let ccBilledData = resPayload?.ccBilledTxnResponse?.responseString ? resPayload?.ccBilledTxnResponse?.responseString : [];
+    let ccUnBilledData = resPayload?.ccUnBilledTxnResponse?.responseString ? resPayload?.ccUnBilledTxnResponse?.responseString : [];
     if (isNodeEnv) {
       ccBilledData = resPayload?.ccBilledTxnResponse || [];
       if (ccBilledData.length === 0) {
@@ -464,15 +490,15 @@ function checkELigibilityHandler(resPayload1, globals) {
     }
     response.nextscreen = 'success';
     // show txn summery text value
-    if ((resPayload?.ccBilledTxnResponse?.responseString.length) || (resPayload?.ccUnBilledTxnResponse?.responseString.length)) {
+    if ((ccUnBilledData.length) || (ccUnBilledData.length)) {
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnsSummaryText, { visible: true });
     }
     // hide the unbilled / unbillled accordian if the response payload of txn is not present
-    if (resPayload?.ccBilledTxnResponse?.responseString.length === 0) {
+    if (ccBilledData.length === 0) {
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment, { visible: false });
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList, { visible: false });
     }
-    if (resPayload?.ccUnBilledTxnResponse?.responseString?.length === 0) {
+    if (ccUnBilledData?.length === 0) {
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment, { visible: false });
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList, { visible: false });
     }
@@ -553,6 +579,7 @@ const getTotalAmount = (globals) => {
   const semiFormData = globals.functions.exportData().smartemi;
   const selectedTxnList = (semiFormData?.aem_billedTxn?.aem_billedTxnSelection?.concat(semiFormData?.aem_unbilledTxn?.aem_unbilledTxnSection))?.filter((txn) => txn.aem_Txn_checkBox === 'on');
   const totalAmountOfTxn = selectedTxnList?.reduce((prev, acc) => prev + parseFloat(acc.aem_TxnAmt.replace(/[^\d.-]/g, '')), 0);
+  currentFormContext.SMART_EMI_AMOUNT = totalAmountOfTxn;
   return totalAmountOfTxn;
 };
 
@@ -828,6 +855,11 @@ const getSelectedCount = (globals) => {
   const totalSelectCount = billedData.concat(unbilledData).filter((el) => el.aem_Txn_checkBox).length;
   const billedSelectCount = billedData.filter((el) => el.aem_Txn_checkBox)?.length;
   const unBilledSelectCount = unbilledData.filter((el) => el.aem_Txn_checkBox)?.length;
+  currentFormContext.TXN_SELECTED_COUNTS = {
+    billed: billedSelectCount,
+    unBilled: unBilledSelectCount,
+    total: totalSelectCount,
+  };
   return ({
     billed: billedSelectCount,
     unBilled: unBilledSelectCount,
@@ -1362,4 +1394,6 @@ export {
   invokeJourneyDropOffUpdate,
   handleWrongCCDetailsFlows,
   handleTadMadAlert,
+  sendAnalytics,
+  sendErrorAnalytics,
 };

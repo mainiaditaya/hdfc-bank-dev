@@ -28,6 +28,8 @@ import {
   invokeJourneyDropOffUpdate,
   handleWrongCCDetailsFlows,
   handleTadMadAlert,
+  sendAnalytics,
+  sendErrorAnalytics,
 } from './smart-emi-functions.js';
 
 export {
@@ -60,4 +62,6 @@ export {
   reloadPage,
   handleWrongCCDetailsFlows,
   handleTadMadAlert,
+  sendAnalytics,
+  sendErrorAnalytics,
 };
