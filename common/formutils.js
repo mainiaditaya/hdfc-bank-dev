@@ -581,6 +581,9 @@ const fetchFiller4 = (mobileMatch, kycStatus, journeyType) => {
     case 'bioKYC':
       filler4Value = 'bioKYC';
       break;
+    case 'biokyc':
+      filler4Value = 'biokyc';
+      break;
     case 'OVD':
       filler4Value = 'OVD';
       break;

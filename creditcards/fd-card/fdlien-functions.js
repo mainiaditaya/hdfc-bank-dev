@@ -288,7 +288,7 @@ const pincodeChangeHandler = (pincode, globals) => {
 const checkModeFd = (globals) => {
   const formData = globals.functions.exportData();
   const { authmode: idcomVisit, visitType: aadhaarVisit } = formData?.queryParams || {};
-  const { addressDeclarationPanel, resultPanel } = globals.form;
+  const { addressDeclarationPanel, resultPanel, selectKYCOptionsPanel } = globals.form;
   if (!idcomVisit && !aadhaarVisit) return;
 
   const { bannerImagePanel, loginMainPanel } = globals.form;
@@ -311,7 +311,7 @@ const checkModeFd = (globals) => {
   }
 
   const aadhaarSuccess = aadhaarVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message?.toLowerCase() === 'aadhaar otp validate success';
-
+  const aadhaarFail = aadhaarVisit === 'EKYC_AUTH_FAILED';
   if (aadhaarSuccess) {
     try {
       const {
@@ -364,6 +364,14 @@ const checkModeFd = (globals) => {
         globals,
       );
     }
+  }
+  if (aadhaarFail) {
+    const { selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3 } = selectKYCOptionsPanel;
+    globals.functions.setProperty(selectKYCOptionsPanel, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption1, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption2, { visible: false });
+    globals.functions.setProperty(selectKYCMethodOption3, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption1.aadharBiometricVerification, { value: '0' });
   }
 };
 
