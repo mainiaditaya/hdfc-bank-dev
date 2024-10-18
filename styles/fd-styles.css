@@ -145,6 +145,7 @@ main {
   bottom: 0;
   left: 0;
   background: var(--color-interface-popup-background);
+  z-index: 2;
 
   .field-resumejourneypopup {
     margin: auto !important;

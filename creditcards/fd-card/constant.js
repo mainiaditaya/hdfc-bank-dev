@@ -136,7 +136,21 @@ const ANALYTICS = {
       name: 'validation method kyc',
       pageName: 'Validation Method KYC',
       journeyState: '',
-      nextPage: 'idcom',
+      nextPage: 'uploadDoc',
+    },
+    aadhaarKYCLangPopup: {
+      type: 'click',
+      name: 'aadhaar kyc language popup',
+      pageName: 'Aadhaar KYC Language Popup',
+      journeyState: '',
+      nextPage: '',
+    },
+    docUpload: {
+      type: 'click',
+      name: 'documents upload',
+      pageName: 'Documents Upload',
+      journeyState: '',
+      nextPage: '',
     },
   },
 };
