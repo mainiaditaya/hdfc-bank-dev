@@ -1,4 +1,3 @@
-import { fieldChanged } from './index.js';
 export default async function initializeRuleEngineWorker(formDef, renderHTMLForm) {
   if (typeof Worker === 'undefined') {
     const ruleEngine = await import('./model/afb-runtime.js');
@@ -25,6 +24,7 @@ export default async function initializeRuleEngineWorker(formDef, renderHTMLForm
       }
       
       if (e.data.name === 'fieldChanged') {
+        const { fieldChanged } = await import('./index.js');
         const { generateFormRendition } = await import('../form.js');
         await fieldChanged(e.data.payload, form, generateFormRendition);
       }
