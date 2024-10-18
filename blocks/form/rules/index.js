@@ -21,7 +21,7 @@ function compare(fieldVal, htmlVal, type) {
   return fieldVal === htmlVal;
 }
 
-async function fieldChanged(payload, form, generateFormRendition) {
+export async function fieldChanged(payload, form, generateFormRendition) {
   const { changes, field: fieldModel } = payload;
   changes.forEach((change) => {
     const {
@@ -187,14 +187,6 @@ function applyRuleEngine(htmlForm, form, captcha) {
       form.getElement(id).value = value;
     }
     // console.log(JSON.stringify(form.exportData(), null, 2));
-  });
-
-  htmlForm.addEventListener('input', (e) => {
-    const field = e.target;
-    const {
-      id, value,
-    } = field;
-    form.getElement(id).value = value;
   });
 
   htmlForm.addEventListener('click', async (e) => {
