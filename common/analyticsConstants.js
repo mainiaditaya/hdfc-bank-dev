@@ -28,6 +28,21 @@ const data = {
     linkName: 'Select Card',
     linkPosition: 'Form',
   },
+  'validation method kyc': {
+    linkType: 'button',
+    linkName: 'Validation Method KYC',
+    linkPosition: 'Form',
+  },
+  'aadhaar kyc language popup': {
+    linkType: 'button',
+    linkName: 'Aadhaar KYC Language Popup',
+    linkPosition: 'Form',
+  },
+  'documents upload': {
+    linkType: 'button',
+    linkName: 'Documents Upload',
+    linkPosition: 'Form',
+  },
   'check offers': {
     linkType: 'button',
     linkName: 'Check Offers',
