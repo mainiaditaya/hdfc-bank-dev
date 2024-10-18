@@ -151,9 +151,9 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
-  const currentUrl = window.location.href;
+  const pathName = window.location.pathname;
   FORM_CONSTANT.some((form) => {
-    if (form.urlKey.some((el) => currentUrl.includes(el))) {
+    if (form.urlKey.some((el) => pathName.includes(el))) {
       window.setTimeout(() => loadScript(form.launchScript[ENV]), form.launchScript.loadTime);
       return true;
     }
