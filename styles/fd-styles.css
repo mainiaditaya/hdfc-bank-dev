@@ -1130,9 +1130,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       display: flex;
 
       .field-referencenumber {
-        background: url('../icons/PO.svg') no-repeat 92% 0 !important ;
-        width: 72px;
-        height: 72px;
+        background: url('../icons/PO.svg') top left no-repeat !important;
 
         label {
           margin: 10px 0 0 85px;
@@ -1149,6 +1147,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           font-weight: var(--font-weight-bold);
           color: var(--color-interface-background-quaternary);
           width: auto;
+          max-width: 250px;
 
           &:hover {
             box-shadow: none;
@@ -1161,7 +1160,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .field-copytoclipboard {
-        margin: 4% 0 0 25%;
+        margin: 4% 0 0;
 
         button {
           background: none;
@@ -1312,7 +1311,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           .repeat-wrapper {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
           }
 
           fieldset.panel-wrapper {
@@ -1326,7 +1325,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
             display: inherit;
 
             .field-selectedfdnum {
-              padding: 0;
+              padding: 4px 6px;
             }
 
             .field-selectedfdnum:not(p) {
@@ -1346,7 +1345,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               font-size: var(--body-fd-lg-font-size);
               font-weight: var(--font-weight-medium);
               color: var(--color-interface-text-primary);
-              padding: 0;
+              padding: 0 5px;
               margin: 0;
               height: auto !important;
             }
@@ -4328,6 +4327,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         .field-mailingaddresslabel p,
         .field-currentmailingaddresslabel p {
           margin: 0 0 0 5px !important;
+        }
+      }
+
+      .field-personaldetails {
+        .field-nameoncard {
+          margin-top: 20px;
         }
       }
     }
