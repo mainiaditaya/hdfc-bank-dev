@@ -1,4 +1,4 @@
-import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
+import { santizedFormDataWithContext } from '../../common/formutils.js';
 import * as CONSTANT from './constant.js';
 import { ENDPOINTS } from '../../common/constants.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
@@ -9,6 +9,11 @@ const CHANNEL = 'ADOBE_WEBFORMS';
 const {
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
+
+const BASEURL = "https://publish1apsouth1.prod.hdfc.adobecqms.net";
+
+const urlPath = (path) => `${BASEURL}${path}`;
+
 /**
    * @name invokeJourneyDropOff to log on success and error call backs of api calls
    * @param {state} state
