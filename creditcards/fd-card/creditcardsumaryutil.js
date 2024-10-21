@@ -8,8 +8,8 @@ const creditCardSummary = (globals) => {
 
   const formData = exportData();
   const selectedCreditCard = CURRENT_FORM_CONTEXT?.selectedCreditCard || formData?.currentFormContext?.selectedCreditCard || {};
-
-  const { eligibleCreditLimitAmount, FDlienCard = {} } = formData;
+  const eligibleCreditLimitAmount = CURRENT_FORM_CONTEXT?.cardCreditLimit || formData?.currentFormContext?.cardCreditLimit;
+  const { FDlienCard = {} } = formData;
   const { annualFee = 0 } = selectedCreditCard;
   const fdNumberSelection = FDlienCard.fdNumberSelection || [];
   const nameOnCard = formData?.nameOnCard

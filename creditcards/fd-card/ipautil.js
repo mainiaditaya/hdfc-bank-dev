@@ -149,7 +149,7 @@ const fdIpaSuccessHandler = (response, globals) => {
   const { creditLimit } = selectFD.fdSelectionInfo.selectFDDetailsPanel;
   const productCount = productDetails.length;
   IPA_RESPONSE.productDetails = productDetails;
-
+  CURRENT_FORM_CONTEXT.cardCreditLimit = creditLimit.$value;
   globals.functions.setProperty(eligibleCreditLimitAmount, { value: creditLimit.$value });
 
   const isSingleProduct = productCount === 1;
