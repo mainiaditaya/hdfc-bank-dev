@@ -166,7 +166,7 @@ const validateLogin = (globals) => {
 const getOtpNRE = (mobileNumber, pan, dob, globals) => {
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
-  const [day, month, year] = dob.$value.split('/');
+  const [year, month, day] = dob.$value.split('-');
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
   currentFormContext.mobileNumber = mobileNumber.$value;
