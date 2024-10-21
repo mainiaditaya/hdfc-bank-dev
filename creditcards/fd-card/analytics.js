@@ -15,7 +15,7 @@ import { ANALYTICS } from './constant.js';
 function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
   digitalData.page.pageInfo.pageName = pageName;
-  setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName);
+  setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName, pageName);
   switch (nextPage) {
     case 'selectCustomerId':
       digitalData.formDetails.eligibleCustomerID = '';
