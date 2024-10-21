@@ -307,8 +307,8 @@ const validateEmailID = async (email, globals) => {
   try {
     const emailValid = await getJsonResponse(url, payload, method);
     if (emailValid === true) {
-      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { valid: true });
-    } else if (email !== '') {
+      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { validity: true });
+    } else {
       globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID', invalidMsg, { useQualifiedName: true });
     }
   } catch (error) {
