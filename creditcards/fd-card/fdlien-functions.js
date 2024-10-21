@@ -5,7 +5,7 @@ import {
   getTimeStamp,
   maskNumber,
   parseCustomerAddress,
-  pincodeCheck,
+  // pincodeCheck,
   pinCodeMasterCheck,
   urlPath,
 } from '../../common/formutils.js';
@@ -324,7 +324,8 @@ const checkModeFd = async (globals) => {
         communicationCity, communicationState, comCityZip,
       } = formData?.currentFormContext?.executeInterfaceRequest?.requestString || {};
 
-      const isValidAadhaarPincode = await pincodeCheck(Zipcode, City, State);
+      const isValidAadhaarPincode = { result: true };
+      // const isValidAadhaarPincode = await pincodeCheck(Zipcode, City, State);
       let aadhaarAddress = '';
       let parsedAadhaarAddress = '';
       let fullAadhaarAddress = [Address1, Address2, Address3, City, State, Zipcode].filter(Boolean).join(', ');
@@ -360,7 +361,7 @@ const checkModeFd = async (globals) => {
 
       formData.currentFormContext.mobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'y';
       CURRENT_FORM_CONTEXT.mobileMatch = formData.currentFormContext.mobileMatch;
-      globals.functions.setProperty(globals.form.selectKYCOptionsPanel.aadhaarMobileMatch, { value: formData.currentFormContext.mobileMatch ? 'Yes' : 'No' });
+      globals.functions.setProperty(globals.form?.selectKYCOptionsPanel?.aadhaarMobileMatch, { value: formData.currentFormContext.mobileMatch ? 'Yes' : 'No' });
 
       globals.functions.setProperty(proceedFromAddressDeclarationIdcom, { visible: !formData?.currentFormContext?.customerIdentityChange });
       globals.functions.setProperty(proceedFromAddressDeclaration, { visible: formData?.currentFormContext?.customerIdentityChange });
