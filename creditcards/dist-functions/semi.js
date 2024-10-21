@@ -205,7 +205,7 @@
   // declare COMMON_CONSTANTS for all forms only.
   // impoted as CONSTANT key name in all files
 
-  const BASEURL$1 = getSubmitBaseUrl();
+  const BASEURL$2 = getSubmitBaseUrl();
   const CHANNEL$2 = 'ADOBE_WEBFORMS';
   const ENDPOINTS$2 = {
     aadharCallback: '/content/hdfc_etb_wo_pacc/api/aadharCallback.json',
@@ -251,7 +251,7 @@
 
   var CONSTANT = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    BASEURL: BASEURL$1,
+    BASEURL: BASEURL$2,
     CHANNEL: CHANNEL$2,
     CURRENT_FORM_CONTEXT: CURRENT_FORM_CONTEXT$1,
     DEAD_PAN_STATUS: DEAD_PAN_STATUS,
@@ -829,7 +829,7 @@
     attachRedirectOnClick,
   } = DOM_API; // DOM_MANIPULATE_CODE_FUNCTION
 
-  const { BASEURL } = CONSTANT;
+  const { BASEURL: BASEURL$1 } = CONSTANT;
 
   // declare-CONSTANTS
   const DATA_ATTRIBUTE_EMPTY = 'data-empty';
@@ -841,7 +841,7 @@
    * @returns {string} - The complete API URL including the base URL and the provided endpoint.
    */
 
-  const urlPath = (path) => `${BASEURL}${path}`;
+  const urlPath$1 = (path) => `${BASEURL$1}${path}`;
 
   /**
    * Removes spaces and special characters from a given string.
@@ -1046,7 +1046,7 @@
     return paramEntry ? paramEntry[1] : null;
   };
 
-  const isNodeEnv$1 = typeof process !== 'undefined' && process.versions && process.versions.node;
+  const isNodeEnv$3 = typeof process !== 'undefined' && process.versions && process.versions.node;
 
   /**
      * function sorts the billed / Unbilled Txn  array in descending order based on the amount field
@@ -1113,9 +1113,9 @@
   const currencyUtil = (number, minimumFractionDigits) => {
     if (typeof (number) !== 'number') return number;
     const options = {
-      minimumFractionDigits: minimumFractionDigits ,
+      minimumFractionDigits: minimumFractionDigits,
     };
-    const interestNumber = (number / 100).toFixed(minimumFractionDigits );
+    const interestNumber = (number / 100).toFixed(minimumFractionDigits);
     const newNumber = new Intl.NumberFormat('us-EN', options).format(interestNumber);
     return newNumber;
   };
@@ -1171,7 +1171,7 @@
     return `${dayPart} ${monthPart} ${yearPart}`;
   };
 
-  if (!isNodeEnv$1) {
+  if (!isNodeEnv$3) {
     setTimeout(() => {
       validationField();
     }, 1000);
@@ -1478,7 +1478,7 @@
         },
       },
     };
-    const url = urlPath(ENDPOINTS$1.journeyDropOffParam);
+    const url = urlPath$1(ENDPOINTS$1.journeyDropOffParam);
     const method = 'POST';
     return fetchJsonResponse(url, journeyJSONObj, method);
   };
@@ -1489,6 +1489,11 @@
   const {
     CURRENT_FORM_CONTEXT: currentFormContext$2,
   } = SEMI_CONSTANT;
+
+  const BASEURL = "https://publish1apsouth1.prod.hdfc.adobecqms.net";
+
+  const urlPath = (path) => `${BASEURL}${path}`;
+
   /**
      * @name invokeJourneyDropOff to log on success and error call backs of api calls
      * @param {state} state
@@ -1729,6 +1734,8 @@
     pageName: '',
   };
 
+  const isNodeEnv$2 = typeof process !== 'undefined' && process.versions && process.versions.node;
+
   /**
    * Hashes a phone number using SHA-256 algorithm.
    *
@@ -1827,7 +1834,7 @@
       digitalData.user.aan = formData?.smartemi?.originAcct;
       currentState.pageName = null;
     }
-    if (window) {
+    if (!isNodeEnv$2) {
       window.digitalData = digitalData || {};
     }
     _satellite.track('pageload');
@@ -1850,7 +1857,7 @@
           validationMethod: 'credit card',
           status: '1',
         };
-        if (window) {
+        if (!isNodeEnv$2) {
           window.digitalData = digitalData || {};
         }
         _satellite.track('submit');
@@ -1866,7 +1873,7 @@
           validationMethod: 'credit card',
           status: '1',
         };
-        if (window) {
+        if (!isNodeEnv$2) {
           window.digitalData = digitalData || {};
         }
         _satellite.track('submit');
@@ -1883,7 +1890,7 @@
           validationMethod: 'credit card',
           status: '1',
         };
-        if (window) {
+        if (!isNodeEnv$2) {
           window.digitalData = digitalData || {};
         }
         _satellite.track('submit');
@@ -1900,7 +1907,7 @@
         digitalData.formDetails.amt = formData?.smartemi?.SmartEMIAmt || CURRENT_FORM_CONTEXT.SMART_EMI_AMOUNT; // total amount
         digitalData.formDetails.eligibleTransactions = ''; // eligible transaction ?. no of eligible transaction available
         digitalData.formDetails.selectedTransactions = CURRENT_FORM_CONTEXT?.TXN_SELECTED_COUNTS?.total; // no of selected
-        if (window) {
+        if (!isNodeEnv$2) {
           window.digitalData = digitalData || {};
         }
         _satellite.track('submit');
@@ -1943,7 +1950,7 @@
           digitalData.page.pageInfo.errorMessage = errorMessages.noBilled;
         }
         digitalData.form.emiCategory = EMI_CATEGORY;
-        if (window) {
+        if (!isNodeEnv$2) {
           window.digitalData = digitalData || {};
         }
         const trackingEvent = ((ccUnBilledData?.length === 0) && (ccBilledData?.length === 0)) ? 'unbilled_clicked' : 'submit';
@@ -1960,7 +1967,7 @@
           validationMethod: 'credit card',
           status: '1',
         };
-        if (window) {
+        if (!isNodeEnv$2) {
           window.digitalData = digitalData || {};
         }
         _satellite.track('submit');
@@ -1977,7 +1984,7 @@
           validationMethod: 'credit card',
           status: '1',
         };
-        if (window) {
+        if (!isNodeEnv$2) {
           window.digitalData = digitalData || {};
         }
         _satellite.track('submit');
@@ -1986,7 +1993,7 @@
       case 'submit review': {
         digitalData.event = {};
         digitalData.event.rating = formData?.ratingvalue || formData.rating;
-        if (window) {
+        if (!isNodeEnv$2) {
           window.digitalData = digitalData || {};
         }
         _satellite.track('submit');
@@ -2051,7 +2058,7 @@
     digitalData.page.pageInfo.errorMessage = errorMsg;
     digitalData.page.pageInfo.errorAPI = ''; // "OTP_Validation|EligibilityCheck"
     digitalData.page.pageInfo.pageName = ANALYTICS_PAGE_NAME['Error Page'];
-    if (window) {
+    if (!isNodeEnv$2) {
       window.digitalData = digitalData || {};
     }
     _satellite.track('pageload');
@@ -2087,7 +2094,7 @@
     FLOWS_ERROR_MESSAGES,
   } = SEMI_CONSTANT;
 
-  const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
+  const isNodeEnv$1 = typeof process !== 'undefined' && process.versions && process.versions.node;
 
   // Initialize all SEMI Journey Context Variables & formRuntime variables.
   currentFormContext.totalSelect = 0;
@@ -2131,7 +2138,7 @@
    * @returns
    */
   function getCurrentFormContext(globals) {
-    if (isNodeEnv) {
+    if (isNodeEnv$1) {
       return JSON.parse(globals.form.runtime.currentFormContext.$value || '{}');
     }
     return currentFormContext;
@@ -2150,7 +2157,7 @@
     let channel = channelValue;
     journeyAbbreviation = 'SEMI';
     channel = 'WEB';
-    if (isNodeEnv) {
+    if (isNodeEnv$1) {
       channel = 'WHATSAPP';
     }
     const journeyId = globals.functions.exportData().smartemi?.journeyId || `${dynamicUUID}_01_${journeyAbbreviation}_${visitMode}_${channel}`;
@@ -2171,7 +2178,7 @@
    * @return {PROMISE}
    */
   function getOTPV1(mobileNumber, cardDigits, channel, globals) {
-    if (!isNodeEnv) {
+    if (!isNodeEnv$1) {
       /* restrict to show otp-resend option once it reaches max-attemt and to show otptimer */
       const { otpPanel } = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel;
       if (resendOtpCount < DATA_LIMITS.maxOtpResendLimit) {
@@ -2205,7 +2212,7 @@
       };
     }
     // eslint-disable-next-line no-unneeded-ternary
-    return fetchJsonResponse(path, jsonObj, 'POST', isNodeEnv ? false : true);
+    return fetchJsonResponse(path, jsonObj, 'POST', isNodeEnv$1 ? false : true);
   }
 
   /**
@@ -2227,11 +2234,11 @@
       },
     };
     const path = semiEndpoints.otpVal;
-    if (isNodeEnv) {
+    if (isNodeEnv$1) {
       jsonObj.requestString.channel = CHANNELS.adobeWhatsApp;
       delete jsonObj.requestString.OTP;
     }
-    if (!isNodeEnv) displayLoader$1();
+    if (!isNodeEnv$1) displayLoader$1();
     return fetchJsonResponse(path, jsonObj, 'POST', true);
   }
 
@@ -2244,7 +2251,7 @@
    */
   function handleWrongCCDetailsFlows(ccNumber, wrongNumberCount, errorMessage, globals) {
     // wrong CC number retry is handled in the flow only
-    if (!isNodeEnv) return;
+    if (!isNodeEnv$1) return;
     const count = wrongNumberCount.$value;
     if (count < 2) {
       globals.functions.markFieldAsInvalid(ccNumber.$qualifiedName, errorMessage, { useQualifiedName: true });
@@ -2279,8 +2286,8 @@
       },
     };
     const path = semiEndpoints.preexecution;
-    if (!isNodeEnv) displayLoader$1();
-    return fetchJsonResponse(path, jsonObj, 'POST', !isNodeEnv);
+    if (!isNodeEnv$1) displayLoader$1();
+    return fetchJsonResponse(path, jsonObj, 'POST', !isNodeEnv$1);
   }
   const nfObject = new Intl.NumberFormat('hi-IN');
 
@@ -2339,7 +2346,7 @@
     const creditCardDisplay = globals.form.aem_semicreditCardDisplay;
     const nCardNumber = 4;
     const cardNumberLength = Number.isNaN(response?.blockCode.cardNumber.length) ? 0 : response.blockCode.cardNumber.length;
-    const lastNDigits = (cardNumberLength % nCardNumber === 0) ? response?.blockCode.cardNumber.slice(-nCardNumber) : response?.blockCode.cardNumber.slice(-(cardNumberLength % nCardNumber));
+    const lastNDigits = globals.form.aem_semiWizard.aem_identifierPanel.aem_loginPanel.aem_cardNo.$value;
     const cardDigits = `${'X'.repeat(nCardNumber)}-`.repeat(Math.round(cardNumberLength / nCardNumber) - 1) + lastNDigits;
     globals.functions.setProperty(creditCardDisplay, { visible: true });
     globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: `Dear ${response?.cardHolderName}` });
@@ -2350,9 +2357,9 @@
     const TOTAL_OUTSTANDING_AMT = `${MISC.rupeesUnicode} ${totalAmt}`;
     currentFormContext.totalOutstandingAmount = TOTAL_OUTSTANDING_AMT;
     globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: TOTAL_OUTSTANDING_AMT });
-    globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_cardfacia, { value: urlPath(response.cardTypePath) });
+    globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_cardfacia, { value: urlPath$1(response.cardTypePath) });
     const imageEl = document.querySelector('.field-aem-cardfacia > picture');
-    const imagePath = `${urlPath(response.cardTypePath)}?width=2000&optimize=medium`;
+    const imagePath = `${urlPath$1(response.cardTypePath)}?width=2000&optimize=medium`;
     imageEl?.childNodes[5].setAttribute('src', imagePath);
     imageEl?.childNodes[3].setAttribute('srcset', imagePath);
     imageEl?.childNodes[1].setAttribute('srcset', imagePath);
@@ -2406,7 +2413,7 @@
    */
   const setTxnPanelData = async (allTxn, btxn, uBtxn, billedTxnPanel, unBilledTxnPanel, globals) => {
     if (!allTxn?.length) return;
-    if (!isNodeEnv) {
+    if (!isNodeEnv$1) {
       allTxn.forEach((_txn, i) => {
         const isBilled = i < btxn;
         let panel = billedTxnPanel;
@@ -2446,7 +2453,7 @@
    */
   function customDispatchEvent(eventName, payload, globals) {
     let evtPayload = payload;
-    if (isNodeEnv && payload?.errorCode) {
+    if (isNodeEnv$1 && payload?.errorCode) {
       if (FLOWS_ERROR_MESSAGES[payload.errorCode]) {
         evtPayload = { ...evtPayload, errorMsg: FLOWS_ERROR_MESSAGES[payload.errorCode] };
       }
@@ -2455,7 +2462,7 @@
   }
 
   const handleResendOtp2VisibilityInFlow = (countOfResendOtp, globals) => {
-    if (!isNodeEnv) return;
+    if (!isNodeEnv$1) return;
     const otpPanel = globals.form.aem_semiWizard.aem_selectTenure.aem_otpPanelConfirmation.aem_otpPanel2;
     if (countOfResendOtp >= DATA_LIMITS.maxOtpResendLimit) {
       const properties = otpPanel.aem_otpResend2.$properties;
@@ -2470,7 +2477,7 @@
    * @returns {void}
    */
   const changeWizardView = () => {
-    if (isNodeEnv) return;
+    if (isNodeEnv$1) return;
     const completedStep = document.querySelector('.field-aem-semiwizard .wizard-menu-items .wizard-menu-active-item');
     completedStep.classList.add('wizard-completed-item');
   };
@@ -2493,7 +2500,7 @@
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnSelectionContinue, { enabled: false });
       let ccBilledData = resPayload?.ccBilledTxnResponse?.responseString ? resPayload?.ccBilledTxnResponse?.responseString : [];
       let ccUnBilledData = resPayload?.ccUnBilledTxnResponse?.responseString ? resPayload?.ccUnBilledTxnResponse?.responseString : [];
-      if (isNodeEnv) {
+      if (isNodeEnv$1) {
         ccBilledData = resPayload?.ccBilledTxnResponse || [];
         if (ccBilledData.length === 0) {
           customDispatchEvent('showErrorSnackbar', { errorMessage: ERROR_MSG.noEligibleTxnFlow }, globals);
@@ -2520,7 +2527,7 @@
       globals.functions.setProperty(globals.form.runtime.originAcct, { value: formContext.EligibilityResponse.responseString.aanNumber });
       changeWizardView();
       // Display card and move wizard view
-      if (!isNodeEnv) {
+      if (!isNodeEnv$1) {
         cardDisplay(globals, resPayload);
         moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
       }
@@ -2676,7 +2683,7 @@
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_success.aem_hiddenTotalAmt, { value: DISPLAY_TOTAL_AMT });
     /* hidden fields to set for reports */
     /* display amount */
-    if (!isNodeEnv) {
+    if (!isNodeEnv$1) {
       globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: LABEL_AMT_SELCTED });
       globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_outStandingLabel, { value: DISPLAY_TOTAL_AMT });
       globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: `${MISC.rupeesUnicode} ${TOTAL_AMT_IN_WORDS}` });
@@ -2712,13 +2719,13 @@
     if (currentFormContext.totalSelect < DATA_LIMITS.totalSelectLimit) {
       tnxPopupAlertOnce += 1;
     }
-    if (!isNodeEnv && (tnxPopupAlertOnce === 1)) { // option of selecting ten txn alert should be occured only once.
+    if (!isNodeEnv$1 && (tnxPopupAlertOnce === 1)) { // option of selecting ten txn alert should be occured only once.
       const MSG = 'Great news! You can enjoy the flexibility of converting up to 10 transactions into EMI.';
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup, { visible: true });
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: MSG });
     } else {
-      if (!isNodeEnv) {
+      if (!isNodeEnv$1) {
         moveWizardView(domElements.semiWizard, domElements.selectTenure);
         handleMdmUtmParam(globals);
       }
@@ -2927,7 +2934,7 @@
     /* popup alert hanldles for the tad-mad values */
     const sumOfbilledTxnOnly = billedTxnList?.filter((el) => {
       // In case of Web only billed transaction is displayed on billedTxn panel but in whatsapp both billed and unbilled are displayed
-      if (isNodeEnv) {
+      if (isNodeEnv$1) {
         return el.aem_Txn_checkBox.$value && el.aem_txn_type.$value === 'billed';
       }
       return el.aem_Txn_checkBox.$value;
@@ -3045,7 +3052,7 @@
       globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_outStandingAmt, { value: TOTAL_OUTSTANDING_AMT });
       globals.functions.setProperty(globals.form.aem_semicreditCardDisplay.aem_semicreditCardContent.aem_outStandingLabel, { value: LABEL_OUTSTANDING_AMT });
     }
-    return (!isNodeEnv) && moveWizardView(source, target);
+    return (!isNodeEnv$1) && moveWizardView(source, target);
   };
 
   /**
@@ -3258,14 +3265,14 @@
         emiConversion: emiConversionArray,
         journeyID: globals.form.runtime.journeyId.$value,
         journeyName: globals.form.runtime.journeyName.$value,
-        ...(!isNodeEnv && { userAgent: window.navigator.userAgent }),
+        ...(!isNodeEnv$1 && { userAgent: window.navigator.userAgent }),
       },
     };
     const path = semiEndpoints.ccSmartEmi;
-    if (!isNodeEnv) displayLoader$1();
+    if (!isNodeEnv$1) displayLoader$1();
     // For whatsapp flow visibility controlled via custom property so need to ensure on resend/submit button click property is updated.
     handleResendOtp2VisibilityInFlow(globals.form.aem_semiWizard.aem_selectTenure.aem_otpPanelConfirmation.aem_otpPanel2.aem_resendOtpCount2.$value, globals);
-    return fetchJsonResponse(path, jsonObj, 'POST', !isNodeEnv);
+    return fetchJsonResponse(path, jsonObj, 'POST', !isNodeEnv$1);
   };
 
   /**
@@ -3274,7 +3281,7 @@
    * @param {object} globals - global form object
    */
   const otpTimerV1 = (pannelName, globals) => {
-    if (isNodeEnv) return;
+    if (isNodeEnv$1) return;
     let sec = DATA_LIMITS.otpTimeLimit;
     let dispSec = DATA_LIMITS.otpTimeLimit;
     const FIRST_PANNEL_OTP = 'firstotp';
@@ -3356,7 +3363,7 @@
       panelOtp.maxLimitOtp = otp2.aem_maxlimitOTP2;
       resendOtpCount2 += 1;
       panelOtp.resendOtpCount = resendOtpCount2;
-      if (isNodeEnv) {
+      if (isNodeEnv$1) {
         panelOtp.resendOtpCountField = otp2.aem_resendOtpCount2;
         panelOtp.limitCheck = otp2.aem_resendOtpCount2.$value < DATA_LIMITS.maxOtpResendLimit;
         panelOtp.resendOtpCount = otp2.aem_resendOtpCount2.$value + 1;
@@ -3398,6 +3405,15 @@
       window.open(TNC_LINK, '_blank');
     }
   };
+
+  const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
+
+  if (isNodeEnv) {
+     // eslint-disable-next-line no-restricted-globals
+    global._satellite = {
+      track: () => {},
+    };
+  }
 
   exports.assistedToggleHandler = assistedToggleHandler;
   exports.branchHandler = branchHandler;
