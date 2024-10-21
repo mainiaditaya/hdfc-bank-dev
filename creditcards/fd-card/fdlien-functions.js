@@ -2,10 +2,10 @@
 import {
   ageValidator,
   clearString,
-  getTimeStamp,
+  generateErefNumber,
   maskNumber,
   parseCustomerAddress,
-  // pincodeCheck,
+  pincodeCheck,
   pinCodeMasterCheck,
   urlPath,
 } from '../../common/formutils.js';
@@ -222,7 +222,7 @@ const resendOTP = async (globals) => {
  */
 const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
   addGaps('.field-pannumberpersonaldetails input');
-  const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
+  const referenceNumber = generateErefNumber() ?? '';
   CURRENT_FORM_CONTEXT.referenceNumber = referenceNumber;
   const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
   const jsonObj = {
@@ -324,8 +324,8 @@ const checkModeFd = async (globals) => {
         communicationCity, communicationState, comCityZip,
       } = formData?.currentFormContext?.executeInterfaceRequest?.requestString || {};
 
-      const isValidAadhaarPincode = { result: true };
-      // const isValidAadhaarPincode = await pincodeCheck(Zipcode, City, State);
+      // const isValidAadhaarPincode = { result: true };
+      const isValidAadhaarPincode = await pincodeCheck(Zipcode, City, State);
       let aadhaarAddress = '';
       let parsedAadhaarAddress = '';
       let fullAadhaarAddress = [Address1, Address2, Address3, City, State, Zipcode].filter(Boolean).join(', ');
