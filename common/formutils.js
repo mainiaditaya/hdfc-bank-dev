@@ -146,7 +146,7 @@ const getTimeStamp = (currentTime) => {
  */
 const getTimeStampNoSeconds = (currentTime) => {
   // Function to pad single digit numbers with leading zero
-  const pad = (number) => ((number < 10) ? `0${number}` : number);
+  const pad = (number) => (String(number).padStart(2, '0'));
   // Format the datetime as desired
   const formattedDatetime = currentTime.getFullYear()
     + pad(currentTime.getMonth() + 1)
