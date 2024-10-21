@@ -2,7 +2,7 @@
 import {
   ageValidator,
   clearString,
-  getTimeStamp,
+  generateErefNumber,
   maskNumber,
   parseCustomerAddress,
   // pincodeCheck,
@@ -222,7 +222,7 @@ const resendOTP = async (globals) => {
  */
 const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
   addGaps('.field-pannumberpersonaldetails input');
-  const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
+  const referenceNumber = generateErefNumber() ?? '';
   CURRENT_FORM_CONTEXT.referenceNumber = referenceNumber;
   const panValue = (pan.$value)?.replace(/\s+/g, ''); // remove white space
   const jsonObj = {
