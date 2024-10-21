@@ -180,7 +180,7 @@
       border-radius: 0;
     }
 
-   /*  & .field-invalid:has(.field-description) {
+    /*  & .field-invalid:has(.field-description) {
       input {
         border-color: var(--color-interface-border-secondary) !important;
         box-shadow: 0 0 0 2px var(--color-input-box-shadow-error-default);
@@ -1424,13 +1424,14 @@
               background: none;
               margin: 0;
               padding: 0;
-              width: 95% !important;
-              height: auto !important;
+              width: 90% !important;
+              height: 100%;
               font-size: 18px;
               line-height: 28px;
               font-weight: 500;
               color: var(--color-interface-background-quaternary);
-              position: absolute;
+              /* position: absolute; */
+              min-height:fit-content;
               resize: none;
 
               @media (320px <=width <=600px) {
@@ -2018,6 +2019,12 @@
             }
           }
 
+          .field-continue {
+            text-align: left !important;
+            button{
+              max-width: 272px;
+            }
+          }
         }
 
         /* confirm details screen */
@@ -2028,7 +2035,7 @@
 
             .text-wrapper.field-wrapper,
             .multiline-wrapper {
-              height: 70px;
+              min-height: 70px;
 
               @media (320px <=width <=600px) {
                 height: auto;
@@ -2072,6 +2079,8 @@
                   transform: none;
                 }
               }
+
+
             }
           }
 
@@ -2242,6 +2251,10 @@
                 &::after {
                   display: none;
                 }
+
+                &:hover {
+                  background: none !important;
+                }
               }
             }
 
@@ -2249,6 +2262,8 @@
 
           .field-confirmbutton {
             margin-top: 10px;
+            text-align: left;
+            max-width: 272px;
           }
         }
 
