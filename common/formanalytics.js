@@ -10,7 +10,8 @@ import { data } from './analyticsConstants.js';
  * @param {object} digitalData
  */
 
-function setAnalyticPageLoadProps(journeyState, formData, digitalData, formName) {
+function setAnalyticPageLoadProps(journeyState, formData, digitalData, formName, pageName) {
+  digitalData.page.pageInfo.pageName = pageName;
   digitalData.user.pseudoID = '';// Need to check
   digitalData.user.journeyName = CURRENT_FORM_CONTEXT?.journeyName;
   digitalData.user.journeyID = formData?.journeyId;

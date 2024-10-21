@@ -22,6 +22,11 @@ const ratingButtonUI = () => {
         btn.classList.remove('active');
       });
       this.classList.add('active');
+      const ratingValue = this.textContent;
+      const captureRatingInput = document.querySelector('input[name="captureRating"]');
+      if (captureRatingInput) {
+        captureRatingInput.value = ratingValue;
+      }
     });
   });
 };
