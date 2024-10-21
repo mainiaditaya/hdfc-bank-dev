@@ -6,7 +6,6 @@ export const formIdPathMapping = {
   '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro2test': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
 };
 
-
 export default function getCustomFunctionPath(id) {
   return id ? formIdPathMapping[atob(id)] : null;
 }
