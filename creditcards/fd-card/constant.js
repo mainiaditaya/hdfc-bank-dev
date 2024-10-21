@@ -151,6 +151,13 @@ const ANALYTICS = {
       name: 'documents upload',
       pageName: 'Documents Upload',
       journeyState: '',
+      nextPage: 'confirmationPage',
+    },
+    confirmationPage: {
+      type: 'click',
+      name: 'confirmation page',
+      pageName: 'Confirmation Page',
+      journeyState: '',
       nextPage: '',
     },
   },

@@ -23,6 +23,10 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
     case 'selectCard':
       digitalData.card.eligibleCard = '';
       break;
+    case 'confirmationPage':
+      digitalData.formDetails.reference = '';
+      digitalData.formDetails.isVideoKYC = '';
+      break;
     default:
       // do nothing
   }
@@ -122,6 +126,11 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       digitalData.formDetails.documentProof = `ID Proof: ${formData.DocUploadFront.name}, Address Proof: ${formData.addressProofFile1.name}`;
       _satellite.track('submit');
       sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
+      break;
+    case 'confirmationPage':
+      digitalData.event.rating = '';
+      _satellite.track('submit');
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.confirmationPage.nextPage);
       break;
     default:
   }

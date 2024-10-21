@@ -43,6 +43,11 @@ const data = {
     linkName: 'Documents Upload',
     linkPosition: 'Form',
   },
+  'confirmation page': {
+    linkType: 'button',
+    linkName: 'Confirmation Page',
+    linkPosition: 'Form',
+  },
   'check offers': {
     linkType: 'button',
     linkName: 'Check Offers',
