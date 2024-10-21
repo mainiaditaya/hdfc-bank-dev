@@ -688,6 +688,19 @@ function createDeepCopyFromBlueprint(blueprint) {
   return JSON.parse(JSON.stringify(blueprint));
 }
 
+const generateErefNumber = () => {
+  const now = new Date();
+
+  const year = String(now.getFullYear());
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const firstDigitOfSeconds = String(now.getSeconds()).charAt(0);
+
+  return `AD${year}${month}${day}${hours}${minutes}${firstDigitOfSeconds}`;
+};
+
 export {
   urlPath,
   maskNumber,
@@ -728,4 +741,5 @@ export {
   attachRedirectOnClick,
   createDeepCopyFromBlueprint,
   formatIndian,
+  generateErefNumber,
 };
