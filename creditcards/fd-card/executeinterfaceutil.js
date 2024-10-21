@@ -258,6 +258,20 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
             perAddressType: '4',
           });
         }
+      } else {
+        const {
+          addressLine1, addressLine2, addressLine3, pincode: permanentZipCode, city: permanentCity, state: permanentState,
+        } = formData?.currentFormContext?.permanentAddress || {};
+
+        Object.assign(executeInterfaceRequest.requestString, {
+          permanentAddress1: addressLine1,
+          permanentAddress2: addressLine2,
+          permanentAddress3: addressLine3,
+          permanentCity,
+          permanentState,
+          permanentZipCode,
+          perAddressType: '2',
+        });
       }
     }
     if (selectedKyc === 'biokyc') {
