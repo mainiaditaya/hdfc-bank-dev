@@ -444,8 +444,8 @@ const changeWizardView = () => {
 */
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload1, globals) {
-  // const resPayload = RESPONSE_PAYLOAD.response;
-  const resPayload = resPayload1;
+  const resPayload = SEMI_CONSTANT.RESPONSE_PAYLOAD.response;
+  // const resPayload = resPayload1;
   const response = {};
   const formContext = getCurrentFormContext(globals);
   try {
