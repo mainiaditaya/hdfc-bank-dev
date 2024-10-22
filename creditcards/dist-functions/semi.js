@@ -390,6 +390,7 @@
     XFACE_INQ_VP_0003: 'Hey, it seems like you have entered incorrect details. Request you to check & re-enter your last 4 digits of the card.',
     XFACE_E2FA_02: 'Incorrect OTP code. Please try again.', // For this case error message is hardcoded in rule
     XFACE_E2FA_04: 'Oops! you have entered wrong otp too many times please try again later',
+    "1000": "Sorry, this card is not eligible for SmartEMI. You may retry with a different credit card."
   };
 
   const CHANNELS$1 = {
@@ -3436,7 +3437,7 @@
    * on click of t&c navigation, open Url in new tab
    */
   const tAndCNavigation = () => {
-    const TNC_LINK = 'https://www.hdfcbank.com/personal/borrow/loan-against-assets/smartemi';
+    const TNC_LINK = 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?path=/Personal/Borrow/Loan%20Against%20Asset%20Landing/Smart%20EMI/SmartEMI-TC-Dec20.pdf';
     if (window !== undefined) {
       window.open(TNC_LINK, '_blank');
     }
