@@ -10,7 +10,7 @@ const {
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
 
-const BASEURL = "https://publish1apsouth1.prod.hdfc.adobecqms.net";
+const BASEURL = "https://applyonline.hdfcbank.com";
 
 const urlPath = (path) => `${BASEURL}${path}`;
 
