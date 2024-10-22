@@ -159,10 +159,14 @@ main {
     border-radius: 12px;
     padding: 25px;
     max-width: 525px;
-    height: 210px;
+    height: 230px;
 
     .plain-text-wrapper {
       text-align: center;
+      font-weight: var(--font-weight-bold);
+      font-size: var(--body-fd-sm-font-size);
+      margin: 0 auto;
+      width: 55%;
 
       p {
         font-weight: var(--font-weight-bold);
@@ -1860,6 +1864,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
             &:hover {
               background: none !important;
             }
+
+            &:disabled {
+              background:  none !important;
+              color: var(--color-input-text-disabled) !important;
+            }
           }
         }
 
@@ -2632,6 +2641,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           }
 
           .field-cardbenefitstext {  
+            position: relative;
+
             textarea {
               font-size: var(--body-fd-md-font-size);
               color: var(--color-input-text-primary);
@@ -2646,10 +2657,24 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               resize: none;
               box-sizing: border-box;
               border: none;
+              padding-left: 35px;
               
               &:hover {
                 box-shadow: none;
               }
+
+              &:focus {
+                box-shadow: none;
+              }
+            }           
+
+            &::before {
+              content: '.';
+              position: absolute;
+              left: 15px;
+              top: -29px;
+              font-size: var(--body-fd-xxx-lg-font-size);
+              color: var(--color-input-text-primary);
             }
           }
       }
@@ -2892,7 +2917,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         content: url('../icons/kyc-bullet-icon.svg');
         margin-right: 16px;
         position: relative;
-        top: 5px;
       }
 
       .radio-wrapper.field-aadharekycverification {
@@ -2944,7 +2968,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       left: 0;
       overflow: auto;
       background: var(--color-interface-background-primary);
-      border-radius: 12px;
+      border-radius: 20px;
       padding: 25px;
       width: 40%;
       height: 70%;
@@ -2953,20 +2977,21 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       .field-wrongattemptclosepopup {
         text-align: right !important;
         position: absolute;
-        top: 0;
-        right: 10px;
+        top: 8px;
+        right: 15px;
 
         button {
           color: var(--color-input-text-disabled);
-          background: none;
+          background: url('../icons/close-icon-grey.svg') no-repeat;
           width: 20px !important;
+          height: 20px !important;
 
           &::after {
             width: 0 !important;
           }
 
           &:hover {
-            background: none !important;
+            background: url('../icons/close-icon-grey.svg') no-repeat !important;
           }
         }
       }
@@ -3403,18 +3428,58 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
 /* Aadhar Consent Popup */
 .fdlien .field-aadharconsent {
+  legend{
+    display: none;
+  }
+
   .field-aadharconsentpopup {
     padding: 29px;
     max-width: 525px;
-    height: 500px;
+    height: 420px;
+    position: relative;
+    top: -5%;
+
+    .field-closepopup {
+      position: absolute;
+      right: 20px;
+      top: 25px;
+
+      button {
+        background: url('../icons/close-icon-black.svg') no-repeat;
+        width: 20px;
+        height: 20px;
+
+        &:hover {
+          background: url('../icons/close-icon-black.svg') no-repeat !important;
+        }
+
+        &::after {
+          background: none !important;
+        }
+      }
+    }
 
     .field-aadharconsentlabel {
+      background: url('../icons/aadhar-icon.svg') no-repeat;
+      padding: 0 0 0 50px;
+
       b,
       p {
         font-size: var(--body-fd-x-lg-font-size);
         font-weight: var(--font-weight-extra-bold);
         color: var(--color-interface-background-quaternary);
         margin: 0;
+      }
+    }
+
+    .field-selectlanguage {
+      margin-top: -5px;
+
+      label {
+        color: var(--color-interface-background-quaternary) !important;
+        font-weight: var(--font-weight-bold) !important;
+        font-size: var(--body-x-sm-font-size) !important;
+        margin-top: 12px;
       }
     }
 
@@ -3428,10 +3493,38 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       color: var(--color-interface-background-quaternary);
     }
 
+    div[class*='field-aadharconsenttext-'] {
+      height: 130px;
+      overflow-y: scroll;
+    }
+
     div[class*='field-aadharconsenthelp-'] p {
       padding: 0;
       font-size: var(--body-x-sm-font-size);
       color: var(--color-interface-text-secondary);
+    }
+
+    .field-languageconsenttnc {
+      margin-top: -5px;
+
+      input[type='checkbox'] {
+        width: 18px !important;
+        height: 18px !important;
+
+        &:checked::before {
+          margin: -8px 0 0 -4px;
+        }
+      }
+
+      label p{
+        font-size: var(--body-x-sm-font-size);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-interface-text-secondary);
+      }
+    }
+
+    .field-aadharconsentagree {
+      margin-top: -20px;
     }
   }
 }
@@ -4472,6 +4565,29 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
       .field-selectidentifier {
         width: 55%;
+      }
+    }
+  }
+
+  .fdlien .field-aadharconsent {
+    .field-aadharconsentpopup {
+      top: 15%;
+      height: 430px;
+      
+      .field-closepopup {
+        top: 0;
+      }
+
+      .field-selectlanguage {
+        margin: 20px 0;
+      }
+
+      .field-languageconsenttnc {
+        margin-top: 20px;
+      }
+
+      .field-aadharconsentagree {
+        margin-top: 0 !important;
       }
     }
   }

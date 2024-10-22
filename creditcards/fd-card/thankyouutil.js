@@ -16,6 +16,7 @@ const finalPagePanelVisibility = (formStatus, arn, globals) => {
 };
 
 const ratingButtonUI = () => {
+  const thankyouSubmit = document.querySelector('button[name="tqSubmitButton"]');
   document.querySelectorAll('.field-ratingbuttons .button').forEach((button) => {
     button.addEventListener('click', function ratingClick() {
       document.querySelectorAll('.field-ratingbuttons .button').forEach((btn) => {
@@ -26,21 +27,24 @@ const ratingButtonUI = () => {
       const captureRatingInput = document.querySelector('input[name="captureRating"]');
       if (captureRatingInput) {
         captureRatingInput.value = ratingValue;
+        thankyouSubmit.removeAttribute('disabled');
       }
     });
   });
 };
 
-const copyToClipBoard = async () => {
+const copyToClipBoard = async (globals) => {
   const referenceNumberLabel = document.querySelector('.field-referencenumber label');
-  const referenceNumberInput = document.querySelector('.field-referencenumber input');
-  if (referenceNumberInput) {
+  const referenceNumberValue = globals.form.resultPanel.successResultPanel.tqSuccessWrapper.refNumPanel.referenceNumber.$value;
+  if (referenceNumberValue) {
     try {
-      await navigator.clipboard.writeText(referenceNumberInput.value);
-      alert(`Copied ${referenceNumberLabel.textContent} ${referenceNumberInput.value}`);
+      await navigator.clipboard.writeText(referenceNumberValue);
+      alert(`Copied ${referenceNumberLabel.textContent}: ${referenceNumberValue}`);
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
+  } else {
+    alert('No reference number available to copy.');
   }
 };
 
