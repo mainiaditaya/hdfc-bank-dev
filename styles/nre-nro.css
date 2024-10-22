@@ -277,22 +277,25 @@
                       outline: none;
                     }
                   }
+
                 }
 
                 .field-registeredmobilenumber {
                   position: absolute;
-                  left: 0;
-                  background-color: #fff;
+                  left: 90px;
                   margin: 1px;
                   padding-left: 15px;
                   border-radius: 12px;
-                  width: calc(100% - 15px);
+                 /*  width: calc(100% - 15px);
                   z-index: 2;
+                   left: 0;
+                  background-color: #fff; */
+                  width: 72%;
 
-                  @media (768px <=width <=991px) {
+                 /*  @media (768px <=width <=991px) {
                     top: 30px;
                     width: 100%;
-                  }
+                  } */
 
                   label {
                     top: 10px;
@@ -310,11 +313,9 @@
                   }
 
                   input[name="registeredMobileNumber"] {
-                    /*  border-top-left-radius: 0;
-                    border-bottom-left-radius: 0; */
-                    width: 100%;
+                    width: 90%;
                     font-size: 18px;
-                    color: var(--color-interface-text-secondary);
+                    /* color: var(--color-interface-text-secondary); */
                     letter-spacing: 9px;
                     border-color: var(--color-interface-border-secondary);
                     /*   border-left: 0;*/
@@ -325,7 +326,7 @@
                     color: var(--color-interface-text-primary);
                     font-weight: 500;
                     border-radius: 12px;
-
+                    background-color: transparent;
                     &:focus-visible {
                       outline: none;
                     }
@@ -352,10 +353,6 @@
                       margin-left: 5px;
                       left: -85px;
                     }
-
-                    /*  input[name="registeredMobileNumber"] {
-                      width: 100%;
-                    } */
                   }
                 }
 
