@@ -301,6 +301,16 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
   const requestObj = formCallBackContext?.executeInterfaceRequest;
   const selectedCreditCardCode = globals.functions.exportData()?.selectedCreditCard || '';
   requestObj.requestString.productCode = selectedCreditCardCode;
+  const kycModes = {
+    aadhaar: 'eKYCIDCOM',
+    biokyc: 'OTP',
+    OVD: 'IDCOM',
+  };
+
+  const selectedKyc = formCallBackContext?.selectedKyc;
+  if (selectedKyc) {
+    requestObj.requestString.authMode = kycModes[selectedKyc] || '';
+  }
   if (source === 'idCom') {
     if (requestObj?.requestString?.addressEditFlag?.toUpperCase() !== 'Y') {
       requestObj.requestString.authMode = 'IDCOM';
