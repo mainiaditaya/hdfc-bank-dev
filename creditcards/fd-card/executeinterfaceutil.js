@@ -198,8 +198,6 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
       const productCode = selectedCard.cardProductCode;
       CURRENT_FORM_CONTEXT.selectedProductCode = productCode;
       executeInterfaceRequest.requestString.productCode = productCode;
-      CURRENT_FORM_CONTEXT.executeInterfaceRequest = executeInterfaceRequest;
-      globals.functions.setProperty(form.runtime.formContext, { value: JSON.stringify(CURRENT_FORM_CONTEXT) });
     }
   }
 
@@ -283,6 +281,9 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
       executeInterfaceRequest.requestString.authMode = 'IDCOM';
     }
   }
+
+  CURRENT_FORM_CONTEXT.executeInterfaceRequest = executeInterfaceRequest;
+  globals.functions.setProperty(form.runtime.formContext, { value: JSON.stringify(CURRENT_FORM_CONTEXT) });
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   if (showLoader) FORM_RUNTIME.executeInterface();
 
@@ -298,6 +299,8 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
 const executeInterfacePostRedirect = async (source, userRedirected, globals) => {
   const formCallBackContext = globals.functions.exportData()?.currentFormContext || JSON.parse(globals?.functions?.exportData()?.formContext);
   const requestObj = formCallBackContext?.executeInterfaceRequest;
+  const selectedCreditCardCode = globals.functions.exportData()?.selectedCreditCard || '';
+  requestObj.requestString.productCode = selectedCreditCardCode;
   if (source === 'idCom') {
     if (requestObj?.requestString?.addressEditFlag?.toUpperCase() !== 'Y') {
       requestObj.requestString.authMode = 'IDCOM';
