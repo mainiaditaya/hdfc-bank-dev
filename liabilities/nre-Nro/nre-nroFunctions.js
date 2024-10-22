@@ -419,6 +419,9 @@ const addPageNameClassInBody = (pageName) => {
   if (pageName === 'Select_Account') {
     document.body.classList.add('wizardPanelBody');
   }
+   if (pageName === 'ThankYou_Page') {
+    document.body.classList.add('nreThankYouPage');
+  }
 };
 
 const switchWizard = (globals) => {
