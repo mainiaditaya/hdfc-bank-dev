@@ -599,6 +599,7 @@ body.semi-form {
                         color: var(--color-interface-text-primary);
                         pointer-events: none;
                         border: none;
+                        text-overflow: ellipsis;
                     }
 
                     .field-billed-txnname { margin: 2px 0 0 -32px; }
