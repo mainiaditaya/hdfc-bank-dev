@@ -194,6 +194,8 @@
       }
 
       form {
+        padding: 40px 35px 40px 40px;
+
         .field-parentlandingpagepanel {
           .field-landingpanel {
             .field-letsgetstarted p {
@@ -286,13 +288,13 @@
                   margin: 1px;
                   padding-left: 15px;
                   border-radius: 12px;
-                 /*  width: calc(100% - 15px);
+                  /*  width: calc(100% - 15px);
                   z-index: 2;
                    left: 0;
                   background-color: #fff; */
                   width: 72%;
 
-                 /*  @media (768px <=width <=991px) {
+                  /*  @media (768px <=width <=991px) {
                     top: 30px;
                     width: 100%;
                   } */
@@ -327,6 +329,7 @@
                     font-weight: 500;
                     border-radius: 12px;
                     background-color: transparent;
+
                     &:focus-visible {
                       outline: none;
                     }
@@ -607,6 +610,10 @@
                 label p {
                   a {
                     text-decoration: underline;
+
+                    &:hover {
+                      text-decoration: none;
+                    }
                   }
                 }
 
@@ -668,8 +675,12 @@
             position: relative;
             width: 272px;
 
-            @media (320px <=width <=991px) {
+            @media (768px <=width <=991px) {
               width: 222px;
+            }
+
+            @media (320px <=width <=600px) {
+              width: 100%;
             }
 
             .button {
@@ -1106,6 +1117,15 @@
                 font-weight: 500;
                 line-height: 40px;
                 color: var(--color-interface-text-primary);
+                border-color: var(--color-interface-border-secondary);
+
+                @media (320px <=width <=600px) {
+                  letter-spacing: 10vw !important;
+                }
+
+                &:focus-visible {
+                  outline: none;
+                }
               }
 
               input::placeholder {
@@ -1262,13 +1282,14 @@
             margin-top: 0 !important;
             width: 100% !important; */
             text-align: center;
+            width: 272px;
 
-            @media (320px <=width <=600px) {
-              width: 100% !important;
+            @media (768px <=width <=991px) {
+              width: 222px;
             }
 
-            button {
-              width: 272px;
+            @media (320px <=width <=600px) {
+              width: 100%;
             }
 
             &::after {
@@ -1338,110 +1359,179 @@
         /* personal details */
         .wizard.field-wizardnrenro {
           padding: 0;
-        }
 
-        fieldset.field-personaldetails,
-        fieldset.field-fatcadetails,
-        fieldset.field-financialdetails,
-        fieldset.field-nomineedetails {
-          border: 1px solid var(--color-interface-border-primary);
-          border-radius: 15px;
-          padding-bottom: 30px;
 
-          @media (320px <=width <=600px) {
-            margin-bottom: 20px !important;
-          }
-
-          legend {
-            font-size: 24px;
-            font-weight: 600;
-            line-height: 32px;
-            letter-spacing: -0.02em;
-            color: var(--color-interface-text-primary);
-            padding: 15px 30px;
-            background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            margin-bottom: 0;
-            position: relative;
-            height: 70px;
-            display: flex;
-            align-items: center;
-
-            @media (768px <=width <=991px) {
-              font-size: 24px;
-              line-height: 32px;
-            }
+          fieldset.field-personaldetails,
+          fieldset.field-fatcadetails,
+          fieldset.field-financialdetails,
+          fieldset.field-nomineedetails {
+            border: 1px solid var(--color-interface-border-primary);
+            border-radius: 15px;
+            padding-bottom: 20px;
 
             @media (320px <=width <=600px) {
-              font-size: 18px;
-              line-height: 24px;
-              padding: 15px;
+              margin-bottom: 20px !important;
             }
 
-            &::after {
-              content: '';
-              position: absolute;
-              right: 30px;
-              width: 22px;
-              height: 13px;
-              background: url("../icons/accordian-arrow-up.png") no-repeat top center;
-              transition: 0.4s;
-              background-size: contain;
-            }
+            legend {
+              font-size: 24px;
+              font-weight: 600;
+              line-height: 32px;
+              letter-spacing: -0.02em;
+              color: var(--color-interface-text-primary);
+              padding: 15px 30px;
+              background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
+              border-top-left-radius: 15px;
+              border-top-right-radius: 15px;
+              margin-bottom: 0;
+              position: relative;
+              height: 70px;
+              display: flex;
+              align-items: center;
+              margin-bottom: 20px;
 
-            &.accordion-collapse {
-              border-radius: 15px;
-
-              &::after {
-                transform: rotate(180deg);
+              @media (768px <=width <=991px) {
+                font-size: 24px;
+                line-height: 32px;
               }
-            }
-          }
-
-          &:has(legend.accordion-collapse) {
-            padding-bottom: 0;
-          }
-
-          & .text-wrapper.field-wrapper,
-          & .multiline-wrapper {
-            padding: 20px 30px;
-          }
-
-          .multiline-wrapper {
-            position: relative;
-
-            label {
-              margin: 2px 0 0 0;
-              padding: 0;
-            }
-
-            textarea {
-              border: none;
-              background: none;
-              margin: 0;
-              padding: 0;
-              width: 90% !important;
-              height: 100%;
-              font-size: 18px;
-              line-height: 28px;
-              font-weight: 500;
-              color: var(--color-interface-background-quaternary);
-              /* position: absolute; */
-              min-height:fit-content;
-              resize: none;
 
               @media (320px <=width <=600px) {
-                font-size: 14px;
-                line-height: 20px;
+                font-size: 18px;
+                line-height: 24px;
+                padding: 15px;
               }
 
-              &:focus-visible {
-                outline: none;
+              &::after {
+                content: '';
+                position: absolute;
+                right: 30px;
+                width: 22px;
+                height: 13px;
+                background: url("../icons/accordian-arrow-up.png") no-repeat top center;
+                transition: 0.4s;
+                background-size: contain;
+              }
+
+              &.accordion-collapse {
+                border-radius: 15px;
+                margin-bottom: 0px;
+
+
+                &::after {
+                  transform: rotate(180deg);
+                }
               }
             }
+
+            & .text-wrapper.field-wrapper,
+            & .multiline-wrapper,
+            & .drop-down-wrapper,
+            & .plain-text-wrapper.field-wrapper {
+              padding: 0px 30px;
+
+              @media (320px <=width <=600px) {
+                padding: 0px 15px;
+              }
+            }
+
+            .field-nonomineetext {
+              position: relative;
+              display: flex;
+              align-items: center;
+              background-color: #FEF8E6;
+              margin: 30px;
+              border-radius: 8px;
+              @media (320px <=width <=600px) {
+                margin: 10px;
+              }
+              &::before {
+                content: '';
+                position: absolute;
+                height: 20px;
+                width: 20px;
+                background: url('../icons/info-circle.png') no-repeat left center;
+               
+
+                @media (320px <=width <=600px) {
+                  margin-left: -5px;
+                }
+              }
+
+              p {
+                margin-bottom: 0;
+                p {
+                  min-height: 40px;
+                  color: #F99F35;
+                  font-size: 12px;
+                  font-weight: 600;
+                  line-height: 20px;
+                  margin-bottom: 0;
+                  padding: 10px 15px;
+
+                  @media (320px <=width <=600px) {
+                    padding: 10px 0 10px 25px;
+                  }
+
+                  a {
+                    color: var(--color-action-text-secondary-default);
+                    margin-left: 3px;
+                  }
+                }
+              }
+            }
+
+            .multiline-wrapper {
+              position: relative;
+
+              label {
+                margin: 2px 0 0 0;
+                padding: 0;
+              }
+
+              textarea {
+                border: none;
+                background: none;
+                margin: 0;
+                padding: 0;
+                font-size: 18px;
+                line-height: 28px;
+                font-weight: 500;
+                color: var(--color-interface-background-quaternary);
+                /* position: absolute; */
+                width: 90% !important;
+                /* height: 100%; */
+                min-height: fit-content;
+                resize: none;
+
+                @media (320px <=width <=600px) {
+                  font-size: 14px;
+                  line-height: 20px;
+                }
+
+                &:focus-visible {
+                  outline: none;
+                }
+              }
+            }
+
+            &:has(legend.accordion-collapse) {
+              padding-bottom: 0;
+            }
+
+
+
+
           }
 
+          fieldset.field-nomineedetails {
+            padding-bottom: 0;
+
+            legend {
+              margin-bottom: 0;
+              border-top-left-radius: 15px;
+              border-top-right-radius: 15px;
+            }
+          }
         }
 
         fieldset.field-nomineedetails .field-wrapper {
@@ -1450,7 +1540,7 @@
           }
 
           .plain-text-wrapper {
-            padding: 20px 20px 0 20px;
+            padding: 20px 20px 0 30px;
 
             p {
               margin: 0;
@@ -1460,9 +1550,9 @@
             }
           }
 
-          &~.plain-text-wrapper {
+          /*  &~.plain-text-wrapper {
             display: none;
-          }
+          } */
         }
 
         fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
@@ -1682,12 +1772,13 @@
           .multiline-wrapper {
             position: relative;
             height: 70px;
-            margin-top: -20px;
 
             label {
               margin-top: 2px;
               padding: 0;
-              margin-left: 0 !important;
+              margin-left: 0;
+              font-weight: 400;
+              font-size: 14px;
             }
 
             textarea {
@@ -1695,13 +1786,13 @@
               background: none;
               margin: 0;
               padding: 0;
-              width: 100% !important;
-              height: auto !important;
               font-size: 18px;
               line-height: 28px;
               font-weight: 500;
               color: var(--color-interface-background-quaternary);
-              min-height: auto !important;
+              width: 90% !important;
+              height: 100%;
+              min-height: fit-content;
               resize: none;
 
               &:focus-visible {
@@ -1791,6 +1882,13 @@
             &.field-ifsc,
             &.field-branch {
               height: 70px;
+
+              &.field-customerid,
+              &.field-accountnumber {
+                input {
+                  letter-spacing: 6px;
+                }
+              }
             }
 
             @media (min-width: 768px) {
@@ -1893,7 +1991,7 @@
           .field-elitesavingsaccountpanel,
           .field-regularsavingsaccountpanel,
           .field-currentaccountpanel {
-            border: 1px solid #D2D5DB;
+            border: 1px solid var(--color-interface-border-secondary);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px !important;
@@ -2018,8 +2116,14 @@
 
           .field-continue {
             text-align: left !important;
-            button{
-              max-width: 272px;
+            max-width: 272px;
+
+            @media (768px <=width <=991px) {
+              width: 222px;
+            }
+
+            @media (320px <=width <=600px) {
+              width: 100%;
             }
           }
         }
@@ -2031,7 +2135,8 @@
           .field-confirmdetailsaccordion {
 
             .text-wrapper.field-wrapper,
-            .multiline-wrapper {
+            .multiline-wrapper,
+            .drop-down-wrapper {
               min-height: 70px;
 
               @media (320px <=width <=600px) {
@@ -2051,7 +2156,8 @@
                 display: block;
               }
 
-              input {
+              input,
+              select {
                 border: none;
                 background: none;
                 margin: 0;
@@ -2070,6 +2176,12 @@
                 }
               }
 
+              select {
+                border: none !important;
+                padding: 0 !important;
+                height: auto !important;
+              }
+
               &[data-active="true"] {
                 label {
                   margin: 0;
@@ -2077,6 +2189,9 @@
                 }
               }
 
+              &.drop-down-wrapper {
+                grid-column: span 4;
+              }
 
             }
           }
@@ -2261,6 +2376,14 @@
             margin-top: 10px;
             text-align: left;
             max-width: 272px;
+
+            @media (768px <=width <=991px) {
+              width: 222px;
+            }
+
+            @media (320px <=width <=600px) {
+              width: 100%;
+            }
           }
         }
 
@@ -2527,16 +2650,3 @@
 }
 
 /* .nre close */
-
-@media (320px <=width <=600px) {
-  .nre {
-    main {
-
-      .form form .field-wrapper .button-wrapper.field-submitotp {
-        width: 100%;
-        margin-top: 20px !important;
-      }
-    }
-
-  }
-}
