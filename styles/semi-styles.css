@@ -1,5 +1,15 @@
 /* stylelint-disable declaration-block-no-redundant-longhand-properties */
 /* stylelint-disable no-descending-specificity */
+
+/* IOS device */
+@supports (-webkit-touch-callout: none) {
+    .semi-form main .form {
+        input[type='password'] {
+            font-size: 14px;
+        }
+    }
+}
+
 .semi-form .section.form-container {
     max-width: var(--form-max-width) !important;
 }
@@ -508,13 +518,17 @@ body.semi-form {
     
             .field-aem-totalselectedtxt {
                 display: flex;
-                justify-content: flex-end;
+                align-items: end;
+                position: relative;
+                justify-content: end;
             }
     
             .field-aem-totalselectedtxt::before {
                 content: url('../icons/info-icon.svg');
                 align-self: center;
-                margin: 2px 12px 0;
+                position: absolute;
+                bottom: -3px;
+                right: 165px;
             }
     
             .field-billedtxnfragment .field-aem-choosetransactions, .field-unbilledtxnfragment .field-aem-choosetransactions {
@@ -1077,7 +1091,7 @@ body.semi-form {
         }
 
         .field-aem-semicreditcarddisplay {
-            .field-aem-cardfacia img { height: 94%; }
+            .field-aem-cardfacia img { height: 161px; }
             .field-aem-semicreditcardcontent { padding: 13px 0; }
 
             .field-cardfaciacardno, .field-cardfaciacardno p {
@@ -1124,6 +1138,9 @@ body.semi-form {
                         grid-column: span 7;
                         margin-top: 1px;
 
+                        &::before {
+                            right: 130px;
+                        }
                         p { margin-top: -2px; }
                     }
                 }
@@ -1245,9 +1262,15 @@ body.semi-form {
 
 /* Intermediate breakpoints */
 @media (width <= 460px) {
-    .semi-form .field-aem-semiwizard {
-        .field-aem-loginpanel .field-aem-countrycode input { width: 337% !important; }
-        .field-aem-otppanel .field-otppanel .field-otphelptext { display: block; }
+    .semi-form {
+        .field-aem-semicreditcarddisplay {
+            .field-aem-cardfacia img { height: auto; }
+        }
+
+        .field-aem-semiwizard {
+            .field-aem-loginpanel .field-aem-countrycode input { width: 337% !important; }
+            .field-aem-otppanel .field-otppanel .field-otphelptext { display: block; }
+        }
     }
 }
 
