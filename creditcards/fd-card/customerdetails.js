@@ -1,4 +1,5 @@
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME as formRuntime } from '../../common/constants.js';
+import { RESUME_JOURNEY_JSON_OBJECT, prefillResumeJourneyData } from './fd-resumejourney.js';
 import {
   composeNameOption,
   formUtil,
@@ -113,6 +114,7 @@ const bindEmployeeAssistanceField = async (globals) => {
       const util = formUtil(globals, employeeAssistancePanel[code]);
       if (codes[code] !== null) util.setValue(codes[code], changeDataAttrObj);
     });
+    prefillResumeJourneyData(RESUME_JOURNEY_JSON_OBJECT, globals);
   } catch (error) {
     console.log(error);
   }

@@ -15,6 +15,7 @@ const ENDPOINTS = {
   journeyDropOff: '/content/hdfc_commonforms/api/journeydropoff.json',
   journeyDropOffParam: '/content/hdfc_commonforms/api/journeydropoffparam.json',
   journeyDropOffUpdate: '/content/hdfc_commonforms/api/journeydropoffupdate.json',
+  resumeJourneyInfo: '/content/hdfc_commonforms/api/returnjourneyinfo.json',
   otpGen: '/content/hdfc_haf/api/otpgenerationccV4.json',
   otpValFetchAssetDemog: '/content/hdfc_haf/api/otpvaldemogV4.json',
   panValNameMatch: '/content/hdfc_forms_common_v2/api/panValNameMatch.json',
