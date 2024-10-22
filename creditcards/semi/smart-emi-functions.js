@@ -1394,7 +1394,7 @@ const resendOTPV1 = async (pannelName, globals) => {
  * on click of t&c navigation, open Url in new tab
  */
 const tAndCNavigation = () => {
-  const TNC_LINK = 'https://www.hdfcbank.com/personal/borrow/loan-against-assets/smartemi';
+  const TNC_LINK = 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?path=/Personal/Borrow/Loan%20Against%20Asset%20Landing/Smart%20EMI/SmartEMI-TC-Dec20.pdf';
   if (window !== undefined) {
     window.open(TNC_LINK, '_blank');
   }
