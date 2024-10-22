@@ -391,12 +391,15 @@ const checkModeFd = async (globals) => {
     }
   }
   if (aadhaarFail) {
-    const { selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3 } = selectKYCOptionsPanel;
+    const {
+      selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3, wrongAttemptPopupWrapper,
+    } = selectKYCOptionsPanel;
     globals.functions.setProperty(selectKYCOptionsPanel, { visible: true });
     globals.functions.setProperty(selectKYCMethodOption1, { visible: true });
     globals.functions.setProperty(selectKYCMethodOption2, { visible: false });
     globals.functions.setProperty(selectKYCMethodOption3, { visible: true });
     globals.functions.setProperty(selectKYCMethodOption1.aadharBiometricVerification, { value: '0' });
+    globals.functions.setProperty(wrongAttemptPopupWrapper, { visible: true });
   }
 };
 
