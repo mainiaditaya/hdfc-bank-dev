@@ -2924,6 +2924,80 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   .field-officiallyvaliddocumentsmethod {
     margin-top: 30px;
   }
+
+
+  .field-wrongattemptpopupwrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--color-interface-popup-background);
+    z-index: 2;
+
+    .field-wrongattemptpopup {
+      margin: auto !important;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: auto;
+      background: var(--color-interface-background-primary);
+      border-radius: 12px;
+      padding: 25px;
+      width: 40%;
+      height: 70%;
+      text-align: center;
+
+      .field-wrongattemptclosepopup {
+        text-align: right !important;
+        position: absolute;
+        top: 0;
+        right: 10px;
+
+        button {
+          color: var(--color-input-text-disabled);
+          background: none;
+          width: 20px !important;
+
+          &::after {
+            width: 0 !important;
+          }
+
+          &:hover {
+            background: none !important;
+          }
+        }
+      }
+
+        .field-wrongattemptpopuptext1 {
+          p {
+            font-size: var(--body-fd-lg-font-size);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-interfave-errorpopup-text-primary);
+            margin-bottom: 0;
+          }
+        }
+
+        .field-wrongattemptpopuptext2 {
+          p {
+            font-size: var(--body-fd-md-font-size);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-interfave-errorpopup-text-primary);
+            margin-bottom: 0;
+          }
+        }
+
+        .field-wrongattemptpopupclose {
+          text-align: center !important;
+
+          button::after {
+            background: none !important;
+          }
+        }
+    }
+  }
 }
 
 /* Doc Upload */
@@ -3789,6 +3863,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
   .fdlien .field-selectkycoptionspanel {
     padding: 0 20px;
+
+    .field-wrongattemptpopup {
+      width: 75% !important;
+      height: 45% !important;
+    }
   }
 
   .field-selectkycoptionspanel fieldset[class*='field-selectkycmethodoption'] {
@@ -4409,6 +4488,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
   .fdlien .field-selectkycoptionspanel {
     padding: 0 20px;
+
+    .field-wrongattemptpopup {
+      width: 75% !important;
+      height: 45% !important;
+    }
   }
 
   .fdlien
