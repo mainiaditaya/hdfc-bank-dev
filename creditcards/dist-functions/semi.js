@@ -1490,7 +1490,7 @@
     CURRENT_FORM_CONTEXT: currentFormContext$2,
   } = SEMI_CONSTANT;
 
-  const BASEURL = "https://publish1apsouth1.prod.hdfc.adobecqms.net";
+  const BASEURL = "https://applyonline.hdfcbank.com";
 
   const urlPath = (path) => `${BASEURL}${path}`;
 
