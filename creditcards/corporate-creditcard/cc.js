@@ -256,7 +256,7 @@ const visitTypeParam = searchParam.get('visitType');
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
 const aadharRedirect = visitTypeParam && (visitTypeParam === 'EKYC_AUTH');
-const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'CreditCard') || (authModeParam === 'NetBanking')); // debit card or credit card or netbanking flow
+const idComRedirect = authModeParam && ((authModeParam === 'AadhaarOTP') || (authModeParam === 'DebitCard') || (authModeParam === 'CreditCard') || (authModeParam === 'NetBanking')); // debit card or credit card or netbanking flow
 
 /**
  * @name invokeJourneyDropOffByParam

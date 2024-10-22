@@ -303,7 +303,7 @@ const cardDisplay = (globals, response) => {
   const creditCardDisplay = globals.form.aem_semicreditCardDisplay;
   const nCardNumber = 4;
   const cardNumberLength = Number.isNaN(response?.blockCode.cardNumber.length) ? 0 : response.blockCode.cardNumber.length;
-  const lastNDigits = (cardNumberLength % nCardNumber === 0) ? response?.blockCode.cardNumber.slice(-nCardNumber) : response?.blockCode.cardNumber.slice(-(cardNumberLength % nCardNumber));
+  const lastNDigits = globals.form.aem_semiWizard.aem_identifierPanel.aem_loginPanel.aem_cardNo.$value;
   const cardDigits = `${'X'.repeat(nCardNumber)}-`.repeat(Math.round(cardNumberLength / nCardNumber) - 1) + lastNDigits;
   globals.functions.setProperty(creditCardDisplay, { visible: true });
   globals.functions.setProperty(creditCardDisplay.aem_semicreditCardContent.aem_customerNameLabel, { value: `Dear ${response?.cardHolderName}` });
@@ -440,6 +440,27 @@ const changeWizardView = () => {
 };
 
 /**
+ * Modifies the response payload based on the difference between 'tad' and 'mad' values.
+ *
+ * If the difference between 'tad' and 'mad' is zero, the original response is returned.
+ * Otherwise, it returns a modified response with an empty `ccBilledTxnResponse.responseString`.
+ * @param {Object} res - The original response payload containing `blockCode`, `tad`, and `mad`.
+ * @returns {Object} The modified response payload, or the original if no change is necessary.
+ */
+const modifyResponseByTadMad = (res) => {
+  if (!(res?.blockCode?.tad && res?.blockCode?.mad)) return null;
+  const tadMinusValue = ((parseFloat(res?.blockCode?.tad) / 100) - (parseFloat(res?.blockCode?.mad) / 100));
+  const mappedResPayload = structuredClone(res);
+  if (isNodeEnv) {
+    mappedResPayload.ccBilledTxnResponse = mappedResPayload.ccBilledTxnResponse?.filter((el) => el.type !== 'billed');
+  } else {
+    mappedResPayload.ccBilledTxnResponse.responseString = [];
+  }
+  const resPayload = (!(tadMinusValue === 0)) ? res : mappedResPayload;
+  return resPayload;
+};
+
+/**
 * @param {resPayload} Object - checkEligibility response.
 * @param {object} globals - global object
 * @return {PROMISE}
@@ -447,7 +468,7 @@ const changeWizardView = () => {
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload1, globals) {
   // const resPayload = RESPONSE_PAYLOAD.response;
-  const resPayload = resPayload1;
+  const resPayload = modifyResponseByTadMad(resPayload1);
   const response = {};
   const formContext = getCurrentFormContext(globals);
   try {
@@ -489,6 +510,11 @@ function checkELigibilityHandler(resPayload1, globals) {
       moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
     }
     response.nextscreen = 'success';
+    /* to display available count to select */
+    currentFormContext.MAX_SELECT = (allTxn?.length >= DATA_LIMITS.totalSelectLimit) ? DATA_LIMITS.totalSelectLimit : allTxn?.length;
+    const TOTAL_SELECT = `Total selected ${formContext.totalSelect}/${currentFormContext.MAX_SELECT}`;
+    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_transactionsInfoPanel.aem_TotalSelectedTxt, { value: TOTAL_SELECT });// total no of select billed or unbilled txn list
+    //
     // show txn summery text value
     if ((ccUnBilledData.length) || (ccUnBilledData.length)) {
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txnsSummaryText, { visible: true });
@@ -676,7 +702,7 @@ function selectTenure(globals) {
   if (currentFormContext.totalSelect < DATA_LIMITS.totalSelectLimit) {
     tnxPopupAlertOnce += 1;
   }
-  if (!isNodeEnv && (tnxPopupAlertOnce === 1)) { // option of selecting ten txn alert should be occured only once.
+  if (!isNodeEnv && (tnxPopupAlertOnce === 1) && (currentFormContext.MAX_SELECT >= DATA_LIMITS.totalSelectLimit)) { // option of selecting ten txn alert should be occured only once.
     const MSG = 'Great news! You can enjoy the flexibility of converting up to 10 transactions into EMI.';
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup, { visible: true });
@@ -712,6 +738,9 @@ function sortData(txnType, orderBy, globals) {
     ...item,
     aem_TxnAmt: (currencyStrToNum(item?.aem_TxnAmt)),
   }));
+  if (currentFormContext.MAX_SELECT === DATA_LIMITS.totalSelectLimit) {
+    userPrevSelect.selectedTenMaxTxn = true;
+  }
   try {
     mapSortedDat?.forEach((_data, i) => {
       const data = {
@@ -731,6 +760,9 @@ function sortData(txnType, orderBy, globals) {
   setTimeout(() => {
     isUserSelection = !isUserSelection;
   }, 1000);
+  setTimeout(() => {
+    userPrevSelect.selectedTenMaxTxn = false;
+  }, 3000);
 }
 
 /**
@@ -882,7 +914,7 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
   const formContext = getCurrentFormContext(globals);
   const billedTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.billedTxnFragment.aem_chooseTransactions.aem_TxnsList;
   const unbilledTxnList = globals.form.aem_semiWizard.aem_chooseTransactions.unbilledTxnFragment.aem_chooseTransactions.aem_TxnsList;
-  const MAX_SELECT = 10;
+  const MAX_SELECT = formContext?.MAX_SELECT;
   const BILLED_FRAG = 'billedTxnFragment';
   const UNBILLED_FRAG = 'unbilledTxnFragment';
   const TXN_FRAG = txnType === 'BILLED' ? BILLED_FRAG : UNBILLED_FRAG;
@@ -972,13 +1004,15 @@ function txnSelectHandler(checkboxVal, amount, ID, date, txnType, globals) {
     enableAllTxnFields(unbilledTxnList, globals);
     enableAllTxnFields(billedTxnList, globals);
   }
-  if ((formContext.totalSelect === MAX_SELECT) && (!userPrevSelect.tadMadReachedTopTen)) {
+  if ((formContext.totalSelect === DATA_LIMITS.totalSelectLimit) && (!userPrevSelect.tadMadReachedTopTen)) {
     /* popup alert hanldles */
-    const CONFIRM_TXT = 'You can select up to 10 transactions at a time, but you can repeat the process to convert more transactions into SmartEMI.';
-    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
-    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup, { visible: true });
-    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: CONFIRM_TXT });
-    globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation1, { visible: true });
+    if (!(userPrevSelect.selectedTenMaxTxn)) {
+      const CONFIRM_TXT = 'You can select up to 10 transactions at a time, but you can repeat the process to convert more transactions into SmartEMI.';
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper, { visible: true });
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup, { visible: true });
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: CONFIRM_TXT });
+      globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation1, { visible: true });
+    }
     /* disabling unselected checkBoxes */
     disableCheckBoxes(unbilledTxnList, false, globals);
     disableCheckBoxes(billedTxnList, false, globals);
@@ -1020,7 +1054,7 @@ const semiWizardSwitch = (source, target, current, globals) => {
 function selectTopTxn(globals) {
   selectTopTenFlag = !selectTopTenFlag;
   userPrevSelect.prevTxnType = 'SELECT_TOP';
-  const SELECT_TOP_TXN_LIMIT = 10;
+  const SELECT_TOP_TXN_LIMIT = currentFormContext?.MAX_SELECT;
   const resPayload = currentFormContext.EligibilityResponse;
   const billedResData = resPayload?.ccBilledTxnResponse?.responseString;
   const unBilledResData = resPayload?.ccUnBilledTxnResponse?.responseString;
@@ -1030,7 +1064,7 @@ function selectTopTxn(globals) {
   const unBilled = unBilledResData?.length ? globals.functions.exportData().smartemi.aem_unbilledTxn.aem_unbilledTxnSection : [];
   const allTxn = billed.concat(unBilled);
   const sortedArr = sortDataByAmountSymbol(allTxn);
-  const txnAvailableToSelect = (allTxn?.length >= SELECT_TOP_TXN_LIMIT) ? SELECT_TOP_TXN_LIMIT : allTxn?.length;
+  const txnAvailableToSelect = SELECT_TOP_TXN_LIMIT;
   userPrevSelect.txnAvailableToSelectInTopTen = txnAvailableToSelect;
   const sortedTxnList = sortedArr?.slice(0, txnAvailableToSelect);
   let unbilledCheckedItems = 0;
@@ -1050,7 +1084,9 @@ function selectTopTxn(globals) {
         unbilledCheckedItems += 1;
       }
       const findAllAmtMatch = pannel.filter((el) => (el.aem_TxnAmt.$value === item.aem_TxnAmt) && ((el.aem_TxnDate.$value === item.aem_TxnDate) && (el.aem_TxnName.$value === item.aem_TxnName) && (el.logicMod.$value === item.logicMod)));
-      findAllAmtMatch?.forEach((matchedAmt) => globals.functions.setProperty(matchedAmt.aem_Txn_checkBox, { value: 'on', enabled: true }));
+      setTimeout(() => {
+        findAllAmtMatch?.forEach((matchedAmt) => globals.functions.setProperty(matchedAmt.aem_Txn_checkBox, { value: 'on', enabled: true }));
+      }, 1200);
     });
   } catch (error) {
     // eslint-disable-next-line no-console
