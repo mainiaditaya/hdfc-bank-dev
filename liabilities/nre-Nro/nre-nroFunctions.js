@@ -14,6 +14,7 @@ import {
   maskNumber,
   moveWizardView,
   formUtil,
+  santizedFormDataWithContext,
 } from '../../common/formutils.js';
 import {
   displayLoader,
@@ -27,6 +28,9 @@ import {
   FORM_RUNTIME as formRuntime,
   ID_COM as idCom,
 } from '../../common/constants.js';
+import {
+  sendAnalytics,
+} from './analytics.js'
 
 setTimeout(() => {
   if (typeof window !== 'undefined') {
@@ -45,6 +49,7 @@ let dispSec = OTP_TIMER;
 
 const { CHANNEL, JOURNEY_NAME, VISIT_MODE } = NRE_CONSTANT;
 // Initialize all NRE/NRO Journey Context Variables.
+currentFormContext.journeyName = NRE_CONSTANT.JOURNEY_NAME;
 currentFormContext.journeyType = 'NTB';
 currentFormContext.errorCode = '';
 currentFormContext.errorMessage = '';
@@ -87,7 +92,8 @@ const validFDPan = (val) => {
 const validateLogin = (globals) => {
   const mobileNo = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value;
   const isdCode = (globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.countryCode.$value)?.replace(/[^a-zA-Z0-9]+/g, '');
-  const dobValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.dateOfBirth.$value;
+  // const dobValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.dateOfBirth.$value;
+  let dobValue = "";
   const panValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.pan.$value;
   const panDobSelection = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.panDobSelection.$value;
   const radioSelect = (panDobSelection === '0') ? 'DOB' : 'PAN';
@@ -103,6 +109,8 @@ const validateLogin = (globals) => {
 
   switch (radioSelect) {
     case 'DOB':
+      console.log("DOB : " , dobValue, typeof dob);
+      dobValue = "1988-09-14";
       if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
         const minAge = 18;
         const maxAge = 120;
@@ -163,6 +171,7 @@ const validateLogin = (globals) => {
 };
 
 const getOtpNRE = (mobileNumber, pan, dob, globals) => {
+  // Promise.resolve(sendAnalytics('otp click', { }, 'CUSTOMER_IDENTITY_RESOLVED', globals));
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
   currentFormContext.action = 'getOTP';
@@ -171,7 +180,8 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
   const jsonObj = {
     requestString: {
       mobileNumber: mobileNumber.$value,
-      dateOfBirth: clearString(dob.$value) || '',
+      dateOfBirth: '19880914',
+      // dateOfBirth: clearString(dob.$value) || '',
       panNumber: pan.$value || '',
       journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
@@ -275,6 +285,7 @@ function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
  * @return {PROMISE}
  */
 function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
+  Promise.resolve(sendAnalytics('submit otp click', { }, "OTP_VERIFICATION_CLICK", globals));
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   const jsonObj = {
@@ -294,9 +305,15 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
-function setupBankUseSection(globals) {
+// function setupBankUseSection(lg, lc, toggle, resetAll, globals) {
+function setupBankUseSection(globals){
     const urlParams = new URLSearchParams(window.location.search);
     const utmParams = {};
+    // let lgCode = lg.lgCode;
+    // let lcCode = lc.lcCode;
+    // let toggle = toggle.bankUseToggle;
+    // let resetAllBtn = resetAll.resetAllBtn;
+
     let lgCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode;
     let lcCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lcCode;
     let toggle = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.bankUseToggle;
@@ -313,14 +330,6 @@ function setupBankUseSection(globals) {
         console.log("UTM Params : " , utmParams);
       });
 
-      // Prefilling
-      // globals.functions.setProperty(resetAllBtn, { enabled: false });
-      // globals.functions.setProperty(toggle, { checked: true });
-      // globals.functions.setProperty(toggle, { enabled: false });
-      // globals.functions.setProperty(lgCode, { value: utmParams["lgCode"] });
-      // globals.functions.setProperty(lcCode, { value: utmParams["lcCode"] });
-      // globals.functions.setProperty(lgCode, { enabled: false });
-      // globals.functions.setProperty(lcCode, { enabled: false });
       globals.functions.setProperty(lgCode, { value: utmParams["lgCode"] });
       globals.functions.setProperty(lcCode, { value: utmParams["lcCode"] });
     }
@@ -341,6 +350,7 @@ function prefillCustomerDetails(response, globals) {
     accountNumber,
     customerID,
     singleAccount,
+    custIDWithoutMasking,
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount;
 
   const {
@@ -357,6 +367,7 @@ function prefillCustomerDetails(response, globals) {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
   // not getting txtPermadrAdd1
+  setFormValue(custIDWithoutMasking, response.customerId);
   setFormValue(customerName, response.customerShortName);
   setFormValue(customerID, maskNumber(response.customerId, 4));
   setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
@@ -404,6 +415,7 @@ function prefillCustomerDetails(response, globals) {
  * @return {PROMISE}
  */
 const resendOTP = async (globals) => {
+  await Promise.resolve(sendAnalytics('resend otp click', { }, "RESEND_OTP_CLICKS", globals));
   dispSec = OTP_TIMER;
   const mobileNo = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber;
   const panValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.pan;
@@ -440,46 +452,32 @@ const resendOTP = async (globals) => {
    * @param {Object} globals - The global object containing necessary data for IdCom request.
    * @returns {Object} - The IdCom request object.
    */
-const createIdComRequestObj = (globals, panParam, scopeParam) => {
-  let scope = '';
-  if(!scopeParam){
-    const segment = formRuntime?.segment || globals.functions.exportData().currentFormContext.breDemogResponse.SEGMENT.toLowerCase();
-    const isAddressEdited = globals.functions.exportData().form.currentAddressToggle === 'on' ? 'yes' : 'no';
+const createIdComRequestObj = (globals) => {
+  
+  // const segment = formRuntime?.segment || globals.functions.exportData().currentFormContext.breDemogResponse.SEGMENT.toLowerCase();
+  // const isAddressEdited = globals.functions.exportData().form.currentAddressToggle === 'on' ? 'yes' : 'no';
 
-    if (segment in idCom.scopeMap) {
-      if (typeof idCom.scopeMap[segment] === 'object') {
-        scope = idCom.scopeMap[segment][isAddressEdited];
-      } else {
-        scope = idCom.scopeMap[segment];
-      }
-    }
-  }
-  else{
-    scope = scopeParam;
-  }
+  // if (segment in idCom.scopeMap) {
+  //   if (typeof idCom.scopeMap[segment] === 'object') {
+  //     scope = idCom.scopeMap[segment][isAddressEdited];
+  //   } else {
+  //     scope = idCom.scopeMap[segment];
+  //   }
+  // }
 
-  // const idComObj = {
-  //   requestString: {
-  //     mobileNumber: globals.form.loginPanel.mobilePanel.registeredMobileNumber.$value,
-  //     ProductCode: idCom.productCode,
-  //     PANNo: panParam,
-  //     userAgent: navigator.userAgent,
-  //     journeyID: currentFormContext?.journeyID || globals.functions.exportData().currentFormContext.journeyID,
-  //     journeyName: currentFormContext.journeyName,
-  //     scope,
-  //   },
-  // };
+  const formData = santizedFormDataWithContext(globals);
+  console.log("In Fetch code dIGITAL DAta : " , formData, formData.AccountOpeningNRENRO.custIDWithoutMasking);
   const idComObj = {
     requestString: {
-      mobileNumber: "9908628286",
-      ProductCode: "CORPCC",
-      PANNo: panParam,
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-      journeyID: "86583cb7-4d3c-47e5-a990-b55883f662cb_01_aa_a_aaa",
-      journeyName: "CORPORATECREDITCARD",
-      scope: scope,
+      CustID : formData.AccountOpeningNRENRO.custIDWithoutMasking,
+      ProductCode: "ADETBACO",
+      userAgent: window.navigator.userAgent,
+      journeyID: formData.journeyId,
+      journeyName: formData.journeyName,
+      scope: "ADOBE_ACNRI",
     },
   };
+
   return idComObj;
 };
 
@@ -492,9 +490,9 @@ const createIdComRequestObj = (globals, panParam, scopeParam) => {
    * @params {object} globals
    * @returns {Promise<Object>} A promise that resolves to the JSON response from the API.
    */
-const fetchAuthCode = (globals, pan, scope) => {
+const fetchAuthCode = (globals) => {
   currentFormContext.VISIT_TYPE = 'IDCOMM';
-  const idComRequest = createIdComRequestObj(globals, pan, scope);
+  const idComRequest = createIdComRequestObj(globals);
   const apiEndPoint = urlPath(ENDPOINTS.fetchAuthCode);
   return fetchJsonResponse(apiEndPoint, idComRequest, 'POST');
 };
@@ -511,33 +509,8 @@ function customFocus(errorMessage, numRetries, globals) {
   }
 }
 
-/**
- * @name checkForIDcomRedirection
- * check if we've been redirected from idcom success or failure scenario
- */
-function checkForIDComRedirection(){
-  const urlParams = new URLSearchParams(window.location.search);
-  const utmParams = {};
-  console.log("urlParams : " , urlParams, urlParams.size);
-  if(urlParams.size > 0){
-    console.log("UTM Parameters present");
-    ['authmode', 'success','errorMessage','errorCode','journeyId'].forEach(param => {
-      const value = urlParams.get(param);
-      if (value) {
-          utmParams[param] = value;
-      }
-      console.log("UTM Params : " , utmParams);
-    });
-  }
-  console.log(Object.keys(utmParams).length);
-  if(Object.keys(utmParams).length == 5){
-    return true;
-  }
-  return false;
-};
-
 async function idComRedirection(globals){
-  let resp = await fetchAuthCode(globals,"EGYPZ5203D","PADC");
+  let resp = await fetchAuthCode(globals);
     console.log("Fetch Auth code response received");
     console.log("Resp : " , resp , resp.authCode, resp.redirectUrl, resp.status.errorMessage, resp.status.errorCode);
     if(resp.status.errorMessage==="Success"){
@@ -568,11 +541,11 @@ const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (auth
 console.log("UTM Parameters : " , searchParam,visitTypeParam, authModeParam, journeyId, aadharRedirect, idComRedirect);
 
 /**
- * @name nreNroFinalDapFetchRes - recursive async action call maker untill it reaches the finaldap response.
+ * @name nreNroFetchRes - recursive async action call maker untill it reaches the final response.
  * @returns {void} error method or succes method based on the criteria of finalDapResponse reach or max limit reach.
  */
-const nreNroFinalDapFetchRes = async () => {
-  console.log("In NRENRO Final DAP functions");
+const nreNroFetchRes = async () => {
+  console.log("In NRENRO Final functions");
   const eventHandler = {
     successMethod: (data) => {
       const {
@@ -612,7 +585,7 @@ const nreNroFinalDapFetchRes = async () => {
     if (errorCase) {
       return eventHandler.errorMethod(error, JSON.parse(stateInfoData));
     }
-    // return setTimeout(() => nreNroFinalDapFetchRes(), 5000);
+    // return setTimeout(() => nreNroFetchRes(), 5000);
   }
 };
 
@@ -710,7 +683,7 @@ const nreNroPageRedirected = (aadhar, idCom) => {
      */
     setTimeout(() => {
       displayLoader();
-      nreNroFinalDapFetchRes();
+      nreNroFetchRes();
     }, 2000);
   }
 };
@@ -726,7 +699,25 @@ const addPageNameClassInBody = (pageName) => {
   }
 };
 
-const switchWizard = () => moveWizardView('wizardNreNro', 'confirmDetails');
+async function sendNREAnalytics(eventType, journeyState, globals){
+  console.log("Digital Layer - Send NRE Analytics Call made : " , eventType, journeyState);
+  await Promise.resolve(sendAnalytics(eventType, { }, journeyState, globals));
+}
+
+const onPageLoadAnalytics = async (globals) => {
+  console.log("In Page Load");
+  await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
+};
+
+setTimeout((globals) => {
+  onPageLoadAnalytics(globals);
+}, 5000);
+
+const switchWizard = (globals) => {
+  moveWizardView('wizardNreNro', 'confirmDetails');
+  currentFormContext.action = "Confirm Details";
+  Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
+}
 
 setTimeout(async function(globals) {
   console.log("Going to check for Idcom redirection status");
@@ -756,4 +747,5 @@ export {
   setupBankUseSection,
   idComRedirection,
   addPageNameClassInBody,
+  sendNREAnalytics,
 };

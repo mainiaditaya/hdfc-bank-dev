@@ -13,7 +13,10 @@ import {
   setupBankUseSection,
   idComRedirection,
   addPageNameClassInBody,
+  sendNREAnalytics,
 } from './nre-nroFunctions.js';
+
+import { sendAnalytics } from './analytics.js';
 
 import {
   invokeJourneyDropOff,
@@ -36,4 +39,6 @@ export {
   setupBankUseSection,
   idComRedirection,
   addPageNameClassInBody,
+  sendAnalytics,
+  sendNREAnalytics,
 };
