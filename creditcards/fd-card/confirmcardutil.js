@@ -90,6 +90,7 @@ const cardSelectHandler = (cardsPanel, globals) => {
   } else {
     confirmCardState.selectedCardIndex = cardsPanel.findIndex((item) => item.cardSelection._data.$value === '0');
   }
+  globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.selectCard.selectedCreditCard, { value: IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode });
 };
 
 const popupBackClickHandler = (globals) => {
