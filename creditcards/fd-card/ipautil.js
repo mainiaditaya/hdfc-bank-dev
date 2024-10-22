@@ -62,8 +62,8 @@ const updateData = (globals, productDetail, panel, index) => {
     productCode,
   } = {
     ...productDetail,
-    joiningFee: productDetail.joiningFee || '0',
-    renewalFee: productDetail.renewalFee || '0',
+    joiningFee: productDetail.annualFee || '0',
+    renewalFee: productDetail.annualFee || '0',
   };
 
   const properties = [
@@ -102,8 +102,8 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
     productCode,
   } = {
     ...productDetail,
-    joiningFee: productDetail.joiningFee || '0',
-    renewalFee: productDetail.renewalFee || '0',
+    joiningFee: productDetail.annualFee || '0',
+    renewalFee: productDetail.annualFee || '0',
   };
 
   const properties = [
