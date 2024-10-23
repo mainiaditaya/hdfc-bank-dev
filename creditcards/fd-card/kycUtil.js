@@ -92,7 +92,7 @@ const aadhaarConsent = async (globals) => {
         FORM_RUNTIME.aadharConfig = config;
       }
       await openModal(FORM_RUNTIME.aadharConfig);
-      aadharLangChange(FORM_RUNTIME.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage);
+      aadharLangChange(FORM_RUNTIME.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage, CURRENT_FORM_CONTEXT);
       config?.content?.addEventListener('modalTriggerValue', (event) => {
         const receivedData = event.detail;
         if (receivedData?.aadharConsentAgree) {
