@@ -94,7 +94,6 @@ import {
   kycProceedClickHandler,
   addressDeclarationProceedHandler,
   aadhaarConsent,
-  aadhaarConsentAccepted,
 } from './kycUtil.js';
 
 import { ratingButtonUI, copyToClipBoard } from './thankyouutil.js';
@@ -174,5 +173,4 @@ export {
   panvalidationSuccessHandler,
   addressChangeHandler,
   fullNamePanValidation,
-  aadhaarConsentAccepted,
 };

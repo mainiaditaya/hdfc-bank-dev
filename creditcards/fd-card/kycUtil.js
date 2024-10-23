@@ -106,14 +106,9 @@ const aadhaarConsent = async (globals) => {
   }
 };
 
-const aadhaarConsentAccepted = (globals) => {
-  console.log(globals);
-};
-
 export {
   kycProceedClickHandler,
   addressDeclarationProceedHandler,
   aadhaarConsent,
   KYC_STATE,
-  aadhaarConsentAccepted,
 };
