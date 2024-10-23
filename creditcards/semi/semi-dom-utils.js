@@ -11,6 +11,7 @@ import {
  */
 const addMobileValidation = async () => {
   const validFirstDigits = ['6', '7', '8', '9'];
+  if (typeof document === 'undefined') return;
   const inputField = document.querySelector('.field-aem-mobilenum input');
   inputField?.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
 };
@@ -20,6 +21,7 @@ const addMobileValidation = async () => {
    *
    */
 const addCardFieldValidation = () => {
+  if (typeof document === 'undefined') return;
   const inputField = document.querySelector('.field-aem-cardno input');
   inputField?.addEventListener('input', () => validateCardDigits(inputField));
 };
@@ -29,6 +31,7 @@ const addCardFieldValidation = () => {
   *
   */
 const addOtpFieldValidation = () => {
+  if (typeof document === 'undefined') return;
   const inputField = document.querySelector('.field-aem-otpnumber input');
   const inputField2 = document.querySelector('.field-aem-otpnumber2 input');
   [inputField, inputField2].forEach((ip) => ip?.addEventListener('input', () => validateOTPInput(ip)));
@@ -39,6 +42,7 @@ const addOtpFieldValidation = () => {
   *
   */
 const linkToPopupToggle = (hyperLink, popupOverlay, popupContent, closeBtn = false, redirectBtn = false) => {
+  if (typeof document === 'undefined') return;
   const links = document.querySelectorAll(hyperLink);
   let redirectionLink = '';
   [...links].forEach((link) => {
