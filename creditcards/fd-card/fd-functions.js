@@ -16,8 +16,6 @@ import {
   invokeResumeJourneyApi,
   prefillResumeJourneyData,
   resumeJourneySuccessHandler,
-  displayResumeJourneyPopup,
-  resumeJourneyPopUp,
   getResumeJourneyJsonObject,
 } from './fd-resumejourney.js';
 
@@ -187,7 +185,5 @@ export {
   invokeResumeJourneyApi,
   prefillResumeJourneyData,
   resumeJourneySuccessHandler,
-  displayResumeJourneyPopup,
-  resumeJourneyPopUp,
   getResumeJourneyJsonObject,
 };

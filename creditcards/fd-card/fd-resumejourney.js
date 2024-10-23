@@ -129,7 +129,7 @@ const invokeResumeJourneyApi = async (globals) => {
  */
 
 const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
-  if (resumeJourneyResponse.prefillResumeJourneyData == undefined || !resumeJourneyResponse.prefillResumeJourneyData) { return; }
+  if (resumeJourneyResponse.prefillResumeJourneyData === undefined || !resumeJourneyResponse.prefillResumeJourneyData) { return; }
   const changeDataAttrObj = { attrChange: true, value: false };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const {
