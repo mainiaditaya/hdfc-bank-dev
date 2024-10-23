@@ -60,7 +60,7 @@ const kycProceedClickHandler = (selectedKyc, globals) => {
 const addressDeclarationProceedHandler = (globals) => {
   const { addressDeclarationPanel, docUploadFlow } = globals.form;
   if (CURRENT_FORM_CONTEXT.journeyID === undefined) {
-    Object.assign(CURRENT_FORM_CONTEXT, JSON.parse(globals?.functions?.exportData()?.formContext));
+    Object.assign(CURRENT_FORM_CONTEXT, globals?.functions?.exportData()?.currentFormContext);
   }
   if (CURRENT_FORM_CONTEXT?.customerIdentityChange && (CURRENT_FORM_CONTEXT?.selectedKyc === 'biokyc' || CURRENT_FORM_CONTEXT?.selectedKyc === 'bioinperson' || CURRENT_FORM_CONTEXT?.selectedKyc === 'aadhaar')) {
     const { docUploadPanel, uploadAddressProof } = docUploadFlow;
@@ -92,7 +92,7 @@ const aadhaarConsent = async (globals) => {
         FORM_RUNTIME.aadharConfig = config;
       }
       await openModal(FORM_RUNTIME.aadharConfig);
-      aadharLangChange(FORM_RUNTIME.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage);
+      aadharLangChange(FORM_RUNTIME.aadharConfig?.content, DOM_ELEMENT.selectKyc.defaultLanguage, CURRENT_FORM_CONTEXT);
       config?.content?.addEventListener('modalTriggerValue', (event) => {
         const receivedData = event.detail;
         if (receivedData?.aadharConsentAgree) {

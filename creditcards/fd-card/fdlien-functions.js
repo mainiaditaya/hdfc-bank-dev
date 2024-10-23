@@ -84,6 +84,10 @@ const validateLogin = (globals) => {
         if (!(mobIsValid)) {
           globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
         }
+      } else if (!dobIsValid) {
+        const dobErrorText = FD_CONSTANT.ERROR_MSG.ageLimit;
+        globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', dobErrorText, { useQualifiedName: true });
+        globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
       }
       break;
     case 'PAN':
@@ -346,7 +350,7 @@ const checkModeFd = async (globals) => {
         }
         fullAadhaarAddress = `${parsedAadhaarAddress.join(', ')} ${City} ${State} ${Zipcode}`;
       } else {
-        globals.functions.setProperty(addressDeclarationPanel?.aadhaarAddressDeclaration?.aadhaarBankStmt, { visible: false });
+        globals.functions.setProperty(addressDeclarationPanel?.aadhaarAddressDeclaration?.aadhaarBankStatement, { visible: false });
       }
       const communicationAddress = [communicationAddress1, communicationAddress2, communicationAddress3, communicationCity, communicationState, comCityZip].filter(Boolean).join(', ');
 

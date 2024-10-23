@@ -31,8 +31,8 @@ const createDapRequestObj = (userRedirected, globals) => {
   const formData = globals.functions.exportData() || {};
   const formContextCallbackData = globals.functions.exportData()?.currentFormContext || CURRENT_FORM_CONTEXT;
   const aadhaarData = formData.aadhaar_otp_val_data?.result || {};
-  const ekycSuccess = (!formData.currentFormContext?.mobileMatch && aadhaarData?.ADVRefrenceKey !== undefined)
-    ? `${aadhaarData.ADVRefrenceKey}X${aadhaarData.RRN}`
+  const ekycSuccess = (!formData.currentFormContext?.mobileMatch && aadhaarData.ADVRefrenceKey !== undefined)
+    ? `${aadhaarData?.ADVRefrenceKey}X${aadhaarData?.RRN}`
     : '';
   const selectedKyc = CURRENT_FORM_CONTEXT.aadhaarFailed ? CURRENT_FORM_CONTEXT?.selectedKyc : formContextCallbackData?.selectedKyc;
   const VKYCConsent = fetchFiller4(
@@ -40,14 +40,14 @@ const createDapRequestObj = (userRedirected, globals) => {
     selectedKyc,
     'ETB',
   );
-  let visitType = '';
-  if (typeof window !== 'undefined') {
-    const searchParam = new URLSearchParams(window?.location?.search);
-    visitType = searchParam.get('authmode');
-  } else {
-    visitType = formData?.queryParams?.authmode;
-  }
-  const filler2 = visitType?.toLowerCase === 'aadhaarotp' || selectedKyc === 'aadhaar' ? 'ADVxRRN' : '';
+  // let visitType = '';
+  // if (typeof window !== 'undefined') {
+  //   const searchParam = new URLSearchParams(window?.location?.search);
+  //   visitType = searchParam.get('authmode');
+  // } else {
+  //   visitType = formData?.queryParams?.authmode;
+  // }
+  // const filler2 = visitType?.toLowerCase === 'aadhaarotp' || selectedKyc === 'aadhaar' ? 'ADVxRRN' : '';
   const filler3 = fetchFiller3(formData?.queryParams?.authmode, formData?.queryParams?.success);
   const filler4 = fdFiller4(userRedirected, formData.currentFormContext?.mobileMatch, selectedKyc);
   return {
@@ -64,7 +64,7 @@ const createDapRequestObj = (userRedirected, globals) => {
       mobileNumber: globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value,
       journeyID: formContextCallbackData?.journeyID || CURRENT_FORM_CONTEXT?.journeyID,
       journeyName: formContextCallbackData?.journeyName || CURRENT_FORM_CONTEXT?.journeyName,
-      filler2,
+      filler2: ekycSuccess,
       filler7: '',
       filler1: '',
       filler3,
