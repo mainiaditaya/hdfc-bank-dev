@@ -86,7 +86,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
    * @return {PROMISE}
    */
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
-  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || globals?.currentFormContext || currentFormContext;
+  const formContextCallbackData = globals?.functions?.exportData()?.currentFormContext || globals?.currentFormContext || currentFormContext;
   const formData = globals.functions.exportData();
   // temporary_hotfix_radioBtnValues_undefined_issue
   /* storing the radio btn values in current form context */
