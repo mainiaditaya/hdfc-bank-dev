@@ -181,20 +181,11 @@ const bindCustomerDetails = async (globals) => {
 
   const [address = '', cityDetails = ''] = customerInfo.currentAddress.split('||');
   CURRENT_FORM_CONTEXT.perAddExist = false;
-  let perAddress = ''; let perCityDetails = '';
-  if (customerInfo.permanentAddress) {
-    perAddress = customerInfo.permanentAddress.split('||')?.[0];
-    perCityDetails = customerInfo.permanentAddress.split('||')?.[1];
-    CURRENT_FORM_CONTEXT.perAddExist = true;
-  }
-  const [perCity = '', perState = '', perPincode = ''] = perCityDetails.split('|');
   const [city = '', state = '', pincode = ''] = cityDetails.split('|');
   const cleanAddress = removeSpecialCharacters(address.replace(/\|/g, ' '), ALLOWED_CHARACTERS);
-  const cleanPerAddress = removeSpecialCharacters(perAddress.replace(/\|/g, ' '), ALLOWED_CHARACTERS);
 
   let formattedCustomerAddress = '';
   let parsedAddress = [];
-  let parsedPerAddress = [];
   if (cleanAddress.length < MIN_ADDRESS_LENGTH) {
     const addressArray = cleanAddress.trim().split(' ');
     if (addressArray.length > 1) {
@@ -207,19 +198,6 @@ const bindCustomerDetails = async (globals) => {
     }
   } else {
     parsedAddress = parseCustomerAddress(cleanAddress);
-  }
-  if (cleanPerAddress.length < MIN_ADDRESS_LENGTH) {
-    const addressArray = cleanPerAddress.trim().split(' ');
-    if (addressArray.length > 1) {
-      parsedPerAddress = [
-        addressArray.slice(0, -1).join(' '),
-        addressArray.slice(-1)[0],
-      ];
-    } else {
-      parsedPerAddress = [addressArray[0]];
-    }
-  } else {
-    parsedPerAddress = parseCustomerAddress(cleanPerAddress);
   }
 
   if (parsedAddress.length) {
@@ -251,16 +229,6 @@ const bindCustomerDetails = async (globals) => {
   }
 
   Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { city, pincode, state });
-
-  if (parsedPerAddress.length) {
-    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = parsedPerAddress;
-    Object.assign(CURRENT_FORM_CONTEXT.permanentAddress, { addressLine1, addressLine2, addressLine3 });
-  } else {
-    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address.split('|');
-    Object.assign(CURRENT_FORM_CONTEXT.permanentAddress, { addressLine1, addressLine2, addressLine3 });
-  }
-
-  Object.assign(CURRENT_FORM_CONTEXT.permanentAddress, { city: perCity, pincode: perPincode, state: perState });
 
   setFormValue(addressDetails.prefilledMailingAdddress, formattedCustomerAddress);
   const emailIDUtil = formUtil(globals, personalDetails.emailID);
