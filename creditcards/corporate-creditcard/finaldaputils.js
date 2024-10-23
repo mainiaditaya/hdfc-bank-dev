@@ -96,7 +96,7 @@ const createDapRequestObj = (globals) => {
   };
 
   const kycFillers = kycFillCheck(customerInfo, kycFill);
-  const journeyType = formContextCallbackData?.breDemogResponse?.BREFILLER2 === 'D101' ? 'ETB' : 'NTB';
+  const journeyType = (formContextCallbackData?.breDemogResponse?.BREFILLER2 === 'D101' || formContextCallbackData?.breDemogResponse?.BREFILLER2 === 'D106') ? 'ETB' : 'NTB';
   const mobileMatch = globals.functions.exportData()?.aadhaar_otp_val_data?.result?.mobileValid !== undefined;
   const biometricStatus = kycFillers ?? '';
   const ekycConsent = ((kycFillers === 'aadhaar')) ? `${getCurrentDateAndTime(3)}YEnglishxeng1x0` : '';
