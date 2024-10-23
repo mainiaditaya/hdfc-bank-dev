@@ -1,5 +1,6 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { getUrlParamCaseInsensitive } from '../../common/formutils.js';
+import { buttonEnableOnCheck } from './fd-dom-functions.js';
 import { IPA_RESPONSE } from './ipautil.js';
 
 const confirmCardState = {
@@ -13,6 +14,7 @@ const confirmCardState = {
  * @param {Object} globals - The global context object containing various information.
  */
 const confirmCardClickHandler = (globals) => {
+  buttonEnableOnCheck('.field-languageconsenttnc input', '.field-aadharconsentagree button');
   CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode;
   CURRENT_FORM_CONTEXT.selectedCreditCard = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex];
   const {
