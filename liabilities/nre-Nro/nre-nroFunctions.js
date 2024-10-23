@@ -299,6 +299,32 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
+function showFinancialDetails(financialDetails, response, occupation, globals) {
+  //const occupationCode = response.customerAMLDetailsDTO[0].codOccupation;
+  const occupationCode = 4;
+  const selectElement = document.querySelector('[name=occupation]');
+  selectElement.setAttribute('value', occupationCode);
+  selectElement.value = occupationCode;
+  globals.functions.setProperty(financialDetails.residenceType, { visible: true });
+  globals.functions.setProperty(financialDetails.grossAnnualIncome, { visible: true });
+  globals.functions.setProperty(financialDetails.currencyName, { visible: true });
+  globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true });
+
+  if (occupationCode === 2) globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+  if (occupationCode === 3) {
+    globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
+    globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
+    globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { visible: true });
+  }
+  if (occupationCode === 5) {
+    globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: false });
+    globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { visible: true });
+    globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+    globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
+    globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
+  }
+}
+
 function prefillCustomerDetails(response, globals) {
   const {
     customerName,
@@ -310,7 +336,7 @@ function prefillCustomerDetails(response, globals) {
     personalDetails,
     fatcaDetails,
     financialDetails,
-    nomineeDetails,
+
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
 
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
@@ -346,7 +372,7 @@ function prefillCustomerDetails(response, globals) {
   setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namSpouseCust);
   setFormValue(fatcaDetails.taxIdType, response.customerFATCADtlsDTO[0].typTinNo1);
   setFormValue(financialDetails.sourceOfFunds, response.customerAMLDetailsDTO[0].incomeSource);
-  setFormValue(financialDetails.occupation, response.customerFATCADtlsDTO[0].txtCustOccuptn);
+  //setFormValue(financialDetails.occupation, response.customerFATCADtlsDTO[0].txtCustOccuptn);
   setFormValue(financialDetails.employeerName, response.customerFATCADtlsDTO[0].namCustEmp);
   setFormValue(financialDetails.selfEmployedProfessional, response.customerAMLDetailsDTO[0].txtProfessionDesc);
   setFormValue(financialDetails.selfEmployedSince, response.customerAMLDetailsDTO[0].selfEmpFrom);
@@ -357,11 +383,17 @@ function prefillCustomerDetails(response, globals) {
   setFormValue(financialDetails.currencyName, response.customerAMLDetailsDTO[0].namCcy);
   setFormValue(financialDetails.grossAnnualIncome, response.customerAMLDetailsDTO[0].annualTurnover);
   setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
-  setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[0].nomineeName);
-  setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[0].nomineeDOB);
-  setFormValue(nomineeDetails.relation, response.customerAccountDetailsDTO[0].nomineeName);
+  // setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
+  // setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[0].nomineeName);
+  // setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[0].nomineeDOB);
+  // setFormValue(nomineeDetails.relation, response.customerAccountDetailsDTO[0].nomineeName);
 }
 
+// function nomineeHide(nomineeName, relation, nomineedob, nonominee, globals) {
+//   if (!nomineeName || !nomineedob || !relation) {
+//     globals.functions.setProperty(nonominee, { visible: true });
+//   }
+// }
 setTimeout(() => {
   if (typeof window !== 'undefined') { /* check document-undefined */
     getCountryCodes(document.querySelector('.field-countrycode select'));
@@ -448,4 +480,5 @@ export {
   validFDPan,
   switchWizard,
   addPageNameClassInBody,
+  showFinancialDetails,
 };

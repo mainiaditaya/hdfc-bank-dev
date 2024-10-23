@@ -11,6 +11,7 @@ import {
   customFocus,
   switchWizard,
   addPageNameClassInBody,
+  showFinancialDetails,
 } from './nre-nroFunctions.js';
 
 import {
@@ -32,4 +33,5 @@ export {
   otpValidationNRE,
   switchWizard,
   addPageNameClassInBody,
+  showFinancialDetails,
 };
