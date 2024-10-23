@@ -214,7 +214,7 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
 
   if (['addressdeclarationproceed', 'addressdeclarationidcomm'].includes(source)) {
     const { currentResidenceAddressBiometricOVD, aadhaarAddressDeclaration } = form.addressDeclarationPanel;
-    let selectedKyc = functions.exportData()?.currentFormContext?.selectedKyc;
+    let selectedKyc = functions.exportData()?.currentFormContext?.selectedKyc || CURRENT_FORM_CONTEXT?.selectedKyc;
     if (globals.functions.exportData()?.queryParams?.visitType === 'EKYC_AUTH_FAILED') {
       CURRENT_FORM_CONTEXT.aadhaarFailed = true;
       selectedKyc = CURRENT_FORM_CONTEXT.selectedKyc;
@@ -274,7 +274,7 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
         });
       }
     }
-    if (selectedKyc === 'biokyc') {
+    if (selectedKyc === 'biokyc' || selectedKyc === 'bioinperson') {
       executeInterfaceRequest.requestString.authMode = 'OTP';
     }
     if (selectedKyc === 'OVD') {
