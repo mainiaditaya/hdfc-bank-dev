@@ -55,6 +55,7 @@
       height: 32px;
       content: url(../icons/header-safe-secure.png);
       padding: 0;
+      right: 3.2em;
 
       @media (768px <=width <=991px) {
         right: 30px;
@@ -68,8 +69,6 @@
       }
     }
   }
-
-
 
   &.wizardPanelBody {
     & .cmp-container-container {
@@ -134,6 +133,501 @@
     }
   }
 
+  &.nreThankYouPage {
+    header {
+      height: 250px !important;
+
+      .cmp-container>div:nth-child(3) {
+        display: none;
+      }
+    }
+
+    main {
+      overflow: initial;
+
+      .cmp-container-container {
+        display: none;
+      }
+
+      .form-container {
+        max-width: initial !important;
+      }
+
+      .field-thankyoupanel {
+
+
+        .field-thankyoufragment {
+          display: flex;
+          flex-flow: row;
+
+          .field-thankyouleftpanel {
+            max-width: 75%;
+            margin-top: -115px;
+
+            .field-successfullytext {
+
+              &>p p {
+                margin-top: -100px;
+                /*  position: absolute;
+                width: 93%; */
+                font-size: 36px;
+                font-weight: 600;
+                line-height: 44px;
+                color: #fff;
+
+                &::before {
+                  content: '';
+                  background: url("../icons/thank-you-page-header-img.png") no-repeat 100% center;
+                  /* width: 202px; */
+                  height: 158px;
+                  position: absolute;
+                  width: 91%;
+                  top: 30px;
+                }
+
+                &::after {
+                  content: '';
+                  background: url("../icons/green-tick.png") no-repeat 100% center;
+                  width: 40px;
+                  height: 40px;
+                  position: absolute;
+                }
+              }
+            }
+
+            fieldset.field-accountnumber {
+              border: 1px solid var(--color-interface-border-secondary);
+              border-radius: 20px;
+              padding: 30px;
+              background: #fff;
+
+              &>.field-accountnumber {
+                position: relative;
+                padding-left: 95px;
+
+                label {
+                  color: var(--color-interface-text-secondary);
+                  font-size: 16px;
+                  font-weight: 400;
+                  line-height: 24px;
+                  position: initial;
+                  transition: none;
+                  margin: 0;
+                  transform: none;
+                  padding: 0;
+                  display: initial;
+                }
+
+                input {
+                  color: var(--color-interface-text-primary);
+                  font-size: 32px;
+                  font-weight: 600;
+                  line-height: 40px;
+                  letter-spacing: 2px;
+                  border: none;
+                  height: auto;
+                  padding: 0;
+                  margin: 0;
+
+                  &:focus-visible {
+                    outline: none;
+                  }
+                }
+
+                &::before {
+                  content: '';
+                  background: #F4F0FF url("../icons/account_number_icon.png") no-repeat center center;
+                  width: 72px;
+                  height: 72px;
+                  position: absolute;
+                  left: 0;
+                  border-radius: 50%;
+                }
+              }
+
+              &>.plain-text-wrapper {
+                border-top: 1px dashed var(--color-interface-border-secondary);
+
+                p {
+                  padding-top: 10px;
+                  margin-bottom: 0;
+
+                  p {
+                    font-size: 16px;
+                    font-weight: 400;
+                    line-height: 24px;
+                    color: var(--color-interface-text-secondary);
+                    margin-bottom: 0;
+                  }
+                }
+              }
+            }
+
+            .field-accountsummary {
+              border: 1px solid var(--color-interface-border-secondary);
+              border-radius: 20px;
+              padding: 30px;
+
+              .field-accountdetails {
+                p {
+                  font-size: 28px;
+                  font-weight: 600;
+                  line-height: 36px;
+                  color: var(--color-interface-text-primary);
+                  margin-bottom: 0;
+                }
+              }
+
+              .text-wrapper.field-wrapper,
+              .multiline-wrapper {
+
+                label {
+                  color: var(--color-interface-text-secondary);
+                  font-size: 14px;
+                  font-weight: 400;
+                  line-height: 20px;
+                  position: initial;
+                  transition: none;
+                  margin: 0;
+                  transform: none;
+                  padding: 0;
+                  display: initial;
+                }
+
+                input {
+                  color: var(--color-interface-text-primary);
+                  font-size: 18px;
+                  font-weight: 500;
+                  line-height: 28px;
+                  letter-spacing: 2px;
+                  border: none;
+                  height: auto;
+                  padding: 0;
+                  margin: 0;
+
+                  &:focus-visible {
+                    outline: none;
+                  }
+                }
+
+                textarea {
+                  border: none;
+                  background: none;
+                  margin: 0;
+                  padding: 0;
+                  /* width: 90% !important; */
+                  height: 100%;
+                  font-size: 18px;
+                  line-height: 28px;
+                  font-weight: 500;
+                  color: var(--color-interface-background-quaternary);
+                  resize: none;
+
+                  @media (320px <=width <=600px) {
+                    font-size: 14px;
+                    line-height: 20px;
+                  }
+
+                  &:focus-visible {
+                    outline: none;
+                  }
+                }
+              }
+            }
+
+            .field-checkbookinfo {
+              position: relative;
+              display: flex;
+              align-items: center;
+              background-color: #FEF8E6;
+              border-radius: 8px;
+              margin: 10px 0;
+
+              &::before {
+                content: '';
+                position: absolute;
+                height: 20px;
+                width: 20px;
+                background: url('../icons/info-circle.png') no-repeat left center;
+                left: 15px;
+
+                @media (320px <=width <=600px) {
+                  margin-left: -5px;
+                }
+              }
+
+              p {
+                margin-bottom: 0;
+
+                p {
+                  color: #F99F35;
+                  font-size: 14px;
+                  font-weight: 500;
+                  line-height: 20px;
+                  margin-bottom: 0;
+                  padding: 10px 15px 10px 45px;
+
+                  @media (320px <=width <=600px) {
+                    padding: 10px 0 10px 25px;
+                  }
+                }
+              }
+            }
+
+            .field-feedbackconfirmation {
+              border: 1px solid var(--color-interface-border-secondary);
+              border-radius: 20px;
+              padding: 30px;
+
+              .field-onlineservice {
+                p {
+                  font-size: 24px;
+                  font-weight: 600;
+                  line-height: 32px;
+                  color: var(--color-interface-text-primary);
+                  margin-bottom: 0;
+                }
+              }
+
+              .field-ratingbuttons {
+                gap: initial !important;
+                border: 1px solid var(--color-interface-border-secondary);
+                border-radius: 7px;
+                display: flex;
+
+                .button-wrapper {
+                  border-right: 1px solid var(--color-interface-border-secondary);
+                  flex: 1;
+                  height: 44px;
+
+                  button {
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    color: var(--color-input-text-primary);
+                    background: none;
+                    height: 100%;
+                    border-radius: 0;
+
+                    &:active,
+                    &:hover {
+                      background: #ED5A6E !important;
+
+                      height: 52px;
+                      border-radius: 4px;
+                      font-weight: 700;
+                      color: #fff;
+                      margin-top: -5px;
+                    }
+                  }
+
+                  &:last-child {
+                    border-right: none;
+                  }
+                }
+
+                &:hover~.field-ratingcolorcodes {
+                  display: flex;
+                }
+              }
+            }
+
+            .field-ratingcolorcodes {
+              display: flex;
+              grid-gap: initial !important;
+              display: none;
+              transition: transform 0.3s;
+
+              p {
+                margin-bottom: 0;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+                color: var(--color-interface-text-secondary);
+                margin-top: 10px;
+              }
+
+              .field-notlikelytext,
+              .field-maybetext,
+              .field-verylikelytext {
+                position: relative;
+
+                &::before {
+                  content: '';
+                  height: 6px;
+                  position: absolute;
+                  width: 100%;
+                  margin-top: -5px;
+                }
+              }
+
+
+              .field-notlikelytext {
+                width: 63.5%;
+
+                &::before {
+                  background-color: #ED5A6E;
+                  border-top-left-radius: 5px;
+                  border-bottom-left-radius: 5px;
+                }
+              }
+
+              .field-maybetext {
+                width: 18.3%;
+
+                &::before {
+                  background-color: #F99F35;
+                  border-left: 2px solid #fff;
+                }
+              }
+
+              .field-verylikelytext {
+                width: 18.2%;
+
+                &::before {
+                  background-color: #2DB780;
+                  border-top-right-radius: 5px;
+                  border-bottom-right-radius: 5px;
+                  border-left: 2px solid #fff;
+                }
+              }
+            }
+
+            .field-issuesradio {
+              display: flex;
+              align-items: center;
+
+              legend {
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                color: var(--color-interface-text-primary);
+                margin-bottom: 10px;
+              }
+
+              .field-issuesradio {
+                margin-right: 30px;
+
+                label {
+                  font-size: 18px !important;
+                  font-weight: 500;
+                  line-height: 24px;
+                  color: var(--color-interface-text-primary);
+                }
+
+                & input[type="radio"] {
+                  border-radius: 100%;
+                  border: 1px solid var(--color-interface-border-secondary);
+                  appearance: none;
+                  -webkit-appearance: none;
+                  outline: none;
+                  padding: 0;
+                  width: 24px !important;
+                  height: 24px !important;
+                  cursor: pointer;
+
+                  &:checked {
+                    cursor: pointer;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid var(--color-interface-icon-highlight);
+
+                    &::before {
+                      content: '';
+                      border-radius: 100%;
+                      width: 12px !important;
+                      height: 12px !important;
+                      background-color: var(--color-interface-icon-highlight);
+                      position: absolute;
+                    }
+                  }
+                }
+              }
+            }
+
+            .field-describeissue {
+              label {
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                color: var(--color-interface-text-primary);
+                position: initial;
+                margin: 0;
+              }
+
+              textarea {
+                border: 1px solid var(--color-interface-border-secondary);
+                border-radius: 12px;
+                min-height: 52px;
+                resize: none;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+                color: var(--color-input-text-placeholder-default);
+                padding: 15px;
+
+                &:focus-visible {
+                  outline: none;
+                }
+              }
+            }
+
+            .field-tqsubmitbutton {
+              max-width: 252px;
+              text-align: left;
+            }
+
+            .field-hdfcbankwebsite {
+              p {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+                color: var(--color-input-text-primary);
+                margin-bottom: 0;
+
+                a {
+                  font-weight: 600;
+                }
+              }
+            }
+          }
+
+          /* left panel end */
+
+          .field-personalizeddebitcard {
+            max-width: 25%;
+            display: flex;
+            margin-top: -95px;
+            position: relative;
+
+            .image-wrapper {
+              background: url("../icons/applying-for-dabit-card.png") no-repeat top center;
+              width: 272px;
+              height: 240px;
+            }
+
+            .field-applyfora {
+              a {
+                position: absolute;
+                top: 0;
+                width: 272px;
+                height: 240px;
+                color: transparent;
+              }
+            }
+
+            .field-applyingdebitcard {
+              display: none;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
   main {
     display: flex;
     overflow: auto;
@@ -179,14 +673,6 @@
       flex: 1;
       border-radius: 0;
     }
-
-    /*  & .field-invalid:has(.field-description) {
-      input {
-        border-color: var(--color-interface-border-secondary) !important;
-        box-shadow: 0 0 0 2px var(--color-input-box-shadow-error-default);
-        outline: none;
-      }
-    } */
 
     .form {
       &.block {
@@ -324,11 +810,10 @@
                     padding-left: 0px;
                     margin: 0;
                     border: none;
-                    background-color: #fff;
+                    background-color: #fff !important;
                     color: var(--color-interface-text-primary);
                     font-weight: 500;
                     border-radius: 12px;
-                    background-color: transparent;
 
                     &:focus-visible {
                       outline: none;
@@ -410,6 +895,10 @@
                       align-items: center;
                       justify-content: center;
                       position: relative;
+
+                      &:focus-visible {
+                        outline: none;
+                      }
 
                       &::before {
                         content: '';
@@ -611,6 +1100,14 @@
                   a {
                     text-decoration: underline;
 
+                    &:hover {
+                      text-decoration: none;
+                    }
+                  }
+
+                  b {
+                    font-weight: normal;
+                    text-decoration: underline;
                     &:hover {
                       text-decoration: none;
                     }
@@ -1394,6 +1891,40 @@
                 font-size: 24px;
                 line-height: 32px;
               }
+            }
+          }
+
+          &:has(legend.accordion-collapse) {
+            padding-bottom: 0;
+          }
+
+          & .text-wrapper.field-wrapper,
+          & .multiline-wrapper {
+            padding: 20px 30px;
+          }
+
+          .multiline-wrapper {
+            position: relative;
+
+            label {
+              margin: 2px 0 0 0;
+              padding: 0;
+            }
+
+            textarea {
+              border: none;
+              background: none;
+              margin: 0;
+              padding: 0;
+              width: 90% !important;
+              height: 100%;
+              font-size: 18px;
+              line-height: 28px;
+              font-weight: 500;
+              color: var(--color-interface-background-quaternary);
+              /* position: absolute; 
+              min-height: fit-content;*/
+              resize: none;
 
               @media (320px <=width <=600px) {
                 font-size: 18px;
@@ -1441,16 +1972,18 @@
               background-color: #FEF8E6;
               margin: 30px;
               border-radius: 8px;
+
               @media (320px <=width <=600px) {
                 margin: 10px;
               }
+
               &::before {
                 content: '';
                 position: absolute;
                 height: 20px;
                 width: 20px;
                 background: url('../icons/info-circle.png') no-repeat left center;
-               
+
 
                 @media (320px <=width <=600px) {
                   margin-left: -5px;
@@ -1459,6 +1992,7 @@
 
               p {
                 margin-bottom: 0;
+
                 p {
                   min-height: 40px;
                   color: #F99F35;
@@ -2116,291 +2650,294 @@
 
           .field-continue {
             text-align: left !important;
-            max-width: 272px;
 
-            @media (768px <=width <=991px) {
-              width: 222px;
-            }
+            button {
+              max-width: 272px;
 
-            @media (320px <=width <=600px) {
-              width: 100%;
-            }
-          }
-        }
-
-        /* confirm details screen */
-
-        .field-confirmdetails {
-
-          .field-confirmdetailsaccordion {
-
-            .text-wrapper.field-wrapper,
-            .multiline-wrapper,
-            .drop-down-wrapper {
-              min-height: 70px;
+              @media (768px <=width <=991px) {
+                width: 222px;
+              }
 
               @media (320px <=width <=600px) {
-                height: auto;
+                width: 100%;
               }
-
-              &>label.field-label {
-                margin: 0;
-                padding: 0;
-                transition: none;
-                position: inherit;
-                font-size: 14px;
-                line-height: 20px;
-                font-weight: 400;
-                color: var(--color-interface-text-secondary);
-                transform: none;
-                display: block;
-              }
-
-              input,
-              select {
-                border: none;
-                background: none;
-                margin: 0;
-                padding: 0;
-                width: auto;
-                height: auto;
-                font-size: 18px !important;
-                line-height: 28px;
-                font-weight: 500;
-                color: var(--color-interface-background-quaternary);
-                margin-top: -2px;
-                position: absolute;
-
-                &:focus-visible {
-                  outline: none;
-                }
-              }
-
-              select {
-                border: none !important;
-                padding: 0 !important;
-                height: auto !important;
-              }
-
-              &[data-active="true"] {
-                label {
-                  margin: 0;
-                  transform: none;
-                }
-              }
-
-              &.drop-down-wrapper {
-                grid-column: span 4;
-              }
-
             }
           }
 
-          .field-needbankhelp {
-            margin-top: 10px;
+          /* confirm details screen */
 
-            .field-bankusetoggle {
-              display: flex;
-              align-items: center;
-              flex-direction: row-reverse;
-              justify-content: flex-end;
+          .field-confirmdetails {
 
-              @media (320px <=width <=600px) {
-                margin-bottom: 20px;
-                align-items: flex-start;
-              }
+            .field-confirmdetailsaccordion {
 
-              label {
-                font-size: 28px;
-                font-weight: 600;
-                line-height: 36px;
-                color: var(--color-interface-text-primary);
-                flex-basis: initial;
-
-                @media (768px <=width <=991px) {
-                  font-size: 24px;
-                  line-height: 28px;
-                }
+              .text-wrapper.field-wrapper,
+              .multiline-wrapper,
+              .drop-down-wrapper {
+                min-height: 70px;
 
                 @media (320px <=width <=600px) {
-                  font-size: 18px;
-                  line-height: 24px;
+                  height: auto;
                 }
-              }
 
-              input[type="checkbox"] {
-                width: 45px !important;
-                height: 28px !important;
-                padding: 0;
-                box-sizing: content-box;
-                border-radius: 16px;
-                background-color: var(--color-interface-icon-highlight);
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                appearance: none;
-                cursor: pointer;
-                position: relative;
-                transition: background-color 0.3s, background-position 0.3s;
-                margin-top: 5px;
-              }
-
-              input[type="checkbox"]::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 4px;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                background: white;
-                transform: translateY(-50%);
-                transition: transform 0.3s;
-              }
-
-              input[type="checkbox"]:checked::after {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 4px;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                background: white;
-                transform: translateY(-50%) translateX(17px);
-                transition: transform 0.3s;
-              }
-
-
-            }
-
-            .field-mainbankusepanel {
-
-              .field-lgcode,
-              .field-lccode {
-                position: relative;
-                grid-column: span 6 !important;
-
-                label.field-label {
-                  margin: 0 0 0 15px;
-                  top: 20px;
-                  color: var(--color-input-text-disabled);
+                &>label.field-label {
+                  margin: 0;
+                  padding: 0;
+                  transition: none;
+                  position: inherit;
                   font-size: 14px;
                   line-height: 20px;
                   font-weight: 400;
+                  color: var(--color-interface-text-secondary);
+                  transform: none;
+                  display: block;
                 }
 
-                input {
-                  border: 1px solid var(--color-interface-border-secondary);
-                  margin-bottom: 0;
-                  color: var(--color-input-text-disabled);
-                  font-size: 18px;
+                input,
+                select {
+                  border: none;
+                  background: none;
+                  margin: 0;
+                  padding: 0;
+                  width: auto;
+                  height: auto;
+                  font-size: 18px !important;
                   line-height: 28px;
-                  font-weight: 400;
+                  font-weight: 500;
+                  color: var(--color-interface-background-quaternary);
+                  margin-top: -2px;
+                  position: absolute;
 
                   &:focus-visible {
                     outline: none;
                   }
                 }
 
+                select {
+                  border: none !important;
+                  padding: 0 !important;
+                  height: auto !important;
+                }
+
                 &[data-active="true"] {
+                  label {
+                    margin: 0;
+                    transform: none;
+                  }
+                }
+
+                &.drop-down-wrapper {
+                  grid-column: span 4;
+                }
+
+              }
+            }
+
+            .field-needbankhelp {
+              margin-top: 10px;
+
+              .field-bankusetoggle {
+                display: flex;
+                align-items: center;
+                flex-direction: row-reverse;
+                justify-content: flex-end;
+
+                @media (320px <=width <=600px) {
+                  margin-bottom: 20px;
+                  align-items: flex-start;
+                }
+
+                label {
+                  font-size: 28px;
+                  font-weight: 600;
+                  line-height: 36px;
+                  color: var(--color-interface-text-primary);
+                  flex-basis: initial;
+
+                  @media (768px <=width <=991px) {
+                    font-size: 24px;
+                    line-height: 28px;
+                  }
+
+                  @media (320px <=width <=600px) {
+                    font-size: 18px;
+                    line-height: 24px;
+                  }
+                }
+
+                input[type="checkbox"] {
+                  width: 45px !important;
+                  height: 28px !important;
+                  padding: 0;
+                  box-sizing: content-box;
+                  border-radius: 16px;
+                  background-color: var(--color-interface-icon-highlight);
+                  -webkit-appearance: none;
+                  -moz-appearance: none;
+                  appearance: none;
+                  cursor: pointer;
+                  position: relative;
+                  transition: background-color 0.3s, background-position 0.3s;
+                  margin-top: 5px;
+                }
+
+                input[type="checkbox"]::after {
+                  content: '';
+                  position: absolute;
+                  top: 50%;
+                  left: 4px;
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: white;
+                  transform: translateY(-50%);
+                  transition: transform 0.3s;
+                }
+
+                input[type="checkbox"]:checked::after {
+                  content: '';
+                  position: absolute;
+                  top: 50%;
+                  left: 4px;
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  background: white;
+                  transform: translateY(-50%) translateX(17px);
+                  transition: transform 0.3s;
+                }
+
+
+              }
+
+              .field-mainbankusepanel {
+
+                .field-lgcode,
+                .field-lccode {
+                  position: relative;
+                  grid-column: span 6 !important;
+
                   label.field-label {
-                    margin: 2px 0 0 10px;
+                    margin: 0 0 0 15px;
+                    top: 20px;
+                    color: var(--color-input-text-disabled);
+                    font-size: 14px;
+                    line-height: 20px;
+                    font-weight: 400;
+                  }
+
+                  input {
+                    border: 1px solid var(--color-interface-border-secondary);
+                    margin-bottom: 0;
+                    color: var(--color-input-text-disabled);
+                    font-size: 18px;
+                    line-height: 28px;
+                    font-weight: 400;
+
+                    &:focus-visible {
+                      outline: none;
+                    }
+                  }
+
+                  &[data-active="true"] {
+                    label.field-label {
+                      margin: 2px 0 0 10px;
+                    }
                   }
                 }
               }
-            }
 
-            .field-confirmdetailsconsent1,
-            .field-confirmdetailsconsent2 {
-              margin-top: 0;
+              .field-confirmdetailsconsent1,
+              .field-confirmdetailsconsent2 {
+                margin-top: 0;
 
-              label.field-label,
-              label.field-label p {
-                font-size: 14px;
-                font-weight: 400;
-                color: var(--color-input-text-primary);
-                margin-bottom: 0;
-              }
+                label.field-label,
+                label.field-label p {
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: var(--color-input-text-primary);
+                  margin-bottom: 0;
+                }
 
-              input[type="checkbox"] {
-                border-radius: 5px;
-                border: 2px solid #ddd;
-                appearance: none;
-                -webkit-appearance: none;
-                outline: none;
-                padding: 0;
+                input[type="checkbox"] {
+                  border-radius: 5px;
+                  border: 2px solid #ddd;
+                  appearance: none;
+                  -webkit-appearance: none;
+                  outline: none;
+                  padding: 0;
 
 
-                &:checked {
-                  background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
-                  border: none;
-                  cursor: pointer;
+                  &:checked {
+                    background: var(--color-interface-icon-highlight) url("../icons/checkbox-checked-arrow.png") no-repeat center center;
+                    border: none;
+                    cursor: pointer;
+                  }
                 }
               }
+
+              .field-confirmdetailsconsent2 {
+                margin-top: -10px;
+
+                @media (320px <=width <=600px) {
+                  margin-top: 10px;
+                }
+              }
+
+              .field-resetallbtn {
+                width: auto;
+                text-align: right;
+
+                .button {
+                  background: none;
+                  color: var(--color-action-background-primary-default);
+                  max-width: fit-content;
+                  font-size: 16px;
+                  font-weight: 600;
+                  line-height: 24px;
+                  height: auto;
+
+                  &::after {
+                    display: none;
+                  }
+
+                  &:hover {
+                    background: none !important;
+                  }
+                }
+              }
+
             }
 
-            .field-confirmdetailsconsent2 {
-              margin-top: -10px;
+            .field-confirmbutton {
+              margin-top: 10px;
+              text-align: left;
+              max-width: 272px;
+
+              @media (768px <=width <=991px) {
+                width: 222px;
+              }
 
               @media (320px <=width <=600px) {
-                margin-top: 10px;
+                width: 100%;
               }
             }
-
-            .field-resetallbtn {
-              width: auto;
-              text-align: right;
-
-              .button {
-                background: none;
-                color: var(--color-action-background-primary-default);
-                max-width: fit-content;
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 24px;
-                height: auto;
-
-                &::after {
-                  display: none;
-                }
-
-                &:hover {
-                  background: none !important;
-                }
-              }
-            }
-
           }
 
-          .field-confirmbutton {
-            margin-top: 10px;
-            text-align: left;
-            max-width: 272px;
 
-            @media (768px <=width <=991px) {
-              width: 222px;
-            }
-
-            @media (320px <=width <=600px) {
-              width: 100%;
-            }
-          }
         }
 
-
+        /* form tag close */
       }
 
-      /* form tag close */
-    }
+      /* .form close */
 
-    /* .form close */
-
-    /* consent dialog */
-    .modal {
-      .modal-content {
-        .panel-wrapper {
-          @media (320px <=width <=600px) {
-            padding: 0;
+      /* consent dialog */
+      .modal {
+        .modal-content {
+          .panel-wrapper {
+            @media (320px <=width <=600px) {
+              padding: 0;
+            }
           }
         }
       }
