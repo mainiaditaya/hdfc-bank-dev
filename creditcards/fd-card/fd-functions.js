@@ -38,6 +38,7 @@ import {
   validatePan,
   idcomRedirection,
   aadharInit,
+  loadHomePage,
 } from '../../common/functions.js';
 
 import { createJourneyId } from '../../common/journey-utils.js';
@@ -173,4 +174,5 @@ export {
   panvalidationSuccessHandler,
   addressChangeHandler,
   fullNamePanValidation,
+  loadHomePage,
 };
