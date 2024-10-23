@@ -12,7 +12,8 @@ const createIdComRequestObj = (globals) => {
   const {
     personalDetails,
   } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
-  const scope = globals.functions.exportData()?.currentFormContext?.executeInterfaceRequest?.requestString?.addressEditFlag === 'Y' ? IDCOM.scope.addressChanged : IDCOM.scope.addressNotChanged;
+  const addressChanged = globals.functions.exportData()?.currentFormContext?.executeInterfaceRequest?.requestString?.addressEditFlag || CURRENT_FORM_CONTEXT?.executeInterfaceRequest?.requestString?.addressEditFlag || '';
+  const scope = addressChanged === 'Y' ? IDCOM.scope.addressChanged : IDCOM.scope.addressNotChanged;
   const idComObj = {
     requestString: {
       mobileNumber: `${globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber._data.$_value}`,
