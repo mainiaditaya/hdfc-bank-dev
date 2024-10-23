@@ -16,7 +16,6 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
     customerInfo,
     journeyID,
     customerAddress,
-    permanentAddress,
   } = CURRENT_FORM_CONTEXT;
   const { basicDetails, selectFD } = globals.form.fdBasedCreditCardWizard;
   const {
@@ -59,14 +58,10 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
   });
 
   let communicationAddress = getAddress(customerAddress);
-  let customerPermanentAddress = CURRENT_FORM_CONTEXT?.perAddExist
-    ? getAddress(permanentAddress)
-    : communicationAddress;
 
   if (addressEditFlag) {
     const newAddressPanel = addressDetails.newCurentAddressPanel;
     communicationAddress = getEditedAddress(newAddressPanel);
-    customerPermanentAddress = getEditedAddress(newAddressPanel);
   }
 
   let apsEmailEditFlag = 'N';
@@ -145,12 +140,12 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       panEditFlag: customerInfo?.refCustItNum ? 'N' : 'Y',
       panNameMatch: payload?.validName,
       panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),
-      permanentAddress1: customerPermanentAddress?.line1,
-      permanentAddress2: customerPermanentAddress?.line2,
-      permanentAddress3: customerPermanentAddress?.line3,
-      permanentCity: customerPermanentAddress?.city,
-      permanentState: customerPermanentAddress?.state,
-      permanentZipCode: customerPermanentAddress?.zip,
+      permanentAddress1: communicationAddress?.line1,
+      permanentAddress2: communicationAddress?.line2,
+      permanentAddress3: communicationAddress?.line3,
+      permanentCity: communicationAddress?.city,
+      permanentState: communicationAddress?.state,
+      permanentZipCode: communicationAddress?.zip,
       perAddressType: '2',
       perfiosTxnID: '',
       personalEmailId: personalDetails?.emailID.$value,
@@ -258,26 +253,10 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
             perAddressType: '4',
           });
         }
-      } else {
-        const {
-          addressLine1, addressLine2, addressLine3, pincode: permanentZipCode, city: permanentCity, state: permanentState,
-        } = formData?.currentFormContext?.permanentAddress || {};
-
-        Object.assign(executeInterfaceRequest.requestString, {
-          permanentAddress1: addressLine1,
-          permanentAddress2: addressLine2,
-          permanentAddress3: addressLine3,
-          permanentCity,
-          permanentState,
-          permanentZipCode,
-          perAddressType: '2',
-        });
       }
-    }
-    if (selectedKyc === 'biokyc' || selectedKyc === 'bioinperson') {
+    } else if (selectedKyc === 'biokyc' || selectedKyc === 'bioinperson') {
       executeInterfaceRequest.requestString.authMode = 'OTP';
-    }
-    if (selectedKyc === 'OVD') {
+    } else if (selectedKyc === 'OVD') {
       executeInterfaceRequest.requestString.authMode = 'IDCOM';
     }
   }
