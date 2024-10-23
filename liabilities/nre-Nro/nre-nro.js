@@ -12,6 +12,7 @@ import {
   switchWizard,
   addPageNameClassInBody,
   showFinancialDetails,
+  showNomineeDetails,
 } from './nre-nroFunctions.js';
 
 import {
@@ -34,4 +35,5 @@ export {
   switchWizard,
   addPageNameClassInBody,
   showFinancialDetails,
+  showNomineeDetails,
 };
