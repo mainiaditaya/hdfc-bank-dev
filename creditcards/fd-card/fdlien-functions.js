@@ -84,6 +84,10 @@ const validateLogin = (globals) => {
         if (!(mobIsValid)) {
           globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
         }
+      } else if (!dobIsValid) {
+        const dobErrorText = FD_CONSTANT.ERROR_MSG.ageLimit;
+        globals.functions.markFieldAsInvalid('$form.loginMainPanel.loginPanel.identifierPanel.dateOfBirth', dobErrorText, { useQualifiedName: true });
+        globals.functions.setProperty(globals.form.loginMainPanel.getOTPbutton, { enabled: false });
       }
       break;
     case 'PAN':
