@@ -12,13 +12,13 @@ import {
 } from './fdlien-functions.js';
 
 import {
-    tConvert,
-    invokeResumeJourneyApi,
-    prefillResumeJourneyData,
-    resumeJourneySuccessHandler,
-    displayResumeJourneyPopup,
-    resumeJourneyPopUp,
-    getResumeJourneyJsonObject,
+  tConvert,
+  invokeResumeJourneyApi,
+  prefillResumeJourneyData,
+  resumeJourneySuccessHandler,
+  displayResumeJourneyPopup,
+  resumeJourneyPopUp,
+  getResumeJourneyJsonObject,
 } from './fd-resumejourney.js';
 
 import {
