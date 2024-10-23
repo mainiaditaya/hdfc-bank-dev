@@ -254,11 +254,9 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
           });
         }
       }
-    }
-    if (selectedKyc === 'biokyc' || selectedKyc === 'bioinperson') {
+    } else if (selectedKyc === 'biokyc' || selectedKyc === 'bioinperson') {
       executeInterfaceRequest.requestString.authMode = 'OTP';
-    }
-    if (selectedKyc === 'OVD') {
+    } else if (selectedKyc === 'OVD') {
       executeInterfaceRequest.requestString.authMode = 'IDCOM';
     }
   }
