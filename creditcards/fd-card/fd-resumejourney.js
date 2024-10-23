@@ -3,7 +3,7 @@ import { restAPICall } from '../../common/makeRestAPI.js';
 import { JOURNEY_NAME } from './constant.js';
 import { formUtil, urlPath } from '../../common/formutils.js';
 
-let RESUME_JOURNEY_JSON_OBJECT = {};
+const RESUME_JOURNEY_JSON_OBJECT = {};
 
 /**
  *
@@ -59,7 +59,8 @@ const resumeJourneySuccessHandler = async (payload, globals) => {
       Object.assign(CURRENT_FORM_CONTEXT, returnJourneyInfo.currentFormContext);
       const applRefNumber = returnJourneyInfo?.currentFormContext?.executeInterfaceResponse?.APS_APPL_REF_NUM;
       if (applRefNumber !== undefined) {
-        RESUME_JOURNEY_JSON_OBJECT = returnJourneyInfo;
+        Object.assign(RESUME_JOURNEY_JSON_OBJECT, returnJourneyInfo);
+        // RESUME_JOURNEY_JSON_OBJECT = returnJourneyInfo;
         const savedTime = payload?.journey?.[0]?.journeyStateInfo?.[0]?.timeinfo;
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const timeStamp = `${savedTime.substring(8, 10)} ${months[parseInt(savedTime.substring(5, 7), 10) - 1]} ${savedTime.substring(0, 4)}, ${tConvert(savedTime.substring(11, 19))}`;
@@ -170,18 +171,7 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   setFormValue(employeeAssistance.employeeAssistancePanel.smCode, resumeJourneyResponse?.FDlienCard?.smCode);
 };
 
-const resumeJourneyPopUp = (radioButtonObject, globals) => {
-  const selectedRbValue = radioButtonObject.$value;
-  if (selectedRbValue === '0') {
-    prefillResumeJourneyData(RESUME_JOURNEY_JSON_OBJECT, globals);
-  }
-};
-
 const getResumeJourneyJsonObject = () => RESUME_JOURNEY_JSON_OBJECT;
-
-const displayResumeJourneyPopup = () => {
-
-};
 
 export {
   tConvert,
@@ -189,9 +179,6 @@ export {
   prefillResumeJourneyData,
   resumeJourneySuccessHandler,
   getResumeJourneyJsonObject,
-  resumeJourneyPopUp,
-  displayResumeJourneyPopup,
   RESUME_JOURNEY_JSON_OBJECT,
   validateAndDisableFDSelection,
-
 };
