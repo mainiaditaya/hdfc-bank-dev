@@ -1,5 +1,6 @@
 import { BASEURL, CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { applicableCards, extractJSONFromHTMLString, urlPath } from '../../common/formutils.js';
+import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
 import {
   fetchRecursiveResponse,
 } from '../../common/makeRestAPI.js';
@@ -181,6 +182,11 @@ const fdIpaSuccessHandler = (response, globals) => {
   const customerChanged = CURRENT_FORM_CONTEXT.customerIdentityChange;
   globals.functions.setProperty(selectIdentifier, { visible: customerChanged || !addressToggleOn });
   globals.functions.setProperty(continueToIDCOM, { visible: !customerChanged && addressToggleOn });
+  const formData = globals.functions.exportData();
+  const mobNumber = globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
+  const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
+  const { journeyId } = formData;
+  invokeJourneyDropOffUpdate('CUSTOMER_OFFER_AVAILABLE', mobNumber, leadProfileId, journeyId, globals);
 };
 
 export {

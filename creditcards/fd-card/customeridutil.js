@@ -3,6 +3,7 @@ import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { FD_ENDPOINTS } from './constant.js';
 import { fetchJsonResponse, fetchRecursiveResponse } from '../../common/makeRestAPI.js';
 import { dateFormat, urlPath } from '../../common/formutils.js';
+import { invokeResumeJourneyApi } from './fd-resumejourney.js';
 
 const SELECTED_CUSTOMER_ID = {};
 let selectedCustIndex = -1;
@@ -88,6 +89,7 @@ const customerIdSuccessHandler = (payload, globals) => {
       }, i * 40);
     });
   }
+  invokeResumeJourneyApi(globals);
 };
 
 /**
