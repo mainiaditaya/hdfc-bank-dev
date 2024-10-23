@@ -44,7 +44,7 @@ const ID_COM = {
   },
 };
 
-const ENV = 'dev';
+const ENV = 'PROD';
 
 export {
   BASEURL,
