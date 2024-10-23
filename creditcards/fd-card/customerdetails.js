@@ -238,6 +238,11 @@ const bindCustomerDetails = async (globals) => {
   const validPin = await pincodeCheck(pincode, city, state);
 
   if (validPin.result === 'false') {
+    const { newCurrentAddressLine1, newCurrentAddressLine2, newCurrentAddressLine3 } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
+    globals.functions.setProperty(newCurrentAddressLine1, { value: CURRENT_FORM_CONTEXT?.customerAddress?.addressLine1 });
+    globals.functions.setProperty(newCurrentAddressLine2, { value: CURRENT_FORM_CONTEXT?.customerAddress?.addressLine2 });
+    globals.functions.setProperty(newCurrentAddressLine3, { value: CURRENT_FORM_CONTEXT?.customerAddress?.addressLine3 });
+
     globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
     globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.invalidPinNote, visible: true });
     addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
