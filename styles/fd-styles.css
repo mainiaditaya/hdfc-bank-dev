@@ -2466,6 +2466,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
+      .field-cardfaciaimage {
+        img {
+          border-radius: 12px;
+        }
+      }
+
       .field-cardfeatures1:has(p:empty),
       .field-cardfeatures2:has(p:empty),
       .field-cardfeatures3:has(p:empty) {
@@ -2694,24 +2700,33 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       margin: 0;
     }
 
-    .field-singlecardname p {
-      font-size: var(--body-fd-x-lg-font-size) !important;
-      font-weight: var(--font-weight-bold) !important;
+    .field-singlecardname, .field-singlecardname p {
+      font-size: var(--body-fd-lg-font-size) !important;
+      font-weight: var(--font-weight-extra-bold) !important;
       color: var(--color-interface-text-primary) !important;
     }
 
     .field-singlecardtitle {
       margin-top: -20px;
+      font-size: var(--body-fd-md-font-size);
+      color: var(--color-input-text-primary);
+      font-weight: var(--font-weight-regular);
 
       p {
-        font-size: var(--body-fd-lg-font-size);
-        color: var(--color-interface-text-primary);
-        font-weight: var(--font-weight-extra-bold);
+        font-size: var(--body-fd-md-font-size);
+        color: var(--color-input-text-primary);
+        font-weight: var(--font-weight-regular);
+      }
+    }
+
+    .field-singlecardfacia {
+      img {
+        border-radius: 12px;
       }
     }
 
     .field-singlecardkeybenefitspanel {
-      .plain-text-wrapper p {
+      .field-singlecardfeatureslabel .field-singlecardfeatureslabel p {
         font-size: var(--body-fd-sm-font-size);
         font-weight: var(--font-weight-regular);
         color: var(--color-interface-background-quaternary);
@@ -2720,6 +2735,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       .plain-text-wrapper:not(.field-singlecardfeatureslabel) {
         display: grid;
         grid-column: span 4;
+        font-size: var(--body-fd-sm-font-size);
+        font-weight: var(--font-weight-regular);
+
+        .cc-benefit-icon {
+          display: none;
+        }
       }
 
       .plain-text-wrapper:nth-of-type(n + 2):nth-of-type(-n + 4) {
@@ -2745,7 +2766,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       button::after {
-        background: url('../icons/Arrow-Expand.svg') no-repeat !important;
+        background: url('../icons/arrow-right-blue.svg') no-repeat !important;
         margin: 0 0 -3px 6px;
       }
     }
@@ -2792,7 +2813,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       label {
         font-size: var(--body-x-sm-font-size);
         font-weight: var(--font-weight-medium);
-        color: var(--color-interface-text-primary);
+        color: var(--color-interface-text-primary) !important;
         vertical-align: middle;
       }
 
@@ -3270,7 +3291,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       border-top: 1px dashed var(--color-interface-border-secondary);
     }
 
-    .field-aadhaarbankstmt p{
+    .field-aadhaarbankstatement p{
       font-size: var(--body-fd-sm-font-size);
       margin-bottom: 0;
     }
@@ -3344,8 +3365,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   }
 
   .field-currentresidenceaddressbiometricovdconfirmation {
-    margin-top: -15px;
-
     legend {
       border-top: 1px dashed #ccc;
       padding-top: 15px;
@@ -3526,6 +3545,125 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     .field-aadharconsentagree {
       margin-top: -20px;
     }
+  }
+}
+
+.field-aadharconsentpopup {
+  padding: 29px;
+  max-width: 525px;
+  height: 420px;
+  position: relative;
+  top: -5%;
+
+  .field-closepopup {
+    position: absolute;
+    right: 20px;
+    top: 25px;
+
+    button {
+      background: url('../icons/close-icon-black.svg') no-repeat;
+      width: 20px;
+      height: 20px;
+
+      &:hover {
+        background: url('../icons/close-icon-black.svg') no-repeat !important;
+      }
+
+      &::after {
+        background: none !important;
+      }
+    }
+  }
+
+  .field-aadharconsentlabel {
+    background: url('../icons/aadhar-icon.svg') no-repeat;
+    padding: 0 0 0 50px;
+
+    b,
+    p {
+      font-size: var(--body-fd-x-lg-font-size);
+      font-weight: var(--font-weight-extra-bold);
+      color: var(--color-interface-background-quaternary);
+      margin: 3px 0 !important;
+    }
+
+    b::before {
+      content: '' !important;
+    }
+  }
+
+  .field-selectlanguage {
+    margin-top: 15px;
+
+    label {
+      color: var(--color-interface-background-quaternary) !important;
+      font-weight: var(--font-weight-bold) !important;
+      font-size: var(--body-x-sm-font-size) !important;
+      transform: translateY(-22px);
+      z-index: 1;
+      background-color: var(--color-interface-background-primary);
+      padding: 0 4px;
+      line-height: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 5px 20px 20px;
+      position: absolute;
+      transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+      width: max-content;
+    }
+
+    select {
+      width: 430px !important;
+    }
+  }
+
+  div[class*='field-aadharconsenttext-'] p,
+  select,
+  div[class*='field-aadharconsenthelp-'] p {
+    font-size: var(--body-fd-sm-font-size);
+    font-weight: var(--font-weight-regular);
+    padding-left: 15px;
+    margin: 0;
+    color: var(--color-interface-background-quaternary);
+  }
+
+  div[class*='field-aadharconsenttext-'] {
+    height: 160px;
+    overflow-y: scroll;
+    padding: 0 !important;
+    margin: 10px 0;
+  }
+
+  div[class*='field-aadharconsenthelp-'] p {
+    padding: 0;
+    font-size: var(--body-x-sm-font-size);
+    color: var(--color-interface-text-secondary);
+  }
+
+  .field-languageconsenttnc {
+    input[type='checkbox'] {
+      width: 18px !important;
+      height: 18px !important;
+
+      &:checked::before {
+        margin: -8px 0 0 -4px;
+      }
+    }
+
+    label p{
+      font-size: var(--body-x-sm-font-size);
+      font-weight: var(--font-weight-regular);
+      color: var(--color-interface-text-secondary);
+      display: inline;
+      vertical-align: text-top;
+    }
+  }
+
+  .field-aadharconsentagree {
+    margin-top: -20px;
   }
 }
 
@@ -4580,6 +4718,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
       .field-selectlanguage {
         margin: 20px 0;
+
+        select {
+          width: 200px;
+        }
       }
 
       .field-languageconsenttnc {
@@ -4588,6 +4730,21 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
       .field-aadharconsentagree {
         margin-top: 0 !important;
+      }
+    }
+  }
+
+  .field-aadharconsentpopup {
+    padding: 15px !important;
+
+    .field-closepopup {
+      top: 20px;
+      right: 50px;
+    }
+
+    .field-selectlanguage {
+      select {
+        width: 300px !important;
       }
     }
   }

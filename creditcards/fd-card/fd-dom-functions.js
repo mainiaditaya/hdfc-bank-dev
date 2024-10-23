@@ -65,6 +65,15 @@ const changeCheckboxToToggle = () => {
   createLabelInElement('.field-mailingaddresstoggle', 'mailing-address-toggle__label');
 };
 
+const buttonEnableOnCheck = (selector, ctaSelector) => {
+  const checkbox = document.querySelector(selector);
+  const ctaButton = document.querySelector(ctaSelector);
+
+  checkbox.addEventListener('change', () => {
+    ctaButton.disabled = !checkbox.checked;
+  });
+};
+
 setTimeout(() => {
   addGaps('.field-pan.char-gap-4 input');
   addMobileValidation();
@@ -76,4 +85,5 @@ export {
   validateOtpInput,
   updateElementAttr,
   changeCheckboxToToggle,
+  buttonEnableOnCheck,
 };
