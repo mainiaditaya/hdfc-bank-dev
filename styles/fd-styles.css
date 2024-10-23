@@ -1033,6 +1033,38 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
     }
 
+    .field-ratingsubmittedtext {
+      position: absolute;
+      background: var(--color-interface-toaster-background-primary);
+      border-radius: 8px;
+      left: 30%;
+      max-width: 525px;
+      display: inline-block;
+      opacity: 0;
+      animation: opacity 0.5s ease 1s;
+
+      p {
+        color: var(--color-interface-toaster-text-primary);
+        font-size: var(--body-fd-md-font-size);
+        font-weight: var(--font-weight-bold);
+
+        p::before {
+          content: '';
+          background: url('../icons/toaster-success-icon.svg') no-repeat 0 3px;
+          width: 20px;
+          height: 24px;
+          display: inline-block;
+          vertical-align: bottom;
+          margin-right: 5px;
+        }
+      }       
+    }
+
+    .field-ratingsubmittedtext[data-visible='true'] {
+      opacity: 1;
+      animation: opacity 0.5s ease 1s;
+    }
+
     .field-tqbannertext1 {
       max-width: 100%;
 

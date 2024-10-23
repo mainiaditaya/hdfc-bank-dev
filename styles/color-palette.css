@@ -73,4 +73,6 @@
   --color-interface-promotion-text-primary: #7454f2;
   --color-interface-promotion-text-secondary: #ab47bc;
   --color-interfave-errorpopup-text-primary: #222;
+  --color-interface-toaster-background-primary: #EBF9EF;
+  --color-interface-toaster-text-primary: #00875F;
 }
