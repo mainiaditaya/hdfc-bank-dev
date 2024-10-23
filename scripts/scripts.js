@@ -22,7 +22,7 @@ const FORM_CONSTANT = [
     urlKey: ['semi', 'smart-emi', 'smart emi', 'smartemi'],
     launchScript: {
       dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-94203efd95a9-staging.min.js',
-      prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-94203efd95a9-staging.js',
+      prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
       loadTime: 0,
     },
   },
@@ -37,7 +37,7 @@ const FORM_CONSTANT = [
     },
   },
 ];
-const ENV = 'dev'; // take it from common constant to denote
+const ENV = 'prod'; // take it from common constant to denote
 
 /**
  * Builds hero block and prepends to main in a new section.
