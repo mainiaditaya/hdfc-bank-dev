@@ -453,18 +453,6 @@ const resendOTP = async (globals) => {
    * @returns {Object} - The IdCom request object.
    */
 const createIdComRequestObj = (globals) => {
-  
-  // const segment = formRuntime?.segment || globals.functions.exportData().currentFormContext.breDemogResponse.SEGMENT.toLowerCase();
-  // const isAddressEdited = globals.functions.exportData().form.currentAddressToggle === 'on' ? 'yes' : 'no';
-
-  // if (segment in idCom.scopeMap) {
-  //   if (typeof idCom.scopeMap[segment] === 'object') {
-  //     scope = idCom.scopeMap[segment][isAddressEdited];
-  //   } else {
-  //     scope = idCom.scopeMap[segment];
-  //   }
-  // }
-
   const formData = santizedFormDataWithContext(globals);
   console.log("In Fetch code dIGITAL DAta : " , formData, formData.AccountOpeningNRENRO.custIDWithoutMasking);
   const idComObj = {
@@ -545,7 +533,6 @@ console.log("UTM Parameters : " , searchParam,visitTypeParam, authModeParam, jou
  * @returns {void} error method or succes method based on the criteria of finalDapResponse reach or max limit reach.
  */
 const nreNroFetchRes = async () => {
-  console.log("In NRENRO Final functions");
   const eventHandler = {
     successMethod: (data) => {
       const {
@@ -665,22 +652,13 @@ const nreNroSuccessPannelMethod = async (data, stateInfoData) => {
 
 /**
  * Redirects the user to different panels based on conditions.
- * If `aadhar` is true, navigates from 'corporateCardWizardView' to 'confirmAndSubmitPanel'
  * If `idCom` is true, initiates a journey drop-off process and handles the response which handles after all the final dap api call.
- * @param {boolean} aadhar - Indicates whether Aadhar redirection is triggered.
  * @param {boolean} idCom - Indicates whether ID com redirection is triggered.
  * @returns {void}
  */
-const nreNroPageRedirected = (aadhar, idCom) => {
+const nreNroPageRedirected = (idCom) => {
   console.log("In NRENROPageRedirected");
-  if (aadhar) {
-    moveWizardView(ccWizard.wizardPanel, ccWizard.confirmAndSubmitPanel);
-  }
   if (idCom) {
-    console.log("Idcom page redirected section");
-    /**
-     * finaldapResponse starts for ETB - address change scenario.
-     */
     setTimeout(() => {
       displayLoader();
       nreNroFetchRes();
@@ -720,16 +698,8 @@ const switchWizard = (globals) => {
 }
 
 setTimeout(async function(globals) {
-  console.log("Going to check for Idcom redirection status");
-  await nreNroPageRedirected(aadharRedirect, idComRedirect);
-  // console.log("Calling getCountryCodes");
+  await nreNroPageRedirected(idComRedirect);
   await getCountryCodes(document.querySelector('.field-countrycode select'));
-  console.log("Calling fetchAuthCode function");
-  console.log("IDComRedirect : " , idComRedirect);
-  
-  if(idComRedirect != null){
-    console.log("Redirected");
-  }
 }, 2000);
 
 export {
