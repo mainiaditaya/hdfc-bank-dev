@@ -34,12 +34,12 @@ const ratingButtonUI = () => {
 };
 
 const copyToClipBoard = async (globals) => {
-  const referenceNumberLabel = document.querySelector('.field-referencenumber label');
-  const referenceNumberValue = globals.form.resultPanel.successResultPanel.tqSuccessWrapper.refNumPanel.referenceNumber.$value;
+  const referenceNumberLabel = globals.form.resultPanel.successResultPanel.tqSuccessWrapper.refNumPanel.referenceNumber._jsonModel.label.value;
+  const referenceNumberValue = document.querySelector('.field-refnumpanel .field-referencenumber input').value;
   if (referenceNumberValue) {
     try {
       await navigator.clipboard.writeText(referenceNumberValue);
-      alert(`Copied ${referenceNumberLabel.textContent}: ${referenceNumberValue}`);
+      alert(`Copied ${referenceNumberLabel}: ${referenceNumberValue}`);
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
