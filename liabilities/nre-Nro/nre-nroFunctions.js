@@ -329,7 +329,7 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
 }
 
 function showNomineeDetails(nomineeDetails, response, globals) {
-  const listdropdown = response.customerAccountDetailsDTO[0].codRel;
+  const listdropdown = response.customerAccountDetailsDTO[1].codRel;
   const relationDropDown = document.querySelector('[name=relationShipDropdown]');
   relationDropDown.setAttribute('value', listdropdown);
   relationDropDown.value = listdropdown;
