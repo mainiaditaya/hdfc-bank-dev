@@ -55,6 +55,7 @@
       height: 32px;
       content: url(../icons/header-safe-secure.png);
       padding: 0;
+      right: 3.2em;
 
       @media (768px <=width <=991px) {
         right: 30px;
@@ -68,8 +69,6 @@
       }
     }
   }
-
-
 
   &.wizardPanelBody {
     & .cmp-container-container {
@@ -130,6 +129,500 @@
       &~.form-container {
         width: 100%;
         max-width: inherit !important;
+      }
+    }
+  }
+
+  &.nreThankYouPage {
+    header {
+      height: 250px !important;
+
+      .cmp-container>div:nth-child(3) {
+        display: none;
+      }
+    }
+
+    main {
+      overflow: initial;
+
+      .cmp-container-container {
+        display: none;
+      }
+
+      .form-container {
+        max-width: initial !important;
+      }
+
+      .field-thankyoupanel {
+
+
+        .field-thankyoufragment {
+          display: flex;
+          flex-flow: row;
+
+          .field-thankyouleftpanel {
+            max-width: 75%;
+            margin-top: -115px;
+
+            .field-successfullytext {
+
+              &>p p {
+                margin-top: -100px;
+                /*  position: absolute;
+                width: 93%; */
+                font-size: 36px;
+                font-weight: 600;
+                line-height: 44px;
+                color: #fff;
+
+                &::before {
+                  content: '';
+                  background: url("../icons/thank-you-page-header-img.png") no-repeat 100% center;
+                  /* width: 202px; */
+                  height: 158px;
+                  position: absolute;
+                  width: 91%;
+                  top: 30px;
+                }
+
+                &::after {
+                  content: '';
+                  background: url("../icons/green-tick.png") no-repeat 100% center;
+                  width: 40px;
+                  height: 40px;
+                  position: absolute;
+                }
+              }
+            }
+
+            fieldset.field-accountnumber {
+              border: 1px solid var(--color-interface-border-secondary);
+              border-radius: 20px;
+              padding: 30px;
+              background: #fff;
+
+              &>.field-accountnumber {
+                position: relative;
+                padding-left: 95px;
+
+                label {
+                  color: var(--color-interface-text-secondary);
+                  font-size: 16px;
+                  font-weight: 400;
+                  line-height: 24px;
+                  position: initial;
+                  transition: none;
+                  margin: 0;
+                  transform: none;
+                  padding: 0;
+                  display: initial;
+                }
+
+                input {
+                  color: var(--color-interface-text-primary);
+                  font-size: 32px;
+                  font-weight: 600;
+                  line-height: 40px;
+                  letter-spacing: 2px;
+                  border: none;
+                  height: auto;
+                  padding: 0;
+                  margin: 0;
+
+                  &:focus-visible {
+                    outline: none;
+                  }
+                }
+
+                &::before {
+                  content: '';
+                  background: #F4F0FF url("../icons/account_number_icon.png") no-repeat center center;
+                  width: 72px;
+                  height: 72px;
+                  position: absolute;
+                  left: 0;
+                  border-radius: 50%;
+                }
+              }
+
+              &>.plain-text-wrapper {
+                border-top: 1px dashed var(--color-interface-border-secondary);
+
+                p {
+                  padding-top: 10px;
+                  margin-bottom: 0;
+
+                  p {
+                    font-size: 16px;
+                    font-weight: 400;
+                    line-height: 24px;
+                    color: var(--color-interface-text-secondary);
+                    margin-bottom: 0;
+                  }
+                }
+              }
+            }
+
+            .field-accountsummary {
+              border: 1px solid var(--color-interface-border-secondary);
+              border-radius: 20px;
+              padding: 30px;
+
+              .field-accountdetails {
+                p {
+                  font-size: 28px;
+                  font-weight: 600;
+                  line-height: 36px;
+                  color: var(--color-interface-text-primary);
+                  margin-bottom: 0;
+                }
+              }
+
+              .text-wrapper.field-wrapper,
+              .multiline-wrapper {
+
+                label {
+                  color: var(--color-interface-text-secondary);
+                  font-size: 14px;
+                  font-weight: 400;
+                  line-height: 20px;
+                  position: initial;
+                  transition: none;
+                  margin: 0;
+                  transform: none;
+                  padding: 0;
+                  display: initial;
+                }
+
+                input {
+                  color: var(--color-interface-text-primary);
+                  font-size: 18px;
+                  font-weight: 500;
+                  line-height: 28px;
+                  letter-spacing: 2px;
+                  border: none;
+                  height: auto;
+                  padding: 0;
+                  margin: 0;
+
+                  &:focus-visible {
+                    outline: none;
+                  }
+                }
+
+                textarea {
+                  border: none;
+                  background: none;
+                  margin: 0;
+                  padding: 0;
+                  /* width: 90% !important; */
+                  height: 100%;
+                  font-size: 18px;
+                  line-height: 28px;
+                  font-weight: 500;
+                  color: var(--color-interface-background-quaternary);
+                  resize: none;
+
+                  @media (320px <=width <=600px) {
+                    font-size: 14px;
+                    line-height: 20px;
+                  }
+
+                  &:focus-visible {
+                    outline: none;
+                  }
+                }
+              }
+            }
+
+            .field-checkbookinfo {
+              position: relative;
+              display: flex;
+              align-items: center;
+              background-color: #FEF8E6;
+              border-radius: 8px;
+              margin: 10px 0;
+
+              &::before {
+                content: '';
+                position: absolute;
+                height: 20px;
+                width: 20px;
+                background: url('../icons/info-circle.png') no-repeat left center;
+
+
+                @media (320px <=width <=600px) {
+                  margin-left: -5px;
+                }
+              }
+
+              p {
+                margin-bottom: 0;
+
+                p {
+                  color: #F99F35;
+                  font-size: 14px;
+                  font-weight: 500;
+                  line-height: 20px;
+                  margin-bottom: 0;
+                  padding: 10px 15px;
+
+                  @media (320px <=width <=600px) {
+                    padding: 10px 0 10px 25px;
+                  }
+                }
+              }
+            }
+
+            .field-feedbackconfirmation {
+              border: 1px solid var(--color-interface-border-secondary);
+              border-radius: 20px;
+              padding: 30px;
+
+              .field-onlineservice {
+                p {
+                  font-size: 24px;
+                  font-weight: 600;
+                  line-height: 32px;
+                  color: var(--color-interface-text-primary);
+                  margin-bottom: 0;
+                }
+              }
+
+              .field-ratingbuttons {
+                gap: initial !important;
+                border: 1px solid var(--color-interface-border-secondary);
+                border-radius: 7px;
+                display: flex;
+
+                .button-wrapper {
+                  border-right: 1px solid var(--color-interface-border-secondary);
+                  flex: 1;
+                  height: 44px;
+
+                  button {
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    color: var(--color-input-text-primary);
+                    background: none;
+                    height: 100%;
+                    border-radius: 0;
+
+                    &:active,
+                    &:hover {
+                      background: #ED5A6E !important;
+
+                      height: 52px;
+                      border-radius: 4px;
+                      font-weight: 700;
+                      color: #fff;
+                      margin-top: -5px;
+                    }
+                  }
+
+                  &:last-child {
+                    border-right: none;
+                  }
+                }
+                &:hover ~ .field-ratingcolorcodes{
+                  display: flex;
+                }
+              }             
+            }
+
+            .field-ratingcolorcodes {
+              display: flex;
+              grid-gap: initial !important;
+              display: none;
+              transition: transform 0.3s;
+
+              p {
+                margin-bottom: 0;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+                color: var(--color-interface-text-secondary);
+                margin-top: 10px;
+              }
+
+              .field-notlikelytext,
+              .field-maybetext,
+              .field-verylikelytext {
+                position: relative;
+
+                &::before {
+                  content: '';
+                  height: 6px;
+                  position: absolute;
+                  width: 100%;
+                  margin-top: -5px;
+                }
+              }
+
+
+              .field-notlikelytext {
+                width: 63.5%;
+
+                &::before {
+                  background-color: #ED5A6E;
+                  border-top-left-radius: 5px;
+                  border-bottom-left-radius: 5px;
+                }
+              }
+
+              .field-maybetext {
+                width: 18.3%;
+
+                &::before {
+                  background-color: #F99F35;
+                  border-left: 2px solid #fff;
+                }
+              }
+
+              .field-verylikelytext {
+                width: 18.2%;
+
+                &::before {
+                  background-color: #2DB780;
+                  border-top-right-radius: 5px;
+                  border-bottom-right-radius: 5px;
+                  border-left: 2px solid #fff;
+                }
+              }
+            }
+
+            .field-issuesradio {
+              display: flex;
+              align-items: center;
+
+              legend {
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                color: var(--color-interface-text-primary);
+                margin-bottom: 10px;
+              }
+
+              .field-issuesradio {
+                margin-right: 30px;
+
+                label {
+                  font-size: 18px !important;
+                  font-weight: 500;
+                  line-height: 24px;
+                  color: var(--color-interface-text-primary);
+                }
+
+                & input[type="radio"] {
+                  border-radius: 100%;
+                  border: 1px solid var(--color-interface-border-secondary);
+                  appearance: none;
+                  -webkit-appearance: none;
+                  outline: none;
+                  padding: 0;
+                  width: 24px !important;
+                  height: 24px !important;
+                  cursor: pointer;
+
+                  &:checked {
+                    cursor: pointer;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid var(--color-interface-icon-highlight);
+
+                    &::before {
+                      content: '';
+                      border-radius: 100%;
+                      width: 12px !important;
+                      height: 12px !important;
+                      background-color: var(--color-interface-icon-highlight);
+                      position: absolute;
+                    }
+                  }
+                }
+              }
+            }
+
+            .field-describeissue {
+              label {
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                color: var(--color-interface-text-primary);
+                position: initial;
+                margin: 0;
+              }
+
+              textarea {
+                border: 1px solid var(--color-interface-border-secondary);
+                border-radius: 12px;
+                min-height: 52px;
+                resize: none;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+                color: var(--color-input-text-placeholder-default);
+                padding: 15px;
+
+                &:focus-visible {
+                  outline: none;
+                }
+              }
+            }
+
+            .field-tqsubmitbutton {
+              max-width: 252px;
+              text-align: left;
+            }
+
+            .field-hdfcbankwebsite {
+              p {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+                color: var(--color-input-text-primary);
+                margin-bottom: 0;
+
+                a {
+                  font-weight: 600;
+                }
+              }
+            }
+          }
+
+          /* left panel end */
+
+          .field-personalizeddebitcard {
+            max-width: 25%;
+            display: flex;
+            margin-top: -95px;
+            position: relative;
+
+            .image-wrapper {
+              background: url("../icons/applying-for-dabit-card.png") no-repeat top center;
+              width: 272px;
+              height: 240px;
+            }
+
+            .field-applyfora {
+             a{
+              position: absolute;
+              top: 0;
+              width: 272px;
+              height: 240px;
+              color: transparent;
+             }
+            }
+
+            .field-applyingdebitcard{
+              display: none;
+            }
+          }
+
+        }
       }
     }
   }
@@ -286,13 +779,13 @@
                   margin: 1px;
                   padding-left: 15px;
                   border-radius: 12px;
-                 /*  width: calc(100% - 15px);
+                  /*  width: calc(100% - 15px);
                   z-index: 2;
                    left: 0;
                   background-color: #fff; */
                   width: 72%;
 
-                 /*  @media (768px <=width <=991px) {
+                  /*  @media (768px <=width <=991px) {
                     top: 30px;
                     width: 100%;
                   } */
@@ -327,6 +820,7 @@
                     font-weight: 500;
                     border-radius: 12px;
                     background-color: transparent;
+
                     &:focus-visible {
                       outline: none;
                     }
@@ -407,6 +901,10 @@
                       align-items: center;
                       justify-content: center;
                       position: relative;
+
+                      &:focus-visible {
+                        outline: none;
+                      }
 
                       &::before {
                         content: '';
@@ -606,6 +1104,11 @@
                 label,
                 label p {
                   a {
+                    text-decoration: underline;
+                  }
+
+                  b {
+                    font-weight: normal;
                     text-decoration: underline;
                   }
                 }
@@ -1427,8 +1930,8 @@
               line-height: 28px;
               font-weight: 500;
               color: var(--color-interface-background-quaternary);
-              /* position: absolute; */
-              min-height:fit-content;
+              /* position: absolute; 
+              min-height: fit-content;*/
               resize: none;
 
               @media (320px <=width <=600px) {
@@ -2018,7 +2521,8 @@
 
           .field-continue {
             text-align: left !important;
-            button{
+
+            button {
               max-width: 272px;
             }
           }
