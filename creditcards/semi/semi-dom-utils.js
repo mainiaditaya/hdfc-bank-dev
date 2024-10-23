@@ -55,7 +55,7 @@ const linkToPopupToggle = (hyperLink, popupOverlay, popupContent, closeBtn = fal
   });
 
   if (closeBtn) {
-    document.querySelector(closeBtn).addEventListener('click', (event) => {
+    document.querySelector(closeBtn)?.addEventListener('click', (event) => {
       event.preventDefault();
       document.querySelector(popupOverlay).setAttribute('data-visible', 'false');
       document.querySelector(popupContent).setAttribute('data-visible', 'false');
