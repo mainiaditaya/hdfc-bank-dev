@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import {
   validatePan,
@@ -7,7 +8,7 @@ import {
 import fetchAuthCode from './idcomutils.js';
 
 import {
-//ssss
+// ssss
   urlPath,
   santizedFormDataWithContext,
   createLabelInElement,
@@ -213,12 +214,9 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
     },
   };
 
-  let path = urlPath(ENDPOINTS.aadharInit);
-  let finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
+  const path = urlPath(ENDPOINTS.aadharInit);
+  const finalPayload = btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj))));
   const decodedData = decodeURIComponent(escape(atob(finalPayload)));
-  if (!isValidJson(decodedData)) {
-    path = 'https://hdfc-dev-04.adobecqms.net/content/hdfc_haf/api/aadhaarInit.json'
-  }
   const response = fetchJsonResponse(path, jsonObj, 'POST');
   response
     .then((res) => {

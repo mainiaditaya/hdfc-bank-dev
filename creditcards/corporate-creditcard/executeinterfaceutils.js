@@ -5,6 +5,8 @@ import {
   formUtil,
   composeNameOption,
   setSelectOptions,
+  removeSpecialCharacters,
+  parseCustomerAddress,
 } from '../../common/formutils.js';
 import { invokeJourneyDropOffUpdate } from './journey-utils.js';
 import {
@@ -99,6 +101,13 @@ const createExecuteInterfaceRequestObj = (globals) => {
       currentAddress.pincode = newCurentAddressPanel.newCurentAddressPin.$value;
       currentAddress.state = newCurentAddressPanel.newCurentAddressState.$value;
     } else if (customerFiller2 === 'D106') {
+      const ALLOWED_CHARACTERS = '/-, ';
+      if (!currentFormContext.customerParsedAddress) {
+        const fullAddress = [removeSpecialCharacters(breDemogResponse?.VDCUSTADD1, ALLOWED_CHARACTERS), removeSpecialCharacters(breDemogResponse?.VDCUSTADD2, ALLOWED_CHARACTERS), removeSpecialCharacters(breDemogResponse?.VDCUSTADD3, ALLOWED_CHARACTERS),
+        ]
+          .filter(Boolean)
+          .join(''); currentFormContext.customerParsedAddress = parseCustomerAddress(fullAddress);
+      }
       [currentAddress.address1, currentAddress.address2, currentAddress.address3] = currentFormContext.customerParsedAddress;
       currentAddress.city = breDemogResponse.VDCUSTCITY;
       currentAddress.pincode = breDemogResponse.VDCUSTZIPCODE;

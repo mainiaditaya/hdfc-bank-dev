@@ -798,8 +798,6 @@ function checkMode(globals) {
   const formData = globals.functions.exportData();
   const idcomVisit = formData?.queryParams?.authmode; // "DebitCard"
   const aadharVisit = formData?.queryParams?.visitType; // "EKYC_AUTH
-  console.log(idcomVisit);
-  console.log(formData);
   // temporarly added referenceNumber check for IDCOMM redirection to land on submit screen.
   if (aadharVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message && formData?.aadhaar_otp_val_data?.message === 'Aadhaar OTP Validate success') {
     try {
@@ -845,7 +843,7 @@ function checkMode(globals) {
         globals,
       );
     }
-  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard') || (idcomVisit === 'NetBanking')) { // debit card or credit card or net banking flow
+  } if ((idcomVisit === 'DebitCard') || (idcomVisit === 'CreditCard') || (idcomVisit === 'NetBanking') || (idcomVisit === 'AadhaarOTP')) { // debit card or credit card or net banking flow
     const resultPanel = formUtil(globals, globals.form.resultPanel);
     resultPanel.visible(false);
     globals.functions.setProperty(globals.form.otpPanel, { visible: false });

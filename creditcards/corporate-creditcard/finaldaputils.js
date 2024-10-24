@@ -42,13 +42,13 @@ const fetchFiller4 = (mobileMatch, kycStatus, journeyType, kycFillers) => {
     switch (kycStatus) {
       case 'aadhaar':
         // eslint-disable-next-line no-nested-ternary
-         if (journeyType === 'NTB') {
+        if (journeyType === 'NTB') {
           filler4Value = `VKYC${getCurrentDateAndTime(3)}`;
         }
         if (journeyType === 'ETB') {
           filler4Value = (mobileMatch === 'y') ? `NVKYC${getCurrentDateAndTime(3)}` : `VKYC${getCurrentDateAndTime(3)}`;
         }
-        //filler4Value = `${(mobileMatch === 'y') ? 'NVKYC' : 'VKYC'}${getCurrentDateAndTime(3)}`;
+        // filler4Value = `${(mobileMatch === 'y') ? 'NVKYC' : 'VKYC'}${getCurrentDateAndTime(3)}`;
 
         break;
       case 'bioKYC':
@@ -188,7 +188,7 @@ const finalDap = (userRedirected, globals) => {
           throughDomSetArnNum(response.applicationNumber, mobileNumber, leadProfileId, journeyId, globals);
           setTimeout(async (globalObj) => {
             const santizedFormData = santizedFormDataWithContext(globalObj);
-            await Promise.resolve(sendPageloadEvent('CONFIRMATION_JOURNEY_STATE', santizedFormData, 'CONFIRMATION_PAGE_NAME'));
+            await Promise.resolve(sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETE', santizedFormData, 'CONFIRMATION_PAGE_NAME'));
           }, 5000, globals);
         }
       } else {
