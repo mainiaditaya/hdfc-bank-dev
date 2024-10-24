@@ -17,20 +17,33 @@ const finalPagePanelVisibility = (formStatus, arn, globals) => {
 
 const ratingButtonUI = () => {
   const thankyouSubmit = document.querySelector('button[name="tqSubmitButton"]');
-  document.querySelectorAll('.field-ratingbuttons .button').forEach((button) => {
-    button.addEventListener('click', function ratingClick() {
-      document.querySelectorAll('.field-ratingbuttons .button').forEach((btn) => {
-        btn.classList.remove('active');
+  setTimeout(() => {
+    document.querySelectorAll('.field-ratingbuttons .button').forEach((button) => {
+      button.addEventListener('click', function ratingClick() {
+        document.querySelectorAll('.field-ratingbuttons .button').forEach((btn) => {
+          btn.classList.remove('active');
+        });
+        this.classList.add('active');
+        const ratingValue = this.textContent;
+        const captureRatingInput = document.querySelector('input[name="captureRating"]');
+        if (captureRatingInput) {
+          captureRatingInput.value = ratingValue;
+          thankyouSubmit.removeAttribute('disabled');
+        }
       });
-      this.classList.add('active');
-      const ratingValue = this.textContent;
-      const captureRatingInput = document.querySelector('input[name="captureRating"]');
-      if (captureRatingInput) {
-        captureRatingInput.value = ratingValue;
-        thankyouSubmit.removeAttribute('disabled');
-      }
     });
-  });
+  }, 100);
+};
+
+const ratingSubmitted = () => {
+  const ratingSubmittedText = document.querySelector('.field-ratingsubmittedtext');
+  if (ratingSubmittedText) {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    ratingSubmittedText.setAttribute('data-visible', 'true');
+  }
 };
 
 const copyToClipBoard = async (globals) => {
@@ -51,5 +64,6 @@ const copyToClipBoard = async (globals) => {
 export {
   finalPagePanelVisibility,
   ratingButtonUI,
+  ratingSubmitted,
   copyToClipBoard,
 };

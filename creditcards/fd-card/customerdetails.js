@@ -513,8 +513,34 @@ const panvalidationSuccessHandler = (response, globals) => {
 
 const addressChangeHandler = (addressLineNumber, globals) => {
   const { newCurrentAddressLine1, newCurrentAddressLine2 } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
-  if (newCurrentAddressLine1?._data?.$_value?.toLowerCase() === newCurrentAddressLine2?._data?.$_value?.toLowerCase()) {
+  const regexPattern = /^(?!.*(.)\1\1\1)[a-zA-Z0-9/,\- ]+$/;
+  const addressFields = [
+    { field: newCurrentAddressLine1, name: 'newCurrentAddressLine1' },
+    { field: newCurrentAddressLine2, name: 'newCurrentAddressLine2' },
+  ];
+
+  addressFields.forEach(({ field, name }) => {
+    const addressLine = field?._data?.$_value?.toLowerCase();
+    if (addressLine) {
+      if (!regexPattern.test(addressLine)) {
+        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.invalidAddress, { useQualifiedName: true });
+      } else if (addressLine.length > 30) {
+        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.tooLongAddress, { useQualifiedName: true });
+      } else if (name === 'newCurrentAddressLine1' && addressLine.length < 10) {
+        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.tooShortAddress, { useQualifiedName: true });
+      } else {
+        globals.functions.setProperty(field, { valid: true });
+      }
+    }
+  });
+
+  const addressLine1 = newCurrentAddressLine1?._data?.$_value?.toLowerCase();
+  const addressLine2 = newCurrentAddressLine2?._data?.$_value?.toLowerCase();
+
+  if (addressLine1 && addressLine2 && addressLine1 === addressLine2 && addressLine1.length > 1) {
     globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.newCurrentAddressLine2', ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
+  } else {
+    globals.functions.setProperty(newCurrentAddressLine2, { valid: true });
   }
 };
 
