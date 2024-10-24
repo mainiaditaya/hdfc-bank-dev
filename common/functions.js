@@ -270,9 +270,15 @@ function reloadPage(globals) {
   }
 }
 
-const loadHomePage = () => {
+const loadHomePage = (globals) => {
   const homePage = window.location.origin + window.location.pathname;
-  window.location.href = homePage;
+  const formUrl = globals.functions.exportData()?.formUrl;
+
+  if (formUrl) {
+    window.location.href = formUrl;
+  } else {
+    window.location.href = homePage;
+  }
 };
 
 /**
