@@ -198,6 +198,7 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
       const productCode = selectedCard.cardProductCode;
       CURRENT_FORM_CONTEXT.selectedProductCode = productCode;
       executeInterfaceRequest.requestString.productCode = productCode;
+      CURRENT_FORM_CONTEXT.selectedCreditCard = selectedCard;
     }
   }
 
