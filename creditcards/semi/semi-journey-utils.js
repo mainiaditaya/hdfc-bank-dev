@@ -77,7 +77,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   if (state === 'CUSTOMER_ONBOARDING_COMPLETE') {
     formContext.LoanReferenceNumber = journeyId?.loanNbr;
   }
-  const sanitizedFormData = santizedFormDataWithContext(globals, currentFormContext);
+  const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : '',
