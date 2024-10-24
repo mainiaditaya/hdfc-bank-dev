@@ -151,6 +151,7 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   setFormValue(personalDetails.emailID, resumeJourneyResponse?.FDlienCard?.emailID);
   setFormValue(personalDetails.nameOnCard, resumeJourneyResponse?.FDlienCard?.nameOnCard);
   setFormValue(personalDetails.nameOnCardDD, resumeJourneyResponse?.FDlienCard?.nameOnCard);
+  setFormValue(addressDetails.prefilledMailingAdddress, resumeJourneyResponse?.prefilledMailingAdddress);
   globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: resumeJourneyResponse?.FDlienCard?.currentAddressToggle });
   setFormValue(addressDetails.newCurentAddressPanel.newCurrentAddressLine1, resumeJourneyResponse?.FDlienCard?.addressLine1);
   setFormValue(addressDetails.newCurentAddressPanel.newCurrentAddressLine2, resumeJourneyResponse?.FDlienCard?.addressLine2);
