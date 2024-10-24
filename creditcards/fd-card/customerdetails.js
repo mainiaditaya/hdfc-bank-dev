@@ -206,7 +206,9 @@ const bindCustomerDetails = async (globals) => {
     Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
     if (addressLine1.length < 10 || addressLine2 === '') {
+      const { newCurrentAddressLine1 } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
       globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shorAddressNote, visible: true });
+      globals.functions.setProperty(newCurrentAddressLine1, { value: addressLine1 });
       globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', readOnly: true });
       addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
     }
