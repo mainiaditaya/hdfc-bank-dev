@@ -12,6 +12,14 @@ import {
 } from './fdlien-functions.js';
 
 import {
+  tConvert,
+  invokeResumeJourneyApi,
+  prefillResumeJourneyData,
+  resumeJourneySuccessHandler,
+  getResumeJourneyJsonObject,
+} from './fd-resumejourney.js';
+
+import {
   invokeJourneyDropOff,
   fdWizardSwitch,
   journeyResponseHandler,
@@ -174,5 +182,10 @@ export {
   panvalidationSuccessHandler,
   addressChangeHandler,
   fullNamePanValidation,
+  tConvert,
+  invokeResumeJourneyApi,
+  prefillResumeJourneyData,
+  resumeJourneySuccessHandler,
+  getResumeJourneyJsonObject,
   loadHomePage,
 };
