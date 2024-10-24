@@ -159,6 +159,7 @@ const maskedMobNum = (mobileNo, globals) => {
  */
 const getOTP = (mobileNumber, pan, dob, globals) => {
   CURRENT_FORM_CONTEXT.journeyType = 'ETB';
+  if (typeof window !== 'undefined') globals.functions.setProperty(globals.form.runtime.formUrl, { value: window.location.href });
   const { otpPanel } = globals.form.otpPanelWrapper.otpPanel;
   if (resendOtpCount < FD_CONSTANT.MAX_OTP_RESEND_COUNT) {
     globals.functions.setProperty(otpPanel.secondsPanel, { visible: true });
