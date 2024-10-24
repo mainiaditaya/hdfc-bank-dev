@@ -2659,6 +2659,7 @@
                   font-weight: 500;
                   color: var(--color-interface-background-quaternary);
                   resize: none;
+                  width: 100%;
 
                   @media (320px <=width <=600px) {
                     font-size: 14px;
