@@ -233,7 +233,7 @@
                     padding-left: 0px;
                     margin: 0;
                     border: none;
-                    background-color: #fff !important;
+                    background-color: transparent;
                     color: var(--color-interface-text-primary);
                     font-weight: 500;
                     border-radius: 12px;
@@ -2551,7 +2551,7 @@
                   margin: 0;
                   transform: none;
                   padding: 0;
-                  display: initial;
+                  display: block;
                 }
 
                 input {
@@ -2564,6 +2564,8 @@
                   height: auto;
                   padding: 0;
                   margin: 0;
+                  background: url("../icons/copy_icon.png") no-repeat 80% center;
+                  width: auto;
 
                   &:focus-visible {
                     outline: none;
@@ -2754,6 +2756,22 @@
                       font-weight: 700;
                       color: #fff;
                       margin-top: -5px;
+                    }
+                  }
+
+                  &:nth-child(9), &:nth-child(10){
+                    button{
+                      &:hover{
+                        background: #F99F35 !important; 
+                      }
+                    }
+                  }
+
+                  &:nth-child(11), &:nth-child(12){
+                    button{
+                      &:hover{
+                        background: #2DB780 !important; 
+                      }
                     }
                   }
 
