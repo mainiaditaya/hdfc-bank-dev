@@ -72,7 +72,7 @@ const bindEmployeeAssistanceField = async (globals) => {
 
   try {
     if (defaultChannel || Object.values(codes).some(Boolean)) {
-      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on', enabled: false });
+      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on', readOnly: true });
       addClassToElement('.field-employeeassistancetoggle label.field-label', 'cursor-na');
     }
     if (inPersonBioKYC?.toLowerCase() === 'yes') {
@@ -106,7 +106,7 @@ const bindEmployeeAssistanceField = async (globals) => {
     setSelectOptions(options, 'channel');
     globals.functions.setProperty(dropDownSelectField, { enum: channelOptions, value: matchedChannel });
     if (disableChannelDropdown) {
-      globals.functions.setProperty(dropDownSelectField, { enabled: false });
+      globals.functions.setProperty(dropDownSelectField, { readOnly: true });
     }
     const changeDataAttrObj = { attrChange: true, value: false, disable: true };
     ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
@@ -226,7 +226,7 @@ const bindCustomerDetails = async (globals) => {
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
     if (addressLine1.length < 10 || addressLine2 === '') {
       globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shorAddressNote, visible: true });
-      globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+      globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', readOnly: true });
       addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
     }
   } else {
@@ -243,7 +243,7 @@ const bindCustomerDetails = async (globals) => {
     globals.functions.setProperty(newCurrentAddressLine2, { value: CURRENT_FORM_CONTEXT?.customerAddress?.addressLine2 });
     globals.functions.setProperty(newCurrentAddressLine3, { value: CURRENT_FORM_CONTEXT?.customerAddress?.addressLine3 });
 
-    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', readOnly: true });
     globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.invalidPinNote, visible: true });
     addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
   }
@@ -265,7 +265,7 @@ const bindCustomerDetails = async (globals) => {
   emailIDUtil.setValue(customerInfo.refCustEmail, { attrChange: true, value: false });
   if (customerInfo.currentAddress.length === 0) {
     globals.functions.setProperty(addressDetails.prefilledMailingAdddress, { visible: false });
-    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', readOnly: true });
   }
   const {
     customerFullName, customerFirstName, customerMiddleName, customerLastName,
