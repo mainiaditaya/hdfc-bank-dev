@@ -522,8 +522,12 @@ const addressChangeHandler = (addressLineNumber, globals) => {
   addressFields.forEach(({ field, name }) => {
     const addressLine = field?._data?.$_value?.toLowerCase();
     if (addressLine) {
-      if (!regexPattern.test(addressLine) || addressLine.length > 30 || (name === 'newCurrentAddressLine1' && addressLine.length < 10)) {
+      if (!regexPattern.test(addressLine)) {
         globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.invalidAddress, { useQualifiedName: true });
+      } else if (addressLine.length > 30) {
+        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.tooLongAddress, { useQualifiedName: true });
+      } else if (name === 'newCurrentAddressLine1' && addressLine.length < 10) {
+        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.tooShortAddress, { useQualifiedName: true });
       } else {
         globals.functions.setProperty(field, { valid: true });
       }
