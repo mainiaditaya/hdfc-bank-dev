@@ -124,6 +124,7 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
   imageEl.querySelectorAll('img').forEach((img) => img.setAttribute('src', imagePath));
   imageEl.querySelectorAll('source').forEach((source) => source.setAttribute('srcset', imagePath));
   globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.selectCard.selectedCreditCard, { value: productDetail.cardProductCode });
+  CURRENT_FORM_CONTEXT.selectedCreditCard = productDetail;
 };
 
 /**
@@ -165,6 +166,7 @@ const fdIpaSuccessHandler = (response, globals) => {
   } else if (isMultipleProducts) {
     const topThreeProducts = productDetails.slice(0, 3);
     globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.selectCard.selectedCreditCard, { value: topThreeProducts?.[0]?.cardProductCode });
+    CURRENT_FORM_CONTEXT.selectedCreditCard = topThreeProducts?.[0];
     topThreeProducts.forEach((productDetail, i) => {
       if (i < topThreeProducts.length - 1) globals.functions.dispatchEvent(selectCardFaciaPanelMultiple, 'addItem');
       setTimeout(() => updateData(globals, productDetail, selectCardFaciaPanelMultiple[i], i), i * 40);
