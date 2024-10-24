@@ -71,7 +71,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
   const formContext = getCurrentFormContext(globals);
   if (state === 'CUSTOMER_ONBOARDING_COMPLETE') {
-    formContext.loanReferenceNumber = journeyId?.loanNbr;
+    formContext.LoanReferenceNumber = journeyId?.loanNbr;
   }
   const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
   const journeyJSONObj = {
