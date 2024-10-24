@@ -29,7 +29,7 @@ import {
 import {
   bindCustomerDetails,
   channelChangeHandler,
-  validateEmailID,
+  validateFdEmail,
   dsaCodeHandler,
   branchCodeHandler,
   dobChangeHandler,
@@ -142,7 +142,7 @@ export {
   customerIdProceedHandler,
   selectAllFdClickHandler,
   resetFDSelection,
-  validateEmailID,
+  validateFdEmail,
   pincodeChangeHandler,
   channelChangeHandler,
   validatePan,
