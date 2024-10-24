@@ -29,7 +29,7 @@ import {
 import {
   bindCustomerDetails,
   channelChangeHandler,
-  validateEmailID,
+  validateFdEmail,
   dsaCodeHandler,
   branchCodeHandler,
   dobChangeHandler,
@@ -46,6 +46,7 @@ import {
   validatePan,
   idcomRedirection,
   aadharInit,
+  loadHomePage,
 } from '../../common/functions.js';
 
 import { createJourneyId } from '../../common/journey-utils.js';
@@ -141,7 +142,7 @@ export {
   customerIdProceedHandler,
   selectAllFdClickHandler,
   resetFDSelection,
-  validateEmailID,
+  validateFdEmail,
   pincodeChangeHandler,
   channelChangeHandler,
   validatePan,
@@ -187,4 +188,5 @@ export {
   prefillResumeJourneyData,
   resumeJourneySuccessHandler,
   getResumeJourneyJsonObject,
+  loadHomePage,
 };

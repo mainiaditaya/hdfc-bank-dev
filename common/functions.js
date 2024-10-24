@@ -270,6 +270,17 @@ function reloadPage(globals) {
   }
 }
 
+const loadHomePage = (globals) => {
+  const homePage = window.location.origin + window.location.pathname;
+  const formUrl = globals.functions.exportData()?.formUrl;
+
+  if (formUrl) {
+    window.location.href = formUrl;
+  } else {
+    window.location.href = homePage;
+  }
+};
+
 /**
  * set the value of idcom url in current form context
  * @name idcomUrlSet
@@ -346,4 +357,5 @@ export {
   onWizardInit,
   days,
   initRestAPIDataSecurityServiceES6,
+  loadHomePage,
 };

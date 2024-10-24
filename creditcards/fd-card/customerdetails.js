@@ -73,7 +73,7 @@ const bindEmployeeAssistanceField = async (globals) => {
 
   try {
     if (defaultChannel || Object.values(codes).some(Boolean)) {
-      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on', enabled: false });
+      globals.functions.setProperty(employeeAssistanceToggle, { value: 'on', readOnly: true });
       addClassToElement('.field-employeeassistancetoggle label.field-label', 'cursor-na');
     }
     if (inPersonBioKYC?.toLowerCase() === 'yes') {
@@ -107,7 +107,7 @@ const bindEmployeeAssistanceField = async (globals) => {
     setSelectOptions(options, 'channel');
     globals.functions.setProperty(dropDownSelectField, { enum: channelOptions, value: matchedChannel });
     if (disableChannelDropdown) {
-      globals.functions.setProperty(dropDownSelectField, { enabled: false });
+      globals.functions.setProperty(dropDownSelectField, { readOnly: true });
     }
     const changeDataAttrObj = { attrChange: true, value: false, disable: true };
     ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
@@ -151,6 +151,7 @@ const bindCustomerDetails = async (globals) => {
   CURRENT_FORM_CONTEXT.aadhaarFailed = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   bindEmployeeAssistanceField(globals);
+  if (RESUME_JOURNEY_JSON_OBJECT?.prefillResumeJourneyData) return;
   const { customerInfo } = CURRENT_FORM_CONTEXT;
 
   const { firstName, middleName, lastName } = parseName(customerInfo.customerFullName, MAX_FULLNAME_LENGTH);
@@ -205,8 +206,10 @@ const bindCustomerDetails = async (globals) => {
     Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
     if (addressLine1.length < 10 || addressLine2 === '') {
+      const { newCurrentAddressLine1 } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
       globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shorAddressNote, visible: true });
-      globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+      globals.functions.setProperty(newCurrentAddressLine1, { value: addressLine1 });
+      globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', readOnly: true });
       addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
     }
   } else {
@@ -223,7 +226,7 @@ const bindCustomerDetails = async (globals) => {
     globals.functions.setProperty(newCurrentAddressLine2, { value: CURRENT_FORM_CONTEXT?.customerAddress?.addressLine2 });
     globals.functions.setProperty(newCurrentAddressLine3, { value: CURRENT_FORM_CONTEXT?.customerAddress?.addressLine3 });
 
-    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', readOnly: true });
     globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.invalidPinNote, visible: true });
     addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
   }
@@ -235,7 +238,7 @@ const bindCustomerDetails = async (globals) => {
   emailIDUtil.setValue(customerInfo.refCustEmail, { attrChange: true, value: false });
   if (customerInfo.currentAddress.length === 0) {
     globals.functions.setProperty(addressDetails.prefilledMailingAdddress, { visible: false });
-    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', enabled: false });
+    globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', readOnly: true });
   }
   const {
     customerFullName, customerFirstName, customerMiddleName, customerLastName,
@@ -269,10 +272,10 @@ const bindCustomerDetails = async (globals) => {
 
 /**
  *
- * @name validateEmailID
+ * @name validateFdEmail
  * @param {Object} globals - The global context object containing various information.
  */
-const validateEmailID = async (email, globals) => {
+const validateFdEmail = async (email, globals) => {
   const url = urlPath(FD_ENDPOINTS.emailId);
   const invalidMsg = 'Please enter a valid Email ID';
   const payload = {
@@ -282,7 +285,7 @@ const validateEmailID = async (email, globals) => {
   try {
     const emailValid = await getJsonResponse(url, payload, method);
     if (emailValid === true) {
-      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { validity: true });
+      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { valid: true });
     } else {
       globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID', invalidMsg, { useQualifiedName: true });
     }
@@ -510,14 +513,40 @@ const panvalidationSuccessHandler = (response, globals) => {
 
 const addressChangeHandler = (addressLineNumber, globals) => {
   const { newCurrentAddressLine1, newCurrentAddressLine2 } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
-  if (newCurrentAddressLine1?._data?.$_value?.toLowerCase() === newCurrentAddressLine2?._data?.$_value?.toLowerCase()) {
+  const regexPattern = /^(?!.*(.)\1\1\1)[a-zA-Z0-9/,\- ]+$/;
+  const addressFields = [
+    { field: newCurrentAddressLine1, name: 'newCurrentAddressLine1' },
+    { field: newCurrentAddressLine2, name: 'newCurrentAddressLine2' },
+  ];
+
+  addressFields.forEach(({ field, name }) => {
+    const addressLine = field?._data?.$_value?.toLowerCase();
+    if (addressLine) {
+      if (!regexPattern.test(addressLine)) {
+        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.invalidAddress, { useQualifiedName: true });
+      } else if (addressLine.length > 30) {
+        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.tooLongAddress, { useQualifiedName: true });
+      } else if (name === 'newCurrentAddressLine1' && addressLine.length < 10) {
+        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.tooShortAddress, { useQualifiedName: true });
+      } else {
+        globals.functions.setProperty(field, { valid: true });
+      }
+    }
+  });
+
+  const addressLine1 = newCurrentAddressLine1?._data?.$_value?.toLowerCase();
+  const addressLine2 = newCurrentAddressLine2?._data?.$_value?.toLowerCase();
+
+  if (addressLine1 && addressLine2 && addressLine1 === addressLine2 && addressLine1.length > 1) {
     globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.newCurrentAddressLine2', ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
+  } else {
+    globals.functions.setProperty(newCurrentAddressLine2, { valid: true });
   }
 };
 
 export {
   bindCustomerDetails,
-  validateEmailID,
+  validateFdEmail,
   channelChangeHandler,
   dsaCodeHandler,
   branchCodeHandler,
