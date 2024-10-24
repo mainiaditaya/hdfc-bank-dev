@@ -247,7 +247,11 @@
     },
   };
 
-  const ENV = 'dev';
+  const isNodeEnv$5 = typeof process !== 'undefined' && process.versions && process.versions.node;
+  let ENV = 'dev';
+  if(isNodeEnv$5) {
+    ENV = 'dev';
+  }
 
   var CONSTANT = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -256,7 +260,7 @@
     CURRENT_FORM_CONTEXT: CURRENT_FORM_CONTEXT$1,
     DEAD_PAN_STATUS: DEAD_PAN_STATUS,
     ENDPOINTS: ENDPOINTS$2,
-    ENV: ENV,
+    get ENV () { return ENV; },
     FORM_RUNTIME: FORM_RUNTIME,
     ID_COM: ID_COM
   });
@@ -1047,7 +1051,7 @@
     return paramEntry ? paramEntry[1] : null;
   };
 
-  const isNodeEnv$3 = typeof process !== 'undefined' && process.versions && process.versions.node;
+  const isNodeEnv$4 = typeof process !== 'undefined' && process.versions && process.versions.node;
 
   /**
      * function sorts the billed / Unbilled Txn  array in descending order based on the amount field
@@ -1172,7 +1176,7 @@
     return `${dayPart} ${monthPart} ${yearPart}`;
   };
 
-  if (!isNodeEnv$3) {
+  if (!isNodeEnv$4) {
     setTimeout(() => {
       validationField();
     }, 1000);
@@ -1486,14 +1490,30 @@
 
   /* temproraily added this journey utils for SEMI , journey utils common file has to be changed to generic */
   const CHANNEL = 'ADOBE_WEBFORMS';
+  const isNodeEnv$3 = typeof process !== 'undefined' && process.versions && process.versions.node;
 
   const {
     CURRENT_FORM_CONTEXT: currentFormContext$2,
   } = SEMI_CONSTANT;
 
   const BASEURL = "https://applyonline.hdfcbank.com";
-
   const urlPath = (path) => `${BASEURL}${path}`;
+
+  /**
+   * For Web returing currentFormContext as defined in variable
+   * Ideally every custom function should be pure function, i.e it should not have any side effect
+   * As per current implementation `currentFormContext` is a state outside of the function,
+   * so for Flow we have did special handling by storing strigified value in `globals.form.runtime.currentFormContext`
+   *
+   * @param {scope} globals
+   * @returns
+   */
+  const getCurrentFormContext$1 = (globals) => {
+    if (isNodeEnv$3) {
+      return JSON.parse(globals.form.runtime.currentFormContext.$value || '{}');
+    }
+    return currentFormContext$2;
+  };
 
   /**
      * @name invokeJourneyDropOff to log on success and error call backs of api calls
@@ -1538,7 +1558,11 @@
        * @return {PROMISE}
        */
   const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
-    const sanitizedFormData = santizedFormDataWithContext(globals, currentFormContext$2);
+    const formContext = getCurrentFormContext$1(globals);
+    if (state === 'CUSTOMER_ONBOARDING_COMPLETE') {
+      formContext.LoanReferenceNumber = journeyId?.loanNbr;
+    }
+    const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
     const journeyJSONObj = {
       RequestPayload: {
         userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : '',
@@ -1549,7 +1573,7 @@
         formData: {
           channel: CHANNEL,
           journeyName: globals.form.runtime.journeyName.$value,
-          journeyID: journeyId,
+          journeyID: globals.form.runtime.journeyId.$value,
           journeyStateInfo: [
             {
               state,
