@@ -151,6 +151,7 @@ const bindCustomerDetails = async (globals) => {
   CURRENT_FORM_CONTEXT.aadhaarFailed = false;
   formRuntime.validatePanLoader = (typeof window !== 'undefined') ? displayLoader : false;
   bindEmployeeAssistanceField(globals);
+  if (RESUME_JOURNEY_JSON_OBJECT?.prefillResumeJourneyData) return;
   const { customerInfo } = CURRENT_FORM_CONTEXT;
 
   const { firstName, middleName, lastName } = parseName(customerInfo.customerFullName, MAX_FULLNAME_LENGTH);
