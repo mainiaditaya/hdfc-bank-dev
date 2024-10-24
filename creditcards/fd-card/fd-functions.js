@@ -105,7 +105,7 @@ import {
   aadhaarConsent,
 } from './kycUtil.js';
 
-import { ratingButtonUI, copyToClipBoard } from './thankyouutil.js';
+import { ratingButtonUI, copyToClipBoard, ratingSubmitted } from './thankyouutil.js';
 import sendFDAnalytics from './analytics.js';
 
 import { hideLoaderGif } from '../domutils/domutils.js';
@@ -175,6 +175,7 @@ export {
   executeInterfacePostRedirect,
   ratingButtonUI,
   copyToClipBoard,
+  ratingSubmitted,
   sendFDAnalytics,
   fullNameChangeHandler,
   hideLoaderGif,
