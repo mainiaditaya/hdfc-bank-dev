@@ -270,10 +270,10 @@ const bindCustomerDetails = async (globals) => {
 
 /**
  *
- * @name validateEmailID
+ * @name validateFdEmail
  * @param {Object} globals - The global context object containing various information.
  */
-const validateEmailID = async (email, globals) => {
+const validateFdEmail = async (email, globals) => {
   const url = urlPath(FD_ENDPOINTS.emailId);
   const invalidMsg = 'Please enter a valid Email ID';
   const payload = {
@@ -283,7 +283,7 @@ const validateEmailID = async (email, globals) => {
   try {
     const emailValid = await getJsonResponse(url, payload, method);
     if (emailValid === true) {
-      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { validity: true });
+      globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { valid: true });
     } else {
       globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID', invalidMsg, { useQualifiedName: true });
     }
@@ -518,7 +518,7 @@ const addressChangeHandler = (addressLineNumber, globals) => {
 
 export {
   bindCustomerDetails,
-  validateEmailID,
+  validateFdEmail,
   channelChangeHandler,
   dsaCodeHandler,
   branchCodeHandler,
