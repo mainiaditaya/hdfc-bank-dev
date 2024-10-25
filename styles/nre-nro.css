@@ -1618,7 +1618,6 @@
         /* select account screen */
 
         .field-selectaccount {
-          display: grid !important;
           
           @media (320px <=width <=600px) {
             padding-bottom: 30px;
