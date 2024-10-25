@@ -1,3 +1,5 @@
+import { formUtil } from '../../common/formutils.js';
+
 const finalPagePanelVisibility = (formStatus, arn, globals) => {
   const {
     addressDeclarationPanel, resultPanel, fdBasedCreditCardWizard, docUploadFlow,
@@ -15,24 +17,18 @@ const finalPagePanelVisibility = (formStatus, arn, globals) => {
   }
 };
 
-const ratingButtonUI = () => {
-  const thankyouSubmit = document.querySelector('button[name="tqSubmitButton"]');
-  setTimeout(() => {
-    document.querySelectorAll('.field-ratingbuttons .button').forEach((button) => {
-      button.addEventListener('click', function ratingClick() {
-        document.querySelectorAll('.field-ratingbuttons .button').forEach((btn) => {
-          btn.classList.remove('active');
-        });
-        this.classList.add('active');
-        const ratingValue = this.textContent;
-        const captureRatingInput = document.querySelector('input[name="captureRating"]');
-        if (captureRatingInput) {
-          captureRatingInput.value = ratingValue;
-          thankyouSubmit.removeAttribute('disabled');
-        }
-      });
-    });
-  }, 100);
+const ratingButtonUI = (param, globals) => {
+  const thankyouSubmit = formUtil(globals, globals.form.resultPanel.successResultPanel.tqSuccessWrapper.feedbackConfirmation.tqSubmitWrapper.tqSubmitButton);
+  document.querySelectorAll('.field-ratingbuttons .button').forEach((btn) => {
+    btn.classList.remove('active');
+  });
+  document.querySelector(`#${param._jsonModel.id}`).classList.add('active');
+  const ratingValue = `${param._jsonModel.label.value}`;
+  if (ratingValue) {
+    const ratingInput = formUtil(globals, globals.form.resultPanel.successResultPanel.tqSuccessWrapper.feedbackConfirmation.tqSubmitWrapper.captureRating);
+    ratingInput.setValue(ratingValue);
+    thankyouSubmit.enabled(true);
+  }
 };
 
 const ratingSubmitted = () => {
