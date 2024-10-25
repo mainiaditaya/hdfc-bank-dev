@@ -1602,7 +1602,6 @@
           }
 
           .field-confirmbutton {
-            margin-top: 10px;
             text-align: left;
             max-width: 272px;
 
@@ -1619,6 +1618,8 @@
         /* select account screen */
 
         .field-selectaccount {
+          display: grid !important;
+          
           @media (320px <=width <=600px) {
             padding-bottom: 30px;
           }
