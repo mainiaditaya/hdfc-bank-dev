@@ -652,7 +652,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         display: inline-block;
         width: 20px;
         height: 20px;
-        vertical-align: sub;
+        vertical-align: text-top;
       }
     }
   }
@@ -2857,6 +2857,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         font-size: var(--body-fd-md-font-size);
         font-weight: var(--font-weight-extra-bold);
         height: 45px !important;
+        color: var(--color-interface-background-quaternary);
       }
     }
   }
