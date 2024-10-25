@@ -937,6 +937,7 @@
                 line-height: 40px;
                 color: var(--color-interface-text-primary);
                 border-color: var(--color-interface-border-secondary);
+                caret-color: currentcolor;
 
                 &:focus-visible {
                   outline: none;
@@ -1326,6 +1327,7 @@
               textarea {
                 height: 100%;
                 margin-bottom: 20px;
+                width: 100% !important;
               }
             }
           }
@@ -1624,7 +1626,7 @@
           .multiline-wrapper {
             position: relative;
             height: 70px;
-            margin-top: -20px;
+            /* margin-top: -20px; */
 
             label {
               margin-top: 2px;
@@ -1735,13 +1737,6 @@
             &.field-ifsc,
             &.field-branch {
               height: 70px;
-
-              &.field-customerid,
-              &.field-accountnumber {
-                input {
-                  letter-spacing: 6px;
-                }
-              }
             }
 
             @media (min-width: 768px) {
@@ -1959,7 +1954,7 @@
                   a {
                     color: var(--color-input-text-primary);
                     text-decoration: underline;
-                    font-weight: 400;
+                    font-weight: 400 !important;
                   }
                 }
               }
