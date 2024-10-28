@@ -108,6 +108,11 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       _satellite.track('submit');
       sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
       break;
+    case 'selectCardConsent':
+      digitalData.event.status = '1';
+      _satellite.track('submit');
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
+      break;
     case 'validationMethodKYC':
       if (formData.form.aadharEKYCVerification && formData.form.aadharEKYCVerification === '0') {
         digitalData.event.validationMethod = 'aadharEKYCVerification';
@@ -124,6 +129,11 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       break;
     case 'docUpload':
       digitalData.formDetails.documentProof = `ID Proof: ${formData.DocUploadFront.name}, Address Proof: ${formData.addressProofFile1.name}`;
+      _satellite.track('submit');
+      sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
+      break;
+    case 'docUploadUpload':
+      digitalData.event.status = '1';
       _satellite.track('submit');
       sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
       break;
