@@ -24,14 +24,13 @@ import {
 } from '../../common/makeRestAPI.js';
 import * as NRE_CONSTANT from './constant.js';
 import {
-  ENDPOINTS as ENDPOINTS,
+  ENDPOINTS,
   CURRENT_FORM_CONTEXT as currentFormContext,
   FORM_RUNTIME as formRuntime,
-  ID_COM as idCom,
 } from '../../common/constants.js';
 import {
   sendAnalytics,
-} from './analytics.js'
+} from './analytics.js';
 
 setTimeout(async () => {
   if (typeof window !== 'undefined') {
@@ -45,7 +44,6 @@ let defaultDropdownIndex = -1;
 let resendOtpCount = 0;
 const MAX_OTP_RESEND_COUNT = 3;
 const OTP_TIMER = 30;
-let MAX_COUNT = 3;
 let sec = OTP_TIMER;
 let dispSec = OTP_TIMER;
 
@@ -94,8 +92,8 @@ const validFDPan = (val) => {
 const validateLogin = (globals) => {
   const mobileNo = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value;
   const isdCode = (globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.countryCode.$value)?.replace(/[^a-zA-Z0-9]+/g, '');
-  // const dobValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.dateOfBirth.$value;
-  let dobValue = "";
+  const dobValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.dateOfBirth.$value;
+  // const dobValue = '';
   const panValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.pan.$value;
   const panDobSelection = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.panDobSelection.$value;
   const radioSelect = (panDobSelection === '0') ? 'DOB' : 'PAN';
@@ -112,8 +110,7 @@ const validateLogin = (globals) => {
 
   switch (radioSelect) {
     case 'DOB':
-      console.log("DOB : " , dobValue, typeof dob);
-      dobValue = "1988-09-14";
+      // dobValue = '1988-09-14';
       if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
         const minAge = 18;
         const maxAge = 120;
@@ -310,34 +307,33 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
-function setupBankUseSection(globals){
-    const urlParams = new URLSearchParams(window.location.search);
-    const utmParams = {};
-    let lgCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode;
-    let lcCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lcCode;
-    let toggle = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.bankUseToggle;
-    let resetAllBtn = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.resetAllBtn
+function setupBankUseSection(globals) {
+  /* eslint-disable prefer-destructuring */
+  const urlParams = new URLSearchParams(window.location.search);
+  const utmParams = {};
+  const lgCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode;
+  const lcCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lcCode;
+  const toggle = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.bankUseToggle;
+  const resetAllBtn = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.resetAllBtn;
+  globals.functions.setProperty(toggle, { checked: true });
+  if (urlParams.size > 0) {
+    ['lgCode', 'lcCode'].forEach((param) => {
+      const value = urlParams.get(param);
+      if (value) {
+        utmParams[param] = value;
+      }
+    });
 
-    if(urlParams.size > 0){
-      ['lgCode', 'lcCode'].forEach(param => {
-        const value = urlParams.get(param);
-        if (value) {
-            utmParams[param] = value;
-        }
-      });
-
-      globals.functions.setProperty(lgCode, { value: utmParams["lgCode"] });
-      globals.functions.setProperty(lcCode, { value: utmParams["lcCode"] });
-    }
-    else{
-      globals.functions.setProperty(lgCode, { value: "NETADDON" });
-      globals.functions.setProperty(lcCode, { value: "NRI INSTASTP" });
-    }
-      globals.functions.setProperty(resetAllBtn, { enabled: false });
-      globals.functions.setProperty(toggle, { checked: true });
-      globals.functions.setProperty(toggle, { enabled: false });
-      globals.functions.setProperty(lgCode, { enabled: false });
-      globals.functions.setProperty(lcCode, { enabled: false });
+    globals.functions.setProperty(lgCode, { value: utmParams.lgCode });
+    globals.functions.setProperty(lcCode, { value: utmParams.lcCode });
+  } else {
+    globals.functions.setProperty(lgCode, { value: 'NETADDON' });
+    globals.functions.setProperty(lcCode, { value: 'NRI INSTASTP' });
+  }
+  globals.functions.setProperty(resetAllBtn, { enabled: false });
+  globals.functions.setProperty(toggle, { enabled: false });
+  globals.functions.setProperty(lgCode, { enabled: false });
+  globals.functions.setProperty(lcCode, { enabled: false });
 }
 
 function showFinancialDetails(financialDetails, response, occupation, globals) {
@@ -492,18 +488,14 @@ const createIdComRequestObj = (globals) => {
   const idComObj = {
     requestString: {
       // CustID : globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value,
-      CustID : '901037469',
-      ProductCode: "ADETBACO",
+      CustID: '901037469',
+      ProductCode: 'ADETBACO',
       userAgent: window.navigator.userAgent,
       journeyID: formData.journeyId,
       journeyName: formData.journeyName,
-      scope: "ADOBE_ACNRI",
+      scope: 'ADOBE_ACNRI',
     },
   };
-  console.log("Form Data : " , formData);
-  console.log("Customer ID : " , idComObj);
-  console.log("Customer ID : " , globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value);
-
   return idComObj;
 };
 
@@ -535,14 +527,14 @@ function customFocus(errorMessage, numRetries, globals) {
   }
 }
 
-async function idComRedirection(globals){
+async function idComRedirection(globals) {
   const {
     mobileNumber,
     leadProfileId,
     journeyID,
   } = currentFormContext;
-  let resp = await fetchAuthCode(globals);
-  if(resp.status.errorMessage==="Success"){
+  const resp = await fetchAuthCode(globals);
+  if (resp.status.errorMessage === 'Success') {
     invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
     window.location.href = resp.redirectUrl;
   }
@@ -566,32 +558,32 @@ const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (auth
  * @name nreNroFetchRes - async action call maker until it reaches the final response.
  * @returns {void}
  */
+// eslint-disable-next-line no-unused-vars
 const nreNroFetchRes = async (globals) => {
-  console.log("In NRENRO Fetch Res");
   try {
     // globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
     const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
-    console.log("DropOffParam Data : " , data);
     const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
     finalResult.journeyParamState = journeyDropOffParamLast.state;
     finalResult.journeyParamStateInfo = journeyDropOffParamLast.stateInfo;
-    if(journeyDropOffParamLast.state == 'CUSTOMER_ONBOARDING_COMPLETE'){
-      console.log("Show Error Here");
-    }
+    // if(journeyDropOffParamLast.state == 'CUSTOMER_ONBOARDING_COMPLETE'){
+    // console.log("Show Error Here");
+    // }
+    // eslint-disable-next-line no-unused-vars
     const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
-    if (checkFinalSuccess) {
-      console.log("checkFinalSuccess : " , checkFinalSuccess);
-    }
+    // if (checkFinalSuccess) {
+    // console.log("checkFinalSuccess : " , checkFinalSuccess);
+    // }
     const err = 'Bad response';
     throw err;
   } catch (error) {
-    console.log(error);
+    // eslint-disable-next-line no-unused-vars
     const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
-    console.log(errorCase)
+    // eslint-disable-next-line no-unused-vars
     const stateInfoData = finalResult.journeyParamStateInfo;
-    if (errorCase) {
-      console.log("Error Case : " , errorCase);
-    }
+    // if (errorCase) {
+    //   console.log("Error Case : " , errorCase);
+    // }
   }
 };
 
@@ -602,7 +594,6 @@ const nreNroFetchRes = async (globals) => {
  * @returns {void}
  */
 const nreNroPageRedirected = (idCom, globals) => {
-  console.log(idCom);
   if (idCom) {
     setTimeout(() => {
       displayLoader();
@@ -632,7 +623,7 @@ const switchWizard = (globals) => {
 
   invokeJourneyDropOffUpdate('CUSTOMER_ACCOUNT_VARIANT_SELECTED', mobileNumber, leadProfileId, journeyID, globals);
   moveWizardView('wizardNreNro', 'confirmDetails');
-  currentFormContext.action = "Confirm Details";
+  currentFormContext.action = 'Confirm Details';
   Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
 
@@ -644,7 +635,8 @@ setTimeout((globals) => {
   onPageLoadAnalytics(globals);
 }, 5000);
 
-setTimeout(async function(globals) {
+// eslint-disable-next-line func-names
+setTimeout(async (globals) => {
   await nreNroPageRedirected(idComRedirect, globals);
   if (typeof window !== 'undefined') { /* check document-undefined */
     getCountryCodes(document.querySelector('.field-countrycode select'));

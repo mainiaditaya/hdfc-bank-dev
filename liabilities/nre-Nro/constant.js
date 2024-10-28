@@ -21,5 +21,5 @@ export {
   JOURNEY_NAME,
   VISIT_MODE,
   DOM_ELEMENT,
-  FORM_NAME
+  FORM_NAME,
 };

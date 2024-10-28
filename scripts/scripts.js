@@ -36,7 +36,7 @@ const FORM_CONSTANT = [
       loadTime: 3600,
     },
   },
-    {
+  {
     // NRE NRO
     formPath: ['nre-nro', 'account-opening-nre-nro'],
     class: 'nre',
@@ -123,7 +123,6 @@ async function loadEager(doc) {
     if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
       loadFonts();
     }
-    
     const pathName = window.location.pathname;
     FORM_CONSTANT.some((form) => {
       if (form.formPath.some((el) => pathName.includes(el))) {

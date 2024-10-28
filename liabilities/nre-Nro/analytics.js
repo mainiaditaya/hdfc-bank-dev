@@ -73,7 +73,6 @@ function sendPageloadEvent(journeyState, formData, pageName) {
   setAnalyticPageLoadProps(journeyState, formData, digitalData);
   switch (currentFormContext.action) {
     case 'Confirm Details': {
-      console.log("Digital Data Confirm detail being called");
       // dataReq = getFatcaData(formData);
       // digitalData.formDetails.state = dataReq.state;
       // digitalData.formDetails.pincode = dataReq.pincode;
@@ -110,7 +109,6 @@ function sendPageloadEvent(journeyState, formData, pageName) {
  * @param {object} digitalData
  */
 function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState, digitalData) {
-  console.log("Digital Data - " , phone, eventType, linkType, journeyState);
   setAnalyticClickGenericProps(eventType, linkType, formData, journeyState, digitalData);
   digitalData.page.pageInfo.pageName = PAGE_NAME.nrenro[eventType];
   switch (eventType) {
@@ -132,31 +130,29 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
       _satellite.track('submit');
       break;
     }
-    case 'resend otp click' : {
-      console.log("Digital Data in resend otp : " , digitalData.link.linkName);
-      digitalData.link.linkName = "Resend OTP";
-      console.log("Digital Data in resend otp : " , digitalData.link.linkName);
+    case 'resend otp click': {
+      digitalData.link.linkName = 'Resend OTP';
       if (window) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
       break;
     }
-    case 'submit otp click' : {
+    case 'submit otp click': {
       if (window) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
       break;
     }
-    case 'select account type click' : {
+    case 'select account type click': {
       if (window) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
       break;
     }
-    case 'confirm details click' : {
+    case 'confirm details click': {
       if (window) {
         window.digitalData = digitalData || {};
       }
@@ -175,90 +171,74 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
 }
 
 function populateResponse(payload, eventType, digitalData, formData) {
-  console.log("Digital Data Payload : " , payload )
   switch (eventType) {
-    case 'otp click' : {
+    case 'otp click': {
       let privacyConsent = '';
-      let call_sms_whatsappConsent = '';
+      let callSmsWhatsappConsent = '';
       let countryCode = '';
-      
       // Check for privacy consent
-      if (formData && formData?.consent && formData.consent.checkboxConsent1Label){
+      if (formData && formData?.consent && formData.consent.checkboxConsent1Label) {
         privacyConsent = formData.consent.checkboxConsent1Label;
       }
-
-      if (formData && formData?.consent && formData.consent.checkboxConsent2Label){
-        call_sms_whatsappConsent = formData.consent.checkboxConsent2Label;
+      if (formData && formData?.consent && formData.consent.checkboxConsent2Label) {
+        callSmsWhatsappConsent = formData.consent.checkboxConsent2Label;
       }
-
-      if (formData && formData?.login && formData.login.countryCode){
+      if (formData && formData?.login && formData.login.countryCode) {
         countryCode = formData.login.countryCode;
       }
-
       digitalData.formDetails.privacyContent = privacyConsent;
-      digitalData.formDetails.call_sms_whatsappConsent = call_sms_whatsappConsent;
+      digitalData.formDetails.callSmsWhatsappConsent = callSmsWhatsappConsent;
       digitalData.event.validationMethod = getValidationMethod(formData);
       digitalData.formDetails.country = countryCode;
       break;
     }
-    case 'privacy consent click' : {
-      digitalData.event.status = "Success";
+    case 'privacy consent click': {
+      digitalData.event.status = 'Success';
       break;
     }
-    case 'resend otp click' : {
-      console.log("Form Data : " , formData);
-      digitalData.event.status = "Success";
+    case 'resend otp click': {
+      digitalData.event.status = 'Success';
       break;
     }
-    case 'submit otp click' : {
-      digitalData.event.status = "Success";
+    case 'submit otp click': {
+      digitalData.event.status = 'Success';
       break;
     }
-    case 'select account type click' : {
-      console.log("Form Data : " , formData);
+    case 'select account type click': {
       let existingAccountType = '';
       let bankBranch = '';
 
-      if (formData && formData?.form && formData.form?.singleAccount && formData.form.singleAccount?.selectAccount && formData.form.singleAccount.selectAccount.accountType){
+      if (formData && formData?.form && formData.form?.singleAccount && formData.form.singleAccount?.selectAccount && formData.form.singleAccount.selectAccount.accountType) {
         existingAccountType = formData.form.singleAccount.selectAccount.accountType;
       }
-
-      if (formData && formData?.form && formData.form?.singleAccount && formData.form.singleAccount?.selectAccount && formData.form.singleAccount.selectAccount.branch){
+      if (formData && formData?.form && formData.form?.singleAccount && formData.form.singleAccount?.selectAccount && formData.form.singleAccount.selectAccount.branch) {
         bankBranch = formData.form.singleAccount.selectAccount.branch;
       }
-
       digitalData.formDetails.existingAccountType = existingAccountType;
       digitalData.formDetails.bankBranch = bankBranch;
       break;
     }
-    case 'confirm details click' : {
-      console.log("Digital Data FormData : " , formData);
+    case 'confirm details click': {
       let bankUseToggle = '';
       let lgCode = '';
       let lcCode = '';
       let tAndCConsent = '';
       let detailsConsent = '';
-
-      if (formData && formData?.bankUseToggle){
+      if (formData && formData?.bankUseToggle) {
         bankUseToggle = formData.bankUseToggle;
       }
-
-      if (formData && formData?.lg){
+      if (formData && formData?.lg) {
         lgCode = formData?.lg;
       }
-
-      if (formData && formData?.lc){
+      if (formData && formData?.lc) {
         lcCode = formData.lc;
       }
-
-      if (formData && formData?.confirmDetailsConsent1){
+      if (formData && formData?.confirmDetailsConsent1) {
         tAndCConsent = formData.confirmDetailsConsent1;
       }
-
-      if (formData && formData?.confirmDetailsConsent2){
+      if (formData && formData?.confirmDetailsConsent2) {
         detailsConsent = formData?.confirmDetailsConsent2;
       }
-
       digitalData.assisted.flag = bankUseToggle;
       digitalData.assisted.lg = lgCode;
       digitalData.assisted.lc = lcCode;
@@ -284,7 +264,6 @@ function sendAnalyticsEvent(eventType, payload, journeyState, formData) {
   const attributes = data[eventType];
   populateResponse(payload, eventType, digitalData, formData);
   sendSubmitClickEvent(formData?.login?.registeredMobileNumber, eventType, attributes?.linkType, formData, journeyState, digitalData);
-  console.log("Digital Data Event : " , digitalData);
 }
 
 /**
@@ -314,18 +293,12 @@ function sendErrorAnalytics(errorCode, errorMsg, journeyState, globals) {
 */
 function sendAnalytics(eventType, payload, journeyState, globals) {
   const formData = santizedFormDataWithContext(globals);
-  console.log("digital data sendAnalytics function called");
-  console.log("digital data FormData : ", formData);
   if (eventType.includes('page load')) {
-    console.log("Digital Data Event type : Page load");
     const pageName = eventType.split('-')[1];
-    console.log("Digital Data Page Name : " , pageName);
     sendPageloadEvent(journeyState, formData, pageName);
   } else {
-    
     sendAnalyticsEvent(eventType, payload, journeyState, formData);
   }
-  console.log("Digital Data Function over : " , digitalData);
 }
 
 /**
