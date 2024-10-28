@@ -196,10 +196,9 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
 
-function getCountryCodes(dropdown){
+const getCountryCodes = (dropdown) => {
   const finalURL = '/content/hdfc_commonforms/api/mdm.ETB.NRI_ISD_MASTER.COUNTRYNAME-.json';
   fetchJsonResponse(urlPath(finalURL), null, 'GET', true).then((response) => {
-    dropdown = dropdown.countryCode;
     dropdown.addEventListener('change', () => {
       if (prevSelectedIndex !== -1) {
         dropdown.remove(prevSelectedIndex);
@@ -242,7 +241,7 @@ function getCountryCodes(dropdown){
   }).catch((error) => {
     console.error('Promise rejected:', error); // Handle any error (failure case)
   });
-}
+};
 
 /**
  * Starts the Nre_Nro OTPtimer for resending OTP.
@@ -285,7 +284,6 @@ function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
  * @return {PROMISE}
  */
 function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
-  Promise.resolve(sendAnalytics('submit otp click', { }, "OTP_VERIFICATION_CLICK", globals));
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   const jsonObj = {
@@ -309,25 +307,17 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
 function setupBankUseSection(globals){
     const urlParams = new URLSearchParams(window.location.search);
     const utmParams = {};
-    // let lgCode = lg.lgCode;
-    // let lcCode = lc.lcCode;
-    // let toggle = toggle.bankUseToggle;
-    // let resetAllBtn = resetAll.resetAllBtn;
-
     let lgCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode;
     let lcCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lcCode;
     let toggle = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.bankUseToggle;
     let resetAllBtn = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.resetAllBtn
 
-    console.log("urlParams : " , urlParams, urlParams.size);
     if(urlParams.size > 0){
-      console.log("UTM Parameters present");
       ['lgCode', 'lcCode'].forEach(param => {
         const value = urlParams.get(param);
         if (value) {
             utmParams[param] = value;
         }
-        console.log("UTM Params : " , utmParams);
       });
 
       globals.functions.setProperty(lgCode, { value: utmParams["lgCode"] });
@@ -415,7 +405,6 @@ function prefillCustomerDetails(response, globals) {
  * @return {PROMISE}
  */
 const resendOTP = async (globals) => {
-  await Promise.resolve(sendAnalytics('resend otp click', { }, "RESEND_OTP_CLICKS", globals));
   dispSec = OTP_TIMER;
   const mobileNo = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber;
   const panValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.pan;
@@ -454,7 +443,6 @@ const resendOTP = async (globals) => {
    */
 const createIdComRequestObj = (globals) => {
   const formData = santizedFormDataWithContext(globals);
-  console.log("In Fetch code dIGITAL DAta : " , formData, formData.AccountOpeningNRENRO.custIDWithoutMasking);
   const idComObj = {
     requestString: {
       CustID : formData.AccountOpeningNRENRO.custIDWithoutMasking,
@@ -499,174 +487,69 @@ function customFocus(errorMessage, numRetries, globals) {
 
 async function idComRedirection(globals){
   let resp = await fetchAuthCode(globals);
-    console.log("Fetch Auth code response received");
-    console.log("Resp : " , resp , resp.authCode, resp.redirectUrl, resp.status.errorMessage, resp.status.errorCode);
-    if(resp.status.errorMessage==="Success"){
-      console.log("Resp : " , resp , resp.authCode, resp.redirectUrl, resp.status.errorMessage, resp.status.errorCode);
-      window.location.href = resp.redirectUrl;
-    }else{
-      console.log("IDComm fetch auth code failed.");
-    }
+  if(resp.status.errorMessage==="Success"){
+    window.location.href = resp.redirectUrl;
+  }
 }
 
 /**
- * @name finalDap - constant-variables store
+ * @name finalResult - constant-variables store
  */
-const finalDap = {
-  PROMOSE_COUNT: 0,
-  AFFORD_COUNT: 10,
+const finalResult = {
   journeyParamState: null,
   journeyParamStateInfo: null,
 };
 
 // post-redirect-aadhar-or-idcom
 const searchParam = new URLSearchParams(window.location.search);
-const visitTypeParam = searchParam.get('visitType');
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
-const aadharRedirect = visitTypeParam && (visitTypeParam === 'EKYC_AUTH');
 const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'CreditCard')); // debit card or credit card flow
-console.log("UTM Parameters : " , searchParam,visitTypeParam, authModeParam, journeyId, aadharRedirect, idComRedirect);
 
 /**
- * @name nreNroFetchRes - recursive async action call maker untill it reaches the final response.
- * @returns {void} error method or succes method based on the criteria of finalDapResponse reach or max limit reach.
+ * @name nreNroFetchRes - async action call maker until it reaches the final response.
+ * @returns {void}
  */
-const nreNroFetchRes = async () => {
-  const eventHandler = {
-    successMethod: (data) => {
-      const {
-        currentFormContext: {
-          executeInterfaceReqObj, finalDapRequest, finalDapResponse,
-        }, aadhaar_otp_val_data: aadharOtpValData,
-      } = JSON.parse(data.stateInfo);
-      hideLoaderGif();
-      nreNroSuccessPannelMethod({
-        executeInterfaceReqObj, aadharOtpValData, finalDapRequest, finalDapResponse,
-      }, JSON.parse(data.stateInfo));
-    },
-    errorMethod: (err, lastStateData) => {
-      hideLoaderGif();
-      nreNroErrorPannelMethod(err, lastStateData);
-      // eslint-disable-next-line no-console
-      console.log(err);
-    },
-  };
+const nreNroFetchRes = async (globals) => {
   try {
+    globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
     const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
-    console.log("Journey Drop Off Params : " , data , journeyId);
+    console.log("DropOffParam Data : " , data);
     const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
-    finalDap.journeyParamState = journeyDropOffParamLast.state;
-    finalDap.journeyParamStateInfo = journeyDropOffParamLast.stateInfo;
-    const checkFinalDapSuccess = (journeyDropOffParamLast.state === 'CUSTOMER_FINAL_DAP_SUCCESS');
-    if (checkFinalDapSuccess) {
-      return eventHandler.successMethod(journeyDropOffParamLast);
+    finalResult.journeyParamState = journeyDropOffParamLast.state;
+    finalResult.journeyParamStateInfo = journeyDropOffParamLast.stateInfo;
+    if(journeyDropOffParamLast.state == 'CUSTOMER_ONBOARDING_COMPLETE'){
+      console.log("Show Error Here");
+    }
+    const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
+    if (checkFinalSuccess) {
+      console.log("checkFinalSuccess : " , checkFinalSuccess);
     }
     const err = 'Bad response';
     throw err;
   } catch (error) {
-    // "FINAL_DAP_FAILURE"
-    finalDap.PROMOSE_COUNT += 1;
-    const errorCase = (finalDap.journeyParamState === 'CUSTOMER_FINAL_DAP_FAILURE' || finalDap.PROMOSE_COUNT >= finalDap.AFFORD_COUNT);
-    const stateInfoData = finalDap.journeyParamStateInfo;
+    const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
+    const stateInfoData = finalResult.journeyParamStateInfo;
     if (errorCase) {
-      return eventHandler.errorMethod(error, JSON.parse(stateInfoData));
-    }
-    // return setTimeout(() => nreNroFetchRes(), 5000);
-  }
-};
-
-const nreNroErrorPannelMethod = (error, stateInfoData) => {
-  const errorPannel = document.getElementsByName('errorResultPanel')?.[0];
-  const resultPanel = document.getElementsByName('resultPanel')?.[0];
-  resultPanel.setAttribute('data-visible', true);
-  errorPannel.setAttribute('data-visible', true);
-  const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
-  const leadProfileId = stateInfoData.leadProifileId;
-  const journeyId = stateInfoData.currentFormContext.journeyID;
-  // nreNroInvokeJourneyDropOffByParam('CUSTOMER_ONBOARDING_FAILURE', mobileNumber, leadProfileId, journeyId, stateInfoData);
-};
-
-const nreNroSuccessPannelMethod = async (data, stateInfoData) => {
-  const {
-    executeInterfaceReqObj, aadharOtpValData, finalDapRequest, finalDapResponse,
-  } = data;
-  const journeyName = executeInterfaceReqObj?.requestString?.journeyFlag;
-  const addressEditFlag = executeInterfaceReqObj?.requestString?.addressEditFlag;
-  const { applicationNumber, vkycUrl } = finalDapResponse;
-  const { CURRENT_FORM_CONTEXT: currentFormContext } = (await import('../../common/constants.js'));
-  currentFormContext.VKYC_URL = vkycUrl;
-  // const { result: { mobileValid } } = aadharOtpValData;
-  const mobileValid = aadharOtpValData?.result?.mobileValid;
-  const resultPanel = document.getElementsByName('resultPanel')?.[0];
-  const successPanel = document.getElementsByName('successResultPanel')?.[0];
-  resultPanel.setAttribute('data-visible', true);
-  successPanel.setAttribute('data-visible', true);
-  setArnNumberInResult(applicationNumber);
-
-  const vkycProceedButton = document.querySelector('.field-vkycproceedbutton ');
-  const offerLink = document.querySelector('.field-offerslink');
-  const vkycConfirmText = document.querySelector('.field-vkycconfirmationtext');
-  // const filler4Val = finalDapRequest?.requestString?.VKYCConsent?.split(/[0-9]/g)?.[0];
-  // const mobileMatch = !(filler4Val === 'NVKYC');
-  const mobileMatch = !(mobileValid === 'n'); // (mobileValid === 'n') - unMatched - this should be the condition which has to be finalDap - need to verify.
-  const kycStatus = (finalDapRequest.requestString.biometricStatus);
-  const vkycCameraConfirmation = document.querySelector(`[name= ${'vkycCameraConfirmation'}]`);
-  const vkycCameraPannelInstruction = document.querySelector('.field-cameraconfirmationpanelinstruction');
-
-  if (journeyName === 'ETB') {
-    if (addressEditFlag === 'N') {
-      vkycProceedButton.setAttribute('data-visible', false);
-      vkycConfirmText.setAttribute('data-visible', false);
-      offerLink.setAttribute('data-visible', true);
-    } else if (kycStatus === 'OVD') {
-      vkycProceedButton.setAttribute('data-visible', false);
-      vkycConfirmText.setAttribute('data-visible', true);
-      offerLink.setAttribute('data-visible', false); // Adjusted assumption for offerLink
-    } else if (mobileMatch && kycStatus === 'aadhaar' && addressEditFlag === 'Y') {
-      vkycProceedButton.setAttribute('data-visible', false);
-      vkycConfirmText.setAttribute('data-visible', false);
-      offerLink.setAttribute('data-visible', true);
-    } else {
-      vkycProceedButton.setAttribute('data-visible', true);
-      currentFormContext.isVideoKyc = true;
-      vkycConfirmText.setAttribute('data-visible', true);
-      offerLink.setAttribute('data-visible', false);
+      console.log("Error Case : " , errorCase);
     }
   }
-  if (journeyName === 'NTB' && (kycStatus === 'aadhaar')) {
-    vkycCameraConfirmation.setAttribute('data-visible', true);
-    vkycCameraPannelInstruction.setAttribute('data-visible', true);
-    vkycProceedButton.setAttribute('data-visible', true);
-    currentFormContext.isVideoKyc = true;
-  }
-  currentFormContext.action = 'confirmation';
-  currentFormContext.pageGotRedirected = true;
-  // temporarly commented and it will be enabled after analytics merge.
-  // Promise.resolve(sendPageloadEvent('CONFIRMATION_JOURNEY_STATE', stateInfoData));
-  const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
-  const leadProfileId = stateInfoData.leadProifileId;
-  const journeyId = stateInfoData.currentFormContext.journeyID;
-  // nreNroInvokeJourneyDropOffByParam('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
 };
 
 /**
  * Redirects the user to different panels based on conditions.
- * If `idCom` is true, initiates a journey drop-off process and handles the response which handles after all the final dap api call.
+ * If `idCom` is true, initiates a journey drop-off process and handles the response.
  * @param {boolean} idCom - Indicates whether ID com redirection is triggered.
  * @returns {void}
  */
-const nreNroPageRedirected = (idCom) => {
-  console.log("In NRENROPageRedirected");
+const nreNroPageRedirected = (idCom,globals) => {
   if (idCom) {
     setTimeout(() => {
       displayLoader();
-      nreNroFetchRes();
+      nreNroFetchRes(globals);
     }, 2000);
   }
 };
-// Currently nreNroPageRedirected is being called from the setTimeOut. When idcomredirection is set from forms, we can call this from here
-// nreNroPageRedirected(aadharRedirect, idComRedirect);
 
 const addPageNameClassInBody = (pageName) => {
   if (pageName === 'Get_OTP_Page' || pageName === 'Submit_OTP') {
@@ -677,13 +560,7 @@ const addPageNameClassInBody = (pageName) => {
   }
 };
 
-async function sendNREAnalytics(eventType, journeyState, globals){
-  console.log("Digital Layer - Send NRE Analytics Call made : " , eventType, journeyState);
-  await Promise.resolve(sendAnalytics(eventType, { }, journeyState, globals));
-}
-
 const onPageLoadAnalytics = async (globals) => {
-  console.log("In Page Load");
   await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
 };
 
@@ -698,8 +575,10 @@ const switchWizard = (globals) => {
 }
 
 setTimeout(async function(globals) {
-  await nreNroPageRedirected(idComRedirect);
-  await getCountryCodes(document.querySelector('.field-countrycode select'));
+  await nreNroPageRedirected(idComRedirect, globals);
+  if (typeof window !== 'undefined') { /* check document-undefined */
+    getCountryCodes(document.querySelector('.field-countrycode select'));
+  }
 }, 2000);
 
 export {
@@ -716,6 +595,5 @@ export {
   switchWizard,
   setupBankUseSection,
   idComRedirection,
-  addPageNameClassInBody,
-  sendNREAnalytics,
+  addPageNameClassInBody
 };

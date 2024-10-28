@@ -13,7 +13,6 @@ import {
   setupBankUseSection,
   idComRedirection,
   addPageNameClassInBody,
-  sendNREAnalytics,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -40,5 +39,4 @@ export {
   idComRedirection,
   addPageNameClassInBody,
   sendAnalytics,
-  sendNREAnalytics,
 };
