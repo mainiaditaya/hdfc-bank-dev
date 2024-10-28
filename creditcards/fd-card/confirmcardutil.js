@@ -14,6 +14,7 @@ const confirmCardState = {
  * @param {Object} globals - The global context object containing various information.
  */
 const confirmCardClickHandler = (globals) => {
+  CURRENT_FORM_CONTEXT.isIntegraFlow = false;
   buttonEnableOnCheck('.field-languageconsenttnc input', '.field-aadharconsentagree button');
   CURRENT_FORM_CONTEXT.selectedProductCode = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex]?.cardProductCode;
   CURRENT_FORM_CONTEXT.selectedCreditCard = IPA_RESPONSE?.productDetails?.[confirmCardState.selectedCardIndex];
@@ -35,6 +36,7 @@ const confirmCardClickHandler = (globals) => {
   const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC') || '';
   if ((addressDetails.mailingAddressToggle._data.$_value === 'off' || inPersonBioKYC.toLowerCase() === 'yes')
   && employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions._data.$_value === '0') {
+    CURRENT_FORM_CONTEXT.isIntegraFlow = true;
     globals.functions.setProperty(aadharBiometricVerification, { value: '0' });
   }
   if (employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions._data.$_value === '1') {
