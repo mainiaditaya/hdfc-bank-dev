@@ -140,6 +140,13 @@ const ANALYTICS = {
       journeyState: 'CUSTOMER_CARD_SELECTED',
       nextPage: 'validationMethodKYC',
     },
+    selectCardConsent: {
+      type: 'click',
+      name: 'select card consent',
+      pageName: 'Select Card Consent',
+      journeyState: 'CUSTOMER_CARD_SELECTED',
+      nextPage: 'validationMethodKYC',
+    },
     validationMethodKYC: {
       type: 'click',
       name: 'validation method kyc',
@@ -157,6 +164,13 @@ const ANALYTICS = {
     docUpload: {
       type: 'click',
       name: 'documents upload',
+      pageName: 'Documents Upload',
+      journeyState: '',
+      nextPage: 'confirmationPage',
+    },
+    docUploadUpload: {
+      type: 'click',
+      name: 'documents upload upload',
       pageName: 'Documents Upload',
       journeyState: '',
       nextPage: 'confirmationPage',
