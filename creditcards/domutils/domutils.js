@@ -407,7 +407,7 @@ const attachRedirectOnClick = (selector, url, target = '_blank') => {
 };
 
 const updateInnerHtml = (selectorName, updatedValue) => {
-  document.querySelector(selectorName).innerHTML = updatedValue;
+  if (typeof document !== 'undefined') document.querySelector(selectorName).innerHTML = updatedValue;
 };
 
 export {
