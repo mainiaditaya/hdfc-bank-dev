@@ -7,8 +7,9 @@
     background: var(--color-interface-fd-background-primary);
 
     .cmp-container {
-      max-width: none;
-
+      @media (width >= 900px) {
+      max-width: 1200px;
+      }
       @media (320px <=width <=991px) {
         div:nth-child(1) {
           text-align: left;
@@ -31,7 +32,7 @@
       }
 
       picture img {
-        margin-left: 35px;
+        margin-left: 20px;
 
         @media (768px <=width <=991px) {
           margin-left: 20px;
@@ -2535,15 +2536,16 @@
       .field-thankyoupanel {
         .field-thankyoufragment {
           display: flex;
-          flex-flow: row;
+          flex-wrap: wrap;
+          position: relative;
 
           @media (320px <=width <=991px) {
             flex-direction: column;
           }
 
           .field-thankyouleftpanel {
-            max-width: 75%;
-            margin-top: -115px;
+            flex: 0 0 74%;
+            margin-top: -60px;
 
             @media (320px <=width <=991px) {
               max-width: 100%;
@@ -2552,7 +2554,6 @@
             .field-successfullytext {
 
               &>p p {
-                margin-top: -100px;
                 font-size: 36px;
                 font-weight: 600;
                 line-height: 44px;
@@ -2564,12 +2565,13 @@
                   line-height: 40px;
                   max-width: 60%;
                   margin-left: 15px;
+                  margin-top: -180px;
                 }
 
                 @media (320px <=width <=600px) {
                   font-size: 20px;
                   line-height: 32px;
-                  margin-top: -25px;
+                  margin-top: -90px;
                   max-width: 63%;
                 }
 
@@ -2578,15 +2580,16 @@
                   background: url("../icons/thank-you-page-header-img.png") no-repeat 100% center;
                   height: 158px;
                   position: absolute;
-                  width: 91%;
-                  top: 30px;
+                  width: 100%;
+                  top: -275px;
+                  right: 0;
 
-                  @media (768px <=width <=991px) {
+                /*   @media (768px <=width <=991px) {
                     top: 135px;
-                  }
+                  } */
 
                   @media (320px <=width <=600px) {
-                    top: 115px;
+                    top: -190px;
                     background-size: 30%;
                     width: 80%;
                     right: 15px;
@@ -2608,9 +2611,10 @@
               border-radius: 20px;
               padding: 30px;
               background: #fff;
+              margin-top: -55px;
 
               @media (768px <=width <=991px) {
-                margin-top: 20px;
+                margin-top: -55px;
                 border-bottom: none;
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
@@ -2618,7 +2622,7 @@
               }
 
               @media (320px <=width <=600px) {
-                margin-top: 20px;
+                margin-top: 45px;
                 /* 
                 border-bottom: none;
                 border-bottom-left-radius: 0;
@@ -2839,6 +2843,7 @@
                   color: var(--color-interface-background-quaternary);
                   resize: none;
                   width: 100%;
+                  min-height: auto;
 
                   @media (768px <=width <=991px) {
                     min-height: auto;
@@ -3184,39 +3189,12 @@
               max-width: 252px;
               text-align: left;
             }
-
-            .field-hdfcbankwebsite {
-              @media (320px <=width <=600px) {
-                margin-top: 20px;
-              }
-              p {
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
-                color: var(--color-input-text-primary);
-                margin-bottom: 0;
-
-                @media (768px <=width <=991px) {
-                  font-size: 14px;
-                  line-height: 20px;
-                }
-
-                @media (320px <=width <=600px) {
-                  font-size: 12px;
-                  line-height: 20px;
-                }
-
-                a {
-                  font-weight: 600;
-                }
-              }
-            }
           }
 
           /* left panel end */
 
           .field-personalizeddebitcard {
-            max-width: 25%;
+            flex: 0 0 23%;
             display: flex;
             margin-top: -95px;
             position: relative;
@@ -3245,10 +3223,14 @@
                 background: url("../icons/applying-for-dabit-card-mobile-banner.png") no-repeat center center;
                 height: 96px;
                 width: 100%;
+                background-size: contain;
               }
             }
 
             .field-applyfora {
+              @media (320px <=width <=991px) {
+                display: none;
+              }
               a {
                 position: absolute;
                 top: 0;
@@ -3270,6 +3252,38 @@
 
             .field-applyingdebitcard {
               display: none;
+            }
+          }
+
+          
+          .field-hdfcbankwebsite {
+            flex: 0 0 100%;
+            @media (320px <=width <=991px) {
+              margin-bottom: 20px;
+            }
+          /*   @media (320px <=width <=600px) {
+              margin-top: 20px;
+            } */
+            p {
+              font-size: 16px;
+              font-weight: 400;
+              line-height: 24px;
+              color: var(--color-input-text-primary);
+              margin-bottom: 0;
+
+              @media (768px <=width <=991px) {
+                font-size: 14px;
+                line-height: 20px;
+              }
+
+              @media (320px <=width <=600px) {
+                font-size: 12px;
+                line-height: 20px;
+              }
+
+              a {
+                font-weight: 600;
+              }
             }
           }
 
