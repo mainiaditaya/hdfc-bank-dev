@@ -43,6 +43,7 @@ export async function fieldChanged(payload, form, generateFormRendition) {
       case 'validationMessage':
         {
           const { validity } = payload.field;
+          if(validity.valid === true) updateOrCreateInvalidMsg(field, currentValue);
           if (field.setCustomValidity
             && (validity?.expressionMismatch || validity?.customConstraint)) {
             field.setCustomValidity(currentValue);
@@ -148,7 +149,6 @@ export async function fieldChanged(payload, form, generateFormRendition) {
       case 'valid':
         if (currentValue === true && field?.validity?.customError) {
           field?.setCustomValidity(''); // reset customError in validity
-          updateOrCreateInvalidMsg(field, '');
         }
         break;
       default:
