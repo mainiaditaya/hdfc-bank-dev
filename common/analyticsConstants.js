@@ -28,6 +28,11 @@ const data = {
     linkName: 'Select Card',
     linkPosition: 'Form',
   },
+  'select card consent': {
+    linkType: 'button',
+    linkName: 'Select Card Consent',
+    linkPosition: 'Form',
+  },
   'validation method kyc': {
     linkType: 'button',
     linkName: 'Validation Method KYC',
@@ -39,6 +44,11 @@ const data = {
     linkPosition: 'Form',
   },
   'documents upload': {
+    linkType: 'button',
+    linkName: 'Documents Upload',
+    linkPosition: 'Form',
+  },
+  'documents upload upload': {
     linkType: 'button',
     linkName: 'Documents Upload',
     linkPosition: 'Form',
