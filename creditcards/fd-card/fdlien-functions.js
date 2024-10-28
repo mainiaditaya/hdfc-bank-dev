@@ -366,14 +366,13 @@ const checkModeFd = async (globals) => {
       globals.functions.setProperty(currentResidenceAddressBiometricOVD.currentResAddressBiometricOVD, { value: communicationAddress });
       globals.functions.setProperty(addressDeclarationPanel, { visible: true });
 
-      formData.currentFormContext.mobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'y';
-      CURRENT_FORM_CONTEXT.mobileMatch = formData.currentFormContext.mobileMatch;
-      globals.functions.setProperty(globals.form?.selectKYCOptionsPanel?.aadhaarMobileMatch, { value: formData.currentFormContext.mobileMatch ? 'Yes' : 'No' });
+      const isMobileMatch = formData?.aadhaarMobileMatch?.toLowerCase() === 'true';
+      globals.functions.setProperty(globals.form?.selectKYCOptionsPanel?.aadhaarMobileMatch, { value: isMobileMatch ? 'Yes' : 'No' });
 
       globals.functions.setProperty(proceedFromAddressDeclarationIdcom, { visible: !formData?.currentFormContext?.customerIdentityChange });
       globals.functions.setProperty(proceedFromAddressDeclaration, { visible: formData?.currentFormContext?.customerIdentityChange });
 
-      if (formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'n') {
+      if (!isMobileMatch) {
         globals.functions.setProperty(TnCAadhaarNoMobMatchLabel, { visible: true });
         globals.functions.setProperty(TnCAadhaarNoMobMatch, { visible: true });
       }
