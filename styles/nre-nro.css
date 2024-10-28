@@ -1588,21 +1588,10 @@
             display: none !important;
           }
 
-          .field-continue {
+          .field-continue,
+          .field-confirmbutton,
+          .field-multiaccocountinue {
             text-align: left !important;
-            max-width: 272px;
-
-            @media (768px <=width <=991px) {
-              width: 222px;
-            }
-
-            @media (320px <=width <=600px) {
-              width: 100%;
-            }
-          }
-
-          .field-confirmbutton {
-            text-align: left;
             max-width: 272px;
 
             @media (768px <=width <=991px) {
@@ -1618,7 +1607,7 @@
         /* select account screen */
 
         .field-selectaccount {
-          
+
           @media (320px <=width <=600px) {
             padding-bottom: 30px;
           }
@@ -1802,8 +1791,228 @@
 
           /* second block multipleAccounts  */
           .field-multipleaccounts {
-            border: 1px dashed var(--color-interface-border-secondary);
+            border-bottom: 1px dotted var(--color-interface-border-secondary);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+
+            .field-multiselectaccountheading {
+              p {
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 28px;
+                color: var(--color-interface-text-primary);
+                margin-bottom: 0;
+              }
+            }
+
+            .field-multiselectaccounttext {
+              margin-bottom: 30px;
+
+              p {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+                color: var(--color-input-text-primary);
+                margin-bottom: 0;
+              }
+            }
+
+            .field-multipleaccountrepeatable {
+              .repeat-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+
+                &>.panel-wrapper.field-wrapper {
+                  border: 1px solid var(--color-interface-border-secondary);
+                  border-radius: 20px;
+                  padding: 15px;
+                  margin-bottom: 20px !important;
+                  position: relative;
+                  display: initial;
+                  max-width: 48%;
+
+                  @media (320px <=width <=600px) {
+                    max-width: 100%;
+                  }
+
+                  @media (min-width: 768px) {
+                    margin-bottom: 0;
+                  }
+
+                  &.active {
+                    background-color: var(--color-interface-background-quinary);
+                    border: 1px solid var(--color-action-border-primary-hover);
+                  }
+
+                  &:has(input[type="checkbox"]:checked) {
+                    background-color: var(--color-interface-background-quinary);
+                    border: 1px solid var(--color-action-border-primary-hover);
+                  }
+
+                  .field-accounttype {
+                    border-radius: 12px;
+                    width: 122px;
+                    height: 20px;
+                    margin-bottom: 30px;
+                    margin-top: 5px;
+
+                    @media (320px <=width <=600px) {
+                      margin-bottom: 0;
+                    }
+
+                    input {
+                      font-size: 10px;
+                      font-weight: 500;
+                      line-height: 20px;
+                      text-align: center;
+                      color: var(--color-interface-text-primary);
+                      width: 122px;
+                      height: 20px;
+                      background-color: #D0DDFC;
+
+                    }
+                  }
+
+                  .field-multiplecustidaccount {
+                    position: absolute;
+                    right: 10px;
+
+                    & .field-label {
+                      display: none;
+                    }
+
+                    & input[type="radio"] {
+                      border-radius: 100%;
+                      border: 1px solid var(--color-interface-border-secondary);
+                      appearance: none;
+                      -webkit-appearance: none;
+                      outline: none;
+                      padding: 0;
+                      width: 24px !important;
+                      height: 24px !important;
+
+                      &:checked {
+                        cursor: pointer;
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px solid var(--color-interface-icon-highlight);
+
+                        &::before {
+                          content: '';
+                          border-radius: 100%;
+                          width: 12px !important;
+                          height: 12px !important;
+                          background-color: var(--color-interface-icon-highlight);
+                          position: absolute;
+                        }
+                      }
+                    }
+                  }
+
+                  .field-accountnumber {
+                    height: auto;
+
+                    input {
+                      position: initial;
+                    }
+                  }
+
+                  .field-multiifscbranchpanel {
+                    display: flex;
+                    position: relative;
+                    flex-flow: row wrap;
+
+                    .field-branch,
+                    .field-ifsccode {
+                      height: 15px;
+                      position: relative;
+
+                      label,
+                      textarea,
+                      input {
+                        font-size: 12px;
+                        font-weight: 400;
+                        line-height: 17px;
+                        color: var(--color-interface-text-secondary);
+                      }
+
+                      /*  & label{
+                       margin: 0 0 0 10px;
+                       position: absolute;
+                       border-left: 1px solid var(--color-interface-text-secondary);
+                      } */
+
+                      &.field-branch {
+                        & label {
+                          margin: 0;
+                        }
+
+                        & textarea {
+                          height: auto;
+                          left: 45px;
+                          position: relative;
+                          white-space: nowrap;
+                          width: 105px !important;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                        }
+                      }
+
+
+                      &.field-ifsccode {
+                        margin-left: 35px;
+                        margin-top: 0;
+
+                        &::before {
+                          content: "...";
+                          position: absolute;
+                          top: 0;
+                          left: -10px;
+                          font-size: 12px;
+                          font-weight: 400;
+                          line-height: 17px;
+                          color: var(--color-interface-text-secondary);
+                        }
+
+                        & label {
+                          margin: 0;
+                          position: absolute;
+                          padding-left: 8px;
+                          margin-left: 5px;
+
+                          &::before {
+                            content: "";
+                            position: absolute;
+                            top: 3px;
+                            left: 0px;
+                            height: 10px;
+                            width: 1px;
+                            background-color: #c5c9d2;
+                          }
+                        }
+
+                        & input {
+                          left: 45px;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                .item-add {
+                  display: none;
+                }
+              }
+            }
           }
+
+          /*   .field-multipleaccounts {
+            border: 1px dashed var(--color-interface-border-secondary);
+          } */
 
           .field-nro-account-type-pannel {
             border-top: 1px dashed var(--color-interface-border-secondary);
@@ -3189,6 +3398,7 @@
               @media (320px <=width <=600px) {
                 margin-top: 20px;
               }
+
               p {
                 font-size: 16px;
                 font-weight: 400;
