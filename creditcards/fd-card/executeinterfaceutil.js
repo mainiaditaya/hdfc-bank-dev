@@ -238,22 +238,22 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
       let parsedAadhaarAddress = '';
       if (isValidAadhaarPincode.result === 'true') {
         aadhaarAddress = [Address1, Address2, Address3].filter(Boolean).join(' ');
-        if (aadhaarAddress.length < MIN_ADDRESS_LENGTH) {
-          aadhaarAddress.Address2 = City;
-        } else {
-          parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
-          const [permanentAddress1, permanentAddress2, permanentAddress3] = parsedAadhaarAddress;
 
-          Object.assign(executeInterfaceRequest.requestString, {
-            permanentAddress1,
-            permanentAddress2,
-            permanentAddress3,
-            permanentCity: City,
-            permanentState: State,
-            permanentZipCode: Zipcode,
-            perAddressType: '4',
-          });
+        parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
+        // eslint-disable-next-line prefer-const
+        let [permanentAddress1, permanentAddress2, permanentAddress3] = parsedAadhaarAddress;
+        if (parsedAadhaarAddress.length < MIN_ADDRESS_LENGTH) {
+          permanentAddress2 = City;
         }
+        Object.assign(executeInterfaceRequest.requestString, {
+          permanentAddress1,
+          permanentAddress2,
+          permanentAddress3,
+          permanentCity: City,
+          permanentState: State,
+          permanentZipCode: Zipcode,
+          perAddressType: '4',
+        });
       }
     } else if (selectedKyc === 'biokyc' || selectedKyc === 'bioinperson') {
       executeInterfaceRequest.requestString.authMode = 'OTP';

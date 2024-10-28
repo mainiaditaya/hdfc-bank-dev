@@ -336,19 +336,7 @@ const checkModeFd = async (globals) => {
       let fullAadhaarAddress = [Address1, Address2, Address3, City, State, Zipcode].filter(Boolean).join(', ');
       if (isValidAadhaarPincode.result === 'true') {
         aadhaarAddress = [Address1, Address2, Address3].filter(Boolean).join(' ');
-        if (aadhaarAddress.length < FD_CONSTANT.MIN_ADDRESS_LENGTH) {
-          aadhaarAddress.Address2 = City;
-        } else {
-          parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
-          const [permanentAddress1, permanentAddress2, permanentAddress3] = parsedAadhaarAddress;
-
-          Object.assign(formData.currentFormContext.executeInterfaceRequest.requestString, {
-            permanentAddress1,
-            permanentAddress2,
-            permanentAddress3,
-            perAddressType: '4',
-          });
-        }
+        parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
         fullAadhaarAddress = `${parsedAadhaarAddress.join(', ')} ${City} ${State} ${Zipcode}`;
       } else {
         globals.functions.setProperty(addressDeclarationPanel?.aadhaarAddressDeclaration?.aadhaarBankStatement, { visible: false });
