@@ -56,7 +56,7 @@ const resumeJourneySuccessHandler = async (payload, globals) => {
   if (returnState) {
     const returnJourneyInfo = JSON.parse(payload?.journey?.[0]?.journeyStateInfo?.[0]?.stateInfo);
     if (returnJourneyInfo.currentFormContext !== undefined) {
-      Object.assign(CURRENT_FORM_CONTEXT, returnJourneyInfo.currentFormContext);
+      // Object.assign(CURRENT_FORM_CONTEXT, returnJourneyInfo.currentFormContext);
       const applRefNumber = returnJourneyInfo?.currentFormContext?.executeInterfaceResponse?.APS_APPL_REF_NUM;
       if (applRefNumber !== undefined) {
         Object.assign(RESUME_JOURNEY_JSON_OBJECT, returnJourneyInfo);
@@ -130,6 +130,7 @@ const invokeResumeJourneyApi = async (globals) => {
 
 const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   if (resumeJourneyResponse.prefillResumeJourneyData === undefined || !resumeJourneyResponse.prefillResumeJourneyData) { return; }
+  Object.assign(CURRENT_FORM_CONTEXT, resumeJourneyResponse.currentFormContext);
   const changeDataAttrObj = { attrChange: true, value: false };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const {
