@@ -207,7 +207,7 @@ const bindCustomerDetails = async (globals) => {
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
     if (addressLine1.length < 10 || addressLine2 === '') {
       const { newCurrentAddressLine1, newCurrentAddressLine2, newCurentAddressPin } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
-      globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shorAddressNote, visible: true });
+      globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shortAddressNote, visible: true });
       globals.functions.setProperty(newCurrentAddressLine1, { value: addressLine1 });
       globals.functions.setProperty(newCurrentAddressLine2, { value: addressLine2 });
       globals.functions.setProperty(newCurentAddressPin, { value: pincode });
@@ -521,8 +521,10 @@ const addressChangeHandler = (addressLineNumber, globals) => {
     { field: newCurrentAddressLine2, name: 'newCurrentAddressLine2' },
   ];
 
+  globals.functions.setProperty(addressFields[parseInt(addressLineNumber, 10) - 1].field, { valid: true });
+
   addressFields.forEach(({ field, name }) => {
-    const addressLine = field?._data?.$_value?.toLowerCase();
+    const addressLine = field?._data?.$_value?.toLowerCase()?.trim();
     if (addressLine) {
       if (!regexPattern.test(addressLine)) {
         globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.invalidAddress, { useQualifiedName: true });
@@ -536,8 +538,8 @@ const addressChangeHandler = (addressLineNumber, globals) => {
     }
   });
 
-  const addressLine1 = newCurrentAddressLine1?._data?.$_value?.toLowerCase();
-  const addressLine2 = newCurrentAddressLine2?._data?.$_value?.toLowerCase();
+  const addressLine1 = newCurrentAddressLine1?._data?.$_value?.toLowerCase()?.trim();
+  const addressLine2 = newCurrentAddressLine2?._data?.$_value?.toLowerCase()?.trim();
 
   if (addressLine1 && addressLine2 && addressLine1 === addressLine2 && addressLine1.length > 1) {
     globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.newCurrentAddressLine2', ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
