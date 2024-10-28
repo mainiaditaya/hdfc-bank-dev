@@ -1,6 +1,6 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import {
-  displayLoader, hideLoaderGif, setArnNumberInResult, updateInnerHtml,
+  displayLoader, hideLoaderGif, setArnNumberInResult,
 } from '../domutils/domutils.js';
 import { invokeJourneyDropOffByJourneyId } from './common-journeyutil.js';
 import { ANALYTICS, IDCOM } from './constant.js';
@@ -111,9 +111,6 @@ const pageRedirected = () => {
     setTimeout(() => {
       finalDapFetchRes();
     }, 5000);
-  }
-  if (delayedUtilState.aadharRedirect && delayedUtilState?.visitType === 'EKYC_AUTH_FAILED') {
-    updateInnerHtml('.field-aadharbiometricverification label', 'Aadhaar Biometric KYC at your Doorstep');
   }
 };
 

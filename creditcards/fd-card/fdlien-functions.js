@@ -16,6 +16,7 @@ import { addGaps } from './fd-dom-functions.js';
 import { executeInterfacePostRedirect } from './executeinterfaceutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
+import { updateInnerHtml } from '../domutils/domutils.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
@@ -405,6 +406,16 @@ const checkModeFd = async (globals) => {
     globals.functions.setProperty(selectKYCMethodOption3, { visible: true });
     globals.functions.setProperty(selectKYCMethodOption1.aadharBiometricVerification, { value: '0' });
     globals.functions.setProperty(wrongAttemptPopupWrapper, { visible: true });
+    if (formData?.aadhaar_otp_val_data?.status === FD_CONSTANT.ERROR_MSG.aadhaarMaxOtpAttemptsStatusCode) {
+      globals.functions.setProperty(wrongAttemptPopupWrapper.wrongAttemptPopup.wrongAttemptPopupText1, { value: FD_CONSTANT.ERROR_MSG.aadhaarMaxOtpAttemptsTitle });
+      globals.functions.setProperty(wrongAttemptPopupWrapper.wrongAttemptPopup.wrongAttemptPopupText2, { value: FD_CONSTANT.ERROR_MSG.aadhaarMaxOtpAttempts });
+    } else {
+      globals.functions.setProperty(wrongAttemptPopupWrapper.wrongAttemptPopup.wrongAttemptPopupText1, { value: FD_CONSTANT.ERROR_MSG.aadhaarTimeoutTitle });
+      globals.functions.setProperty(wrongAttemptPopupWrapper.wrongAttemptPopup.wrongAttemptPopupText2, { value: FD_CONSTANT.ERROR_MSG.aadhaarTimeout });
+    }
+    if (!formData?.currentFormContext?.isIntegraFlow) {
+      globals.form.selectKYCOptionsPanel.selectKYCMethodOption1.aadharBiometricVerification._jsonModel.enumNames[0] = 'Aadhaar Biometric KYC at your Doorstep.';
+    }
   }
 };
 

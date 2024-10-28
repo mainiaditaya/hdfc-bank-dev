@@ -25,6 +25,11 @@ const ERROR_MSG = {
   invalidPinNote: 'Note: Pincode is not matching with the city in address as per the bank records, please provide correct address.',
   sessionExpired: 'Session expired',
   branchVisitWithRefNum: 'Visit your nearest dealership or HDFC Bank branch with reference number:',
+  aadhaarMaxOtpAttemptsTitle: 'OTP Attempt Limit Reached',
+  aadhaarMaxOtpAttempts: 'You have exceeded the maximum number of OTP attempts.',
+  aadhaarMaxOtpAttemptsStatusCode: '35',
+  aadhaarTimeoutTitle: 'Aadhaar eKYC Unavailable Due to Technical Issues',
+  aadhaarTimeout: 'Sorry, we are unable to proceed with Aadhaar EKYC due to technical issues.',
 };
 
 const FD_ENDPOINTS = {
