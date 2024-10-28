@@ -472,14 +472,14 @@ function prefillAccountDetail(response, globals, i, responseLength) {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
 
-  setFormValue(customerName, response.customerShortName);
+  setFormValue(customerName, response.customerFullName);
   setFormValue(customerID, maskNumber(response.customerId, 4));
   setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
   if (responseLength > 1) {
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].accountNumber, maskNumber(response.customerAccountDetailsDTO[i].accountNumber, 10));
-    setFormValue(multipleAccounts.multipleAccountRepeatable[i].accountType, response.customerAccountDetailsDTO[i].productName);
-    setFormValue(multipleAccounts.multipleAccountRepeatable[i].branch, response.customerAccountDetailsDTO[i].branchName);
-    setFormValue(multipleAccounts.multipleAccountRepeatable[i].ifscCode, response.customerAccountDetailsDTO[i].ifscCode);
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiSubPanel.accountType, response.customerAccountDetailsDTO[i].productName);
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.branch, response.customerAccountDetailsDTO[i].branchName);
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.ifscCode, response.customerAccountDetailsDTO[i].ifscCode);
   } else {
     setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
     setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName);
@@ -503,6 +503,10 @@ function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, glo
       }
       setTimeout(() => {
         prefillAccountDetail(response, globals, i, responseLength);
+        const radioButtons = Array.from(document.querySelectorAll('.field-multiplecustidaccount input'));
+        radioButtons.forEach((radioButton) => {
+          radioButton.setAttribute('name', 'cust-id-radio');
+        });
       }, 1000);
     });
   } else {
