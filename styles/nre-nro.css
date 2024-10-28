@@ -31,14 +31,14 @@
       }
 
       picture img {
-        margin-left: 55px;
+        margin-left: 35px;
 
         @media (768px <=width <=991px) {
           margin-left: 20px;
         }
 
         @media (320px <=width <=600px) {
-          margin-left: 10px;
+          margin-left: 20px;
         }
       }
 
@@ -51,20 +51,21 @@
     .cmp-container>div:nth-child(3) {
       position: absolute;
       width: 110px;
-      top: 0.5em;
+      top: 5px !important;
       height: 32px;
       content: url(../icons/header-safe-secure.png);
-      padding: 0;
+      padding: 0 !important;
+      right: 3rem !important;
 
       @media (768px <=width <=991px) {
-        right: 30px;
-        display: block;
-        right: 22px;
+        right: 30px !important;
+        display: block !important;
+        top: 10px !important;
       }
 
       @media (320px <=width <=600px) {
-        right: 10px;
-        display: block;
+        right: 10px !important;
+        display: block !important;
       }
     }
   }
@@ -197,9 +198,11 @@
                     position: relative;
                     border: none !important;
 
-                    font-size: 18px;
-                    font-weight: 400;
-                    line-height: 28px;
+                    font-size: 18px !important;
+                    font-weight: 400 !important;
+                    line-height: 28px !important;
+                    letter-spacing: 0 !important;
+                    ;
 
                     &:focus-visible {
                       outline: none;
@@ -210,11 +213,11 @@
                 .field-registeredmobilenumber {
                   position: absolute;
                   left: 90px;
-                  background-color: #fff;
+                  /* background-color: #fff; */
                   margin: 1px;
                   padding-left: 15px;
                   border-radius: 12px;
-                  width: 72%;
+                  /* width: 72%; */
 
                   label {
                     top: 10px;
@@ -233,14 +236,18 @@
                     padding-left: 0px;
                     margin: 0;
                     border: none;
-                    background-color: transparent;
                     color: var(--color-interface-text-primary);
                     font-weight: 500;
                     border-radius: 12px;
-                    background-color: transparent;
+                    background-color: transparent !important;
+
+                    input:-webkit-autofill {
+                      -webkit-text-fill-color: yellow !important;
+                    }
 
                     &:focus-visible {
                       outline: none;
+                      background-color: transparent;
                     }
                   }
 
@@ -379,7 +386,7 @@
                     }
 
                     &::-webkit-calendar-picker-indicator {
-                      background: url("../icons//cal_icon.png") no-repeat 98%;
+                      background: url("../icons/cal_icon.png") no-repeat 98%;
                       font-size: 18px !important;
                       font-weight: 400;
                       line-height: 28px;
@@ -398,6 +405,7 @@
                       top: 12px;
                       font-size: 14px;
                       line-height: 20px;
+                      color: var(--color-interface-text-secondary);
 
                       @media (320px <=width <=600px) {
                         top: 45px;
@@ -409,7 +417,7 @@
                       background: url("../icons//cal_icon.png") no-repeat 97.2%;
                       font-weight: 500;
                       color: var(--color-interface-text-primary);
-                      word-spacing: 20px;
+                      /* word-spacing: 20px; */
 
                       &:focus-visible {
                         background: none;
@@ -515,16 +523,21 @@
                 label p {
                   a {
                     text-decoration: underline;
+                    font-weight: normal !important;
 
                     &:hover {
+                      color: var(--color-interface-icon-highlight);
                       text-decoration: none;
                     }
                   }
 
                   b {
-                    font-weight: normal;
+                    font-weight: normal !important;
                     text-decoration: underline;
+                    color: var(--color-interface-icon-highlight);
+
                     &:hover {
+                      color: var(--color-interface-icon-highlight);
                       text-decoration: none;
                     }
                   }
@@ -691,6 +704,10 @@
                     justify-content: center;
                     border-radius: 100%;
                     background: var(--color-action-scroll-primary);
+
+                    picture {
+                      display: none;
+                    }
 
                     @media (320px <=width <=991px) {
                       margin-right: 15px;
@@ -920,6 +937,7 @@
                 line-height: 40px;
                 color: var(--color-interface-text-primary);
                 border-color: var(--color-interface-border-secondary);
+                caret-color: currentcolor;
 
                 &:focus-visible {
                   outline: none;
@@ -1228,7 +1246,7 @@
             display: flex;
             align-items: center;
             background-color: #FEF8E6;
-            margin: 30px;
+            margin: 10px 30px;
             border-radius: 8px;
 
             @media (320px <=width <=600px) {
@@ -1301,6 +1319,15 @@
 
               &:focus-visible {
                 outline: none;
+              }
+            }
+
+            &.field-communicationaddress,
+            &.field-permanentaddress {
+              textarea {
+                height: 100%;
+                margin-bottom: 20px;
+                width: 100% !important;
               }
             }
           }
@@ -1560,6 +1587,7 @@
           .wizard-button-wrapper {
             display: none !important;
           }
+
           .field-continue {
             text-align: left !important;
             max-width: 272px;
@@ -1572,8 +1600,8 @@
               width: 100%;
             }
           }
+
           .field-confirmbutton {
-            margin-top: 10px;
             text-align: left;
             max-width: 272px;
 
@@ -1590,7 +1618,7 @@
         /* select account screen */
 
         .field-selectaccount {
-
+          
           @media (320px <=width <=600px) {
             padding-bottom: 30px;
           }
@@ -1598,7 +1626,7 @@
           .multiline-wrapper {
             position: relative;
             height: 70px;
-            margin-top: -20px;
+            /* margin-top: -20px; */
 
             label {
               margin-top: 2px;
@@ -1709,13 +1737,6 @@
             &.field-ifsc,
             &.field-branch {
               height: 70px;
-
-              &.field-customerid,
-              &.field-accountnumber {
-                input {
-                  letter-spacing: 6px;
-                }
-              }
             }
 
             @media (min-width: 768px) {
@@ -1933,12 +1954,12 @@
                   a {
                     color: var(--color-input-text-primary);
                     text-decoration: underline;
-                    font-weight: 400;
+                    font-weight: 400 !important;
                   }
                 }
               }
             }
-          }         
+          }
         }
 
         /* confirm details screen */
@@ -2179,7 +2200,7 @@
                 }
               }
             }
-          }        
+          }
         }
       }
 
@@ -2235,6 +2256,10 @@
               width: 129px;
               height: 111px;
             }
+          }
+
+          picture {
+            display: none;
           }
         }
 
@@ -2478,8 +2503,21 @@
     header {
       height: 250px !important;
 
+      @media (768px <=width <=991px) {
+        height: 400px !important;
+      }
+
+      @media (320px <=width <=600px) {
+        height: 300px !important;
+      }
+
       .cmp-container>div:nth-child(3) {
         display: none;
+
+        @media (320px <=width <=991px) {
+          display: block;
+          margin-right: 5px;
+        }
       }
     }
 
@@ -2499,9 +2537,17 @@
           display: flex;
           flex-flow: row;
 
+          @media (320px <=width <=991px) {
+            flex-direction: column;
+          }
+
           .field-thankyouleftpanel {
             max-width: 75%;
             margin-top: -115px;
+
+            @media (320px <=width <=991px) {
+              max-width: 100%;
+            }
 
             .field-successfullytext {
 
@@ -2511,6 +2557,21 @@
                 font-weight: 600;
                 line-height: 44px;
                 color: #fff;
+                margin-top: -125px;
+
+                @media (768px <=width <=991px) {
+                  font-size: 32px;
+                  line-height: 40px;
+                  max-width: 60%;
+                  margin-left: 15px;
+                }
+
+                @media (320px <=width <=600px) {
+                  font-size: 20px;
+                  line-height: 32px;
+                  margin-top: -25px;
+                  max-width: 63%;
+                }
 
                 &::before {
                   content: '';
@@ -2519,6 +2580,17 @@
                   position: absolute;
                   width: 91%;
                   top: 30px;
+
+                  @media (768px <=width <=991px) {
+                    top: 135px;
+                  }
+
+                  @media (320px <=width <=600px) {
+                    top: 115px;
+                    background-size: 30%;
+                    width: 80%;
+                    right: 15px;
+                  }
                 }
 
                 &::after {
@@ -2537,9 +2609,32 @@
               padding: 30px;
               background: #fff;
 
+              @media (768px <=width <=991px) {
+                margin-top: 20px;
+                border-bottom: none;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                padding-bottom: 0;
+              }
+
+              @media (320px <=width <=600px) {
+                margin-top: 20px;
+                /* 
+                border-bottom: none;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                padding-bottom: 0; */
+                padding: 20px;
+                margin-bottom: 20px;
+              }
+
               &>.field-accountnumber {
                 position: relative;
                 padding-left: 95px;
+
+                @media (320px <=width <=600px) {
+                  padding-left: 75px;
+                }
 
                 label {
                   color: var(--color-interface-text-secondary);
@@ -2552,6 +2647,11 @@
                   transform: none;
                   padding: 0;
                   display: block;
+
+                  @media (320px <=width <=600px) {
+                    font-size: 12px;
+                    line-height: 20px;
+                  }
                 }
 
                 input {
@@ -2559,13 +2659,25 @@
                   font-size: 32px;
                   font-weight: 600;
                   line-height: 40px;
-                  letter-spacing: 2px;
                   border: none;
                   height: auto;
                   padding: 0;
                   margin: 0;
-                  background: url("../icons/copy_icon.png") no-repeat 80% center;
+                  background: url("../icons/copy_icon.png") no-repeat 72% center;
                   width: auto;
+
+                  @media (768px <=width <=991px) {
+                    font-size: 28px;
+                    line-height: 36px;
+                    background-position-x: 75%;
+                  }
+
+                  @media (320px <=width <=600px) {
+                    font-size: 24px;
+                    line-height: 32px;
+                    background-position-x: 100%;
+                    width: 100%;
+                  }
 
                   &:focus-visible {
                     outline: none;
@@ -2580,11 +2692,30 @@
                   position: absolute;
                   left: 0;
                   border-radius: 50%;
+
+                  @media (320px <=width <=600px) {
+                    width: 52px;
+                    height: 52px;
+                    background-size: 35%;
+                  }
                 }
               }
 
               &>.plain-text-wrapper {
                 border-top: 1px dashed var(--color-interface-border-secondary);
+                margin-top: 15px;
+
+                @media (768px <=width <=991px) {
+                  border-top: none;
+                  border-bottom: 1px dashed var(--color-interface-border-secondary);
+                  padding-bottom: 20px;
+                }
+
+                @media (320px <=width <=600px) {
+                  /*     border-top: none;
+                  border-bottom: 1px dashed var(--color-interface-border-secondary);
+                  padding-bottom: 20px; */
+                }
 
                 p {
                   padding-top: 10px;
@@ -2596,6 +2727,11 @@
                     line-height: 24px;
                     color: var(--color-interface-text-secondary);
                     margin-bottom: 0;
+
+                    @media (320px <=width <=600px) {
+                      font-size: 12px;
+                      line-height: 20px;
+                    }
                   }
                 }
               }
@@ -2606,6 +2742,25 @@
               border-radius: 20px;
               padding: 30px;
 
+              @media (768px <=width <=991px) {
+                border-top: none;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                padding-bottom: 0;
+                margin-top: -20px;
+                padding-top: 20px;
+              }
+
+              @media (320px <=width <=600px) {
+                /* border-top: none;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                padding-bottom: 0;
+                margin-top: -20px; 
+                padding-top: 20px;*/
+                padding: 20px;
+              }
+
               .field-accountdetails {
                 p {
                   font-size: 28px;
@@ -2613,11 +2768,26 @@
                   line-height: 36px;
                   color: var(--color-interface-text-primary);
                   margin-bottom: 0;
+
+                  @media (320px <=width <=600px) {
+                    font-size: 20px;
+                    line-height: 28px;
+                    margin-bottom: 20px;
+                  }
                 }
               }
 
               .text-wrapper.field-wrapper,
               .multiline-wrapper {
+                @media (768px <=width <=991px) {
+                  grid-column: span 6;
+                }
+
+                @media (320px <=width <=600px) {
+                  display: flex;
+                  flex-direction: column;
+                  margin-bottom: 20px;
+                }
 
                 label {
                   color: var(--color-interface-text-secondary);
@@ -2630,6 +2800,10 @@
                   transform: none;
                   padding: 0;
                   display: initial;
+
+                  @media (320px <=width <=600px) {
+                    font-size: 12px;
+                  }
                 }
 
                 input {
@@ -2637,11 +2811,16 @@
                   font-size: 18px;
                   font-weight: 500;
                   line-height: 28px;
-                  letter-spacing: 2px;
                   border: none;
                   height: auto;
                   padding: 0;
                   margin: 0;
+
+                  @media (320px <=width <=600px) {
+                    font-size: 14px;
+                    line-height: 20px;
+                    margin-top: 5px;
+                  }
 
                   &:focus-visible {
                     outline: none;
@@ -2661,14 +2840,23 @@
                   resize: none;
                   width: 100%;
 
+                  @media (768px <=width <=991px) {
+                    min-height: auto;
+                  }
+
                   @media (320px <=width <=600px) {
                     font-size: 14px;
                     line-height: 20px;
+                    min-height: 60px;
                   }
 
                   &:focus-visible {
                     outline: none;
                   }
+                }
+
+                &.multiline-wrapper {
+                  grid-column: span 12;
                 }
               }
             }
@@ -2707,7 +2895,8 @@
                   padding: 10px 15px 10px 45px;
 
                   @media (320px <=width <=600px) {
-                    padding: 10px 0 10px 25px;
+                    padding: 10px 0 10px 40px;
+                    font-size: 13px;
                   }
                 }
               }
@@ -2718,6 +2907,10 @@
               border-radius: 20px;
               padding: 30px;
 
+              @media (320px <=width <=600px) {
+                padding: 20px;
+              }
+
               .field-onlineservice {
                 p {
                   font-size: 24px;
@@ -2725,6 +2918,17 @@
                   line-height: 32px;
                   color: var(--color-interface-text-primary);
                   margin-bottom: 0;
+
+                  @media (768px <=width <=991px) {
+                    font-size: 20px;
+                    line-height: 28px;
+                  }
+
+                  @media (320px <=width <=600px) {
+                    font-size: 16px;
+                    line-height: 24px;
+                    margin-bottom: 15px;
+                  }
                 }
               }
 
@@ -2733,11 +2937,13 @@
                 border: 1px solid var(--color-interface-border-secondary);
                 border-radius: 7px;
                 display: flex;
+                flex-direction: row;
 
                 .button-wrapper {
                   border-right: 1px solid var(--color-interface-border-secondary);
                   flex: 1;
                   height: 44px;
+                  margin-top: 0 !important;
 
                   button {
                     font-size: 14px;
@@ -2760,18 +2966,20 @@
                     }
                   }
 
-                  &:nth-child(9), &:nth-child(10){
-                    button{
-                      &:hover{
-                        background: #F99F35 !important; 
+                  &:nth-child(9),
+                  &:nth-child(10) {
+                    button {
+                      &:hover {
+                        background: #F99F35 !important;
                       }
                     }
                   }
 
-                  &:nth-child(11), &:nth-child(12){
-                    button{
-                      &:hover{
-                        background: #2DB780 !important; 
+                  &:nth-child(11),
+                  &:nth-child(12) {
+                    button {
+                      &:hover {
+                        background: #2DB780 !important;
                       }
                     }
                   }
@@ -2788,10 +2996,20 @@
             }
 
             .field-ratingcolorcodes {
-              display: flex;
+
               grid-gap: initial !important;
               display: none;
               transition: transform 0.3s;
+              flex-direction: row;
+
+              @media (320px <=width <=768px) {
+                display: flex;
+              }
+
+              @media (320px <=width <=600px) {
+                margin-top: 15px;
+                margin-bottom: 20px;
+              }
 
               p {
                 margin-bottom: 0;
@@ -2800,6 +3018,11 @@
                 line-height: 20px;
                 color: var(--color-interface-text-secondary);
                 margin-top: 10px;
+
+                @media (320px <=width <=600px) {
+                  font-size: 10px;
+                  line-height: 12px;
+                }
               }
 
               .field-notlikelytext,
@@ -2858,16 +3081,26 @@
                 line-height: 24px;
                 color: var(--color-interface-text-primary);
                 margin-bottom: 10px;
+
+                @media (320px <=width <=600px) {
+                  font-size: 14px;
+                  line-height: 20px;
+                }
               }
 
               .field-issuesradio {
-                margin-right: 30px;
+                margin-right: 30px !important;
 
                 label {
                   font-size: 18px !important;
                   font-weight: 500;
                   line-height: 24px;
                   color: var(--color-interface-text-primary);
+
+                  @media (320px <=width <=600px) {
+                    font-size: 14px !important;
+                    line-height: 20px;
+                  }
                 }
 
                 & input[type="radio"] {
@@ -2880,6 +3113,11 @@
                   width: 24px !important;
                   height: 24px !important;
                   cursor: pointer;
+
+                  @media (320px <=width <=600px) {
+                    width: 20px !important;
+                    height: 20px !important;
+                  }
 
                   &:checked {
                     cursor: pointer;
@@ -2903,6 +3141,10 @@
             }
 
             .field-describeissue {
+              @media (320px <=width <=600px) {
+                margin-top: 20px;
+              }
+
               label {
                 font-size: 18px;
                 font-weight: 600;
@@ -2910,6 +3152,11 @@
                 color: var(--color-interface-text-primary);
                 position: initial;
                 margin: 0;
+
+                @media (320px <=width <=600px) {
+                  font-size: 14px;
+                  line-height: 20px;
+                }
               }
 
               textarea {
@@ -2923,6 +3170,10 @@
                 color: var(--color-input-text-placeholder-default);
                 padding: 15px;
 
+                @media (320px <=width <=600px) {
+                  margin-bottom: 0;
+                }
+
                 &:focus-visible {
                   outline: none;
                 }
@@ -2935,12 +3186,25 @@
             }
 
             .field-hdfcbankwebsite {
+              @media (320px <=width <=600px) {
+                margin-top: 20px;
+              }
               p {
                 font-size: 16px;
                 font-weight: 400;
                 line-height: 24px;
                 color: var(--color-input-text-primary);
                 margin-bottom: 0;
+
+                @media (768px <=width <=991px) {
+                  font-size: 14px;
+                  line-height: 20px;
+                }
+
+                @media (320px <=width <=600px) {
+                  font-size: 12px;
+                  line-height: 20px;
+                }
 
                 a {
                   font-weight: 600;
@@ -2957,10 +3221,31 @@
             margin-top: -95px;
             position: relative;
 
+            @media (320px <=width <=991px) {
+              max-width: 100%;
+              margin-top: 0;
+            }
+
             .image-wrapper {
               background: url("../icons/applying-for-dabit-card.png") no-repeat top center;
               width: 272px;
               height: 240px;
+
+              picture {
+                display: none;
+              }
+
+              @media (768px <=width <=991px) {
+                background: url("../icons/applying-for-dabit-card-ipad-banner.png") no-repeat center center;
+                height: 202px;
+                width: 100%;
+              }
+
+              @media (320px <=width <=600px) {
+                background: url("../icons/applying-for-dabit-card-mobile-banner.png") no-repeat center center;
+                height: 96px;
+                width: 100%;
+              }
             }
 
             .field-applyfora {
@@ -2969,7 +3254,17 @@
                 top: 0;
                 width: 272px;
                 height: 240px;
-                color: transparent;                
+                color: transparent;
+
+                @media (768px <=width <=991px) {
+                  width: 100%;
+                  height: 202px;
+                }
+
+                @media (320px <=width <=600px) {
+                  width: 100%;
+                  height: auto;
+                }
               }
             }
 
