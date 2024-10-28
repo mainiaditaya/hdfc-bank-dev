@@ -13,6 +13,8 @@ import {
   setupBankUseSection,
   idComRedirection,
   addPageNameClassInBody,
+  showFinancialDetails,
+  showNomineeDetails,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -39,4 +41,6 @@ export {
   idComRedirection,
   addPageNameClassInBody,
   sendAnalytics,
+  showFinancialDetails,
+  showNomineeDetails,
 };

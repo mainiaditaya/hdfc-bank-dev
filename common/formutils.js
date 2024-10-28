@@ -84,7 +84,7 @@ const formUtil = (globalObj, panelName) => ({
   setValue: (val, changeDataAttr) => {
     globalObj.functions.setProperty(panelName, { value: val });
     if (changeDataAttr?.attrChange && val) {
-      const element = document.getElementsByName(panelName._data.$_name)?.[0];
+      const element = document.getElementsByName(panelName._data.$_name)?.[0] || document.getElementsByName(panelName.$name)?.[0];
       if (element) {
         const closestAncestor = element.closest(`.${ANCESTOR_CLASS_NAME}`);
         if (closestAncestor) {
@@ -109,7 +109,7 @@ const formUtil = (globalObj, panelName) => ({
    */
   resetField: () => {
     globalObj.functions.setProperty(panelName, { value: '' });
-    const element = document.getElementsByName(panelName._data.$_name)?.[0];
+    const element = document.getElementsByName(panelName._data.$_name)?.[0] || document.getElementsByName(panelName.$name)?.[0];
     if (element) {
       const closestAncestor = element.closest(`.${ANCESTOR_CLASS_NAME}`);
       if (closestAncestor) {
@@ -146,7 +146,7 @@ const getTimeStamp = (currentTime) => {
  */
 const getTimeStampNoSeconds = (currentTime) => {
   // Function to pad single digit numbers with leading zero
-  const pad = (number) => ((number < 10) ? `0${number}` : number);
+  const pad = (number) => (String(number).padStart(2, '0'));
   // Format the datetime as desired
   const formattedDatetime = currentTime.getFullYear()
     + pad(currentTime.getMonth() + 1)

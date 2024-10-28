@@ -243,7 +243,7 @@ const successPannelMethod = async (data, stateInfoData) => {
   }
   currentFormContext.action = 'confirmation';
   currentFormContext.pageGotRedirected = true;
-  Promise.resolve(sendPageloadEvent('CONFIRMATION_JOURNEY_STATE', stateInfoData, 'CONFIRMATION_Page_name'));
+  Promise.resolve(sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETE', stateInfoData, 'CONFIRMATION_Page_name'));
   const mobileNumber = stateInfoData.form.login.registeredMobileNumber;
   const leadProfileId = stateInfoData.leadProifileId;
   const journeyId = stateInfoData.currentFormContext.journeyID;
@@ -256,7 +256,7 @@ const visitTypeParam = searchParam.get('visitType');
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
 const aadharRedirect = visitTypeParam && (visitTypeParam === 'EKYC_AUTH');
-const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'CreditCard') || (authModeParam === 'NetBanking')); // debit card or credit card or netbanking flow
+const idComRedirect = authModeParam && ((authModeParam === 'AadhaarOTP') || (authModeParam === 'DebitCard') || (authModeParam === 'CreditCard') || (authModeParam === 'NetBanking')); // debit card or credit card or netbanking flow
 
 /**
  * @name invokeJourneyDropOffByParam

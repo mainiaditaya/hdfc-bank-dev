@@ -2,6 +2,7 @@
 import {
   createJourneyId,
   nreNroInvokeJourneyDropOffByParam,
+  invokeJourneyDropOffUpdate,
 } from './nre-nro-journey-utils.js';
 // import {
 //   moveWizardView,
@@ -32,9 +33,10 @@ import {
   sendAnalytics,
 } from './analytics.js'
 
-setTimeout(() => {
+setTimeout(async () => {
   if (typeof window !== 'undefined') {
-    import('./nre-nro-dom-functions.js');
+    const { addGaps } = await import('./nre-nro-dom-functions.js');
+    addGaps();
   }
 }, 1200);
 
@@ -102,6 +104,7 @@ const validateLogin = (globals) => {
   const isdNumberPattern = /^(?!0)([5-9]\d{9})$/;
   const panIsValid = validFDPan(panValue);
   const nonISDNumberPattern = /^(?!0)\d{3,15}$/;
+  currentFormContext.isdCode = isdCode;
   globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
 
   const panInput = document.querySelector(`[name=${'pan'} ]`);
@@ -174,13 +177,16 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
   // Promise.resolve(sendAnalytics('otp click', { }, 'CUSTOMER_IDENTITY_RESOLVED', globals));
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
+  const [year, month, day] = dob.$value.split('-');
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
+  currentFormContext.mobileNumber = mobileNumber.$value;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
+  currentFormContext.journeyName = globals.form.runtime.journeyName.$value;
   const jsonObj = {
     requestString: {
-      mobileNumber: mobileNumber.$value,
-      dateOfBirth: '19880914',
+      mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
+      dateOfBirth: year + month + day,
       // dateOfBirth: clearString(dob.$value) || '',
       panNumber: pan.$value || '',
       journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
@@ -286,9 +292,10 @@ function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
 function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
+  currentFormContext.leadProfileId = globals.form.runtime.leadProifileId.$value;
   const jsonObj = {
     requestString: {
-      mobileNumber: mobileNumber.$value,
+      mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
       passwordValue: otpNumber.$value,
       dateOfBirth: clearString(dob.$value) || '',
       panNumber: pan.$value || '',
@@ -303,7 +310,6 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
-// function setupBankUseSection(lg, lc, toggle, resetAll, globals) {
 function setupBankUseSection(globals){
     const urlParams = new URLSearchParams(window.location.search);
     const utmParams = {};
@@ -334,10 +340,50 @@ function setupBankUseSection(globals){
       globals.functions.setProperty(lcCode, { enabled: false });
 }
 
+function showFinancialDetails(financialDetails, response, occupation, globals) {
+  const occupationCode = response.customerAMLDetailsDTO[0].codOccupation;
+  const selectElement = document.querySelector('[name=occupationDropdown]');
+  selectElement.setAttribute('value', occupationCode);
+  selectElement.value = occupationCode;
+  const occupationText = selectElement.options[selectElement.selectedIndex].text;
+  globals.functions.setProperty(financialDetails.occupation, { value: occupationText });
+  globals.functions.setProperty(financialDetails.residenceType, { visible: true });
+  globals.functions.setProperty(financialDetails.grossAnnualIncome, { visible: true });
+  globals.functions.setProperty(financialDetails.currencyName, { visible: true });
+  globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true });
+  globals.functions.setProperty(financialDetails.occupation, { visible: true });
+  globals.functions.setProperty(financialDetails.occupation, { value: occupationText });
+
+  if (occupationCode === 2) globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+  if (occupationCode === 3) {
+    globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
+    globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
+    globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { visible: true });
+  }
+  if (occupationCode === 5) {
+    globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: false });
+    globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { visible: true });
+    globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+    globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
+    globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
+  }
+}
+
+function showNomineeDetails(nomineeDetails, response, globals) {
+  const listdropdown = response.customerAccountDetailsDTO[1].codRel;
+  const relationDropDown = document.querySelector('[name=relationShipDropdown]');
+  relationDropDown.setAttribute('value', listdropdown);
+  relationDropDown.value = listdropdown;
+  const relationText = relationDropDown.options[relationDropDown.selectedIndex].text;
+  if (listdropdown !== 0 && listdropdown != null) {
+    globals.functions.setProperty(nomineeDetails, { visible: true });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineerelation, { value: relationText });
+  }
+}
+
 function prefillCustomerDetails(response, globals) {
   const {
     customerName,
-    accountNumber,
     customerID,
     singleAccount,
     custIDWithoutMasking,
@@ -348,6 +394,7 @@ function prefillCustomerDetails(response, globals) {
     fatcaDetails,
     financialDetails,
     nomineeDetails,
+
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
 
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
@@ -356,20 +403,20 @@ function prefillCustomerDetails(response, globals) {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-  // not getting txtPermadrAdd1
-  setFormValue(custIDWithoutMasking, response.customerId);
   setFormValue(customerName, response.customerShortName);
   setFormValue(customerID, maskNumber(response.customerId, 4));
+  setFormValue(custIDWithoutMasking, response.customerId);
   setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
   setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
-  setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].prodTypeDesc);
+  setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].prodName);
   setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
   setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
   setFormValue(personalDetails.emailID, response.refCustEmail);
   setFormValue(personalDetails.fullName, response.customerFullName);
   setFormValue(personalDetails.mobileNumber, response.rmPhoneNo);
   setFormValue(personalDetails.pan, response.refCustItNum);
-  setFormValue(personalDetails.telephoneNumber, response.refCustTelex);
+  if (!response.refCustTelex) globals.functions.setProperty(personalDetails.telephoneNumber, { visible: false });
+  else setFormValue(personalDetails.telephoneNumber, response.refCustTelex);
   setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1} ${response.txtCustadrAdd2} ${response.txtCustadrAdd3} ${response.namCustadrCity} ${response.namCustadrState} ${response.namCustadrCntry} ${response.txtCustadrZip}`);
   setFormValue(personalDetails.permanentAddress, `${response.txtPermadrAdd1} ${response.txtPermadrAdd2} ${response.txtPermadrAdd3} ${response.namPermadrCity} ${response.namPermadrState} ${response.namPermadrCntry} ${response.txtPermadrZip}`);
   setFormValue(fatcaDetails.nationality, response.txtCustNATNLTY);
@@ -383,7 +430,6 @@ function prefillCustomerDetails(response, globals) {
   setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namSpouseCust);
   setFormValue(fatcaDetails.taxIdType, response.customerFATCADtlsDTO[0].typTinNo1);
   setFormValue(financialDetails.sourceOfFunds, response.customerAMLDetailsDTO[0].incomeSource);
-  setFormValue(financialDetails.occupation, response.customerFATCADtlsDTO[0].txtCustOccuptn);
   setFormValue(financialDetails.employeerName, response.customerFATCADtlsDTO[0].namCustEmp);
   setFormValue(financialDetails.selfEmployedProfessional, response.customerAMLDetailsDTO[0].txtProfessionDesc);
   setFormValue(financialDetails.selfEmployedSince, response.customerAMLDetailsDTO[0].selfEmpFrom);
@@ -394,9 +440,9 @@ function prefillCustomerDetails(response, globals) {
   setFormValue(financialDetails.currencyName, response.customerAMLDetailsDTO[0].namCcy);
   setFormValue(financialDetails.grossAnnualIncome, response.customerAMLDetailsDTO[0].annualTurnover);
   setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
+  setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
   setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[0].nomineeName);
   setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[0].nomineeDOB);
-  setFormValue(nomineeDetails.relation, response.customerAccountDetailsDTO[0].nomineeName);
 }
 
 /**
@@ -445,7 +491,8 @@ const createIdComRequestObj = (globals) => {
   const formData = santizedFormDataWithContext(globals);
   const idComObj = {
     requestString: {
-      CustID : formData.AccountOpeningNRENRO.custIDWithoutMasking,
+      // CustID : globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value,
+      CustID : '901037469',
       ProductCode: "ADETBACO",
       userAgent: window.navigator.userAgent,
       journeyID: formData.journeyId,
@@ -453,6 +500,9 @@ const createIdComRequestObj = (globals) => {
       scope: "ADOBE_ACNRI",
     },
   };
+  console.log("Form Data : " , formData);
+  console.log("Customer ID : " , idComObj);
+  console.log("Customer ID : " , globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value);
 
   return idComObj;
 };
@@ -486,8 +536,14 @@ function customFocus(errorMessage, numRetries, globals) {
 }
 
 async function idComRedirection(globals){
+  const {
+    mobileNumber,
+    leadProfileId,
+    journeyID,
+  } = currentFormContext;
   let resp = await fetchAuthCode(globals);
   if(resp.status.errorMessage==="Success"){
+    invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
     window.location.href = resp.redirectUrl;
   }
 }
@@ -504,15 +560,16 @@ const finalResult = {
 const searchParam = new URLSearchParams(window.location.search);
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
-const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'CreditCard')); // debit card or credit card flow
+const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'NetBanking')); // debit card or credit card flow
 
 /**
  * @name nreNroFetchRes - async action call maker until it reaches the final response.
  * @returns {void}
  */
 const nreNroFetchRes = async (globals) => {
+  console.log("In NRENRO Fetch Res");
   try {
-    globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
+    // globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
     const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
     console.log("DropOffParam Data : " , data);
     const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
@@ -528,7 +585,9 @@ const nreNroFetchRes = async (globals) => {
     const err = 'Bad response';
     throw err;
   } catch (error) {
+    console.log(error);
     const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
+    console.log(errorCase)
     const stateInfoData = finalResult.journeyParamStateInfo;
     if (errorCase) {
       console.log("Error Case : " , errorCase);
@@ -542,7 +601,8 @@ const nreNroFetchRes = async (globals) => {
  * @param {boolean} idCom - Indicates whether ID com redirection is triggered.
  * @returns {void}
  */
-const nreNroPageRedirected = (idCom,globals) => {
+const nreNroPageRedirected = (idCom, globals) => {
+  console.log(idCom);
   if (idCom) {
     setTimeout(() => {
       displayLoader();
@@ -558,6 +618,22 @@ const addPageNameClassInBody = (pageName) => {
   if (pageName === 'Select_Account') {
     document.body.classList.add('wizardPanelBody');
   }
+  if (pageName === 'ThankYou_Page') {
+    document.body.classList.add('nreThankYouPage');
+  }
+};
+
+const switchWizard = (globals) => {
+  const {
+    mobileNumber,
+    leadProfileId,
+    journeyID,
+  } = currentFormContext;
+
+  invokeJourneyDropOffUpdate('CUSTOMER_ACCOUNT_VARIANT_SELECTED', mobileNumber, leadProfileId, journeyID, globals);
+  moveWizardView('wizardNreNro', 'confirmDetails');
+  currentFormContext.action = "Confirm Details";
+  Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
 
 const onPageLoadAnalytics = async (globals) => {
@@ -567,12 +643,6 @@ const onPageLoadAnalytics = async (globals) => {
 setTimeout((globals) => {
   onPageLoadAnalytics(globals);
 }, 5000);
-
-const switchWizard = (globals) => {
-  moveWizardView('wizardNreNro', 'confirmDetails');
-  currentFormContext.action = "Confirm Details";
-  Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
-}
 
 setTimeout(async function(globals) {
   await nreNroPageRedirected(idComRedirect, globals);
@@ -595,5 +665,7 @@ export {
   switchWizard,
   setupBankUseSection,
   idComRedirection,
-  addPageNameClassInBody
+  addPageNameClassInBody,
+  showFinancialDetails,
+  showNomineeDetails,
 };
