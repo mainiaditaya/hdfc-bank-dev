@@ -242,7 +242,7 @@ const executeInterface = async (payload, showLoader, hideLoader, source, globals
         parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
         // eslint-disable-next-line prefer-const
         let [permanentAddress1, permanentAddress2, permanentAddress3] = parsedAadhaarAddress;
-        if (parsedAadhaarAddress.length < MIN_ADDRESS_LENGTH) {
+        if (parsedAadhaarAddress.join(' ').length < MIN_ADDRESS_LENGTH) {
           permanentAddress2 = City;
         }
         Object.assign(executeInterfaceRequest.requestString, {
