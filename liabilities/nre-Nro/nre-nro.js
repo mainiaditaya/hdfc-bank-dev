@@ -5,7 +5,6 @@ import {
   otpTimer,
   otpValidationNRE,
   updateOTPHelpText,
-  prefillCustomerDetails,
   getCountryCodes,
   resendOTP,
   customFocus,
@@ -15,6 +14,7 @@ import {
   addPageNameClassInBody,
   showFinancialDetails,
   showNomineeDetails,
+  multiCustomerId,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -31,7 +31,6 @@ export {
   getOtpNRE,
   otpTimer,
   updateOTPHelpText,
-  prefillCustomerDetails,
   getCountryCodes,
   resendOTP,
   customFocus,
@@ -43,4 +42,5 @@ export {
   sendAnalytics,
   showFinancialDetails,
   showNomineeDetails,
+  multiCustomerId,
 };

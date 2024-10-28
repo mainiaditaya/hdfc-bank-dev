@@ -59,25 +59,88 @@ formRuntime.getOtpLoader = currentFormContext.getOtpLoader || (typeof window !==
 formRuntime.otpValLoader = currentFormContext.otpValLoader || (typeof window !== 'undefined') ? displayLoader : false;
 formRuntime.hideLoader = (typeof window !== 'undefined') ? hideLoaderGif : false;
 
-/**
- * Masks a email by replacing the specified letter of word with asterisks.
- * @param {email} email - The email to mask.
- * @returns {string} -The masked email as a string.
- */
-const maskedEmail = (email) => {
-  const [localPart, domain] = email.split('@');
-  let maskedLocalPart;
+function customerDataMasking(fieldName, value) {
+  if (value != null && value !== undefined && value.length > 0) {
+    let splittedValue; let adress; let adressLength; let cityLength; let city; let pin; let pinLength; let country; let contryLength;
 
-  if (localPart.length === 1) {
-    maskedLocalPart = '****';
-  } else if (localPart.length < 5) {
-    maskedLocalPart = `${localPart.slice(0, localPart.length - 2)}****${localPart.slice(-1)}`;
+    switch
+    (fieldName) {
+      case
+        'PANnmbr':// check legth 10
+        if (value.length === 10) {
+          const PANvalue = value;
+          const maskdPAN = PANvalue.substring(0, 2) + '*'.repeat(2) + PANvalue.substring(4, 5) + '*'.repeat(4) + PANvalue.substring(9, 10);
+          return maskdPAN;
+        }
+        return '';
+
+      case
+        'eMail': // checck length after splitting
+        if (value.includes('@' && '.')) {
+          splittedValue = value.split('@');
+          const username = splittedValue[0];
+          const userlength = username.length;
+          const postSplit = splittedValue[1].split('.');
+          const domain = postSplit[0];
+          const domainLength = domain.length;
+          let part1;
+          if (userlength > 1) {
+            part1 = username.replace(username.substring(1, (userlength - 1)), '*'.repeat(userlength - 2));
+          } else {
+            part1 = username;
+          }
+          const part2 = domain.replace(domain.substring(1, (domainLength)), '*'.repeat(domainLength - 1));
+          return `${part1}@${part2}.com`;
+        }
+        return '';
+
+      case
+        'AddressLine': // string length
+
+        adress = value;
+        adressLength = adress.length;
+        if (adressLength > 1) {
+          const maskdAdress = adress.replace(adress.substring(adressLength - Math.round(0.80 * adressLength), adressLength), '*'.repeat(adressLength - (adressLength - Math.round(0.80 * adressLength))));
+          return maskdAdress;
+        }
+        return '';
+
+      case
+        'CityState':
+        city = value;
+        cityLength = city.length;
+        if (cityLength > 1) {
+          const maskdCity = city.replace(city.substring(1, cityLength - 1), '*'.repeat(cityLength - 2));
+          return maskdCity;
+        }
+        return '';
+
+      case
+        'PIN': // check legth
+        pin = value;
+        pinLength = pin.length;
+        if (pinLength === 6) {
+          const makdPIN = pin.substring(0, 3) + '*'.repeat(3);
+          return makdPIN;
+        }
+        return '';
+
+      case
+        'Country':
+        country = value;
+        contryLength = country.length;
+        if (contryLength > 1) {
+          const maskdCountry = country.replace(country.substring(1, contryLength), '*'.repeat(contryLength - 1));
+          return maskdCountry;
+        }
+        return '';
+
+      default: return '';
+    }
   } else {
-    maskedLocalPart = `${localPart.slice(0, 3)}****${localPart.slice(-1)}`;
+    return '';
   }
-
-  return `${maskedLocalPart}@${domain}`;
-};
+}
 
 const validFDPan = (val) => {
   if (val?.length !== 12) return false;
@@ -276,7 +339,7 @@ function otpTimer(globals) {
 
 function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
   if (!email) globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)}` });
-  globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)} & email ID ${maskedEmail(email)}.` });
+  globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)} & email ID ${customerDataMasking('eMail', email)}.` });
 }
 
 /**
@@ -377,14 +440,7 @@ function showNomineeDetails(nomineeDetails, response, globals) {
   }
 }
 
-function prefillCustomerDetails(response, globals) {
-  const {
-    customerName,
-    customerID,
-    singleAccount,
-    custIDWithoutMasking,
-  } = globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount;
-
+function prefillCustomerDetail(response, globals) {
   const {
     personalDetails,
     fatcaDetails,
@@ -399,22 +455,19 @@ function prefillCustomerDetails(response, globals) {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-  setFormValue(customerName, response.customerShortName);
-  setFormValue(customerID, maskNumber(response.customerId, 4));
-  setFormValue(custIDWithoutMasking, response.customerId);
-  setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
-  setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
-  setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].prodName);
-  setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
-  setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
-  setFormValue(personalDetails.emailID, response.refCustEmail);
+  currentFormContext.fatca_response = response;
+
+  // globals.functions.setProperty(globals.form.runtime.fatca_response, { value: response });
+  setFormValue(personalDetails.emailID, customerDataMasking('eMail', response.refCustEmail));
   setFormValue(personalDetails.fullName, response.customerFullName);
-  setFormValue(personalDetails.mobileNumber, response.rmPhoneNo);
-  setFormValue(personalDetails.pan, response.refCustItNum);
+  setFormValue(personalDetails.mobileNumber, `+${currentFormContext.isdCode} ${maskNumber(currentFormContext.mobileNumber, 6)}`);
+  setFormValue(personalDetails.pan, customerDataMasking('PANnmbr', response.refCustItNum));
   if (!response.refCustTelex) globals.functions.setProperty(personalDetails.telephoneNumber, { visible: false });
   else setFormValue(personalDetails.telephoneNumber, response.refCustTelex);
   setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1} ${response.txtCustadrAdd2} ${response.txtCustadrAdd3} ${response.namCustadrCity} ${response.namCustadrState} ${response.namCustadrCntry} ${response.txtCustadrZip}`);
-  setFormValue(personalDetails.permanentAddress, `${response.txtPermadrAdd1} ${response.txtPermadrAdd2} ${response.txtPermadrAdd3} ${response.namPermadrCity} ${response.namPermadrState} ${response.namPermadrCntry} ${response.txtPermadrZip}`);
+  setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)}
+   ${customerDataMasking('AddressLine', response.txtPermadrAdd3)} ${customerDataMasking('CityState', response.namPermadrCity)} ${customerDataMasking('CityState', response.namPermadrState)}
+   ${customerDataMasking('Country', response.namPermadrCntry)} ${customerDataMasking('PIN', response.txtPermadrZip)}`);
   setFormValue(fatcaDetails.nationality, response.txtCustNATNLTY);
   setFormValue(fatcaDetails.countryTaxResidence, response.customerFATCADtlsDTO[0].codTaxCntry1);
   setFormValue(fatcaDetails.taxIdNumber, response.customerFATCADtlsDTO[0].tinNo1);
@@ -440,6 +493,72 @@ function prefillCustomerDetails(response, globals) {
   setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[0].nomineeName);
   setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[0].nomineeDOB);
 }
+
+function prefillAccountDetail(response, globals, i, responseLength) {
+  const {
+    customerName,
+    customerID,
+    singleAccount,
+    multipleAccounts,
+  } = globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount;
+
+  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
+
+  const setFormValue = (field, value) => {
+    const fieldUtil = formUtil(globals, field);
+    fieldUtil.setValue(value, changeDataAttrObj);
+  };
+
+  setFormValue(customerName, response.customerFullName);
+  setFormValue(customerID, maskNumber(response.customerId, 4));
+  setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
+  if (responseLength > 1) {
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].accountNumber, maskNumber(response.customerAccountDetailsDTO[i].accountNumber, 10));
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiSubPanel.accountType, response.customerAccountDetailsDTO[i].productName);
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.branch, response.customerAccountDetailsDTO[i].branchName);
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.ifscCode, response.customerAccountDetailsDTO[i].ifscCode);
+  } else {
+    setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
+    setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName);
+    setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
+    setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
+  }
+}
+
+function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, globals) {
+  const accountDetailsList = response.customerAccountDetailsDTO;
+  const responseLength = accountDetailsList.length;
+  // globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.multipleAccounts.multipleAccountRepeatable[0]?.AccountNumber, { value: accountDetailsList[0].accountNumber });
+  if (responseLength > 1) {
+    globals.functions.setProperty(singleAccountCust, { visible: false });
+    globals.functions.setProperty(multipleAccountsPanel, { visible: true });
+    globals.functions.setProperty(globals.form.wizardPanel.continue, { visible: false });
+    globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: true });
+    accountDetailsList.forEach((accountDetail, i) => {
+      if (i < accountDetailsList.length - 1) {
+        globals.functions.dispatchEvent(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.multipleAccounts.multipleAccountRepeatable, 'addItem');
+      }
+      setTimeout(() => {
+        prefillAccountDetail(response, globals, i, responseLength);
+        const radioButtons = Array.from(document.querySelectorAll('.field-multiplecustidaccount input'));
+        radioButtons.forEach((radioButton) => {
+          radioButton.setAttribute('name', 'cust-id-radio');
+        });
+      }, 1000);
+    });
+  } else {
+    globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.nro_account_type_pannel, { visible: true });
+    globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
+    prefillAccountDetail(response, globals, '', responseLength);
+  }
+  prefillCustomerDetail(response, globals);
+}
+
+setTimeout(() => {
+  if (typeof window !== 'undefined') { /* check document-undefined */
+    getCountryCodes(document.querySelector('.field-countrycode select'));
+  }
+}, 2000);
 
 /**
  * @name resendOTP
@@ -649,7 +768,6 @@ export {
   otpTimer,
   otpValidationNRE,
   updateOTPHelpText,
-  prefillCustomerDetails,
   getCountryCodes,
   resendOTP,
   customFocus,
@@ -660,4 +778,5 @@ export {
   addPageNameClassInBody,
   showFinancialDetails,
   showNomineeDetails,
+  multiCustomerId,
 };
