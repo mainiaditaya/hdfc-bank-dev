@@ -336,19 +336,7 @@ const checkModeFd = async (globals) => {
       let fullAadhaarAddress = [Address1, Address2, Address3, City, State, Zipcode].filter(Boolean).join(', ');
       if (isValidAadhaarPincode.result === 'true') {
         aadhaarAddress = [Address1, Address2, Address3].filter(Boolean).join(' ');
-        if (aadhaarAddress.length < FD_CONSTANT.MIN_ADDRESS_LENGTH) {
-          aadhaarAddress.Address2 = City;
-        } else {
-          parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
-          const [permanentAddress1, permanentAddress2, permanentAddress3] = parsedAadhaarAddress;
-
-          Object.assign(formData.currentFormContext.executeInterfaceRequest.requestString, {
-            permanentAddress1,
-            permanentAddress2,
-            permanentAddress3,
-            perAddressType: '4',
-          });
-        }
+        parsedAadhaarAddress = parseCustomerAddress(aadhaarAddress);
         fullAadhaarAddress = `${parsedAadhaarAddress.join(', ')} ${City} ${State} ${Zipcode}`;
       } else {
         globals.functions.setProperty(addressDeclarationPanel?.aadhaarAddressDeclaration?.aadhaarBankStatement, { visible: false });
@@ -366,14 +354,13 @@ const checkModeFd = async (globals) => {
       globals.functions.setProperty(currentResidenceAddressBiometricOVD.currentResAddressBiometricOVD, { value: communicationAddress });
       globals.functions.setProperty(addressDeclarationPanel, { visible: true });
 
-      formData.currentFormContext.mobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'y';
-      CURRENT_FORM_CONTEXT.mobileMatch = formData.currentFormContext.mobileMatch;
-      globals.functions.setProperty(globals.form?.selectKYCOptionsPanel?.aadhaarMobileMatch, { value: formData.currentFormContext.mobileMatch ? 'Yes' : 'No' });
+      const isMobileMatch = formData?.aadhaarMobileMatch?.toLowerCase() === 'true';
+      globals.functions.setProperty(globals.form?.selectKYCOptionsPanel?.aadhaarMobileMatch, { value: isMobileMatch ? 'Yes' : 'No' });
 
       globals.functions.setProperty(proceedFromAddressDeclarationIdcom, { visible: !formData?.currentFormContext?.customerIdentityChange });
       globals.functions.setProperty(proceedFromAddressDeclaration, { visible: formData?.currentFormContext?.customerIdentityChange });
 
-      if (formData?.aadhaar_otp_val_data?.result?.mobileValid?.toLowerCase() === 'n') {
+      if (!isMobileMatch) {
         globals.functions.setProperty(TnCAadhaarNoMobMatchLabel, { visible: true });
         globals.functions.setProperty(TnCAadhaarNoMobMatch, { visible: true });
       }
