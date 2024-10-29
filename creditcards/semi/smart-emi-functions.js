@@ -29,8 +29,7 @@ import {
   handleMdmUtmParam,
 } from './semi-mdm-utils.js';
 
-import { invokeJourneyDropOffByParam } from '../../common/journey-utils.js';
-import { invokeJourneyDropOffUpdate, invokeJourneyDropOff } from './semi-journey-utils.js';
+import { invokeJourneyDropOffUpdate, invokeJourneyDropOff, invokeJourneyDropOffByParam } from './semi-journey-utils.js';
 import { reloadPage } from '../../common/functions.js';
 import {
   sendAnalytics,

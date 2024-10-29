@@ -104,7 +104,32 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
 
+/**
+  * @name invokeJourneyDropOffByParam
+  * @param {string} mobileNumber
+  * @param {string} leadProfileId
+  * @param {string} journeyId
+  * @return {PROMISE}
+  */
+const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
+  mobileNumber = mobileNumber?.trim();
+  const journeyJSONObj = {
+    RequestPayload: {
+      leadProfile: {
+        ...(mobileNumber?.length < 10 ? {} :  { mobileNumber }),
+      },
+      journeyInfo: {
+        journeyID,
+      },
+    },
+  };
+  const url = urlPath(ENDPOINTS.journeyDropOffParam);
+  const method = 'POST';
+  return fetchJsonResponse(url, journeyJSONObj, method);
+};
+
 export {
   invokeJourneyDropOff,
   invokeJourneyDropOffUpdate,
+  invokeJourneyDropOffByParam
 };
