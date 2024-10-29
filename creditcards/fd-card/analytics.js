@@ -5,6 +5,7 @@ import { setAnalyticPageLoadProps, setAnalyticClickGenericProps, hashPhoneNumber
 import { createDeepCopyFromBlueprint, santizedFormDataWithContext } from '../../common/formutils.js';
 import { ANALYTICS } from './constant.js';
 
+let isErrorPage = false;
 /**
  * Sends analytics event on page load.
  * @name sendPageloadEvent
@@ -13,10 +14,17 @@ import { ANALYTICS } from './constant.js';
  * @param {string} pageName.
  */
 function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
+  if (isErrorPage) {
+    return;
+  }
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
   digitalData.page.pageInfo.pageName = pageName;
+  let resolvedNextPage = nextPage;
+  if (pageName === 'errorpage') {
+    resolvedNextPage = 'errorPage';
+  }
   setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName, pageName);
-  switch (nextPage) {
+  switch (resolvedNextPage) {
     case 'selectCustomerId':
       digitalData.formDetails.eligibleCustomerID = '';
       break;
@@ -26,6 +34,12 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
     case 'confirmationPage':
       digitalData.formDetails.reference = '';
       digitalData.formDetails.isVideoKYC = '';
+      break;
+    case 'errorPage':
+      isErrorPage = true;
+      digitalData.page.pageInfo.errorMessage = formData.title;
+      digitalData.page.pageInfo.errorAPI = '';
+      digitalData.page.pageInfo.errorCode = formData.status;
       break;
     default:
       // do nothing
@@ -160,6 +174,17 @@ const sendAnalyticsFDClickEvent = (eventType, payload, journeyState, formData) =
 };
 
 /**
+* error page analytics
+* @param {string} pageName
+* @param {string} journeyState
+* @param {object} globals
+*/
+const errorPageLoad = (pageName, journeyState, globals) => {
+  const formData = santizedFormDataWithContext(globals, CURRENT_FORM_CONTEXT);
+  sendPageloadEvent(journeyState, formData, pageName);
+};
+
+/**
 * sendAnalytics
 * @param {string} eventType
 * @param {string} pageName
@@ -168,6 +193,7 @@ const sendAnalyticsFDClickEvent = (eventType, payload, journeyState, formData) =
 * @param {object} globals
 */
 const sendFDAnalytics = (eventType, pageName, payload, journeyState, globals) => {
+  isErrorPage = false;
   const formData = santizedFormDataWithContext(globals, CURRENT_FORM_CONTEXT);
   if (eventType.toLowerCase() === 'page load') {
     sendPageloadEvent(journeyState, formData, pageName);
@@ -176,4 +202,7 @@ const sendFDAnalytics = (eventType, pageName, payload, journeyState, globals) =>
   }
 };
 
-export default sendFDAnalytics;
+export {
+  sendFDAnalytics,
+  errorPageLoad,
+};

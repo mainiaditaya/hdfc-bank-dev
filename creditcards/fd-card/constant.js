@@ -177,6 +177,13 @@ const ANALYTICS = {
       journeyState: '',
       nextPage: '',
     },
+    errorpage: {
+      type: 'click',
+      name: 'error page',
+      pageName: 'Error Page',
+      journeyState: '',
+      nextPage: 'errorPage',
+    },
   },
 };
 

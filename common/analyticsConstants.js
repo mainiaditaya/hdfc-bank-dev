@@ -58,6 +58,11 @@ const data = {
     linkName: 'Confirmation Page',
     linkPosition: 'Form',
   },
+  'error page': {
+    linkType: 'button',
+    linkName: 'Error Page',
+    linkPosition: 'Form',
+  },
   'check offers': {
     linkType: 'button',
     linkName: 'Check Offers',
