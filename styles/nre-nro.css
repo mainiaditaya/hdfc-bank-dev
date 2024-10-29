@@ -383,7 +383,7 @@
                     line-height: 28px;
                     margin: 0;
                     color: var(--color-interface-text-secondary);
-                    display: none;
+                    display: none;                   
 
                     @media (320px <=width <=600px) {
                       top: 65px;
@@ -438,6 +438,13 @@
                       }
                     }
 
+                    &:has(input:not([edit-value="Date of Birth"])){
+                      label{
+                        @media (320px <=width <=991px) {
+                          display: block;
+                        }
+                      }
+                    }
                     input:not([edit-value="Date of Birth"]) {
                       background: url("../icons//cal_icon.png") no-repeat 97.2%;
                       font-weight: 500;
@@ -455,6 +462,9 @@
                       top: 12px;
                       font-size: 14px;
                       line-height: 20px;
+                      @media (320px <=width <=991px) {
+                        display: block;
+                      }
 
                       @media (320px <=width <=600px) {
                         top: 45px;
