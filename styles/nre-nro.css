@@ -2821,7 +2821,7 @@
           }
 
           .field-thankyouleftpanel {
-            flex: 0 0 74%;
+            flex: 0 0 73%;
             margin-top: -60px;
 
             @media (320px <=width <=991px) {
