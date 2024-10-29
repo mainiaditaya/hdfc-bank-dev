@@ -497,6 +497,7 @@ function prefillAccountDetail(response, globals, i, responseLength) {
     customerID,
     singleAccount,
     multipleAccounts,
+    custIDWithoutMasking,
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount;
 
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
@@ -505,9 +506,9 @@ function prefillAccountDetail(response, globals, i, responseLength) {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-
   setFormValue(customerName, response.customerFullName);
   setFormValue(customerID, maskNumber(response.customerId, 4));
+  setFormValue(custIDWithoutMasking, response.customerId);
   setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
   if (responseLength > 1) {
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].accountNumber, maskNumber(response.customerAccountDetailsDTO[i].accountNumber, 10));
