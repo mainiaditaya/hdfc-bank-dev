@@ -20,11 +20,16 @@ const ERROR_MSG = {
   matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
   invalidAddress: 'Please enter a valid address',
   tooShortAddress: 'Address is too short(minimum 10 charaters)',
-  tooLongAddress: 'Address is too short(maximum 30 charaters)',
-  shorAddressNote: 'Note: Address is too short, please enter valid address.',
+  tooLongAddress: 'Address is too long(maximum 30 charaters)',
+  shortAddressNote: 'Note: Address is too short, please enter valid address.',
   invalidPinNote: 'Note: Pincode is not matching with the city in address as per the bank records, please provide correct address.',
   sessionExpired: 'Session expired',
   branchVisitWithRefNum: 'Visit your nearest dealership or HDFC Bank branch with reference number:',
+  aadhaarMaxOtpAttemptsTitle: 'OTP Attempt Limit Reached',
+  aadhaarMaxOtpAttempts: 'You have exceeded the maximum number of OTP attempts.',
+  aadhaarMaxOtpAttemptsStatusCode: '35',
+  aadhaarTimeoutTitle: 'Aadhaar eKYC Unavailable Due to Technical Issues',
+  aadhaarTimeout: 'Sorry, we are unable to proceed with Aadhaar EKYC due to technical issues.',
 };
 
 const FD_ENDPOINTS = {
