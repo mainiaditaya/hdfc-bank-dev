@@ -1,7 +1,9 @@
 import { CURRENT_FORM_CONTEXT, ENDPOINTS } from '../../common/constants.js';
 import { restAPICall } from '../../common/makeRestAPI.js';
-import { JOURNEY_NAME } from './constant.js';
-import { formUtil, urlPath } from '../../common/formutils.js';
+import { EMPLOYEE_SECTION_VISIBILITY, JOURNEY_NAME } from './constant.js';
+import { formUtil, getUrlParamCaseInsensitive, urlPath } from '../../common/formutils.js';
+import { addDisableClass } from '../domutils/domutils.js';
+import { setVisibility } from './fd-journey-util.js';
 
 const RESUME_JOURNEY_JSON_OBJECT = {};
 
@@ -166,11 +168,33 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   setFormValue(employeeAssistance.employeeAssistancePanel.channel, resumeJourneyResponse?.FDlienCard?.channel);
   setFormValue(employeeAssistance.employeeAssistancePanel.branchCode, resumeJourneyResponse?.FDlienCard?.branchCode);
   setFormValue(employeeAssistance.employeeAssistancePanel.dsaCode, resumeJourneyResponse?.FDlienCard?.dsaCode);
-  setFormValue(employeeAssistance.employeeAssistancePanel.dsaName, resumeJourneyResponse?.FDlienCard?.dsaName);
   setFormValue(employeeAssistance.employeeAssistancePanel.lc1Code, resumeJourneyResponse?.FDlienCard?.lc1Code);
   setFormValue(employeeAssistance.employeeAssistancePanel.lc2Code, resumeJourneyResponse?.FDlienCard?.lc2Code);
   setFormValue(employeeAssistance.employeeAssistancePanel.lgCode, resumeJourneyResponse?.FDlienCard?.lgCode);
   setFormValue(employeeAssistance.employeeAssistancePanel.smCode, resumeJourneyResponse?.FDlienCard?.smCode);
+  setFormValue(employeeAssistance.employeeAssistancePanel.tseLgCode, resumeJourneyResponse?.FDlienCard?.tseLgCode);
+  setFormValue(employeeAssistance.employeeAssistancePanel.cardsBdrLc1, resumeJourneyResponse?.FDlienCard?.cardsBdrLc1);
+
+  const propertiesToHide = EMPLOYEE_SECTION_VISIBILITY?.[resumeJourneyResponse?.FDlienCard?.channel?.toLowerCase()] || EMPLOYEE_SECTION_VISIBILITY.default;
+  setVisibility(employeeAssistance.employeeAssistancePanel, propertiesToHide, false, globals);
+
+  const codes = {
+    lc1Code: getUrlParamCaseInsensitive('lc1'),
+    lgCode: getUrlParamCaseInsensitive('lgcode'),
+    smCode: getUrlParamCaseInsensitive('smcode'),
+    lc2Code: getUrlParamCaseInsensitive('lc2'),
+    dsaCode: getUrlParamCaseInsensitive('dsacode'),
+    branchCode: getUrlParamCaseInsensitive('branchcode'),
+  };
+  const changeDataAttrDisableObj = { attrChange: true, value: false, disable: true };
+  ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
+    const util = formUtil(globals, employeeAssistance.employeeAssistancePanel[code]);
+    if (codes[code] !== null) util.setValue(codes[code], changeDataAttrDisableObj);
+  });
+  const personaldetails = document.querySelector('.field-personaldetails');
+  setTimeout(() => {
+    addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
+  }, 100);
 };
 
 const getResumeJourneyJsonObject = () => RESUME_JOURNEY_JSON_OBJECT;
