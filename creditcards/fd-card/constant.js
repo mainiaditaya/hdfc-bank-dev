@@ -19,8 +19,8 @@ const ERROR_MSG = {
   invalidPan: 'Maximum PAN retry attempts exceeded.',
   matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
   invalidAddress: 'Please enter a valid address',
-  tooShortAddress: 'Address is too short(minimum 10 charaters)',
-  tooLongAddress: 'Address is too long(maximum 30 charaters)',
+  tooShortAddress: 'Address is too short(minimum 10 characters)',
+  tooLongAddress: 'Address is too long(maximum 30 characters)',
   shortAddressNote: 'Note: Address is too short, please enter valid address.',
   invalidPinNote: 'Note: Pincode is not matching with the city in address as per the bank records, please provide correct address.',
   sessionExpired: 'Session expired',
@@ -212,6 +212,13 @@ const EMPLOYEE_MAP = {
   5: '',
 };
 
+const EMPLOYEE_SECTION_VISIBILITY = {
+  'website download': ['branchCity', 'branchCode', 'branchName', 'cardsBdrLc1', 'tseLgCode', 'dsaCode', 'dsaName', 'lc1Code', 'lc2Code', 'lgCode', 'smCode'],
+  branch: ['dsaCode', 'dsaName', 'lc1Code', 'lgCode'],
+  dsa: ['branchCity', 'branchCode', 'branchName', 'tseLgCode', 'cardsBdrLc1'],
+  default: ['branchCity', 'branchCode', 'branchName', 'cardsBdrLc1', 'tseLgCode', 'dsaCode', 'dsaName'],
+};
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,
@@ -233,4 +240,5 @@ export {
   ALLOWED_CHARACTERS,
   EMPLOYEE_MAP,
   MAX_FULLNAME_LENGTH,
+  EMPLOYEE_SECTION_VISIBILITY,
 };

@@ -25,9 +25,11 @@ import {
   OCCUPATION_MAP,
   ALLOWED_CHARACTERS,
   MAX_FULLNAME_LENGTH,
+  EMPLOYEE_SECTION_VISIBILITY,
 } from './constant.js';
 import { fullNamePanValidation } from '../../common/panvalidation.js';
-import { sendFDAnalytics } from './analytics.js';
+import sendFDAnalytics from './analytics.js';
+import { setVisibility } from './fd-journey-util.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
 const CUSTOMER_DETAILS_STATE = {
@@ -296,12 +298,6 @@ const validateFdEmail = async (email, globals) => {
   }
 };
 
-const setVisibility = (panel, properties, visibility, globals) => {
-  properties.forEach((property) => {
-    globals.functions.setProperty(panel[property], { visible: visibility });
-  });
-};
-
 /**
  *
  * @name channelChangeHandler
@@ -310,15 +306,7 @@ const setVisibility = (panel, properties, visibility, globals) => {
 const channelChangeHandler = (globals) => {
   const { employeeAssistancePanel } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
   const channelValue = employeeAssistancePanel.channel._data.$_value;
-
-  const visibilitySettings = {
-    'website download': ['branchCity', 'branchCode', 'branchName', 'cardsBdrLc1', 'tseLgCode', 'dsaCode', 'dsaName', 'lc1Code', 'lc2Code', 'lgCode', 'smCode'],
-    branch: ['dsaCode', 'dsaName', 'lc1Code', 'lgCode'],
-    dsa: ['branchCity', 'branchCode', 'branchName', 'tseLgCode', 'cardsBdrLc1'],
-    default: ['branchCity', 'branchCode', 'branchName', 'cardsBdrLc1', 'tseLgCode', 'dsaCode', 'dsaName'],
-  };
-
-  const propertiesToHide = visibilitySettings[channelValue.toLowerCase()] || visibilitySettings.default;
+  const propertiesToHide = EMPLOYEE_SECTION_VISIBILITY?.[channelValue.toLowerCase()] || EMPLOYEE_SECTION_VISIBILITY.default;
   setVisibility(employeeAssistancePanel, propertiesToHide, false, globals);
 };
 
@@ -531,8 +519,16 @@ const addressChangeHandler = (addressLineNumber, globals) => {
     } else if (currentAddress && otherAddress && currentAddress === otherAddress && currentAddress.length > 1) {
       globals.functions.markFieldAsInvalid(currentAddressField.$qualifiedName, ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
     } else if (currentAddress && otherAddress && currentAddress !== otherAddress && currentAddress.length > 1) {
-      globals.functions.setProperty(currentAddressField, { valid: true });
-      globals.functions.setProperty(otherAddressField, { valid: true });
+      if (currentAddressField.$name === 'newCurrentAddressLine1') {
+        if (otherAddress.length >= 10) {
+          globals.functions.setProperty(currentAddressField, { valid: true });
+          globals.functions.setProperty(otherAddressField, { valid: true });
+        }
+      }
+      if (currentAddressField.$name === 'newCurrentAddressLine2') {
+        if (currentAddress !== otherAddress) globals.functions.setProperty(currentAddressField, { valid: true });
+        globals.functions.setProperty(currentAddressField, { valid: true });
+      }
     } else {
       globals.functions.setProperty(currentAddressField, { valid: true });
     }

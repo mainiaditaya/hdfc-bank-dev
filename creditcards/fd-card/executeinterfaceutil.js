@@ -72,9 +72,9 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
   if (!CURRENT_FORM_CONTEXT?.editFlags?.nameOnCard) {
     nameOnCard = personalDetails.nameOnCardDD?.$value?.toUpperCase()?.replace(/\s+/g, ' ');
   }
-  const annualIncome = employmentDetails?.annualIncome?._data?.$_value || '';
-  const empAssistanceToggle = employeeAssistanceToggle?._data?.$_value === 'on';
-  const companyName = employmentDetails.employmentType._data.$_value === '1' || employmentDetails.employmentType._data.$_value === '2' ? customerInfo?.customerFullName : '';
+  const annualIncome = employmentDetails?.annualIncome?.$value ?? '';
+  const empAssistanceToggle = employeeAssistanceToggle?.$value === 'on';
+  const companyName = employmentDetails.employmentType?.$value === '1' || employmentDetails.employmentType.$value === '2' ? customerInfo?.customerFullName : '';
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag ? 'Y' : 'N',
@@ -86,7 +86,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       authMode: '',
       bankAccountNumber: SELECTED_CUSTOMER_ID?.selectedCustId?.codAcctNo,
       bankEmployee: 'N',
-      branchCity: (empAssistanceToggle && employeeAssistancePanel?.branchCity?._data?.$_value) || '',
+      branchCity: (empAssistanceToggle && employeeAssistancePanel?.branchCity?.$value) || '',
       branchName: (empAssistanceToggle && employeeAssistancePanel?.branchName?._data?.$_value) || '',
       CCAD_Relationship_number: '',
       cardsData: '',
@@ -296,6 +296,7 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
       requestObj.requestString.authMode = 'IDCOM';
     }
   }
+  requestObj.requestString.ekycMobileMatch = globals.functions.exportData()?.aadhaarMobileMatch || '';
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   const eventHandlers = {
     successCallBack: (response) => {
