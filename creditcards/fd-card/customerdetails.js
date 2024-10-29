@@ -519,8 +519,16 @@ const addressChangeHandler = (addressLineNumber, globals) => {
     } else if (currentAddress && otherAddress && currentAddress === otherAddress && currentAddress.length > 1) {
       globals.functions.markFieldAsInvalid(currentAddressField.$qualifiedName, ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
     } else if (currentAddress && otherAddress && currentAddress !== otherAddress && currentAddress.length > 1) {
-      globals.functions.setProperty(currentAddressField, { valid: true });
-      globals.functions.setProperty(otherAddressField, { valid: true });
+      if (currentAddressField.$name === 'newCurrentAddressLine1') {
+        if (otherAddress.length >= 10) {
+          globals.functions.setProperty(currentAddressField, { valid: true });
+          globals.functions.setProperty(otherAddressField, { valid: true });
+        }
+      }
+      if (currentAddressField.$name === 'newCurrentAddressLine2') {
+        if (currentAddress !== otherAddress) globals.functions.setProperty(currentAddressField, { valid: true });
+        globals.functions.setProperty(currentAddressField, { valid: true });
+      }
     } else {
       globals.functions.setProperty(currentAddressField, { valid: true });
     }
