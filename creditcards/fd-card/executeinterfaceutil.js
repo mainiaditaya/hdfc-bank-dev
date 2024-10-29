@@ -296,6 +296,7 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
       requestObj.requestString.authMode = 'IDCOM';
     }
   }
+  requestObj.requestString.ekycMobileMatch = globals.functions.exportData()?.aadhaarMobileMatch || '';
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   const eventHandlers = {
     successCallBack: (response) => {
