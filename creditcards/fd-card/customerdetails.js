@@ -207,7 +207,7 @@ const bindCustomerDetails = async (globals) => {
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
     if (addressLine1.length < 10 || addressLine2 === '') {
       const { newCurrentAddressLine1, newCurrentAddressLine2, newCurentAddressPin } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
-      globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shorAddressNote, visible: true });
+      globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shortAddressNote, visible: true });
       globals.functions.setProperty(newCurrentAddressLine1, { value: addressLine1 });
       globals.functions.setProperty(newCurrentAddressLine2, { value: addressLine2 });
       globals.functions.setProperty(newCurentAddressPin, { value: pincode });
@@ -516,33 +516,26 @@ const panvalidationSuccessHandler = (response, globals) => {
 const addressChangeHandler = (addressLineNumber, globals) => {
   const { newCurrentAddressLine1, newCurrentAddressLine2 } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
   const regexPattern = /^(?!.*(.)\1\1\1)[a-zA-Z0-9/,\- ]+$/;
-  const addressFields = [
-    { field: newCurrentAddressLine1, name: 'newCurrentAddressLine1' },
-    { field: newCurrentAddressLine2, name: 'newCurrentAddressLine2' },
-  ];
+  const currentAddressField = globals.field;
+  const otherAddressField = currentAddressField.$name === newCurrentAddressLine1.$name ? newCurrentAddressLine2 : newCurrentAddressLine1;
+  const currentAddress = currentAddressField?.$value?.toLowerCase()?.trim();
+  const otherAddress = otherAddressField?.$value?.toLowerCase()?.trim();
 
-  addressFields.forEach(({ field, name }) => {
-    const addressLine = field?.$value?.toLowerCase();
-    if (addressLine) {
-      if (!regexPattern.test(addressLine)) {
-        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.invalidAddress, { useQualifiedName: true });
-      } else if (addressLine.length > 30) {
-        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.tooLongAddress, { useQualifiedName: true });
-      } else if (name === 'newCurrentAddressLine1' && addressLine.length < 10) {
-        globals.functions.markFieldAsInvalid(`$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.${name}`, ERROR_MSG.tooShortAddress, { useQualifiedName: true });
-      } else {
-        globals.functions.setProperty(field, { valid: true });
-      }
+  if (currentAddress) {
+    if (!regexPattern.test(currentAddress)) {
+      globals.functions.markFieldAsInvalid(currentAddressField.$qualifiedName, ERROR_MSG.invalidAddress, { useQualifiedName: true });
+    } else if (currentAddress.length > 30) {
+      globals.functions.markFieldAsInvalid(currentAddressField.$qualifiedName, ERROR_MSG.tooLongAddress, { useQualifiedName: true });
+    } else if (currentAddressField.$name === 'newCurrentAddressLine1' && currentAddress.length < 10) {
+      globals.functions.markFieldAsInvalid(currentAddressField.$qualifiedName, ERROR_MSG.tooShortAddress, { useQualifiedName: true });
+    } else if (currentAddress && otherAddress && currentAddress === otherAddress && currentAddress.length > 1) {
+      globals.functions.markFieldAsInvalid(currentAddressField.$qualifiedName, ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
+    } else if (currentAddress && otherAddress && currentAddress !== otherAddress && currentAddress.length > 1) {
+      globals.functions.setProperty(currentAddressField, { valid: true });
+      globals.functions.setProperty(otherAddressField, { valid: true });
+    } else {
+      globals.functions.setProperty(currentAddressField, { valid: true });
     }
-  });
-
-  const addressLine1 = newCurrentAddressLine1?.$value?.toLowerCase();
-  const addressLine2 = newCurrentAddressLine2?.$value?.toLowerCase();
-
-  if (addressLine1 && addressLine2 && addressLine1 === addressLine2 && addressLine1.length > 1) {
-    globals.functions.markFieldAsInvalid('$form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel.newCurrentAddressLine2', ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
-  } else {
-    globals.functions.setProperty(newCurrentAddressLine2, { valid: true });
   }
 };
 
