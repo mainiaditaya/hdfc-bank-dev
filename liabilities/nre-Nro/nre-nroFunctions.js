@@ -597,7 +597,7 @@ const createIdComRequestObj = (globals) => {
   const formData = santizedFormDataWithContext(globals);
   const idComObj = {
     requestString: {
-      CustID : globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value,
+      CustID: globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value,
       ProductCode: 'ADETBACO',
       userAgent: window.navigator.userAgent,
       journeyID: formData.journeyId,
