@@ -36,7 +36,7 @@ const FORM_CONSTANT = [
       loadTime: 3600,
     },
   },
-  {
+    {
     // NRE NRO
     formPath: ['nre-nro', 'account-opening-nre-nro'],
     class: 'nre',
@@ -123,6 +123,7 @@ async function loadEager(doc) {
     if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
       loadFonts();
     }
+    
     const pathName = window.location.pathname;
     FORM_CONSTANT.some((form) => {
       if (form.formPath.some((el) => pathName.includes(el))) {
@@ -163,7 +164,6 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
-  window.setTimeout(() => loadScript('https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-e17de29eec01-development.min.js'), 3600);
   const pathName = window.location.pathname;
   FORM_CONSTANT.some((form) => {
     if (form.urlKey.some((el) => pathName.includes(el))) {

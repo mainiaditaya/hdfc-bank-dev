@@ -44,6 +44,7 @@ let defaultDropdownIndex = -1;
 let resendOtpCount = 0;
 const MAX_OTP_RESEND_COUNT = 3;
 const OTP_TIMER = 30;
+let MAX_COUNT = 3;
 let sec = OTP_TIMER;
 let dispSec = OTP_TIMER;
 
@@ -156,7 +157,6 @@ const validateLogin = (globals) => {
   const mobileNo = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value;
   const isdCode = (globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.countryCode.$value)?.replace(/[^a-zA-Z0-9]+/g, '');
   const dobValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.dateOfBirth.$value;
-  // const dobValue = '';
   const panValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.pan.$value;
   const panDobSelection = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.panDobSelection.$value;
   const radioSelect = (panDobSelection === '0') ? 'DOB' : 'PAN';
@@ -173,7 +173,6 @@ const validateLogin = (globals) => {
 
   switch (radioSelect) {
     case 'DOB':
-      // dobValue = '1988-09-14';
       if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
         const minAge = 18;
         const maxAge = 120;
@@ -234,7 +233,6 @@ const validateLogin = (globals) => {
 };
 
 const getOtpNRE = (mobileNumber, pan, dob, globals) => {
-  // Promise.resolve(sendAnalytics('otp click', { }, 'CUSTOMER_IDENTITY_RESOLVED', globals));
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
   const [year, month, day] = dob.$value.split('-');
@@ -247,7 +245,6 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
     requestString: {
       mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
       dateOfBirth: year + month + day,
-      // dateOfBirth: clearString(dob.$value) || '',
       panNumber: pan.$value || '',
       journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
@@ -305,7 +302,7 @@ const getCountryCodes = (dropdown) => {
     });
     dropdown.dispatchEvent(event);
   }).catch((error) => {
-    console.error('Promise rejected:', error); // Handle any error (failure case)
+    console.error('Dropdown Promise rejected:', error); // Handle any error (failure case)
   });
 };
 
@@ -370,14 +367,14 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 }
 
-function setupBankUseSection(globals) {
+function setupBankUseSection(mainBankUsePanel, globals) {
   /* eslint-disable prefer-destructuring */
   const urlParams = new URLSearchParams(window.location.search);
   const utmParams = {};
-  const lgCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode;
-  const lcCode = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lcCode;
-  const toggle = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.bankUseToggle;
-  const resetAllBtn = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.resetAllBtn;
+  const lgCode = mainBankUsePanel.lgCode;
+  const lcCode = mainBankUsePanel.lcCode;
+  const toggle = mainBankUsePanel.bankUseToggle;
+  const resetAllBtn = mainBankUsePanel.resetAllBtn;
   globals.functions.setProperty(toggle, { checked: true });
   if (urlParams.size > 0) {
     ['lgCode', 'lcCode'].forEach((param) => {
@@ -554,12 +551,6 @@ function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, glo
   prefillCustomerDetail(response, globals);
 }
 
-setTimeout(() => {
-  if (typeof window !== 'undefined') { /* check document-undefined */
-    getCountryCodes(document.querySelector('.field-countrycode select'));
-  }
-}, 2000);
-
 /**
  * @name resendOTP
  * @param {Object} globals - The global object containing necessary data for DAP request.
@@ -606,8 +597,7 @@ const createIdComRequestObj = (globals) => {
   const formData = santizedFormDataWithContext(globals);
   const idComObj = {
     requestString: {
-      // CustID : globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value,
-      CustID: '901037469',
+      CustID : globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value,
       ProductCode: 'ADETBACO',
       userAgent: window.navigator.userAgent,
       journeyID: formData.journeyId,
@@ -634,15 +624,10 @@ const fetchAuthCode = (globals) => {
   return fetchJsonResponse(apiEndPoint, idComRequest, 'POST');
 };
 
-/**
- * does the custom show hide of panel or screens in resend otp.
- * @param {string} errorMessage
- * @param {number} numRetries
- * @param {object} globals
- */
-function customFocus(errorMessage, numRetries, globals) {
-  if (numRetries === 1) {
-    globals.functions.setProperty(globals.form.errorPanel.otppanelwrapper.incorrectOTPPanel, { visible: true });
+function customFocus(numRetries, globals) {
+  MAX_COUNT -= 1;
+  if (MAX_COUNT < MAX_OTP_RESEND_COUNT) {
+    globals.functions.setProperty(numRetries, { value: `${MAX_COUNT}/${MAX_OTP_RESEND_COUNT}` });
   }
 }
 
@@ -671,7 +656,7 @@ const finalResult = {
 const searchParam = new URLSearchParams(window.location.search);
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
-const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'NetBanking')); // debit card or credit card flow
+const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'NetBanking')); // debit card or net banking flow
 
 /**
  * @name nreNroFetchRes - async action call maker until it reaches the final response.
