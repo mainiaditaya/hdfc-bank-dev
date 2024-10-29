@@ -19,12 +19,8 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
   }
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
   digitalData.page.pageInfo.pageName = pageName;
-  let resolvedNextPage = nextPage;
-  if (pageName === 'errorpage') {
-    resolvedNextPage = 'errorPage';
-  }
   setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName, pageName);
-  switch (resolvedNextPage) {
+  switch (nextPage) {
     case 'selectCustomerId':
       digitalData.formDetails.eligibleCustomerID = '';
       break;
@@ -34,12 +30,6 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
     case 'confirmationPage':
       digitalData.formDetails.reference = '';
       digitalData.formDetails.isVideoKYC = '';
-      break;
-    case 'errorPage':
-      isErrorPage = true;
-      digitalData.page.pageInfo.errorMessage = formData.title;
-      digitalData.page.pageInfo.errorAPI = '';
-      digitalData.page.pageInfo.errorCode = formData.status;
       break;
     default:
       // do nothing
@@ -174,15 +164,24 @@ const sendAnalyticsFDClickEvent = (eventType, payload, journeyState, formData) =
 };
 
 /**
-* error page analytics
-* @param {string} pageName
+* sendErrorAnalytics
+* @param {string} errorCode
+* @param {string} errorMsg
 * @param {string} journeyState
 * @param {object} globals
 */
-const errorPageLoad = (pageName, journeyState, globals) => {
-  const formData = santizedFormDataWithContext(globals, CURRENT_FORM_CONTEXT);
-  sendPageloadEvent(journeyState, formData, pageName);
-};
+function sendFDErrorAnalytics(errorCode, errorMsg, journeyState, globals) {
+  isErrorPage = true;
+  const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
+  setAnalyticPageLoadProps(journeyState, santizedFormDataWithContext(globals), digitalData);
+  digitalData.page.pageInfo.errorMessage = errorMsg;
+  digitalData.page.pageInfo.errorAPI = '';
+  digitalData.page.pageInfo.errorCode = errorCode;
+  if (window) {
+    window.digitalData = digitalData || {};
+  }
+  _satellite.track('pageload');
+}
 
 /**
 * sendAnalytics
@@ -204,5 +203,5 @@ const sendFDAnalytics = (eventType, pageName, payload, journeyState, globals) =>
 
 export {
   sendFDAnalytics,
-  errorPageLoad,
+  sendFDErrorAnalytics,
 };

@@ -106,7 +106,7 @@ import {
 } from './kycUtil.js';
 
 import { ratingButtonUI, copyToClipBoard, ratingSubmitted } from './thankyouutil.js';
-import { sendFDAnalytics, errorPageLoad } from './analytics.js';
+import { sendFDAnalytics, sendFDErrorAnalytics } from './analytics.js';
 
 import { hideLoaderGif } from '../domutils/domutils.js';
 
@@ -177,7 +177,7 @@ export {
   copyToClipBoard,
   ratingSubmitted,
   sendFDAnalytics,
-  errorPageLoad,
+  sendFDErrorAnalytics,
   fullNameChangeHandler,
   hideLoaderGif,
   checkPanValidation,
