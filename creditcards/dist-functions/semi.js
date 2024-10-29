@@ -206,8 +206,8 @@
   // impoted as CONSTANT key name in all files
 
   const BASEURL$2 = getSubmitBaseUrl();
-  const CHANNEL$2 = 'ADOBE_WEBFORMS';
-  const ENDPOINTS$2 = {
+  const CHANNEL$1 = 'ADOBE_WEBFORMS';
+  const ENDPOINTS$1 = {
     aadharCallback: '/content/hdfc_etb_wo_pacc/api/aadharCallback.json',
     aadharInit: '/content/hdfc_haf/api/aadhaarInit.json',
     fetchAuthCode: '/content/hdfc_commonforms/api/fetchauthcode.json',
@@ -256,10 +256,10 @@
   var CONSTANT = /*#__PURE__*/Object.freeze({
     __proto__: null,
     BASEURL: BASEURL$2,
-    CHANNEL: CHANNEL$2,
+    CHANNEL: CHANNEL$1,
     CURRENT_FORM_CONTEXT: CURRENT_FORM_CONTEXT$1,
     DEAD_PAN_STATUS: DEAD_PAN_STATUS,
-    ENDPOINTS: ENDPOINTS$2,
+    ENDPOINTS: ENDPOINTS$1,
     get ENV () { return ENV; },
     FORM_RUNTIME: FORM_RUNTIME,
     ID_COM: ID_COM
@@ -1460,34 +1460,6 @@
     }
   };
 
-  /* eslint no-bitwise: ["error", { "allow": ["^", ">>", "&"] }] */
-
-
-  const { ENDPOINTS: ENDPOINTS$1, CHANNEL: CHANNEL$1, CURRENT_FORM_CONTEXT: currentFormContext$3 } = CONSTANT;
-
-  /**
-    * @name invokeJourneyDropOffByParam
-    * @param {string} mobileNumber
-    * @param {string} leadProfileId
-    * @param {string} journeyId
-    * @return {PROMISE}
-    */
-  const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
-    const journeyJSONObj = {
-      RequestPayload: {
-        leadProfile: {
-          mobileNumber,
-        },
-        journeyInfo: {
-          journeyID,
-        },
-      },
-    };
-    const url = urlPath$1(ENDPOINTS$1.journeyDropOffParam);
-    const method = 'POST';
-    return fetchJsonResponse(url, journeyJSONObj, method);
-  };
-
   /* temproraily added this journey utils for SEMI , journey utils common file has to be changed to generic */
   const CHANNEL = 'ADOBE_WEBFORMS';
   const isNodeEnv$3 = typeof process !== 'undefined' && process.versions && process.versions.node;
@@ -1543,7 +1515,7 @@
         },
       },
     };
-    const url = urlPath(ENDPOINTS$2.journeyDropOff);
+    const url = urlPath(ENDPOINTS$1.journeyDropOff);
     const method = 'POST';
     return fetchJsonResponse(url, journeyJSONObj, method);
   };
@@ -1584,7 +1556,31 @@
         },
       },
     };
-    const url = urlPath(ENDPOINTS$2.journeyDropOffUpdate);
+    const url = urlPath(ENDPOINTS$1.journeyDropOffUpdate);
+    const method = 'POST';
+    return fetchJsonResponse(url, journeyJSONObj, method);
+  };
+
+  /**
+    * @name invokeJourneyDropOffByParam
+    * @param {string} mobileNumber
+    * @param {string} leadProfileId
+    * @param {string} journeyId
+    * @return {PROMISE}
+    */
+  const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
+    mobileNumber = mobileNumber?.trim();
+    const journeyJSONObj = {
+      RequestPayload: {
+        leadProfile: {
+          ...(mobileNumber?.length < 10 ? {} :  { mobileNumber }),
+        },
+        journeyInfo: {
+          journeyID,
+        },
+      },
+    };
+    const url = urlPath("/content/hdfc_commonforms/api/whatsappdata.json");
     const method = 'POST';
     return fetchJsonResponse(url, journeyJSONObj, method);
   };
