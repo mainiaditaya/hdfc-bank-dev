@@ -123,7 +123,7 @@ const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyI
       },
     },
   };
-  const url = urlPath(ENDPOINTS.journeyDropOffParam);
+  const url = urlPath("/content/hdfc_commonforms/api/whatsappdata.json");
   const method = 'POST';
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
