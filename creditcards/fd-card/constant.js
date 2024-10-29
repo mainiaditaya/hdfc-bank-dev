@@ -205,6 +205,13 @@ const EMPLOYEE_MAP = {
   5: '',
 };
 
+const EMPLOYEE_SECTION_VISIBILITY = {
+  'website download': ['branchCity', 'branchCode', 'branchName', 'cardsBdrLc1', 'tseLgCode', 'dsaCode', 'dsaName', 'lc1Code', 'lc2Code', 'lgCode', 'smCode'],
+  branch: ['dsaCode', 'dsaName', 'lc1Code', 'lgCode'],
+  dsa: ['branchCity', 'branchCode', 'branchName', 'tseLgCode', 'cardsBdrLc1'],
+  default: ['branchCity', 'branchCode', 'branchName', 'cardsBdrLc1', 'tseLgCode', 'dsaCode', 'dsaName'],
+};
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,
@@ -226,4 +233,5 @@ export {
   ALLOWED_CHARACTERS,
   EMPLOYEE_MAP,
   MAX_FULLNAME_LENGTH,
+  EMPLOYEE_SECTION_VISIBILITY,
 };

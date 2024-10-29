@@ -102,10 +102,17 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
 
+const setVisibility = (panel, properties, visibility, globals) => {
+  properties.forEach((property) => {
+    globals.functions.setProperty(panel[property], { visible: visibility });
+  });
+};
+
 export {
   invokeJourneyDropOff,
   fdWizardSwitch,
   errorScreenHandler,
   journeyResponseHandler,
   invokeJourneyDropOffUpdate,
+  setVisibility,
 };
