@@ -75,40 +75,6 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
      * @return {PROMISE}
      */
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
-  // temporary_hotfix_radioBtnValues_undefined_issue
-  /* storing the radio btn values in current form context */
-  if ((state === 'IDCOM_REDIRECTION_INITIATED') || (state === 'CUSTOMER_AADHAR_INIT')) {
-    const { form } = globals.functions.exportData();
-    const { selectKYCMethodOption1: { aadharEKYCVerification }, selectKYCMethodOption2: { aadharBiometricVerification }, selectKYCMethodOption3: { officiallyValidDocumentsMethod } } = globals.form.corporateCardWizardView.selectKycPanel.selectKYCOptionsPanel;
-    // ETB OVD
-    // NTB OVD
-    // ETB NO ADRRESS CHANGE
-    /* ovd (ETB + NTB) & ETB address no change cases the cardDeliveryAddressCase1 expression otherwise cardDeliveryAddressCase2 */
-    const cardDeliveryAddressCase1 = {
-      cardDeliveryAddressOption1: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.addressDeclarationOVD.currentAddressOVD.currentAddressOVDOption.$value,
-      cardDeliveryAddressOption2: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.addressDeclarationOVD.officeAddressOVD.officeAddressOVDOption.$value,
-    };
-
-    const cardDeliveryAddressCase2 = {
-      cardDeliveryAddressOption1: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel.cardDeliveryAddressOption1.$value,
-      cardDeliveryAddressOption2: globals.form.corporateCardWizardView.confirmAndSubmitPanel.addressDeclarationPanel.cardDeliveryAddressPanel.cardDeliveryAddressOption2.$value,
-    };
-    const formContextCallbackData = globals.functions.exportData()?.currentFormContext || currentFormContext;
-    const journeyType = formContextCallbackData?.executeInterfaceReqObj?.requestString?.journeyFlag;
-    const biometricStatus = ((aadharBiometricVerification.$value || form.aadharBiometricVerification) && 'bioKyc') || ((aadharEKYCVerification.$value || form.aadharEKYCVerification) && 'aadhaar') || ((officiallyValidDocumentsMethod.$value || form.officiallyValidDocumentsMethod) && 'OVD');
-    const etbAddressChange = formContextCallbackData?.executeInterfaceReqObj?.requestString?.addressEditFlag;
-    const ovdNtbEtbAddressNoChange = ((journeyType === 'ETB') && etbAddressChange === 'N') || ((journeyType === 'ETB') && biometricStatus === 'OVD') || ((journeyType === 'NTB' && biometricStatus === 'OVD'));
-    const deliveryPanelAddress = ovdNtbEtbAddressNoChange ? cardDeliveryAddressCase1 : cardDeliveryAddressCase2;
-
-    currentFormContext.radioBtnValues = {
-      kycMethod: {
-        aadharBiometricVerification: aadharBiometricVerification.$value || form.aadharBiometricVerification,
-        aadharEKYCVerification: aadharEKYCVerification.$value || form.aadharEKYCVerification,
-        officiallyValidDocumentsMethod: officiallyValidDocumentsMethod.$value || form.officiallyValidDocumentsMethod,
-      },
-      deliveryAddress: deliveryPanelAddress,
-    };
-  }
   const sanitizedFormData = santizedFormDataWithContext(globals, currentFormContext);
   const journeyJSONObj = {
     RequestPayload: {

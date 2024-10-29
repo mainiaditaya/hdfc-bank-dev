@@ -640,7 +640,7 @@ async function idComRedirection(globals) {
   } = currentFormContext;
   const resp = await fetchAuthCode(globals);
   if (resp.status.errorMessage === 'Success') {
-    invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
+    await invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
     window.location.href = resp.redirectUrl;
   }
 }
