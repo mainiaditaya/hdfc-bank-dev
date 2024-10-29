@@ -1,7 +1,8 @@
-// declare CONSTANTS for (fd) fd only.
-
+// declare CONSTANTS for NRE NRO only.
+const FORM_NAME = 'NRE NRO Account Opening';
 const CHANNEL = 'WEB';
-const JOURNEY_NAME = 'ACCOPNRENRO';
+// const JOURNEY_NAME = 'ACCOPNRENRO';
+const JOURNEY_NAME = 'ACCOUNTOPENING_NRE_NRO_JOURNEY';
 const VISIT_MODE = 'U';
 const DOM_ELEMENT = {
   identifyYourself: {
@@ -20,4 +21,5 @@ export {
   JOURNEY_NAME,
   VISIT_MODE,
   DOM_ELEMENT,
+  FORM_NAME,
 };

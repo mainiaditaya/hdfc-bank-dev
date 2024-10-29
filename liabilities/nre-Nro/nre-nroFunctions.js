@@ -1,26 +1,36 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 import {
   createJourneyId,
+  nreNroInvokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
 } from './nre-nro-journey-utils.js';
-import {
-  moveWizardView,
-} from '../domutils/domutils.js';
+// import {
+//   moveWizardView,
+// } from '../domutils/domutils.js';
 import {
   ageValidator,
   clearString,
   urlPath,
   getTimeStamp,
   maskNumber,
+  moveWizardView,
   formUtil,
+  santizedFormDataWithContext,
 } from '../../common/formutils.js';
 import {
   displayLoader,
   hideLoaderGif,
   fetchJsonResponse,
 } from '../../common/makeRestAPI.js';
-import * as CONSTANT from '../../common/constants.js';
 import * as NRE_CONSTANT from './constant.js';
+import {
+  ENDPOINTS,
+  CURRENT_FORM_CONTEXT as currentFormContext,
+  FORM_RUNTIME as formRuntime,
+} from '../../common/constants.js';
+import {
+  sendAnalytics,
+} from './analytics.js';
 
 setTimeout(async () => {
   if (typeof window !== 'undefined') {
@@ -37,14 +47,10 @@ const OTP_TIMER = 30;
 let MAX_COUNT = 3;
 let sec = OTP_TIMER;
 let dispSec = OTP_TIMER;
-const {
-  ENDPOINTS,
-  CURRENT_FORM_CONTEXT: currentFormContext,
-  FORM_RUNTIME: formRuntime,
-} = CONSTANT;
 
 const { CHANNEL, JOURNEY_NAME, VISIT_MODE } = NRE_CONSTANT;
 // Initialize all NRE/NRO Journey Context Variables.
+currentFormContext.journeyName = NRE_CONSTANT.JOURNEY_NAME;
 currentFormContext.journeyType = 'NTB';
 currentFormContext.errorCode = '';
 currentFormContext.errorMessage = '';
@@ -239,7 +245,6 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
     requestString: {
       mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
       dateOfBirth: year + month + day,
-      // dateOfBirth: clearString(dob.$value) || '',
       panNumber: pan.$value || '',
       journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
@@ -297,7 +302,7 @@ const getCountryCodes = (dropdown) => {
     });
     dropdown.dispatchEvent(event);
   }).catch((error) => {
-    console.error('Promise rejected:', error); // Handle any error (failure case)
+    console.error('Dropdown Promise rejected:', error); // Handle any error (failure case)
   });
 };
 
@@ -360,6 +365,35 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   const path = urlPath(ENDPOINTS.otpValidationFatca);
   formRuntime?.otpValLoader();
   return fetchJsonResponse(path, jsonObj, 'POST', true);
+}
+
+function setupBankUseSection(mainBankUsePanel, globals) {
+  /* eslint-disable prefer-destructuring */
+  const urlParams = new URLSearchParams(window.location.search);
+  const utmParams = {};
+  const lgCode = mainBankUsePanel.lgCode;
+  const lcCode = mainBankUsePanel.lcCode;
+  const toggle = mainBankUsePanel.bankUseToggle;
+  const resetAllBtn = mainBankUsePanel.resetAllBtn;
+  globals.functions.setProperty(toggle, { checked: true });
+  if (urlParams.size > 0) {
+    ['lgCode', 'lcCode'].forEach((param) => {
+      const value = urlParams.get(param);
+      if (value) {
+        utmParams[param] = value;
+      }
+    });
+
+    globals.functions.setProperty(lgCode, { value: utmParams.lgCode });
+    globals.functions.setProperty(lcCode, { value: utmParams.lcCode });
+  } else {
+    globals.functions.setProperty(lgCode, { value: 'NETADDON' });
+    globals.functions.setProperty(lcCode, { value: 'NRI INSTASTP' });
+  }
+  globals.functions.setProperty(resetAllBtn, { enabled: false });
+  globals.functions.setProperty(toggle, { enabled: false });
+  globals.functions.setProperty(lgCode, { enabled: false });
+  globals.functions.setProperty(lcCode, { enabled: false });
 }
 
 function showFinancialDetails(financialDetails, response, occupation, globals) {
@@ -517,12 +551,6 @@ function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, glo
   prefillCustomerDetail(response, globals);
 }
 
-setTimeout(() => {
-  if (typeof window !== 'undefined') { /* check document-undefined */
-    getCountryCodes(document.querySelector('.field-countrycode select'));
-  }
-}, 2000);
-
 /**
  * @name resendOTP
  * @param {Object} globals - The global object containing necessary data for DAP request.
@@ -560,12 +588,123 @@ const resendOTP = async (globals) => {
   return null; // Return null if max attempts reached
 };
 
+/**
+   * Creates an IdCom request object based on the provided global data.
+   * @param {Object} globals - The global object containing necessary data for IdCom request.
+   * @returns {Object} - The IdCom request object.
+   */
+const createIdComRequestObj = (globals) => {
+  const formData = santizedFormDataWithContext(globals);
+  const idComObj = {
+    requestString: {
+      CustID: globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value,
+      ProductCode: 'ADETBACO',
+      userAgent: window.navigator.userAgent,
+      journeyID: formData.journeyId,
+      journeyName: formData.journeyName,
+      scope: 'ADOBE_ACNRI',
+    },
+  };
+  return idComObj;
+};
+
+/**
+   * Fetches an authentication code from the API.
+   *
+   * This function creates an idcomm request object, constructs the API endpoint URL,
+   * and then sends a POST request to the endpoint to fetch the authentication code.
+   * @name fetchAuthCode
+   * @params {object} globals
+   * @returns {Promise<Object>} A promise that resolves to the JSON response from the API.
+   */
+const fetchAuthCode = (globals) => {
+  currentFormContext.VISIT_TYPE = 'IDCOMM';
+  const idComRequest = createIdComRequestObj(globals);
+  const apiEndPoint = urlPath(ENDPOINTS.fetchAuthCode);
+  return fetchJsonResponse(apiEndPoint, idComRequest, 'POST');
+};
+
 function customFocus(numRetries, globals) {
   MAX_COUNT -= 1;
   if (MAX_COUNT < MAX_OTP_RESEND_COUNT) {
     globals.functions.setProperty(numRetries, { value: `${MAX_COUNT}/${MAX_OTP_RESEND_COUNT}` });
   }
 }
+
+async function idComRedirection(globals) {
+  const {
+    mobileNumber,
+    leadProfileId,
+    journeyID,
+  } = currentFormContext;
+  const resp = await fetchAuthCode(globals);
+  if (resp.status.errorMessage === 'Success') {
+    invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
+    window.location.href = resp.redirectUrl;
+  }
+}
+
+/**
+ * @name finalResult - constant-variables store
+ */
+const finalResult = {
+  journeyParamState: null,
+  journeyParamStateInfo: null,
+};
+
+// post-redirect-aadhar-or-idcom
+const searchParam = new URLSearchParams(window.location.search);
+const authModeParam = searchParam.get('authmode');
+const journeyId = searchParam.get('journeyId');
+const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'NetBanking')); // debit card or net banking flow
+
+/**
+ * @name nreNroFetchRes - async action call maker until it reaches the final response.
+ * @returns {void}
+ */
+// eslint-disable-next-line no-unused-vars
+const nreNroFetchRes = async (globals) => {
+  try {
+    // globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
+    const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
+    const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
+    finalResult.journeyParamState = journeyDropOffParamLast.state;
+    finalResult.journeyParamStateInfo = journeyDropOffParamLast.stateInfo;
+    // if(journeyDropOffParamLast.state == 'CUSTOMER_ONBOARDING_COMPLETE'){
+    // console.log("Show Error Here");
+    // }
+    // eslint-disable-next-line no-unused-vars
+    const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
+    // if (checkFinalSuccess) {
+    // console.log("checkFinalSuccess : " , checkFinalSuccess);
+    // }
+    const err = 'Bad response';
+    throw err;
+  } catch (error) {
+    // eslint-disable-next-line no-unused-vars
+    const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
+    // eslint-disable-next-line no-unused-vars
+    const stateInfoData = finalResult.journeyParamStateInfo;
+    // if (errorCase) {
+    //   console.log("Error Case : " , errorCase);
+    // }
+  }
+};
+
+/**
+ * Redirects the user to different panels based on conditions.
+ * If `idCom` is true, initiates a journey drop-off process and handles the response.
+ * @param {boolean} idCom - Indicates whether ID com redirection is triggered.
+ * @returns {void}
+ */
+const nreNroPageRedirected = (idCom, globals) => {
+  if (idCom) {
+    setTimeout(() => {
+      displayLoader();
+      nreNroFetchRes(globals);
+    }, 2000);
+  }
+};
 
 const addPageNameClassInBody = (pageName) => {
   if (pageName === 'Get_OTP_Page' || pageName === 'Submit_OTP') {
@@ -588,7 +727,25 @@ const switchWizard = (globals) => {
 
   invokeJourneyDropOffUpdate('CUSTOMER_ACCOUNT_VARIANT_SELECTED', mobileNumber, leadProfileId, journeyID, globals);
   moveWizardView('wizardNreNro', 'confirmDetails');
+  currentFormContext.action = 'Confirm Details';
+  Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
+
+const onPageLoadAnalytics = async (globals) => {
+  await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
+};
+
+setTimeout((globals) => {
+  onPageLoadAnalytics(globals);
+}, 5000);
+
+// eslint-disable-next-line func-names
+setTimeout(async (globals) => {
+  await nreNroPageRedirected(idComRedirect, globals);
+  if (typeof window !== 'undefined') { /* check document-undefined */
+    getCountryCodes(document.querySelector('.field-countrycode select'));
+  }
+}, 2000);
 
 export {
   validateLogin,
@@ -601,6 +758,8 @@ export {
   customFocus,
   validFDPan,
   switchWizard,
+  setupBankUseSection,
+  idComRedirection,
   addPageNameClassInBody,
   showFinancialDetails,
   showNomineeDetails,

@@ -9,11 +9,15 @@ import {
   resendOTP,
   customFocus,
   switchWizard,
+  setupBankUseSection,
+  idComRedirection,
   addPageNameClassInBody,
   showFinancialDetails,
   showNomineeDetails,
   multiCustomerId,
 } from './nre-nroFunctions.js';
+
+import { sendAnalytics } from './analytics.js';
 
 import {
   invokeJourneyDropOff,
@@ -32,7 +36,10 @@ export {
   customFocus,
   otpValidationNRE,
   switchWizard,
+  setupBankUseSection,
+  idComRedirection,
   addPageNameClassInBody,
+  sendAnalytics,
   showFinancialDetails,
   showNomineeDetails,
   multiCustomerId,
