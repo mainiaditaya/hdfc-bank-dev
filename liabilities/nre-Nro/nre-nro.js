@@ -19,6 +19,7 @@ import {
   selectSingleAccount,
   confirmDetailsConsent,
   crmProductID,
+  nreNroPageRedirected,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -51,4 +52,5 @@ export {
   selectSingleAccount,
   confirmDetailsConsent,
   crmProductID,
+  nreNroPageRedirected,
 };

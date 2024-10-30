@@ -683,7 +683,6 @@ const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (auth
 // eslint-disable-next-line no-unused-vars
 const nreNroFetchRes = async (globals) => {
   try {
-    globals.functions.setProperty(globals.form.runtime.journeyName, {value: ''});
     globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
     const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);  
     
@@ -710,14 +709,19 @@ const nreNroFetchRes = async (globals) => {
       
       if (checkFinalSuccess) {
         if(idComSuccess === 'true'){
+          if(finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response){
+            currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
+          }
           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, journeyId, globals);
         }
         else{
           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, journeyId, globals);
         }
       }
-      const err = 'Bad response';
-      throw err;
+      else{
+        const err = 'Bad response';
+        throw err;
+      }
     }
     else{
       const err = 'Journey Drop Off Params Update response failed';
@@ -737,13 +741,12 @@ const nreNroFetchRes = async (globals) => {
 /**
  * Redirects the user to different panels based on conditions.
  * If `idCom` is true, initiates a journey drop-off process and handles the response.
- * @param {boolean} idCom - Indicates whether ID com redirection is triggered.
  * @returns {void}
  */
-const nreNroPageRedirected = (idCom, globals) => {
-  if (idCom) {
+function nreNroPageRedirected(globals){
+  if (idComRedirect) {
       setTimeout(() => {
-        debugger
+        // debugger
         displayLoader();
         nreNroFetchRes(globals);
       }, 2000);
@@ -775,21 +778,21 @@ const switchWizard = (globals) => {
   Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
 
-const onPageLoadAnalytics = async (globals) => {
-  await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
-};
+// const onPageLoadAnalytics = async (globals) => {
+//   await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
+// };
 
-setTimeout((globals) => {
-  onPageLoadAnalytics(globals);
-}, 5000);
+// setTimeout(() => {
+//   onPageLoadAnalytics();
+// }, 5000);
 
 // eslint-disable-next-line func-names
-setTimeout(async (globals) => {
-  await nreNroPageRedirected(idComRedirect, globals);
+setTimeout(async () => {
+  // await nreNroPageRedirected(globals);
   if (typeof window !== 'undefined') { /* check document-undefined */
     getCountryCodes(document.querySelector('.field-countrycode select'));
   }
-}, 2000);
+}, 10000);
 
 function parseDate(dateString) {
   if (dateString.length !== 8) {
@@ -1146,4 +1149,5 @@ export {
   selectSingleAccount,
   confirmDetailsConsent,
   crmProductID,
+  nreNroPageRedirected,
 };
