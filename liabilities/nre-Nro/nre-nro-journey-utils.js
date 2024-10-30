@@ -126,7 +126,6 @@ const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, jo
   const journeyJSONObj = {
     RequestPayload: {
       leadProfile: {
-        mobileNumber,
       },
       journeyInfo: {
         journeyID,

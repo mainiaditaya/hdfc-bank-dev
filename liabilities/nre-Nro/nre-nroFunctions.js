@@ -646,15 +646,15 @@ function customFocus(numRetries, globals) {
   }
 }
 
-function idComRedirection(globals) {
+async function idComRedirection(globals) {
   const {
     mobileNumber,
     leadProfileId,
     journeyID,
   } = currentFormContext;
-  const resp = fetchAuthCode(globals);
+  const resp = await fetchAuthCode(globals);
   if (resp.status.errorMessage === 'Success') {
-    invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
+    await invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
     window.location.href = resp.redirectUrl;
   }
 }
@@ -667,11 +667,13 @@ const finalResult = {
   journeyParamStateInfo: null,
 };
 
-// post-redirect-aadhar-or-idcom
+// post-redirect-or-idcom
 const searchParam = new URLSearchParams(window.location.search);
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
-const success = searchParam.get('success');
+const idComErrorCode = searchParam.get('errorCode');
+const idComErrorMessage = searchParam.get('errorMessage');
+const idComSuccess = searchParam.get('success');
 const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'NetBanking')); // debit card or net banking flow
 
 /**
@@ -681,22 +683,46 @@ const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (auth
 // eslint-disable-next-line no-unused-vars
 const nreNroFetchRes = async (globals) => {
   try {
-    // globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
-    const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
-    console.log("Data redir : " , data);
-    const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
-    finalResult.journeyParamState = journeyDropOffParamLast.state;
-    finalResult.journeyParamStateInfo = journeyDropOffParamLast.stateInfo;
-    // if(journeyDropOffParamLast.state == 'CUSTOMER_ONBOARDING_COMPLETE'){
-    // console.log("Show Error Here");
-    // }
-    // eslint-disable-next-line no-unused-vars
-    const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
-    // if (checkFinalSuccess) {
-    // console.log("checkFinalSuccess : " , checkFinalSuccess);
-    // }
-    const err = 'Bad response';
-    throw err;
+    globals.functions.setProperty(globals.form.runtime.journeyName, {value: ''});
+    globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
+    const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);  
+    
+    if(data && data.errorCode === 'FJ0000'){
+      const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
+      finalResult.journeyParamState = journeyDropOffParamLast.state;
+      finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
+      let leadId = '';
+      let mobileNumber = '';
+
+      if(data.leadProfile && data.leadProfile.mobileNumber){
+        mobileNumber = data.leadProfile.mobileNumber;
+      }
+
+      if(data.leadProfile && data.leadProfile.leadProfileId){
+        leadId = data.leadProfile.leadProfileId;
+      }
+
+      // if(journeyDropOffParamLast.state == 'CUSTOMER_ONBOARDING_COMPLETE'){
+      // console.log("Show Error Here");
+      // }
+      // eslint-disable-next-line no-unused-vars
+      const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
+      
+      if (checkFinalSuccess) {
+        if(idComSuccess === 'true'){
+          await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, journeyId, globals);
+        }
+        else{
+          await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, journeyId, globals);
+        }
+      }
+      const err = 'Bad response';
+      throw err;
+    }
+    else{
+      const err = 'Journey Drop Off Params Update response failed';
+      throw err;
+    }
   } catch (error) {
     // eslint-disable-next-line no-unused-vars
     const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
@@ -715,16 +741,13 @@ const nreNroFetchRes = async (globals) => {
  * @returns {void}
  */
 const nreNroPageRedirected = (idCom, globals) => {
+  debugger
   if (idCom) {
-      // invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadProfileId, journeyID, globals);
       setTimeout(() => {
         displayLoader();
         nreNroFetchRes(globals);
       }, 2000);
     }
-    // else{
-    //   invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadProfileId, journeyID, globals);
-    // }
 };
 
 const addPageNameClassInBody = (pageName) => {
@@ -762,6 +785,7 @@ setTimeout((globals) => {
 
 // eslint-disable-next-line func-names
 setTimeout(async (globals) => {
+  debugger
   await nreNroPageRedirected(idComRedirect, globals);
   if (typeof window !== 'undefined') { /* check document-undefined */
     getCountryCodes(document.querySelector('.field-countrycode select'));
