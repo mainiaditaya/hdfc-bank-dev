@@ -26,10 +26,11 @@ import {
   ALLOWED_CHARACTERS,
   MAX_FULLNAME_LENGTH,
   EMPLOYEE_SECTION_VISIBILITY,
+  FD_JOURNEY_STATE,
 } from './constant.js';
 import { fullNamePanValidation } from '../../common/panvalidation.js';
 import { sendFDAnalytics } from './analytics.js';
-import { setVisibility } from './fd-journey-util.js';
+import { invokeJourneyDropOffUpdate, setVisibility } from './fd-journey-util.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
 const CUSTOMER_DETAILS_STATE = {
@@ -116,7 +117,10 @@ const bindEmployeeAssistanceField = async (globals) => {
       const util = formUtil(globals, employeeAssistancePanel[code]);
       if (codes[code] !== null) util.setValue(codes[code], changeDataAttrObj);
     });
-    prefillResumeJourneyData(RESUME_JOURNEY_JSON_OBJECT, globals);
+    const prefillResponse = await prefillResumeJourneyData(RESUME_JOURNEY_JSON_OBJECT, globals);
+    if (prefillResponse) {
+      invokeJourneyDropOffUpdate(FD_JOURNEY_STATE.resumeJourneyDataPrefilled, globals.form?.loginMainPanel?.loginPanel?.mobilePanel?.registeredMobileNumber.$value, globals?.form.runtime.leadProifileId.$value, CURRENT_FORM_CONTEXT.journeyID, globals);
+    }
   } catch (error) {
     console.log(error);
   }
