@@ -343,6 +343,13 @@ function days(endDate, startDate) {
   return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 }
 
+const localJsonCompatibleTime = () => {
+  const date = new Date();
+  const timezoneOffset = date.getTimezoneOffset() * 60000;
+  const localISOTime = new Date(date - timezoneOffset).toISOString();
+  return localISOTime;
+};
+
 export {
   hideLoaderGif,
   validatePan,
@@ -358,4 +365,5 @@ export {
   days,
   initRestAPIDataSecurityServiceES6,
   loadHomePage,
+  localJsonCompatibleTime,
 };

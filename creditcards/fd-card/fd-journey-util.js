@@ -4,6 +4,7 @@ import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js'
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 import { moveWizardView } from '../domutils/domutils.js';
 import { journeyResponseHandlerUtil } from './common-journeyutil.js';
+import { localJsonCompatibleTime } from '../../common/functions.js';
 /**
    * @name invokeJourneyDropOff to log on success and error call backs of api calls
    * @param {state} state
@@ -27,7 +28,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
           {
             state,
             stateInfo: JSON.stringify(santizedFormDataWithContext(globals)),
-            timeinfo: new Date().toISOString(),
+            timeinfo: localJsonCompatibleTime(),
           },
         ],
       },
@@ -91,7 +92,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
           {
             state,
             stateInfo: JSON.stringify(sanitizedFormData),
-            timeinfo: new Date().toISOString(),
+            timeinfo: localJsonCompatibleTime(),
           },
         ],
       },

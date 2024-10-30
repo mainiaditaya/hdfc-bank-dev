@@ -1,5 +1,6 @@
 import { CHANNEL, ENDPOINTS } from '../../common/constants.js';
 import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
+import { localJsonCompatibleTime } from '../../common/functions.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 
 /**
@@ -28,7 +29,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, journeyName, globals) =
           {
             state,
             stateInfo: JSON.stringify(santizedFormDataWithContext(globals)),
-            timeinfo: new Date().toISOString(),
+            timeinfo: localJsonCompatibleTime(),
           },
         ],
       },
