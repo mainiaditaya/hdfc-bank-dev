@@ -58,11 +58,9 @@ const resumeJourneySuccessHandler = async (payload, globals) => {
   if (returnState) {
     const returnJourneyInfo = JSON.parse(payload?.journey?.[0]?.journeyStateInfo?.[0]?.stateInfo);
     if (returnJourneyInfo.currentFormContext !== undefined) {
-      // Object.assign(CURRENT_FORM_CONTEXT, returnJourneyInfo.currentFormContext);
       const applRefNumber = returnJourneyInfo?.currentFormContext?.executeInterfaceResponse?.APS_APPL_REF_NUM;
       if (applRefNumber !== undefined) {
         Object.assign(RESUME_JOURNEY_JSON_OBJECT, returnJourneyInfo);
-        // RESUME_JOURNEY_JSON_OBJECT = returnJourneyInfo;
         const savedTime = payload?.journey?.[0]?.journeyStateInfo?.[0]?.timeinfo;
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const timeStamp = `${savedTime.substring(8, 10)} ${months[parseInt(savedTime.substring(5, 7), 10) - 1]} ${savedTime.substring(0, 4)}, ${tConvert(savedTime.substring(11, 19))}`;
@@ -84,6 +82,7 @@ const resumeJourneySuccessHandler = async (payload, globals) => {
         popupButton.addEventListener('click', () => {
           if (globals.form.resumeJourneyWrapper.resumeJourneyPopup.resumeJourneyOptions.$value === '0') {
             RESUME_JOURNEY_JSON_OBJECT.prefillResumeJourneyData = true;
+            Object.assign(CURRENT_FORM_CONTEXT, (({ journeyID, ...rest }) => rest)(returnJourneyInfo?.currentFormContext));
             validateAndDisableFDSelection(returnJourneyInfo, globals);
           } else {
             RESUME_JOURNEY_JSON_OBJECT.prefillResumeJourneyData = false;
@@ -131,8 +130,13 @@ const invokeResumeJourneyApi = async (globals) => {
  */
 
 const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
-  if (resumeJourneyResponse.prefillResumeJourneyData === undefined || !resumeJourneyResponse.prefillResumeJourneyData) { return; }
-  Object.assign(CURRENT_FORM_CONTEXT, resumeJourneyResponse.currentFormContext);
+  if (resumeJourneyResponse.prefillResumeJourneyData === undefined || !resumeJourneyResponse.prefillResumeJourneyData) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(false);
+      }, 100);
+    });
+  }
   const changeDataAttrObj = { attrChange: true, value: false };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const {
@@ -144,7 +148,6 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
       fieldUtil.setValue(value, changeDataAttrObj);
     }
   };
-
   setFormValue(personalDetails.fullName, resumeJourneyResponse?.FDlienCard?.fullName);
   setFormValue(personalDetails.firstName, resumeJourneyResponse?.FDlienCard?.firstName);
   setFormValue(personalDetails.gender, resumeJourneyResponse?.FDlienCard?.gender);
@@ -163,7 +166,6 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   setFormValue(employmentDetails.employmentType, resumeJourneyResponse?.FDlienCard?.employmentType);
   setFormValue(employmentDetails.annualIncome, resumeJourneyResponse?.FDlienCard?.annualIncome);
   globals.functions.setProperty(employeeAssistance.employeeAssistanceToggle, { value: resumeJourneyResponse?.FDlienCard?.assistanceToggle });
-  // globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { value: resumeJourneyResponse?.FDlienCard?.inPersonBioKYCOptions });
   setFormValue(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, resumeJourneyResponse?.FDlienCard?.inPersonBioKYCOptions);
   changeDataAttrObj.disable = true;
   setFormValue(employeeAssistance.employeeAssistancePanel.channel, resumeJourneyResponse?.FDlienCard?.channel);
@@ -178,11 +180,13 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
 
   const propertiesToHide = EMPLOYEE_SECTION_VISIBILITY?.[resumeJourneyResponse?.FDlienCard?.channel?.toLowerCase()] || EMPLOYEE_SECTION_VISIBILITY.default;
   setVisibility(employeeAssistance.employeeAssistancePanel, propertiesToHide, false, globals);
-
   const personaldetails = document.querySelector('.field-personaldetails');
-  setTimeout(() => {
-    addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
-  }, 100);
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
+      resolve(true);
+    }, 100);
+  });
 };
 
 const getResumeJourneyJsonObject = () => RESUME_JOURNEY_JSON_OBJECT;

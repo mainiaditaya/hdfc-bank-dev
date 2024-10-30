@@ -212,6 +212,10 @@ const EMPLOYEE_SECTION_VISIBILITY = {
   default: ['branchCity', 'branchCode', 'branchName', 'cardsBdrLc1', 'tseLgCode', 'dsaCode', 'dsaName'],
 };
 
+const FD_JOURNEY_STATE = {
+  resumeJourneyDataPrefilled: 'RESUME_JOURNEY_DATA_PREFILLED',
+};
+
 export {
   JOURNEY_NAME,
   ERROR_MSG,
@@ -234,4 +238,5 @@ export {
   EMPLOYEE_MAP,
   MAX_FULLNAME_LENGTH,
   EMPLOYEE_SECTION_VISIBILITY,
+  FD_JOURNEY_STATE,
 };
