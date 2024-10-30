@@ -1,5 +1,6 @@
 import { CURRENT_FORM_CONTEXT, FORM_RUNTIME } from '../../common/constants.js';
 import { parseCustomerAddress, pincodeCheck, urlPath } from '../../common/formutils.js';
+import { localJsonCompatibleTime } from '../../common/functions.js';
 import { fetchJsonResponse, restAPICall } from '../../common/makeRestAPI.js';
 import { confirmCardState } from './confirmcardutil.js';
 import {
@@ -154,7 +155,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       selectedFdDetails,
       selfConfirmation: 'Y',
       smCode: (empAssistanceToggle && employeeAssistancePanel?.smCode?._data?.$_value) || '',
-      timeInfo: new Date().toISOString(),
+      timeInfo: localJsonCompatibleTime(),
       ekycMobileMatch: '',
     },
   };

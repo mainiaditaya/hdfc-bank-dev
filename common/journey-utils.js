@@ -9,6 +9,7 @@ import { fetchJsonResponse } from './makeRestAPI.js';
 
 import * as CONSTANT from './constants.js';
 import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
+import { localJsonCompatibleTime } from './functions.js';
 
 const { ENDPOINTS, CHANNEL, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
 const { JOURNEY_NAME } = CC_CONSTANT;
@@ -51,7 +52,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
           {
             state,
             stateInfo: JSON.stringify(santizedFormDataWithContext(globals)),
-            timeinfo: new Date().toISOString(),
+            timeinfo: localJsonCompatibleTime(),
           },
         ],
       },
@@ -88,7 +89,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
           {
             state,
             stateInfo: JSON.stringify(sanitizedFormData),
-            timeinfo: new Date().toISOString(),
+            timeinfo: localJsonCompatibleTime(),
           },
         ],
       },

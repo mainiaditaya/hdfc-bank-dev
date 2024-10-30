@@ -62,6 +62,7 @@ const docUploadClickHandler = async (globals) => {
   const {
     docUploadPanel,
     uploadAddressProof,
+    technicalErrorDocUpload,
   } = globals.form.docUploadFlow;
   const { docUploadDropdown, DocUploadFrontWrapper, DocUploadBackWrapper } = docUploadPanel;
   const { addressProofFile1Wrapper, addressProofFile2Wrapper } = uploadAddressProof;
@@ -73,6 +74,7 @@ const docUploadClickHandler = async (globals) => {
   const journeyId = formContextCallbackData.journeyID;
   const apiEndPoint = urlPath(FD_ENDPOINTS.documentupload);
   const method = 'POST';
+  globals.functions.setProperty(technicalErrorDocUpload, { visible: false });
 
   const documents = [
     ...(CURRENT_FORM_CONTEXT?.identityDocUploadFlag && identityDocType !== '40_464' ? [
@@ -101,6 +103,9 @@ const docUploadClickHandler = async (globals) => {
     if (responses.every((response) => response.value?.errorCode === '0000')) {
       return invokeJourneyDropOffUpdate('DOCUMENT_UPLOAD_SUCCESS', mobileNumber, leadProfileId, journeyId, globals);
     }
+
+    globals.functions.setProperty(technicalErrorDocUpload, { visible: true });
+
     throw new Error('File upload failed');
   } catch (error) {
     console.error(error);
