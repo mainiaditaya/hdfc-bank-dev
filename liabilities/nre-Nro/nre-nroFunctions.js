@@ -632,15 +632,15 @@ function customFocus(numRetries, globals) {
   }
 }
 
-async function idComRedirection(globals) {
+function idComRedirection(globals) {
   const {
     mobileNumber,
     leadProfileId,
     journeyID,
   } = currentFormContext;
-  const resp = await fetchAuthCode(globals);
+  const resp = fetchAuthCode(globals);
   if (resp.status.errorMessage === 'Success') {
-    await invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
+    invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
     window.location.href = resp.redirectUrl;
   }
 }
@@ -657,6 +657,7 @@ const finalResult = {
 const searchParam = new URLSearchParams(window.location.search);
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
+const success = searchParam.get('success');
 const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'NetBanking')); // debit card or net banking flow
 
 /**
@@ -668,6 +669,7 @@ const nreNroFetchRes = async (globals) => {
   try {
     // globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
     const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
+    console.log("Data redir : " , data);
     const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
     finalResult.journeyParamState = journeyDropOffParamLast.state;
     finalResult.journeyParamStateInfo = journeyDropOffParamLast.stateInfo;
@@ -700,11 +702,15 @@ const nreNroFetchRes = async (globals) => {
  */
 const nreNroPageRedirected = (idCom, globals) => {
   if (idCom) {
-    setTimeout(() => {
-      displayLoader();
-      nreNroFetchRes(globals);
-    }, 2000);
-  }
+      // invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadProfileId, journeyID, globals);
+      setTimeout(() => {
+        displayLoader();
+        nreNroFetchRes(globals);
+      }, 2000);
+    }
+    // else{
+    //   invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadProfileId, journeyID, globals);
+    // }
 };
 
 const addPageNameClassInBody = (pageName) => {
