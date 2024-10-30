@@ -138,6 +138,20 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
       _satellite.track('submit');
       break;
     }
+    case 'mandatory I understand click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      break;
+    }
+    case 'optional I understand click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      break;
+    }
     case 'submit otp click': {
       if (window) {
         window.digitalData = digitalData || {};
@@ -193,6 +207,14 @@ function populateResponse(payload, eventType, digitalData, formData) {
       break;
     }
     case 'privacy consent click': {
+      digitalData.event.status = 'Success';
+      break;
+    }
+    case 'mandatory I understand click': {
+      digitalData.event.status = 'Success';
+      break;
+    }
+    case 'optional I understand click': {
       digitalData.event.status = 'Success';
       break;
     }
