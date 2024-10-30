@@ -518,11 +518,11 @@ function prefillAccountDetail(response, globals, i, responseLength) {
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.branch, response.customerAccountDetailsDTO[i].branchName);
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.ifscCode, response.customerAccountDetailsDTO[i].ifscCode);
   } else {
-    setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
-    setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName);
-    setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
-    setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
-    prefillCustomerDetail(currentFormContext.fatca_response, globals);
+    setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[i].accountNumber, 10));
+    setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[i].productName);
+    setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[i].branchName);
+    setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[i].ifscCode);
+    prefillCustomerDetail(response, globals);
   }
 }
 
@@ -558,7 +558,7 @@ function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, glo
   } else {
     globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.nro_account_type_pannel, { visible: true });
     globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
-    prefillAccountDetail(response, globals, '', responseLength);
+    prefillAccountDetail(response, globals, responseLength - 1, responseLength);
   }
 }
 
@@ -717,6 +717,9 @@ const nreNroFetchRes = async (globals) => {
 
           // Calling Account Opening Functions
 
+          invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, journeyId, globals);
+          invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, journeyId, globals);
+          prefillAccountDetail(currentFormContext.fatca_response, globals, currentFormContext.selectedCheckedValue, 1);
         } else {
           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, journeyId, globals);
         }
