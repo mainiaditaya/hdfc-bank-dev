@@ -508,7 +508,6 @@ const addressChangeHandler = (addressLineNumber, globals) => {
   const otherAddressField = currentAddressField.$name === newCurrentAddressLine1.$name ? newCurrentAddressLine2 : newCurrentAddressLine1;
   const currentAddress = currentAddressField?.$value?.toLowerCase()?.trim();
   const otherAddress = otherAddressField?.$value?.toLowerCase()?.trim();
-
   if (currentAddress) {
     if (!regexPattern.test(currentAddress)) {
       globals.functions.markFieldAsInvalid(currentAddressField.$qualifiedName, ERROR_MSG.invalidAddress, { useQualifiedName: true });
@@ -520,14 +519,13 @@ const addressChangeHandler = (addressLineNumber, globals) => {
       globals.functions.markFieldAsInvalid(currentAddressField.$qualifiedName, ERROR_MSG.matchingAddressLine, { useQualifiedName: true });
     } else if (currentAddress && otherAddress && currentAddress !== otherAddress && currentAddress.length > 1) {
       if (currentAddressField.$name === 'newCurrentAddressLine1') {
-        if (otherAddress.length >= 10) {
+        if (currentAddress.length >= 10) {
           globals.functions.setProperty(currentAddressField, { valid: true });
           globals.functions.setProperty(otherAddressField, { valid: true });
         }
-      }
-      if (currentAddressField.$name === 'newCurrentAddressLine2') {
-        if (currentAddress !== otherAddress) globals.functions.setProperty(currentAddressField, { valid: true });
+      } else if (currentAddressField.$name === 'newCurrentAddressLine2' && otherAddress.length >= 10) {
         globals.functions.setProperty(currentAddressField, { valid: true });
+        globals.functions.setProperty(otherAddressField, { valid: true });
       }
     } else {
       globals.functions.setProperty(currentAddressField, { valid: true });
