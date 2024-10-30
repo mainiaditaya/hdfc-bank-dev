@@ -21,6 +21,7 @@ const ENDPOINTS = {
   docUpload: '/content/hdfc_etb_wo_pacc/api/documentUpload.json',
   customerOtpGen: '/content/hdfc_haf_nrenro/api/customeridentification_v2.json',
   otpValidationFatca: '/content/hdfc_haf_nrenro/api/otpValidationFatca_v2.json',
+  crmLeadGenerate: '/content/hdfc_haf_nrenro/api/leadgenerate_v2.json',
 };
 
 const DEAD_PAN_STATUS = ['D', 'ED', 'X', 'F'];
