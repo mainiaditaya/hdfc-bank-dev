@@ -741,9 +741,9 @@ const nreNroFetchRes = async (globals) => {
  * @returns {void}
  */
 const nreNroPageRedirected = (idCom, globals) => {
-  debugger
   if (idCom) {
       setTimeout(() => {
+        debugger
         displayLoader();
         nreNroFetchRes(globals);
       }, 2000);
@@ -785,7 +785,6 @@ setTimeout((globals) => {
 
 // eslint-disable-next-line func-names
 setTimeout(async (globals) => {
-  debugger
   await nreNroPageRedirected(idComRedirect, globals);
   if (typeof window !== 'undefined') { /* check document-undefined */
     getCountryCodes(document.querySelector('.field-countrycode select'));
