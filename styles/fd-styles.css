@@ -1599,6 +1599,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         font-weight: var(--font-weight-small);
         letter-spacing: -0.01em;
         text-align: left;
+        color: var(--color-interface-background-quaternary);
       }
     }
 
@@ -2381,6 +2382,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       color: var(--color-input-text-primary) !important;
       cursor: not-allowed;
     }
+
+    .field-branchcode {
+      input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-outer-spin-button {
+        appearance: none;
+      }
+    }    
   }
 
   .wrapper-disabled {

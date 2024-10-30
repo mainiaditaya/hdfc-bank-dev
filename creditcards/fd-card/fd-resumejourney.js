@@ -1,7 +1,7 @@
 import { CURRENT_FORM_CONTEXT, ENDPOINTS } from '../../common/constants.js';
 import { restAPICall } from '../../common/makeRestAPI.js';
 import { EMPLOYEE_SECTION_VISIBILITY, JOURNEY_NAME } from './constant.js';
-import { formUtil, getUrlParamCaseInsensitive, urlPath } from '../../common/formutils.js';
+import { formUtil, urlPath } from '../../common/formutils.js';
 import { addDisableClass } from '../domutils/domutils.js';
 import { setVisibility } from './fd-journey-util.js';
 
@@ -165,6 +165,7 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   globals.functions.setProperty(employeeAssistance.employeeAssistanceToggle, { value: resumeJourneyResponse?.FDlienCard?.assistanceToggle });
   // globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { value: resumeJourneyResponse?.FDlienCard?.inPersonBioKYCOptions });
   setFormValue(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, resumeJourneyResponse?.FDlienCard?.inPersonBioKYCOptions);
+  changeDataAttrObj.disable = true;
   setFormValue(employeeAssistance.employeeAssistancePanel.channel, resumeJourneyResponse?.FDlienCard?.channel);
   setFormValue(employeeAssistance.employeeAssistancePanel.branchCode, resumeJourneyResponse?.FDlienCard?.branchCode);
   setFormValue(employeeAssistance.employeeAssistancePanel.dsaCode, resumeJourneyResponse?.FDlienCard?.dsaCode);
@@ -178,19 +179,6 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   const propertiesToHide = EMPLOYEE_SECTION_VISIBILITY?.[resumeJourneyResponse?.FDlienCard?.channel?.toLowerCase()] || EMPLOYEE_SECTION_VISIBILITY.default;
   setVisibility(employeeAssistance.employeeAssistancePanel, propertiesToHide, false, globals);
 
-  const codes = {
-    lc1Code: getUrlParamCaseInsensitive('lc1'),
-    lgCode: getUrlParamCaseInsensitive('lgcode'),
-    smCode: getUrlParamCaseInsensitive('smcode'),
-    lc2Code: getUrlParamCaseInsensitive('lc2'),
-    dsaCode: getUrlParamCaseInsensitive('dsacode'),
-    branchCode: getUrlParamCaseInsensitive('branchcode'),
-  };
-  const changeDataAttrDisableObj = { attrChange: true, value: false, disable: true };
-  ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
-    const util = formUtil(globals, employeeAssistance.employeeAssistancePanel[code]);
-    if (codes[code] !== null) util.setValue(codes[code], changeDataAttrDisableObj);
-  });
   const personaldetails = document.querySelector('.field-personaldetails');
   setTimeout(() => {
     addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);

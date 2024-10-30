@@ -5,7 +5,7 @@ import {
 import { invokeJourneyDropOffByJourneyId } from './common-journeyutil.js';
 import { ANALYTICS, IDCOM } from './constant.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
-import sendFDAnalytics from './analytics.js';
+import { sendFDAnalytics } from './analytics.js';
 
 const delayedUtilState = {
   visitType: '',
@@ -104,7 +104,9 @@ const pageRedirected = () => {
     journeyData.journeyId = myForm.resolveQualifiedName('$form.runtime.journeyId')._data.$_value;
     // journeyData.journeyName = CURRENT_FORM_CONTEXT.journeyName;
     journeyData.journeyName = ANALYTICS.JOURNEY_NAME;
-    sendFDAnalytics(formLoad.type, formLoad.pageName, {}, formLoad.journeyState, journeyData);
+    setTimeout(() => {
+      sendFDAnalytics(formLoad.type, formLoad.pageName, {}, formLoad.journeyState, journeyData);
+    }, 500);
   }
   if (delayedUtilState.idComRedirect && delayedUtilState?.errorCode !== IDCOM.response.sessionExpired.errorCode) {
     displayLoader();

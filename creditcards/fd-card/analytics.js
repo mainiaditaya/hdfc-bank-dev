@@ -5,6 +5,7 @@ import { setAnalyticPageLoadProps, setAnalyticClickGenericProps, hashPhoneNumber
 import { createDeepCopyFromBlueprint, santizedFormDataWithContext } from '../../common/formutils.js';
 import { ANALYTICS } from './constant.js';
 
+let isErrorPage = false;
 /**
  * Sends analytics event on page load.
  * @name sendPageloadEvent
@@ -13,6 +14,9 @@ import { ANALYTICS } from './constant.js';
  * @param {string} pageName.
  */
 function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
+  if (isErrorPage) {
+    return;
+  }
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
   digitalData.page.pageInfo.pageName = pageName;
   setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName, pageName);
@@ -160,6 +164,26 @@ const sendAnalyticsFDClickEvent = (eventType, payload, journeyState, formData) =
 };
 
 /**
+* sendErrorAnalytics
+* @param {string} errorCode
+* @param {string} errorMsg
+* @param {string} journeyState
+* @param {object} globals
+*/
+function sendFDErrorAnalytics(errorCode, errorMsg, journeyState, globals) {
+  isErrorPage = true;
+  const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
+  setAnalyticPageLoadProps(journeyState, santizedFormDataWithContext(globals), digitalData);
+  digitalData.page.pageInfo.errorMessage = errorMsg;
+  digitalData.page.pageInfo.errorAPI = '';
+  digitalData.page.pageInfo.errorCode = errorCode;
+  if (window) {
+    window.digitalData = digitalData || {};
+  }
+  _satellite.track('pageload');
+}
+
+/**
 * sendAnalytics
 * @param {string} eventType
 * @param {string} pageName
@@ -168,6 +192,7 @@ const sendAnalyticsFDClickEvent = (eventType, payload, journeyState, formData) =
 * @param {object} globals
 */
 const sendFDAnalytics = (eventType, pageName, payload, journeyState, globals) => {
+  isErrorPage = false;
   const formData = santizedFormDataWithContext(globals, CURRENT_FORM_CONTEXT);
   if (eventType.toLowerCase() === 'page load') {
     sendPageloadEvent(journeyState, formData, pageName);
@@ -176,4 +201,7 @@ const sendFDAnalytics = (eventType, pageName, payload, journeyState, globals) =>
   }
 };
 
-export default sendFDAnalytics;
+export {
+  sendFDAnalytics,
+  sendFDErrorAnalytics,
+};

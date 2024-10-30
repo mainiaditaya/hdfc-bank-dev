@@ -28,7 +28,7 @@ import {
   EMPLOYEE_SECTION_VISIBILITY,
 } from './constant.js';
 import { fullNamePanValidation } from '../../common/panvalidation.js';
-import sendFDAnalytics from './analytics.js';
+import { sendFDAnalytics } from './analytics.js';
 import { setVisibility } from './fd-journey-util.js';
 
 let CUSTOMER_DATA_BINDING_CHECK = true;
