@@ -5,7 +5,7 @@ import {
 import { invokeJourneyDropOffByJourneyId } from './common-journeyutil.js';
 import { ANALYTICS, IDCOM } from './constant.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
-import sendFDAnalytics from './analytics.js';
+import { sendFDAnalytics } from './analytics.js';
 
 const delayedUtilState = {
   visitType: '',

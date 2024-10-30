@@ -1599,6 +1599,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         font-weight: var(--font-weight-small);
         letter-spacing: -0.01em;
         text-align: left;
+        color: var(--color-interface-background-quaternary);
       }
     }
 
