@@ -1047,6 +1047,49 @@ const crmLeadIdDetail = () => {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
 
+function confirmDetailsConsent(firstConsent, secondConsent, globals) {
+  globals.functions.setProperty(globals.form.wizardPanel.confirmButton, { enabled: false });
+  const firstConsents = firstConsent.$value;
+  const secondConsents = secondConsent.$value;
+  if ((firstConsents && secondConsents) === 'on') {
+    globals.functions.setProperty(globals.form.wizardPanel.confirmButton, { enabled: true });
+  } else {
+    globals.functions.setProperty(globals.form.wizardPanel.confirmButton, { enabled: false });
+  }
+}
+
+function crmProductID(crmProductPanel, response, globals) {
+  const productID = response.customerAccountDetailsDTO[0].productCode;
+  const productvarient = response.customerAccountDetailsDTO[0].productTypeDescription;
+  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
+
+  const setFormValue = (field, value) => {
+    const fieldUtil = formUtil(globals, field);
+    fieldUtil.setValue(value, changeDataAttrObj);
+  };
+  if (productID === 201 && productvarient === 'NRO') {
+    setFormValue(crmProductPanel.productName, 'NRE Current account');
+    setFormValue(crmProductPanel.productCategory, 'Current');
+    setFormValue(crmProductPanel.productCategoryID, '484');
+    setFormValue(crmProductPanel.productKey, '604');
+  } else if (productID === 218 && productvarient === 'NRE') {
+    setFormValue(crmProductPanel.productName, 'NRO current account');
+    setFormValue(crmProductPanel.productCategory, 'Current');
+    setFormValue(crmProductPanel.productCategoryID, '484');
+    setFormValue(crmProductPanel.productKey, '605');
+  } else if (productvarient === 'NRO') {
+    setFormValue(crmProductPanel.productName, 'NRO savings account');
+    setFormValue(crmProductPanel.productKey, '602');
+    setFormValue(crmProductPanel.productCategory, 'Savings');
+    setFormValue(crmProductPanel.productCategoryID, '483');
+  } else if (productvarient === 'NRE') {
+    setFormValue(crmProductPanel.productName, 'NRE savings account');
+    setFormValue(crmProductPanel.productCategory, 'Savings');
+    setFormValue(crmProductPanel.productCategoryID, '483');
+    setFormValue(crmProductPanel.productKey, '601');
+  }
+}
+
 export {
   validateLogin,
   getOtpNRE,
@@ -1066,4 +1109,6 @@ export {
   multiCustomerId,
   crmLeadIdDetail,
   selectSingleAccount,
+  confirmDetailsConsent,
+  crmProductID,
 };
