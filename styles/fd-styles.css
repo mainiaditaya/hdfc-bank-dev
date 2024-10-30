@@ -3293,6 +3293,16 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       margin: 0;
     }
   }
+
+  .field-technicalerrordocupload {
+    color: var(--color-input-border-error);
+    font-size: var(--body-fd-sm-font-size);
+
+    p {
+      color: var(--color-input-border-error);
+      font-size: var(--body-fd-sm-font-size);
+    }
+  }
 }
 
 /* Address Declaration Panel */
