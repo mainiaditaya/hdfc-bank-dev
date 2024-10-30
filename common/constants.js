@@ -18,7 +18,9 @@ const ENDPOINTS = {
   resumeJourneyInfo: '/content/hdfc_commonforms/api/returnjourneyinfo.json',
   otpGen: '/content/hdfc_haf/api/otpgenerationccV4.json',
   otpValFetchAssetDemog: '/content/hdfc_haf/api/otpvaldemogV4.json',
-  panValNameMatch: '/content/hdfc_forms_common_v2/api/panValNameMatch.json',
+  // To be uncommented in release branch
+  // panValNameMatch: '/content/hdfc_forms_common_v2/api/panValNameMatch.json',
+  panValNameMatch: '/content/hdfc_haf/api/panValidation.json',
   docUpload: '/content/hdfc_etb_wo_pacc/api/documentUpload.json',
   aadhaarCallBack: {
     CORPORATE_CARD_JOURNEY: '/content/hdfc_etb_wo_pacc/api/aadharCallback.json',
