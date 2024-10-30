@@ -17,6 +17,8 @@ import {
   multiCustomerId,
   crmLeadIdDetail,
   selectSingleAccount,
+  confirmDetailsConsent,
+  crmProductID,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -47,4 +49,6 @@ export {
   multiCustomerId,
   crmLeadIdDetail,
   selectSingleAccount,
+  confirmDetailsConsent,
+  crmProductID,
 };

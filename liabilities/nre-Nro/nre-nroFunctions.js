@@ -489,7 +489,7 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(financialDetails.grossAnnualIncome, response.customerAMLDetailsDTO[0].annualTurnover);
   setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
   setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
-  setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[accIndex].nomineeName);
+  setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[accIndex].nomineeNam);
   setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[accIndex].nomineeDOB);
 }
 
@@ -762,12 +762,18 @@ setTimeout(async (globals) => {
   }
 }, 2000);
 
+function parseDate(dateString) {
+  if (dateString.length !== 8) {
+    throw new Error("Invalid date format. Expected 'YYYYMMDD'.");
+  }
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+  return `${day}/${month}/${year}`;
+}
+
 const crmLeadIdDetail = () => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
-
-  const year = response.datBirthCust.substring(0, 4);
-  const month = response.datBirthCust.substring(4, 6);
-  const day = response.datBirthCust.substring(6, 8);
 
   const jsonObj = {
     requestString: {
@@ -775,10 +781,10 @@ const crmLeadIdDetail = () => {
       journeyName: currentFormContext.journeyName,
       userAgent: window.navigator.userAgent,
       misCodeDetails: '',
-      identifierValue: `${day}/${month}/${year}`,
-      DoB: `${day}/${month}/${year}`,
-      dateofBirth: `${day}/${month}/${year}`,
-      custBirthDate: `${day}/${month}/${year}`,
+      identifierValue: parseDate(response.datBirthCust),
+      DoB: parseDate(response.datBirthCust),
+      dateofBirth: parseDate(response.datBirthCust),
+      custBirthDate: parseDate(response.datBirthCust),
       identifierName: '',
       preferredChannel: '',
       territoryName: '',
@@ -852,7 +858,7 @@ const crmLeadIdDetail = () => {
       nomAdrState: '',
       nomAdrZip: '',
       nomRelation: '',
-      nomineeDoB: response.customerAccountDetailsDTO[accIndex].nomineeDOB,
+      nomineeDoB: response.customerAccountDetailsDTO[accIndex].nomineeDOB ? parseDate(response.customerAccountDetailsDTO[accIndex].nomineeDOB) : '',
       isForm60Attached: '',
       PANAckNo: '',
       doaInput: '',
@@ -1047,6 +1053,49 @@ const crmLeadIdDetail = () => {
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
 
+function confirmDetailsConsent(firstConsent, secondConsent, globals) {
+  globals.functions.setProperty(globals.form.wizardPanel.confirmButton, { enabled: false });
+  const firstConsents = firstConsent.$value;
+  const secondConsents = secondConsent.$value;
+  if ((firstConsents && secondConsents) === 'on') {
+    globals.functions.setProperty(globals.form.wizardPanel.confirmButton, { enabled: true });
+  } else {
+    globals.functions.setProperty(globals.form.wizardPanel.confirmButton, { enabled: false });
+  }
+}
+
+function crmProductID(crmProductPanel, response, globals) {
+  const productID = response.customerAccountDetailsDTO[0].productCode;
+  const productvarient = response.customerAccountDetailsDTO[0].productTypeDescription;
+  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
+
+  const setFormValue = (field, value) => {
+    const fieldUtil = formUtil(globals, field);
+    fieldUtil.setValue(value, changeDataAttrObj);
+  };
+  if (productID === 201 && productvarient === 'NRO') {
+    setFormValue(crmProductPanel.productName, 'NRE Current account');
+    setFormValue(crmProductPanel.productCategory, 'Current');
+    setFormValue(crmProductPanel.productCategoryID, '484');
+    setFormValue(crmProductPanel.productKey, '604');
+  } else if (productID === 218 && productvarient === 'NRE') {
+    setFormValue(crmProductPanel.productName, 'NRO current account');
+    setFormValue(crmProductPanel.productCategory, 'Current');
+    setFormValue(crmProductPanel.productCategoryID, '484');
+    setFormValue(crmProductPanel.productKey, '605');
+  } else if (productvarient === 'NRO') {
+    setFormValue(crmProductPanel.productName, 'NRO savings account');
+    setFormValue(crmProductPanel.productKey, '602');
+    setFormValue(crmProductPanel.productCategory, 'Savings');
+    setFormValue(crmProductPanel.productCategoryID, '483');
+  } else if (productvarient === 'NRE') {
+    setFormValue(crmProductPanel.productName, 'NRE savings account');
+    setFormValue(crmProductPanel.productCategory, 'Savings');
+    setFormValue(crmProductPanel.productCategoryID, '483');
+    setFormValue(crmProductPanel.productKey, '601');
+  }
+}
+
 export {
   validateLogin,
   getOtpNRE,
@@ -1066,4 +1115,6 @@ export {
   multiCustomerId,
   crmLeadIdDetail,
   selectSingleAccount,
+  confirmDetailsConsent,
+  crmProductID,
 };
