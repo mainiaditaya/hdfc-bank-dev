@@ -671,8 +671,8 @@ const finalResult = {
 const searchParam = new URLSearchParams(window.location.search);
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
-const idComErrorCode = searchParam.get('errorCode');
-const idComErrorMessage = searchParam.get('errorMessage');
+// const idComErrorCode = searchParam.get('errorCode');
+// const idComErrorMessage = searchParam.get('errorMessage');
 const idComSuccess = searchParam.get('success');
 const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'NetBanking')); // debit card or net banking flow
 
@@ -684,46 +684,38 @@ const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (auth
 const nreNroFetchRes = async (globals) => {
   try {
     globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
-    const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);  
-    
-    if(data && data.errorCode === 'FJ0000'){
+    const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
+    if (data && data.errorCode === 'FJ0000') {
       const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
       finalResult.journeyParamState = journeyDropOffParamLast.state;
       finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
       let leadId = '';
       let mobileNumber = '';
-
-      if(data.leadProfile && data.leadProfile.mobileNumber){
+      if (data.leadProfile && data.leadProfile.mobileNumber) {
         mobileNumber = data.leadProfile.mobileNumber;
       }
-
-      if(data.leadProfile && data.leadProfile.leadProfileId){
+      if (data.leadProfile && data.leadProfile.leadProfileId) {
         leadId = data.leadProfile.leadProfileId;
       }
-
       // if(journeyDropOffParamLast.state == 'CUSTOMER_ONBOARDING_COMPLETE'){
       // console.log("Show Error Here");
       // }
       // eslint-disable-next-line no-unused-vars
       const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
-      
       if (checkFinalSuccess) {
-        if(idComSuccess === 'true'){
-          if(finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response){
+        if (idComSuccess === 'true') {
+          if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
             currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
           }
           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, journeyId, globals);
-        }
-        else{
+        } else {
           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, journeyId, globals);
         }
-      }
-      else{
+      } else {
         const err = 'Bad response';
         throw err;
       }
-    }
-    else{
+    } else {
       const err = 'Journey Drop Off Params Update response failed';
       throw err;
     }
@@ -743,15 +735,15 @@ const nreNroFetchRes = async (globals) => {
  * If `idCom` is true, initiates a journey drop-off process and handles the response.
  * @returns {void}
  */
-function nreNroPageRedirected(globals){
+function nreNroPageRedirected(globals) {
   if (idComRedirect) {
-      setTimeout(() => {
-        // debugger
-        displayLoader();
-        nreNroFetchRes(globals);
-      }, 2000);
-    }
-};
+    setTimeout(() => {
+      // debugger
+      displayLoader();
+      nreNroFetchRes(globals);
+    }, 2000);
+  }
+}
 
 const addPageNameClassInBody = (pageName) => {
   if (pageName === 'Get_OTP_Page' || pageName === 'Submit_OTP') {
