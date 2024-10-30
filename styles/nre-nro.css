@@ -7,9 +7,10 @@
     background: var(--color-interface-fd-background-primary);
 
     .cmp-container {
-      @media (width >= 900px) {
-      max-width: 1200px;
+      @media (width >=900px) {
+        max-width: 1200px;
       }
+
       @media (320px <=width <=991px) {
         div:nth-child(1) {
           text-align: left;
@@ -24,23 +25,16 @@
 
     .cmp-container>div:nth-child(1) {
       @media screen and (min-width: 768px) {
-        margin-left: 20px;
+        margin-left: 40px;
       }
 
       @media (768px <=width <=991px) {
         display: block;
+        margin-left: 40px;
       }
 
-      picture img {
+      @media (320px <=width <=600px) {
         margin-left: 20px;
-
-        @media (768px <=width <=991px) {
-          margin-left: 20px;
-        }
-
-        @media (320px <=width <=600px) {
-          margin-left: 20px;
-        }
       }
 
     }
@@ -56,7 +50,7 @@
       height: 32px;
       content: url(../icons/header-safe-secure.png);
       padding: 0 !important;
-      right: 3rem !important;
+      right: 32px !important;
 
       @media (768px <=width <=991px) {
         right: 30px !important;
@@ -74,23 +68,32 @@
   main {
     display: flex;
     overflow: auto;
+    justify-content: center;
+
+    &:has(.form-container[style="display: none;"]) {
+      justify-content: flex-start;
+    }
 
     @media (768px <=width <=991px) {
       flex-direction: column;
+      display: initial;
     }
 
     @media (320px <=width <=991px) {
       height: calc(100vh - 48px);
       flex-direction: column;
+      display: initial;
     }
 
     &>.cmp-container-container {
       display: initial;
       background-color: var(--color-interface-fd-background-secondary) !important;
+      flex: 0 0 440px;
 
       @media (320px <=width <=991px) {
         position: initial;
         width: 100%;
+        flex: auto;
       }
 
       .cmp-container-wrapper {
@@ -112,7 +115,6 @@
 
     &>.form-container {
       margin: 0 !important;
-      flex: 1;
       border-radius: 0;
     }
 
@@ -209,16 +211,38 @@
                       outline: none;
                     }
                   }
+
+                  /*  &[data-active="true"]~.field-registeredmobilenumber {
+                    background-color: transparent;
+                    width: 72%;
+                    left: 90px;
+
+                      label {
+                        top: -10px;
+                        background-color: #fff;
+                        font-size: 14px;
+                        font-weight: 400;
+                        line-height: 20px;
+                        left: -80px;
+                      }                    
+                  } */
                 }
 
                 .field-registeredmobilenumber {
                   position: absolute;
                   left: 90px;
-                  /* background-color: #fff; */
                   margin: 1px;
                   padding-left: 15px;
+                  padding-right: 15px;
                   border-radius: 12px;
-                  /* width: 72%; */
+                  width: 72%;
+                  /*z-index: 2;
+                  max-width: 350px;
+                  height: 95%;
+                  left: 0;
+                  background-color: #fff; 
+                   width: 95%;
+                  */
 
                   label {
                     top: 10px;
@@ -230,7 +254,7 @@
                   }
 
                   input[name="registeredMobileNumber"] {
-                    width: 90%;
+                    width: 100%;
                     font-size: 18px;
                     letter-spacing: 9px;
                     border-color: var(--color-interface-border-secondary);
@@ -264,8 +288,7 @@
                       font-size: 14px;
                       font-weight: 400;
                       line-height: 20px;
-                      margin-left: 5px;
-                      left: -85px;
+                      left: -80px;
                     }
                   }
                 }
@@ -360,6 +383,7 @@
                     line-height: 28px;
                     margin: 0;
                     color: var(--color-interface-text-secondary);
+                    display: none;                   
 
                     @media (320px <=width <=600px) {
                       top: 65px;
@@ -414,11 +438,18 @@
                       }
                     }
 
-                    input[name="dateOfBirth"] {
+                    &:has(input:not([edit-value="Date of Birth"])){
+                      label{
+                        @media (320px <=width <=991px) {
+                          display: block;
+                        }
+                      }
+                    }
+                    input:not([edit-value="Date of Birth"]) {
                       background: url("../icons//cal_icon.png") no-repeat 97.2%;
                       font-weight: 500;
                       color: var(--color-interface-text-primary);
-                      /* word-spacing: 20px; */
+                      word-spacing: 20px;
 
                       &:focus-visible {
                         background: none;
@@ -431,16 +462,14 @@
                       top: 12px;
                       font-size: 14px;
                       line-height: 20px;
+                      @media (320px <=width <=991px) {
+                        display: block;
+                      }
 
                       @media (320px <=width <=600px) {
                         top: 45px;
                         padding-left: 0;
                       }
-                    }
-
-                    input[name="dateOfBirth"],
-                    input[type="date"] {
-                      word-spacing: 20px;
                     }
                   }
                 }
@@ -923,6 +952,7 @@
             .field-otpnumber {
               margin: -28px 0 -18px;
               grid-column: span 12;
+              position: relative;
 
               @media (320px <=width <=991px) {
                 grid-column: span 12;
@@ -949,6 +979,12 @@
                 font-size: 36px !important;
                 letter-spacing: 51px !important;
                 color: var(--color-input-text-placeholder-default);
+              }
+
+              .bi-eye-slash,
+              .bi-eye {
+                position: absolute;
+                top: 28px;
               }
             }
 
@@ -1095,8 +1131,8 @@
 
           .field-submitotp {
             text-align: center;
-
             width: 272px;
+            margin: 0 auto;
 
             @media (768px <=width <=991px) {
               width: 222px;
@@ -1106,14 +1142,25 @@
               width: 100%;
             }
 
-            &::after {
-              right: 42% !important;
-              top: 10px;
-              height: 20px;
-              width: 20px !important;
+            button {
+              position: relative;
 
-              @media (320px <=width <=600px) {
-                right: 36% !important;
+              &::after {
+                content: '';
+                position: absolute;
+                right: 31%;
+                top: 15px;
+                height: 20px;
+                width: 20px;
+                background: url(../../icons/Arrow.png);
+
+                @media (768px <=width <=991px) {
+                  right: 27%;
+                }
+
+                @media (320px <=width <=600px) {
+                  right: 36%;
+                }
               }
             }
           }
@@ -1323,12 +1370,30 @@
               }
             }
 
+            &.field-emailid {
+              textarea {
+                height: 28px;
+              }
+            }
+
             &.field-communicationaddress,
             &.field-permanentaddress {
               textarea {
                 height: 100%;
                 margin-bottom: 20px;
                 width: 100% !important;
+              }
+
+              &.field-communicationaddress {
+                textarea {
+                  min-height: 90px;
+                }
+              }
+
+              &.field-permanentaddress {
+                textarea {
+                  min-height: 146px;
+                }
               }
             }
           }
@@ -1589,21 +1654,10 @@
             display: none !important;
           }
 
-          .field-continue {
+          .field-continue,
+          .field-confirmbutton,
+          .field-multiaccocountinue {
             text-align: left !important;
-            max-width: 272px;
-
-            @media (768px <=width <=991px) {
-              width: 222px;
-            }
-
-            @media (320px <=width <=600px) {
-              width: 100%;
-            }
-          }
-
-          .field-confirmbutton {
-            text-align: left;
             max-width: 272px;
 
             @media (768px <=width <=991px) {
@@ -1619,7 +1673,7 @@
         /* select account screen */
 
         .field-selectaccount {
-          
+
           @media (320px <=width <=600px) {
             padding-bottom: 30px;
           }
@@ -1803,8 +1857,228 @@
 
           /* second block multipleAccounts  */
           .field-multipleaccounts {
-            border: 1px dashed var(--color-interface-border-secondary);
+            border-bottom: 1px dotted var(--color-interface-border-secondary);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+
+            .field-multiselectaccountheading {
+              p {
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 28px;
+                color: var(--color-interface-text-primary);
+                margin-bottom: 0;
+              }
+            }
+
+            .field-multiselectaccounttext {
+              margin-bottom: 30px;
+              margin-top: -20px;
+
+              p {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+                color: var(--color-input-text-primary);
+                margin-bottom: 0;
+              }
+            }
+
+            .field-multipleaccountrepeatable {
+              .repeat-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+
+                &>.panel-wrapper.field-wrapper {
+                  border: 1px solid var(--color-interface-border-secondary);
+                  border-radius: 20px;
+                  padding: 15px;
+                  margin-bottom: 20px !important;
+                  position: relative;
+                  display: initial;
+                  max-width: 48%;
+
+                  @media (320px <=width <=600px) {
+                    max-width: 100%;
+                  }
+
+                  @media (min-width: 768px) {
+                    margin-bottom: 0;
+                  }
+
+                  &:has(input[type="radio"]:checked) {
+                    background-color: var(--color-interface-background-quinary);
+                    border: 1px solid var(--color-action-border-primary-hover);
+                  }
+
+                  .field-accounttype {
+                    border-radius: 12px;
+                    width: 122px;
+                    height: 20px;
+                    margin-bottom: 30px;
+                    margin-top: 5px;
+
+                    @media (320px <=width <=600px) {
+                      margin-bottom: 0;
+                    }
+
+                    input {
+                      font-size: 10px;
+                      font-weight: 500;
+                      line-height: 20px;
+                      text-align: center;
+                      color: var(--color-interface-text-primary);
+                      width: 122px;
+                      height: 20px;
+                      background-color: #D0DDFC;
+
+                    }
+                  }
+
+                  .field-multiplecustidaccount {
+                    position: absolute;
+                    right: 10px;
+
+                    & .field-label {
+                      display: none;
+                    }
+
+                    & input[type="radio"] {
+                      border-radius: 100%;
+                      border: 1px solid var(--color-interface-border-secondary);
+                      appearance: none;
+                      -webkit-appearance: none;
+                      outline: none;
+                      padding: 0;
+                      width: 24px !important;
+                      height: 24px !important;
+
+                      &:checked {
+                        cursor: pointer;
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px solid var(--color-interface-icon-highlight);
+
+                        &::before {
+                          content: '';
+                          border-radius: 100%;
+                          width: 12px !important;
+                          height: 12px !important;
+                          background-color: var(--color-interface-icon-highlight);
+                          position: absolute;
+                        }
+                      }
+                    }
+                  }
+
+                  .field-accountnumber {
+                    height: auto;
+
+                    input {
+                      position: initial;
+                    }
+                  }
+
+                  .field-multiifscbranchpanel {
+                    display: flex;
+                    position: relative;
+                    flex-flow: row wrap;
+
+                    .field-branch,
+                    .field-ifsccode {
+                      height: 15px;
+                      position: relative;
+
+                      label,
+                      textarea,
+                      input {
+                        font-size: 12px;
+                        font-weight: 400;
+                        line-height: 17px;
+                        color: var(--color-interface-text-secondary);
+                      }
+
+                      /*  & label{
+                       margin: 0 0 0 10px;
+                       position: absolute;
+                       border-left: 1px solid var(--color-interface-text-secondary);
+                      } */
+
+                      &.field-branch {
+                        & label {
+                          margin: 0;
+                        }
+
+                        & textarea {
+                          height: auto;
+                          left: 45px;
+                          position: relative;
+                          white-space: nowrap;
+                          width: 105px !important;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                        }
+                      }
+
+
+                      &.field-ifsccode {
+                        margin-left: 35px;
+                        margin-top: 0;
+
+                        &::before {
+                          content: "...";
+                          position: absolute;
+                          top: 0;
+                          left: -10px;
+                          font-size: 12px;
+                          font-weight: 400;
+                          line-height: 17px;
+                          color: var(--color-interface-text-secondary);
+                        }
+
+                        & label {
+                          margin: 0;
+                          position: absolute;
+                          padding-left: 8px;
+                          margin-left: 5px;
+
+                          &::before {
+                            content: "";
+                            position: absolute;
+                            top: 3px;
+                            left: 0px;
+                            height: 10px;
+                            width: 1px;
+                            background-color: #c5c9d2;
+                          }
+                        }
+
+                        & input {
+                          left: 45px;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                .item-add {
+                  display: none;
+                }
+              }
+            }
+
+            &[data-visible="false"]~.field-nro-account-type-pannel {
+              border-top: none;
+            }
           }
+
+          /*   .field-multipleaccounts {
+            border: 1px dashed var(--color-interface-border-secondary);
+          } */
 
           .field-nro-account-type-pannel {
             border-top: 1px dashed var(--color-interface-border-secondary);
@@ -1972,7 +2246,7 @@
             .text-wrapper.field-wrapper,
             .multiline-wrapper,
             .drop-down-wrapper {
-              min-height: 70px;
+              min-height: 50px;
 
               @media (320px <=width <=600px) {
                 height: auto;
@@ -2032,6 +2306,10 @@
 
           .field-needbankhelp {
             margin-top: 10px;
+
+            .field-bankusefragment {
+              margin-bottom: 20px;
+            }
 
             .field-bankusetoggle {
               display: flex;
@@ -2113,12 +2391,15 @@
                 grid-column: span 6 !important;
 
                 label.field-label {
-                  margin: 0 0 0 15px;
+                  margin: 0 0 0 10px;
                   top: 20px;
                   color: var(--color-input-text-disabled);
                   font-size: 14px;
                   line-height: 20px;
                   font-weight: 400;
+                  top: -3px;
+                  background: #fff;
+                  padding: 0 5px;
                 }
 
                 input {
@@ -2128,9 +2409,14 @@
                   font-size: 18px;
                   line-height: 28px;
                   font-weight: 400;
+                  padding-left: 15px;
 
                   &:focus-visible {
                     outline: none;
+                  }
+
+                  &[disabled] {
+                    background-color: transparent;
                   }
                 }
 
@@ -2182,6 +2468,7 @@
             .field-resetallbtn {
               width: auto;
               text-align: right;
+              display: none;
 
               .button {
                 background: none;
@@ -2544,7 +2831,7 @@
           }
 
           .field-thankyouleftpanel {
-            flex: 0 0 74%;
+            flex: 0 0 73%;
             margin-top: -60px;
 
             @media (320px <=width <=991px) {
@@ -2584,7 +2871,7 @@
                   top: -275px;
                   right: 0;
 
-                /*   @media (768px <=width <=991px) {
+                  /*   @media (768px <=width <=991px) {
                     top: 135px;
                   } */
 
@@ -3231,6 +3518,7 @@
               @media (320px <=width <=991px) {
                 display: none;
               }
+
               a {
                 position: absolute;
                 top: 0;
@@ -3255,13 +3543,15 @@
             }
           }
 
-          
+
           .field-hdfcbankwebsite {
             flex: 0 0 100%;
+
             @media (320px <=width <=991px) {
               margin-bottom: 20px;
             }
-          /*   @media (320px <=width <=600px) {
+
+            /*   @media (320px <=width <=600px) {
               margin-top: 20px;
             } */
             p {

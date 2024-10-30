@@ -15,6 +15,8 @@ import {
   showFinancialDetails,
   showNomineeDetails,
   multiCustomerId,
+  crmLeadIdDetail,
+  selectSingleAccount,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -43,4 +45,6 @@ export {
   showFinancialDetails,
   showNomineeDetails,
   multiCustomerId,
+  crmLeadIdDetail,
+  selectSingleAccount,
 };

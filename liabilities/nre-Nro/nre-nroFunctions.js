@@ -55,6 +55,7 @@ currentFormContext.journeyType = 'NTB';
 currentFormContext.errorCode = '';
 currentFormContext.errorMessage = '';
 currentFormContext.eligibleOffers = '';
+currentFormContext.selectedCheckedValue = 0;
 
 formRuntime.getOtpLoader = currentFormContext.getOtpLoader || (typeof window !== 'undefined') ? displayLoader : false;
 formRuntime.otpValLoader = currentFormContext.otpValLoader || (typeof window !== 'undefined') ? displayLoader : false;
@@ -426,7 +427,8 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
 }
 
 function showNomineeDetails(nomineeDetails, response, globals) {
-  const listdropdown = response.customerAccountDetailsDTO[1].codRel;
+  const accIndex = currentFormContext.selectedCheckedValue;
+  const listdropdown = response.customerAccountDetailsDTO[accIndex].codRel;
   const relationDropDown = document.querySelector('[name=relationShipDropdown]');
   relationDropDown.setAttribute('value', listdropdown);
   relationDropDown.value = listdropdown;
@@ -452,7 +454,7 @@ function prefillCustomerDetail(response, globals) {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-  currentFormContext.fatca_response = response;
+  const accIndex = currentFormContext.selectedCheckedValue;
 
   // globals.functions.setProperty(globals.form.runtime.fatca_response, { value: response });
   setFormValue(personalDetails.emailID, customerDataMasking('eMail', response.refCustEmail));
@@ -487,8 +489,8 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(financialDetails.grossAnnualIncome, response.customerAMLDetailsDTO[0].annualTurnover);
   setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
   setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
-  setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[0].nomineeName);
-  setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[0].nomineeDOB);
+  setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[accIndex].nomineeName);
+  setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[accIndex].nomineeDOB);
 }
 
 function prefillAccountDetail(response, globals, i, responseLength) {
@@ -520,12 +522,15 @@ function prefillAccountDetail(response, globals, i, responseLength) {
     setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName);
     setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
     setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
+    prefillCustomerDetail(currentFormContext.fatca_response, globals);
   }
 }
 
 function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, globals) {
   const accountDetailsList = response.customerAccountDetailsDTO;
   const responseLength = accountDetailsList.length;
+  currentFormContext.fatca_response = response;
+
   // globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.multipleAccounts.multipleAccountRepeatable[0]?.AccountNumber, { value: accountDetailsList[0].accountNumber });
   if (responseLength > 1) {
     globals.functions.setProperty(singleAccountCust, { visible: false });
@@ -534,13 +539,19 @@ function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, glo
     globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: true });
     accountDetailsList.forEach((accountDetail, i) => {
       if (i < accountDetailsList.length - 1) {
-        globals.functions.dispatchEvent(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.multipleAccounts.multipleAccountRepeatable, 'addItem');
+        globals.functions.dispatchEvent(multipleAccountsPanel.multipleAccountRepeatable, 'addItem');
       }
       setTimeout(() => {
         prefillAccountDetail(response, globals, i, responseLength);
         const radioButtons = Array.from(document.querySelectorAll('.field-multiplecustidaccount input'));
-        radioButtons.forEach((radioButton) => {
+        radioButtons.forEach((radioButton, index) => {
+          const setIndexValue = index;
           radioButton.setAttribute('name', 'cust-id-radio');
+          radioButton.setAttribute('value', setIndexValue);
+          radioButton.addEventListener('click', () => {
+            const checkedValue = radioButtons.find((checkVal) => checkVal.checked)?.value;
+            currentFormContext.selectedCheckedValue = checkedValue;
+          });
         });
       }, 1000);
     });
@@ -549,7 +560,10 @@ function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, glo
     globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
     prefillAccountDetail(response, globals, '', responseLength);
   }
-  prefillCustomerDetail(response, globals);
+}
+
+function selectSingleAccount(globals) {
+  prefillCustomerDetail(currentFormContext.fatca_response, globals);
 }
 
 /**
@@ -754,6 +768,291 @@ setTimeout(async (globals) => {
   }
 }, 2000);
 
+const crmLeadIdDetail = () => {
+  const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
+
+  const year = response.datBirthCust.substring(0, 4);
+  const month = response.datBirthCust.substring(4, 6);
+  const day = response.datBirthCust.substring(6, 8);
+
+  const jsonObj = {
+    requestString: {
+      journeyID: currentFormContext.journeyID,
+      journeyName: currentFormContext.journeyName,
+      userAgent: window.navigator.userAgent,
+      misCodeDetails: '',
+      identifierValue: `${day}/${month}/${year}`,
+      DoB: `${day}/${month}/${year}`,
+      dateofBirth: `${day}/${month}/${year}`,
+      custBirthDate: `${day}/${month}/${year}`,
+      identifierName: '',
+      preferredChannel: '',
+      territoryName: '',
+      address: `${response?.txtCustadrAdd1} ${response?.txtCustadrAdd2} ${response?.txtCustadrAdd3}`,
+      companyName: '',
+      nomineeAge: '',
+      typeOfFirm: '',
+      typCompany: '',
+      typeOfFirm_label: '',
+      accountNumber: response.customerAccountDetailsDTO[accIndex].accountNumber,
+      customerID: response.customerId.toString(),
+      agriculturalIncome: '',
+      sex: response.txtCustSex,
+      email: response.refCustEmail,
+      accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
+      ProductCategory: response.customerAccountDetailsDTO[accIndex].productName,
+      name: response.customerFullName,
+      otherThanAgriIncome: '',
+      nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
+      birthCertificate: '',
+      PANNumber: response.refCustItNum,
+      nomineeAddress: '',
+      maidenName: response.namMotherMaiden,
+      countryOfNominee: '',
+      country: response.namHoldadrCntry,
+      passpostExpiryDate: '',
+      LCCode: '',
+      LGCode: '',
+      applicationDate: new Date().toISOString().slice(0, 19),
+      DLExpiryDate: '',
+      selfEmployedProfessionalCategory: '',
+      selfEmployedProfessionalCategory_label: '',
+      nomineeCity: '',
+      stateOfBirth: '',
+      cityOfBirth: response.customerFATCADtlsDTO[0].namCityBirth,
+      taxCntry1: response.customerFATCADtlsDTO[0].codTaxCntry1,
+      permanentAddressState: response.namPermadrState,
+      permanentAddressCity: response.namPermadrCity,
+      permanentAddressLM: response.txtPermadrAdd3,
+      permanentAddressLine2: response.txtPermadrAdd2,
+      permanentAddressLine1: response.txtPermadrAdd1 || '',
+      presentAddressLM: response.txtCustadrAdd3,
+      presentAddressLine2: response.txtCustadrAdd2,
+      presentAddressLine1: response.txtCustadrAdd1,
+      isIndianTaxResident: '',
+      isTaxAddressSame: '',
+      isMailIDAvailable: '',
+      isPresentAddressSame: '',
+      isCommunicationAddressSame: '',
+      isPermanentAddressSame: '',
+      isSameAddress: '',
+      fatherNAme: response.customerFATCADtlsDTO[0].namCustFather,
+      employeeCategory: '',
+      employeeCategory_label: '',
+      otherEmployeeCategory: '',
+      otherEmployeeCategory_label: '',
+      occupationType: '',
+      permanentAddressPin: response.txtPermadrZip,
+      presentAddressPin: response.txtPermadrZip,
+      maritalStatus: response.maritalStatusDescription,
+      marital_Status: '',
+      spouseName: response.customerFATCADtlsDTO[0].namCustSpouse,
+      declareNominee: '',
+      otherTypeOfFirm: '',
+      otherTypeOfFirm_label: '',
+      otherSourceOfFunds: '',
+      nomineeAddressLine2: '',
+      nomineeLandmark: '',
+      nomAdrCity: '',
+      nomAdrCntry: '',
+      nomAdrState: '',
+      nomAdrZip: '',
+      nomRelation: '',
+      nomineeDoB: response.customerAccountDetailsDTO[accIndex].nomineeDOB,
+      isForm60Attached: '',
+      PANAckNo: '',
+      doaInput: '',
+      grossAnnualIncome: response.customerAMLDetailsDTO[0].grossIncome || '',
+      grossAnnualIncome_range: '',
+      monthlyIncome: '',
+      selfServiceAnnualIncome: '',
+      sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
+      sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
+      displayProductName: response.customerAccountDetailsDTO[accIndex].productName,
+      state: response.namPermadrState,
+      city: response.namPermadrCity,
+      residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
+      residenceType_label: '',
+      doYouHavePAN: response.refCustItNum ? 'Y' : 'N',
+      voterIDNo: '',
+      drivingLicenseNo: '',
+      isSeniorCitizen: '',
+      countryOfTaxResidency: response.customerFATCADtlsDTO[0].codTaxCntry1,
+      AadharFSDocument: '',
+      PANFSDocument: '',
+      passportFSDocument: '',
+      voterIDFSDocument: '',
+      DLFSDocument: '',
+      otherDocumentFS: '',
+      proofOfAddress: '',
+      passportNumber: '',
+      existingCustomer: 'Y',
+      motherMaidenName: response.namMotherMaiden,
+      declarationforRequiredBalance: '',
+      incorporationDate: '',
+      nationality: response.namHoldadrCntry,
+      custNationality: response.txtCustNATNLTY,
+      addressTypeOtherThanResidential: '',
+      AadharBSDocument: '',
+      passportBSDocument: '',
+      votersIDBSDocument: '',
+      DLBSDocument: '',
+      otherProfileImage: '',
+      otherBSDocument: '',
+      AadharConsentTaken: '',
+      aadharConsentDataTime: new Date().toISOString().slice(0, 19),
+      utilityBillsFSDocument: '',
+      utilityBillsBSDocument: '',
+      municipalBSDocument: '',
+      familyPPSFSDocument: '',
+      familyPPSBSDocument: '',
+      allotmentLetterFSDocument: '',
+      allotmentLEtterBSDocument: '',
+      firstName: response.customerFirstName || '',
+      gender: response.txtCustSex,
+      lastName: response.customerLastName || 'test',
+      layout: '',
+      customerFullName: response.customerFullName,
+      leadParentLame: '',
+      leadRating: '',
+      leadSource: 'NRI Insta ETB STP',
+      leadSourceKey: '33609',
+      middleName: response.customerMiddleName || '',
+      mobileNo: currentFormContext.mobileNumber,
+      multipleTaxResidencyID: '',
+      employmentType: '',
+      employmentTypeOthers: '',
+      phone: currentFormContext.mobileNumber,
+      productCategory: 'Savings Account',
+      productName: 'Savings Max Account',
+      ratingKey: '',
+      residentialStatus: '',
+      residentialStatus_label: '',
+      salutationKey: '',
+      salutationName: response.txtCustPrefix,
+      statusCodeInOn: new Date().toISOString().slice(0, 19),
+      territoryCode: '',
+      territoryKey: '',
+      zipCode: response.txtPermadrZip,
+      videoKYCConsent: '',
+      transcriptLatLong: '',
+      videoKYCFinalStatus: '',
+      isAadharBasedAccountOpening: '',
+      AMBStamping: '',
+      companyCode: '',
+      occupationTypeOther: '',
+      natureOfBusinessOther: '',
+      natureOfBus: '',
+      natureOfBusinessOther_label: '',
+      genderCode: '',
+      genderID: '',
+      lastModifiedBy: '',
+      lastModifiedOn: '',
+      occupationTypeCode: '',
+      occupationTypeID: '',
+      ownerCode: '',
+      productCategoryID: '483',
+      productCode: '193',
+      productKey: '413',
+      residentialStatusID: '',
+      websiteUrl: '',
+      expirayDateVideo: '',
+      custPrefix: response.txtCustPrefix,
+      cc_RequestType: '',
+      cc_Fraudnet: '',
+      cc_Hunter: '',
+      cc_Final_Status: '',
+      cc_HU_Sec_Status: '',
+      cc_Error_Msg: '',
+      browserName: '',
+      browserVersion: '',
+      osVersion: '',
+      osName: '',
+      browserFingerprint: '',
+      cookieSource: '',
+      cookieTime: '',
+      cookieVintage: '',
+      cookieID: '',
+      cookieName: '',
+      customerEligibilityCheckFlag: 'true',
+      customerEligibilityStatus: 'success',
+      promoCode: null,
+      accountTitle: response.customerFullName,
+      codCCBrn: '',
+      codProd: '',
+      codOccupation: '',
+      codProfession: '',
+      selfEmpFrom: '',
+      incomeSource: '',
+      typEmployer: '',
+      typResidence: '',
+      typResidence_label: '',
+      addr1: response.txtPermadrAdd1 || '',
+      custFirstName: response.customerFirstName || '',
+      custFullName: response.customerFullName,
+      custLastName: response.customerLastName || '',
+      custSex: response.txtCustSex,
+      custType: response.flgCustTyp,
+      permAddr1: response.txtPermadrAdd1 || '',
+      permAddr2: response.txtPermadrAdd2,
+      permAddr3: response.txtPermadrAdd3,
+      permAddrCity: response.namPermadrCity,
+      permAddrState: response.namPermadrState,
+      zip: response.txtPermadrZip,
+      addrProof: '',
+      addressType: '',
+      branchCode: response.customerAccountDetailsDTO[accIndex].branchCode.toString(),
+      branchId: '',
+      custFatherName: response.customerFATCADtlsDTO[0].namCustFather,
+      docNumber: response.customerFATCADtlsDTO[0].idDocNum,
+      ADVRefrenceKey: '',
+      RRN: '',
+      validPAN: response.refCustItNum ? 'Y' : 'N',
+      docType: '',
+      resStatus: '',
+      mandateFlag: '',
+      acctOperInstrs: response.customerAccountDetailsDTO[accIndex].accountOperatingInstructions,
+      amtShareFixed: '',
+      codRel: response.customerAccountDetailsDTO[accIndex].codRel.toString(),
+      AMBValue: '',
+      TPTConsent: '',
+      AMBDateTime: new Date().toISOString().slice(0, 19),
+      guardianName: null,
+      namGuardian: null,
+      guardianDob: '',
+      guardianAge: '',
+      nomineeAddressLine1: '',
+      selfEmployedSinceMonths: '',
+      selfEmployedSinceYears: '',
+      guardAdrAdd1: '',
+      guardAdrAdd2: '',
+      guardAdrAdd3: '',
+      guardAdrCity: '',
+      guardAdrState: '',
+      guardAdrZip: '',
+      addressIndicator: '',
+      partnerId: '',
+      referenceNo: '',
+      utmSource: '',
+      utmMedium: '',
+      utmCampaign: '',
+      utmMcId: '',
+      pep: '',
+      isAccountCreated: '',
+      annualTurnOver: '',
+      seedingBankName: '',
+      bankIinNumber: '',
+      dbtConsentDateTime: '',
+      isGigaCard: '',
+      dbtConsent: '',
+    },
+  };
+
+  const path = urlPath(ENDPOINTS.crmLeadGenerate);
+  formRuntime?.otpValLoader();
+  return fetchJsonResponse(path, jsonObj, 'POST', true);
+};
+
 export {
   validateLogin,
   getOtpNRE,
@@ -771,4 +1070,6 @@ export {
   showFinancialDetails,
   showNomineeDetails,
   multiCustomerId,
+  crmLeadIdDetail,
+  selectSingleAccount,
 };
