@@ -14,7 +14,8 @@ const localDev = ['aem.live', 'aem.page', 'localhost', 'hlx.live', 'hlx.page'];
 
 function isLocalDev() {
   // eslint-disable-next-line no-restricted-globals
-  if(typeof location !== 'undefined') {
+  if (typeof location !== 'undefined') {
+    // eslint-disable-next-line no-restricted-globals
     const { hostname } = location;
     return localDev.some((dev) => hostname.includes(dev));
   }
