@@ -28,8 +28,8 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
       digitalData.card.eligibleCard = '';
       break;
     case 'confirmationPage':
-      digitalData.formDetails.reference = '';
-      digitalData.formDetails.isVideoKYC = '';
+      digitalData.formDetails.reference = formData.currentFormContext.ARN_NUM;
+      digitalData.formDetails.isVideoKYC = formData.currentFormContext.VKYC_URL;
       break;
     default:
       // do nothing
@@ -204,4 +204,5 @@ const sendFDAnalytics = (eventType, pageName, payload, journeyState, globals) =>
 export {
   sendFDAnalytics,
   sendFDErrorAnalytics,
+  sendPageloadEvent,
 };
