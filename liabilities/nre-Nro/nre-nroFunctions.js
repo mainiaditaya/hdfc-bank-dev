@@ -398,20 +398,50 @@ function setupBankUseSection(mainBankUsePanel, globals) {
 }
 
 function showFinancialDetails(financialDetails, response, occupation, globals) {
-  const occupationCode = response.customerAMLDetailsDTO[0].codOccupation;
-  const selectElement = document.querySelector('[name=occupationDropdown]');
-  selectElement.setAttribute('value', occupationCode);
-  selectElement.value = occupationCode;
-  const occupationText = selectElement.options[selectElement.selectedIndex].text;
-  globals.functions.setProperty(financialDetails.occupation, { value: occupationText });
-  globals.functions.setProperty(financialDetails.residenceType, { visible: true });
-  globals.functions.setProperty(financialDetails.grossAnnualIncome, { visible: true });
-  globals.functions.setProperty(financialDetails.currencyName, { visible: true });
-  globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true });
-  globals.functions.setProperty(financialDetails.occupation, { visible: true });
-  globals.functions.setProperty(financialDetails.occupation, { value: occupationText });
+  const customerAMLDetails = response.customerAMLDetailsDTO[0];
+  const {
+    codOccupation: occupationCode,
+    typCompany: typCompanyCode,
+    natureOfBus: natureOfBusCode,
+    incomeSource: incomeSourceCode,
+    annualTurnover: annualTurnoverCode,
+    typResidence: residenceTypeMappingCode,
+    txtProfessionDesc: txtProfessionDescCode,
+  } = customerAMLDetails;
 
-  if (occupationCode === 2) globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+  const setDropdownValue = (name, code) => {
+    const mappedValue = document.querySelector(`[name=${name}]`);
+    if (mappedValue && customerAMLDetails != null) {
+      const item = Array.from(mappedValue.options).find((option) => option.value === code);
+      if (item) {
+        mappedValue.value = code;
+        return item.text;
+      }
+      mappedValue.value = '';
+    }
+    return '';
+  };
+
+  const occupationText = setDropdownValue('occupationDropdown', occupationCode);
+  const residenceTypeProfText = setDropdownValue('residenceTypeMapping', residenceTypeMappingCode);
+  const natureOfBusinessText = setDropdownValue('natureOfBusinessMapping', natureOfBusCode);
+  const typeOfCompanyText = setDropdownValue('typeOfCompanyMapping', typCompanyCode);
+  const sourceOfFundText = setDropdownValue('sourceOfFundMapping', incomeSourceCode);
+  const grossAnnualIncomeText = setDropdownValue('grossAnnualIncomeMapping', annualTurnoverCode);
+  const selfEmployedProfText = setDropdownValue('selfEmployedProfMapping', txtProfessionDescCode);
+
+  globals.functions.setProperty(financialDetails.residenceType, { visible: true, value: residenceTypeProfText });
+  globals.functions.setProperty(financialDetails.grossAnnualIncome, { visible: true, value: grossAnnualIncomeText });
+  globals.functions.setProperty(financialDetails.currencyName, { visible: true });
+  globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true, value: sourceOfFundText });
+  globals.functions.setProperty(financialDetails.occupation, { visible: true, value: occupationText });
+  globals.functions.setProperty(financialDetails.selfEmployedProfessional, { value: selfEmployedProfText });
+  globals.functions.setProperty(financialDetails.natureOfBusiness, { value: natureOfBusinessText });
+  globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { value: typeOfCompanyText });
+
+  if (occupationCode === 2) {
+    globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+  }
   if (occupationCode === 3) {
     globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
     globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
@@ -477,16 +507,10 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(fatcaDetails.mothersName, response.namMotherMaiden);
   setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namSpouseCust);
   setFormValue(fatcaDetails.taxIdType, response.customerFATCADtlsDTO[0].typTinNo1);
-  setFormValue(financialDetails.sourceOfFunds, response.customerAMLDetailsDTO[0].incomeSource);
   setFormValue(financialDetails.employeerName, response.customerFATCADtlsDTO[0].namCustEmp);
-  setFormValue(financialDetails.selfEmployedProfessional, response.customerAMLDetailsDTO[0].txtProfessionDesc);
   setFormValue(financialDetails.selfEmployedSince, response.customerAMLDetailsDTO[0].selfEmpFrom);
   setFormValue(financialDetails.dateOfIncorporation, response.datIncorporated);
-  setFormValue(financialDetails.natureOfBusiness, response.customerAMLDetailsDTO[0].natureOfBus);
-  setFormValue(financialDetails.typeOfCompoanyFirm, response.customerAMLDetailsDTO[0].typCompany);
-  setFormValue(financialDetails.residenceType, response.customerAMLDetailsDTO[0].typResidence);
   setFormValue(financialDetails.currencyName, response.customerAMLDetailsDTO[0].namCcy);
-  setFormValue(financialDetails.grossAnnualIncome, response.customerAMLDetailsDTO[0].annualTurnover);
   setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
   setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
   setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[accIndex].nomineeNam);
