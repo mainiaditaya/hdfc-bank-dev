@@ -134,6 +134,7 @@ const fileUploadUIHandler = () => {
       const infoMsg = parentDiv.nextElementSibling;
 
       const validFileTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+      const fileSizeInKB = file.size / 1024;
       const fileSizeInMB = file.size / (1024 * 1024);
 
       parentDiv.classList.remove('file-uploaded', 'file-error');
@@ -145,7 +146,11 @@ const fileUploadUIHandler = () => {
           fileList.textContent = file.name;
           const fileSizeSpan = document.createElement('span');
           fileSizeSpan.classList.add('file-size');
-          fileSizeSpan.textContent = ` (${fileSizeInMB.toFixed(1)} MB)`;
+          if (fileSizeInKB < 1024) {
+            fileSizeSpan.textContent = ` (${fileSizeInKB.toFixed(1)} KB)`;
+          } else {
+            fileSizeSpan.textContent = ` (${fileSizeInMB.toFixed(1)} MB)`;
+          }
           fileList.appendChild(fileSizeSpan);
         }
 
