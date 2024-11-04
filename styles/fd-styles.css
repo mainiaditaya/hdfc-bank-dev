@@ -789,6 +789,13 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       left: 55px;
       width: 90%;
     }
+
+    .button-wrapper:nth-child(6) {
+      position: absolute;
+      top: 80%;
+      right: 175px;
+      width: 90%;
+    }
   }
 
   .field-error2colresultpanel {
@@ -972,6 +979,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   .button-wrapper.field-ntberrorpage,
   .button-wrapper.field-tryagainbuttonerrorpanel {
     text-align: center;
+  }
+
+  .button-wrapper.field-booknewfd {
+    text-align: right;
   }
 
   .field-successresultpanel {
@@ -4189,6 +4200,18 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       right: -24% !important;
       top: -147% !important;
     }
+
+    .button-wrapper:nth-child(5) {
+      top: 85% !important;
+      left: 70px !important;
+      text-align: left !important;
+    }
+
+    .button-wrapper:nth-child(6) {
+      top: 85% !important;
+      left: 20px !important;
+      text-align: right !important;
+    }
   }
 
   .field-successresultpanel {
@@ -4421,10 +4444,15 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .button-wrapper:nth-child(5) {
-        position: absolute;
-        top: 80%;
-        left: 20px !important;
-        width: 90% !important;
+        top: 88%;
+        left: 40px !important;
+        width: 80% !important;
+      }
+
+      .button-wrapper:nth-child(6) {
+        top: 92%;
+        left: 40px !important;
+        width: 80% !important;
       }
     }
 
