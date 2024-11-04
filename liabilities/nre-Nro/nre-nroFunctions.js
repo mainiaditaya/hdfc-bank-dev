@@ -29,6 +29,9 @@ import {
   FORM_RUNTIME as formRuntime,
 } from '../../common/constants.js';
 import {
+  NRENROENDPOINTS,
+} from './constant.js';
+import {
   sendAnalytics,
 } from './analytics.js';
 
@@ -604,6 +607,32 @@ const resendOTP = async (globals) => {
 };
 
 /**
+   * Fetch IDCom Token
+   * @param {Object} globals - The global object containing necessary data for IdComToken request.
+   * @returns {Object} - The IDCom Response
+   */
+async function fetchIdComToken(globals) {
+  // Making the IDComToken request
+  const formData = santizedFormDataWithContext(globals);
+  console.log(formData);
+  const idComTokenObj = {
+    requestString: {
+      mobileNumber: currentFormContext.mobileNumber ,
+      scope: "ADOBE_ACNRI",
+      userAgent: window.navigator.userAgent,
+      authCode: idComAuthCode,
+      journeyID: currentFormContext.journeyID,
+      journeyName: currentFormContext.journeyName
+    }
+  };
+
+
+  // Calling the fetch IDComToken API
+  const apiEndPoint = urlPath(ENDPOINTS.fetchIDComToken);
+  return fetchJsonResponse(apiEndPoint, idComTokenObj, 'POST');
+};
+
+/**
    * Creates an IdCom request object based on the provided global data.
    * @param {Object} globals - The global object containing necessary data for IdCom request.
    * @returns {Object} - The IdCom request object.
@@ -677,6 +706,7 @@ const finalResult = {
 const searchParam = new URLSearchParams(window.location.search);
 const authModeParam = searchParam.get('authmode');
 const journeyId = searchParam.get('journeyId');
+const idComAuthCode = searchParam.get('authcode');
 // const idComErrorCode = searchParam.get('errorCode');
 // const idComErrorMessage = searchParam.get('errorMessage');
 const idComSuccess = searchParam.get('success');
@@ -691,6 +721,7 @@ const nreNroFetchRes = async (globals) => {
   try {
     globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
     const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
+
     if (data && data.errorCode === 'FJ0000') {
       const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
       finalResult.journeyParamState = journeyDropOffParamLast.state;
@@ -713,10 +744,34 @@ const nreNroFetchRes = async (globals) => {
           if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
             currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
           }
-          await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, journeyId, globals);
+          // await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, journeyId, globals);
+          
+          // Fetching IDComToken
+          const idComTokenResponse = await fetchIdComToken(globals);
+          console.log(idComTokenResponse);
+          currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
 
-          // Calling Account Opening Functions
+          if(currentFormContext.IDCOMSuccessToken != null || currentFormContext.IDCOMSuccessToken != undefined){
+            // Calling Account Opening Functions
+            let accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo,globals);
+            console.log("Account Opening Response : " , accountOpeningResponse);
+            
+            if(accountOpeningNreNro){
+              hideLoaderGif();
+              console.log("CurrentFormContext : " , currentFormContext);
+              // globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+              globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+              globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
 
+              prefillThankYouPage(finalResult.journeyParamStateInfo,globals);
+            }
+            // On Success -> Show Thank You Page and assign field values and hide other pages.
+            // Else journey drop off update onboarding failure, generic error page show here. 
+          }
+          else{
+            await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, journeyId, globals);
+            // Show generic error page here
+          }
         } else {
           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, journeyId, globals);
         }
@@ -739,11 +794,28 @@ const nreNroFetchRes = async (globals) => {
   }
 };
 
+
+/**
+ * Prefills the Thank You page based on the DB
+ * @returns {void}
+ */
+function prefillThankYouPage(journeyParamStateInfo, globals){
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: journeyParamStateInfo.accountNumber }); // Setting the account number
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.accounttype, { value: journeyParamStateInfo.accounttype }); // Setting the account type
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.homeBranch, { value: journeyParamStateInfo.homeBranch }); // Setting the home branch
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchCode, { value: journeyParamStateInfo.branchCode }); // Setting the branch code
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.ifsc, { value: journeyParamStateInfo.ifsc }); // Setting the ifsc code
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchAddress, { value: journeyParamStateInfo.branchAddress }); // Setting the branch address
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.communicationAddress, { value: journeyParamStateInfo.communicationAddress }); // Setting the communication address
+}
+
 /**
  * Call Account Opening Function
  * @returns {void}
  */
-function accountOpeningNreNro(globals){
+async function accountOpeningNreNro(journeyParamStateInfo, globals){
+  const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
+
   const jsonObj = {
     requestString: {
       journeyID: currentFormContext.journeyID,
@@ -752,9 +824,8 @@ function accountOpeningNreNro(globals){
       misCodeDetails: '',
       identifierValue: parseDate(response.datBirthCust),
       DoB: parseDate(response.datBirthCust),
-      IDCOM_Token:"EnsHxdLpvSeD0Gpvr1bRh6Pv8eLpsxwNs1dhZefyiVB3b3VOWFCuBmq5vTe-OagY0O1BWMr6pc2yUqHAknmjvmMPcUvbiNx0B6AqzDjVk5jDXznGjP-ldP0MLWjtL09AtOJFMDm_Q_jNs5J3ZRyeU5O9tKFGuiIipDLj9pq41EAzZTEkSGXmuoDXNsj3OZMvSit3fF-NkiSqY6nrqklisR50Hki0mDlAHh3II1_VvZ88t2ZUpwmsr2zFXGgA35C4Rgy8gx2Lh0QQwY-r-HdK2VOejgNCnyurC5BziNYwRRAXKhWRDo4w1H4AIJpwTCAxgIOcTygddHXepw1-YnlGNA.1fz0q4L-NLuPd8U-l8UOIA.mzAYLIP__e6cMLEdfR-y6eWDjhTs4gGHy93K-UB1Husj_qYjdVnld83hBDIsB-g6DYVLO-nMFLb7rXZgQ-htWZ_PUnUUSd7eoZWJzyhz0iCEozvUKaTIw9rf2renH7bvCq5gP9gPs8slXXVTi4AeZy9y4UaImnaJYcUECI0f1W22057PIzJhnSrs-7I_9G6eHrHYFT9xaCYhp0JytqBCH3iwjSPaUjtmUZc9G-wTB4f0ukztpct9I9IKgzAQ7kHb_nC_-8qXXZgaKCDa-StPVGuNdDK_o4E4Ybv-XvBmzdgJeCNu_u6poT_he4zlNcsy48EeZOgKWnnLHmQSaB_KzR5wke8DpF_mNTFKQgL1ab2pEQMnQsVJlIBbfr-JXEOqXmAOyoDuL9f8oUr3q8KUuPvkJD68HQ1yGyQnjveDSJfFLHqoEcDbH-RHN2g7T_MYxJIVqVdLLNjN_VQejaI0NbUikDcOcKvW9vc4OwbrDfwjwS-rohd2Y842Xy3gAGCIUv4Ykg9spbkV6Vyyz6sFIyHKz2kIVRhtmUYluh7REtLBJTOQ9l2SsHZiZeoCFSZaE0xR74sIVFjmU59H_zJLx7CjdXZw-oaVM-PnjN2BDSlbE4dA1D4JvErOr89r2yNXzOiOT-vwol-BkOWDUERWmQTp9uezryMInuewxpA7z7VwWbfE1S-atP2F9iU_lwzomm61FVH3ecWxBsd_RxwDFdG7LLtgq67PbPi54-X55O-_f-u5PaEgwJ6x_RD57FyKm-S3rrh-5q7PXYhBKmEeqxiabFzmexDodc_Mz1dW9doRziOKXk6vPvF3NPgtirkf.N8cMyhYMUh21LFL4enscMA",
-      Id_token_jwt:"JG3X5kJblDcm_obO03s90tEGkN1BxXWY3MHyZAFUDHbaAb44IZvMGWNwIHmy3hpJB9x-YTbxz88U8dJL53F6SLiVPwbmz20Y7MK7Iq6JVpPmrtM1MPYo878nzngI9Rbw1AsIcl2tN3xFjUDTSuN3x5kGcperIM8mGGMeQ0GO01QSoslnflpZCdjcsswY5c_cJtQLSw-c0PQqM8nPY47OzTD0RMcxpETmKKVcaT-u4QLaas1b4fVMtVFXp6IXVnNhQy7da7IDfjAleZk4qgTm8HpXWZPnElFAZxgr0wCYv4duHREoABKOl6amtXIiMdAGn4j5Wk9FJMWqnIjvUBn-ug.FxxtSdEUKvydTdjOexoyGQ.-QJDsu4VPuwLT3tGKH26712Fh1z9owzniAWaEQihLlY-EgGZWEcyyKEeBOXGFxKSZMNRCbCfO5V_-LL-dHVyZUv8hqX2YYZa1jzXucEa3pYs4Tx88HJpNebOpYYOG_D1SUGnHiednqugVps-P8mPtPxhYD5CIKR_TEqnmzJuQD8kGjXRwr1tKysJMLg-KY3gcLZczq_ZkpuQ5A0eN6iGgq9w9C5CpkoPcjl6KEtuThUCcG7D2Mzy80GgkK3MznJ-0KsMgHuogZyeco7pWzLSgMzaR9ADTvkbyhgqs2NGjwLHoMbR7xpSzp57LmqM55EOv6UdZisxmuAvLZ2tDW3tDyYe-mTE1drzpjqqDzNfE7ORi_pWMAnmaQW7P4HcHEcIaIwhl1K9A3y81NftN_3qwGtop00gv4ezf-FPEQ3bDa-amtzh3ibPHw8_1A09m_x_t0lexr8yCAKMk7yL9980EwQ61jUpVnAnI5cvmmNQm46qjayr3xiC2aFRneUzdODtF8uIWUhhry8hWtIfhhPDVA1MpAmhaaEillqDc96GAndy1Rn4axzWQ1uE8q_t5ej72TelYxNNTf9889E0kpbw7Vz7KAPI2M6gruWtpXLZdJMMcGcdVMLdE5twmleLabHa8IVGe7Veoxn0RvAsUwDJPczbvPqc1GAABvX6-CC8StKgyaoTODQXpM1vdv5uO9MrWNiJ6RB17F4_fAxbJUpTmUI5UFw_pOBg8MIPswxCnC1_LaNj6KwhTsiE7aKeLhgdYmDkw-vYO-Mj26um9i1jeneqekFS2Nq244h3yl4WZA43Ks2NhIUwDHmwf-4O-Qkq4sRxgALN0CxeXUvnTAoQxcmpwpvhUNCXMCCEpTtNB4OIZQwZiIq_b0MkvdmT53WUK0Tjk4BaspgFxIdHymX9c_TWysLJW9kGqiO9zR0VZzo.oKGxc0NDvM9P_9JbXruTHg",
-      
+      IDCOM_Token:currentFormContext.IDCOMSuccessToken,
+      Id_token_jwt: journeyParamStateInfo.AccountOpeningNRENRO.fatcaJwtToken,
       dateofBirth: parseDate(response.datBirthCust),
       custBirthDate: parseDate(response.datBirthCust),
       identifierName: '',
@@ -1033,6 +1104,10 @@ function accountOpeningNreNro(globals){
       identificationType: "E -UID Aadhar",
     },
   };
+
+  // Calling the fetch IDComToken API
+  const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
+  return fetchJsonResponse(apiEndPoint, jsonObj, 'POST');
 }
 
 /**
@@ -1041,10 +1116,8 @@ function accountOpeningNreNro(globals){
  * @returns {void}
  */
 function nreNroPageRedirected(globals) {
-  debugger;
   if (idComRedirect) {
     setTimeout(() => {
-      debugger
       displayLoader();
       nreNroFetchRes(globals);
     }, 2000);
@@ -1248,7 +1321,8 @@ const crmLeadIdDetail = () => {
       leadSource: 'NRI Insta ETB STP',
       leadSourceKey: '33609',
       middleName: response.customerMiddleName || '',
-      mobileNo: currentFormContext.mobileNumber,
+      // mobileNo: currentFormContext.mobileNumber,
+      mobileNo: '8548385535',
       multipleTaxResidencyID: '',
       employmentType: '',
       employmentTypeOthers: '',
