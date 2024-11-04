@@ -19,6 +19,8 @@ const currentState = {
   pageName: '',
 };
 
+const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
+
 /**
  * Hashes a phone number using SHA-256 algorithm.
  *
@@ -117,7 +119,7 @@ const sendPageloadEvent = (journeyState, formData, pageName) => {
     digitalData.user.aan = formData?.smartemi?.originAcct;
     currentState.pageName = null;
   }
-  if (window) {
+  if (!isNodeEnv) {
     window.digitalData = digitalData || {};
   }
   _satellite.track('pageload');
@@ -140,7 +142,7 @@ const sendSubmitClickEvent = async (eventType, linkType, formData, journeyState,
         validationMethod: 'credit card',
         status: '1',
       };
-      if (window) {
+      if (!isNodeEnv) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
@@ -156,7 +158,7 @@ const sendSubmitClickEvent = async (eventType, linkType, formData, journeyState,
         validationMethod: 'credit card',
         status: '1',
       };
-      if (window) {
+      if (!isNodeEnv) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
@@ -173,7 +175,7 @@ const sendSubmitClickEvent = async (eventType, linkType, formData, journeyState,
         validationMethod: 'credit card',
         status: '1',
       };
-      if (window) {
+      if (!isNodeEnv) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
@@ -190,7 +192,7 @@ const sendSubmitClickEvent = async (eventType, linkType, formData, journeyState,
       digitalData.formDetails.amt = formData?.smartemi?.SmartEMIAmt || currentFormContext.SMART_EMI_AMOUNT; // total amount
       digitalData.formDetails.eligibleTransactions = ''; // eligible transaction ?. no of eligible transaction available
       digitalData.formDetails.selectedTransactions = currentFormContext?.TXN_SELECTED_COUNTS?.total; // no of selected
-      if (window) {
+      if (!isNodeEnv) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
@@ -233,7 +235,7 @@ const sendSubmitClickEvent = async (eventType, linkType, formData, journeyState,
         digitalData.page.pageInfo.errorMessage = errorMessages.noBilled;
       }
       digitalData.form.emiCategory = EMI_CATEGORY;
-      if (window) {
+      if (!isNodeEnv) {
         window.digitalData = digitalData || {};
       }
       const trackingEvent = ((ccUnBilledData?.length === 0) && (ccBilledData?.length === 0)) ? 'unbilled_clicked' : 'submit';
@@ -250,7 +252,7 @@ const sendSubmitClickEvent = async (eventType, linkType, formData, journeyState,
         validationMethod: 'credit card',
         status: '1',
       };
-      if (window) {
+      if (!isNodeEnv) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
@@ -267,7 +269,7 @@ const sendSubmitClickEvent = async (eventType, linkType, formData, journeyState,
         validationMethod: 'credit card',
         status: '1',
       };
-      if (window) {
+      if (!isNodeEnv) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
@@ -276,7 +278,7 @@ const sendSubmitClickEvent = async (eventType, linkType, formData, journeyState,
     case 'submit review': {
       digitalData.event = {};
       digitalData.event.rating = formData?.ratingvalue || formData.rating;
-      if (window) {
+      if (!isNodeEnv) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
@@ -343,7 +345,7 @@ function sendErrorAnalytics(errorCode, errorMsg, journeyState, globals) {
   digitalData.page.pageInfo.errorMessage = errorMsg;
   digitalData.page.pageInfo.errorAPI = ''; // "OTP_Validation|EligibilityCheck"
   digitalData.page.pageInfo.pageName = ANALYTICS_PAGE_NAME['Error Page'];
-  if (window) {
+  if (!isNodeEnv) {
     window.digitalData = digitalData || {};
   }
   _satellite.track('pageload');

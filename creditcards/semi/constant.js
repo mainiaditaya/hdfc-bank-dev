@@ -9,6 +9,7 @@ const FLOWS_ERROR_MESSAGES = {
   XFACE_INQ_VP_0003: 'Hey, it seems like you have entered incorrect details. Request you to check & re-enter your last 4 digits of the card.',
   XFACE_E2FA_02: 'Incorrect OTP code. Please try again.', // For this case error message is hardcoded in rule
   XFACE_E2FA_04: 'Oops! you have entered wrong otp too many times please try again later',
+  "1000": "Sorry, this card is not eligible for SmartEMI. You may retry with a different credit card."
 };
 
 const CHANNELS = {
@@ -17,13 +18,13 @@ const CHANNELS = {
 };
 
 const SEMI_ENDPOINTS = {
-  otpGen: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
-  otpVal: 'https://applyonlineuat01.hdfcbank.com/content/hdfc_hafcards/api/eligibilitycheck.json',
-  preexecution: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/preexecution.json',
-  masterChanel: 'https://applyonlinedev.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_CHANNEL_MASTER.json',
-  ccSmartEmi: 'https://applyonlinedev.hdfcbank.com/content/hdfc_ccforms/api/ccsmartemi.json',
-  branchMaster: 'https://applyonlinedev.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_BRANCH_MASTER.BRANCH_CODE',
-  dsaCode: 'https://applyonlinedev.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_DSA_MASTER.DSACODE',
+  otpGen: 'https://applyonline.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
+  otpVal: 'https://applyonline.hdfcbank.com/content/hdfc_hafcards/api/eligibilitycheck.json',
+  preexecution: 'https://applyonline.hdfcbank.com/content/hdfc_ccforms/api/preexecution.json',
+  masterChanel: 'https://applyonline.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_CHANNEL_MASTER.json',
+  ccSmartEmi: 'https://applyonline.hdfcbank.com/content/hdfc_ccforms/api/ccsmartemi.json',
+  branchMaster: 'https://applyonline.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_BRANCH_MASTER.BRANCH_CODE',
+  dsaCode: 'https://applyonline.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_DSA_MASTER.DSACODE',
 };
 
 const DOM_ELEMENT = {

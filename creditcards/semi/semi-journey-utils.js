@@ -1,4 +1,4 @@
-import { santizedFormDataWithContext, urlPath } from '../../common/formutils.js';
+import { santizedFormDataWithContext } from '../../common/formutils.js';
 import * as CONSTANT from './constant.js';
 import { ENDPOINTS } from '../../common/constants.js';
 import { fetchJsonResponse } from '../../common/makeRestAPI.js';
@@ -6,9 +6,13 @@ import { fetchJsonResponse } from '../../common/makeRestAPI.js';
 /* temproraily added this journey utils for SEMI , journey utils common file has to be changed to generic */
 const CHANNEL = 'ADOBE_WEBFORMS';
 const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
+
 const {
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
+
+const BASEURL = "https://applyonline.hdfcbank.com";
+const urlPath = (path) => `${BASEURL}${path}`;
 
 /**
  * For Web returing currentFormContext as defined in variable
@@ -100,7 +104,32 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
 
+/**
+  * @name invokeJourneyDropOffByParam
+  * @param {string} mobileNumber
+  * @param {string} leadProfileId
+  * @param {string} journeyId
+  * @return {PROMISE}
+  */
+const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
+  mobileNumber = mobileNumber?.trim();
+  const journeyJSONObj = {
+    RequestPayload: {
+      leadProfile: {
+        ...(mobileNumber?.length < 10 ? {} :  { mobileNumber }),
+      },
+      journeyInfo: {
+        journeyID,
+      },
+    },
+  };
+  const url = urlPath("/content/hdfc_commonforms/api/whatsappdata.json");
+  const method = 'POST';
+  return fetchJsonResponse(url, journeyJSONObj, method);
+};
+
 export {
   invokeJourneyDropOff,
   invokeJourneyDropOffUpdate,
+  invokeJourneyDropOffByParam
 };
