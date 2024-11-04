@@ -44,7 +44,11 @@ const ID_COM = {
   },
 };
 
-const ENV = 'dev';
+const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
+let ENV = 'dev';
+if(isNodeEnv) {
+  ENV = 'dev'
+}
 
 export {
   BASEURL,

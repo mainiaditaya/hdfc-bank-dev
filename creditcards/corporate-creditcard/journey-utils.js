@@ -86,8 +86,8 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
    * @return {PROMISE}
    */
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
-  const formContextCallbackData = globals.functions.exportData()?.currentFormContext || currentFormContext;
-  const formData = globals.functions.exportData();
+  const formContextCallbackData = globals?.functions?.exportData()?.currentFormContext || globals?.currentFormContext || currentFormContext;
+  const formData = globals?.functions?.exportData() || globals;
   // temporary_hotfix_radioBtnValues_undefined_issue
   /* storing the radio btn values in current form context */
   if ((state === 'IDCOM_REDIRECTION_INITIATED') || (state === 'CUSTOMER_AADHAR_INIT')) {

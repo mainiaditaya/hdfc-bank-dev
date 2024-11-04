@@ -28,7 +28,18 @@ import {
   invokeJourneyDropOffUpdate,
   handleWrongCCDetailsFlows,
   handleTadMadAlert,
+  sendAnalytics,
+  sendErrorAnalytics,
 } from './smart-emi-functions.js';
+
+const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
+
+if (isNodeEnv) {
+   // eslint-disable-next-line no-restricted-globals
+  global._satellite = {
+    track: () => {},
+  }
+}
 
 export {
   createJourneyId,
@@ -60,4 +71,6 @@ export {
   reloadPage,
   handleWrongCCDetailsFlows,
   handleTadMadAlert,
+  sendAnalytics,
+  sendErrorAnalytics,
 };

@@ -26,7 +26,7 @@ body.fdlien .form-wrapper {
   max-width: 100%;
 }
 
-main .section.form-container {
+.fdlien main .section.form-container {
   max-width: var(--form-fd-max-width) !important;
 }
 
