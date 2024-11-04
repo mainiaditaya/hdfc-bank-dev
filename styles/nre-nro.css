@@ -1229,7 +1229,7 @@
         fieldset.field-nomineedetails {
           border: 1px solid var(--color-interface-border-primary);
           border-radius: 15px;
-          padding-bottom: 20px;
+          /* padding-bottom: 20px; */
 
           @media (320px <=width <=600px) {
             margin-bottom: 20px !important;
@@ -1243,14 +1243,13 @@
             color: var(--color-interface-text-primary);
             padding: 15px 30px;
             background: linear-gradient(270deg, #F3F6FD 0%, #F3F6FD 100%);
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
+            border-radius: 15px;
             margin-bottom: 0;
             position: relative;
             height: 70px;
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+           /*  margin-bottom: 20px; */
 
             @media (768px <=width <=991px) {
               font-size: 24px;
@@ -1272,14 +1271,17 @@
               background: url("../icons/accordian-arrow-up.png") no-repeat top center;
               transition: 0.4s;
               background-size: contain;
+              transform: rotate(180deg);
             }
 
             &.accordion-collapse {
-              border-radius: 15px;
-              margin-bottom: 0px;
+             border-bottom-left-radius: 0;
+             border-bottom-right-radius: 0;
+             margin-bottom: 20px;
+             
 
               &::after {
-                transform: rotate(180deg);
+                transform: rotate(0deg);
               }
             }
           }
@@ -1393,19 +1395,26 @@
               &.field-communicationaddress {
                 textarea {
                   min-height: 90px;
+                  @media (320px <=width <=600px) {
+                    min-height: 70px;
+                  }
                 }
               }
 
               &.field-permanentaddress {
                 textarea {
                   min-height: 146px;
+                  @media (320px <=width <=600px) {
+                  min-height: 80px;
+                  }
                 }
               }
             }
           }
 
           &:has(legend.accordion-collapse) {
-            padding-bottom: 0;
+            padding-bottom: 20px;
+            transition: transform 0.3s;
           }
 
           fieldset.field-nomineedetails {
@@ -1423,22 +1432,20 @@
         fieldset.field-fatcadetails,
         fieldset.field-financialdetails,
         fieldset.field-nomineedetails {
-          & > div{
+          & > div.text-wrapper.field-wrapper{
             display: none !important;
           }
         }
 
-        .field-personaldetails:has(~ .field-fatcadetails):has(.accordion-collapse)
-        {
-          border: 1px solid green;
+
+        fieldset.field-personaldetails:has(.accordion-collapse),
+        fieldset.field-fatcadetails:has(.accordion-collapse),
+        fieldset.field-financialdetails:has(.accordion-collapse),
+        fieldset.field-nomineedetails:has(.accordion-collapse) {
+          & > div.text-wrapper.field-wrapper{
+            display: block !important;
+          }
         }
-      /*   .field-fatcadetails:has(~ .field-financialdetails):has(.accordion-collapse)
-        {
-          border: 1px solid blue;
-        }
-        .field-financialdetails:has(~ .field-nomineedetails):has(.accordion-collapse) {
-          border: 1px solid red;
-        } */
 
         fieldset.field-nomineedetails .field-wrapper {
           legend.field-label {
@@ -2281,9 +2288,14 @@
             .multiline-wrapper,
             .drop-down-wrapper {
               min-height: 50px;
+              
+
+            @media (768px <=width <=991px) {
+              grid-column: span 6;
+            }
 
               @media (320px <=width <=600px) {
-                height: auto;
+                height: 70px;
               }
 
               &>label.field-label {
@@ -2323,6 +2335,9 @@
                 border: none !important;
                 padding: 0 !important;
                 height: auto !important;
+                -moz-appearance: none;
+                -webkit-appearance: none;
+                appearance: none;
               }
 
               &[data-active="true"] {
