@@ -1429,7 +1429,7 @@
           }        
         }
 
-        fieldset.field-personaldetails,
+        /* fieldset.field-personaldetails,
         fieldset.field-fatcadetails,
         fieldset.field-financialdetails,
         fieldset.field-nomineedetails {
@@ -1446,15 +1446,27 @@
           & > div.text-wrapper.field-wrapper{
             display: block !important;
           }
+        } */
+
+       
+        fieldset.field-nomineedetails:has(.accordion-collapse) {
+          & fieldset.panel-wrapper.field-nomineepanel.field-wrapper{
+            display: grid !important;
+          }
         }
 
+        fieldset.field-nomineedetails:has(.accordion-collapse) {
+          & div.plain-text-wrapper.field-nonomineetext.field-wrapper{
+            display: flex !important;
+          }
+        }
         fieldset.field-nomineedetails .field-wrapper {
           legend.field-label {
             display: none;
           }
 
           .plain-text-wrapper {
-            padding: 20px 20px 0 20px;
+            padding: 20px 20px 0 30px;
 
             p {
               margin: 0;
@@ -2668,6 +2680,10 @@
             height: 145px;
             margin: 0 auto 10px auto;
             display: flex;
+          }
+
+          picture{
+            display: none;
           }
         }
 
