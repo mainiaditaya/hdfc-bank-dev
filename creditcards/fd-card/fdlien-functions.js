@@ -295,22 +295,38 @@ const pincodeChangeHandler = (pincode, globals) => {
 const checkModeFd = async (globals) => {
   const formData = globals.functions.exportData();
   const { authmode: idcomVisit, visitType: aadhaarVisit } = formData?.queryParams || {};
-  const { addressDeclarationPanel, resultPanel, selectKYCOptionsPanel } = globals.form;
+  const {
+    addressDeclarationPanel,
+    resultPanel,
+    selectKYCOptionsPanel,
+    bannerImagePanel,
+    loginMainPanel,
+  } = globals.form;
   if (!idcomVisit && !aadhaarVisit) return;
 
-  const { bannerImagePanel, loginMainPanel } = globals.form;
   globals.functions.setProperty(bannerImagePanel, { visible: false });
   globals.functions.setProperty(loginMainPanel, { visible: false });
   creditCardSummary(globals);
 
   if (idcomVisit) {
     if (globals?.functions?.exportData()?.queryParams?.errorCode === FD_CONSTANT.IDCOM.response.sessionExpired.errorCode) {
-      const { errorMessageText, errResDealerPanel } = resultPanel.errorResultPanel;
+      const { errorMessageText, errResDealerPanel, errorMessageTextPlaceHolder } = resultPanel.errorResultPanel;
       globals.functions.setProperty(resultPanel, { visible: true });
       globals.functions.setProperty(resultPanel.errorResultPanel, { visible: true });
+      const { idcomRedirectAttempt } = addressDeclarationPanel;
+      const attemptCount = parseInt(idcomRedirectAttempt.$value, 10);
+      if (attemptCount < FD_CONSTANT.IDCOM.maxRetry) {
+        console.log(formData?.currentFormContext?.idComRequest);
+        globals.functions.setProperty(resultPanel.errorResultPanel.idcomRetry, { visible: true });
+        globals.functions.setProperty(errorMessageTextPlaceHolder, { value: FD_CONSTANT.ERROR_MSG.sessionExpiredDescription });
+        globals.functions.setProperty(resultPanel.errorResultPanel.tryAgainButtonErrorPanel, { visible: false });
+        globals.functions.setProperty(errResDealerPanel, { visible: false });
+        globals.functions.setProperty(idcomRedirectAttempt, { value: attemptCount + 1 });
+      } else {
+        const arnNum = formData?.currentFormContext?.executeInterfaceResponse?.APS_APPL_REF_NUM;
+        globals.functions.setProperty(errResDealerPanel?.errResDealerText2, { value: `${FD_CONSTANT.ERROR_MSG.branchVisitWithRefNum} ${arnNum}` });
+      }
       globals.functions.setProperty(errorMessageText, { value: FD_CONSTANT.ERROR_MSG.sessionExpired });
-      const arnNum = formData?.currentFormContext?.executeInterfaceResponse?.APS_APPL_REF_NUM;
-      globals.functions.setProperty(errResDealerPanel?.errResDealerText2, { value: `${FD_CONSTANT.ERROR_MSG.branchVisitWithRefNum} ${arnNum}` });
     } else {
       executeInterfacePostRedirect('idCom', true, globals);
       return;
