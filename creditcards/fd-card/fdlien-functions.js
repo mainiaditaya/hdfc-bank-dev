@@ -354,7 +354,7 @@ const checkModeFd = async (globals) => {
       globals.functions.setProperty(currentResidenceAddressBiometricOVD.currentResAddressBiometricOVD, { value: communicationAddress });
       globals.functions.setProperty(addressDeclarationPanel, { visible: true });
 
-      const isMobileMatch = formData?.aadhaarMobileMatch?.toLowerCase() === 'true';
+      const isMobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid === 'y';
       globals.functions.setProperty(globals.form?.selectKYCOptionsPanel?.aadhaarMobileMatch, { value: isMobileMatch ? 'Yes' : 'No' });
 
       globals.functions.setProperty(proceedFromAddressDeclarationIdcom, { visible: !formData?.currentFormContext?.customerIdentityChange });
