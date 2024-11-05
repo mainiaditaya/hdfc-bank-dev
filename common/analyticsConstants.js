@@ -6,6 +6,57 @@ const data = {
   },
   'submit otp': {
     error: '',
+    linkPosition: 'Form',
+  },
+  'select fd': {
+    linkType: 'button',
+    linkName: 'Select FD',
+    linkPosition: 'Form',
+  },
+  'review details': {
+    linkType: 'button',
+    linkName: 'Review Details',
+    linkPosition: 'Form',
+  },
+  'review details back': {
+    linkType: 'button',
+    linkName: 'Review Details',
+    linkPosition: 'Form',
+  },
+  'select card': {
+    linkType: 'button',
+    linkName: 'Select Card',
+    linkPosition: 'Form',
+  },
+  'select card consent': {
+    linkType: 'button',
+    linkName: 'Select Card Consent',
+    linkPosition: 'Form',
+  },
+  'validation method kyc': {
+    linkType: 'button',
+    linkName: 'Validation Method KYC',
+    linkPosition: 'Form',
+  },
+  'aadhaar kyc language popup': {
+    linkType: 'button',
+    linkName: 'Aadhaar KYC Language Popup',
+    linkPosition: 'Form',
+  },
+  'documents upload': {
+    linkType: 'button',
+    linkName: 'Documents Upload',
+    linkPosition: 'Form',
+  },
+  'documents upload upload': {
+    linkType: 'button',
+    linkName: 'Documents Upload',
+    linkPosition: 'Form',
+  },
+  'confirmation page': {
+    linkType: 'button',
+    linkName: 'Confirmation Page',
+    linkPosition: 'Form',
   },
   'check offers': {
     linkType: 'button',
@@ -143,6 +194,10 @@ const PAGE_NAME = {
     'start kyc': 'Confirmation',
     'submit review': 'Confirmation',
     'thank you screen': 'Confirmation',
+  },
+  fd: {
+    getOtp: 'Identify Yourself',
+    submitOtp: 'Verify with OTP',
   },
 };
 export {
