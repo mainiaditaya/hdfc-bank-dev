@@ -289,7 +289,7 @@ const setData = (globals, panel, txn, i) => {
   globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date || txn?.aem_TxnDate });
   globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id || txn?.aem_TxnID });
   globals.functions.setProperty(panel[i]?.aem_TxnName, { value: txn?.name || txn?.aem_TxnName });
-  globals.functions.setProperty(panel[i]?.authCode, { value: txn?.AUTH_CODE || txn?.authCode });
+  globals.functions.setProperty(panel[i]?.authCode, { value: txn?.AUTH_CODE || txn?.authCode || txn?.authcode });
   globals.functions.setProperty(panel[i]?.logicMod, { value: txn?.LOGICMOD || txn?.logicMod });
   globals.functions.setProperty(panel[i]?.aem_txn_type, { value: txn?.type });
 };
@@ -1253,7 +1253,7 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
       mobileNo: mobileNum,
       tid: TID,
       reqAmt: LOAN_AMOUNT,
-      procFeeWav: PROC_FEES,
+      procFeeWav: '000',
       reqNbr: REQ_NBR,
       emiConversion: emiConversionArray,
       journeyID: globals.form.runtime.journeyId.$value,
