@@ -546,10 +546,3 @@ main .form .rating .star.selected {
 main .form .rating:hover .star.hover {
   color: #ecba24;
 }
-
-
-main .form form .repeat-wrapper {
-  display: grid;
-  grid-template-columns: repeat(var(--form-columns), minmax(0, 1fr));
-  gap: var(--form-field-vert-gap) var(--form-field-horz-gap);
-}

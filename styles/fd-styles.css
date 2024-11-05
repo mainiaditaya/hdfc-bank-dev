@@ -2480,6 +2480,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     border-bottom: solid 1px var(--color-interface-border-secondary);
 
     .repeat-wrapper {
+      display: grid;
+      grid-template-columns: repeat(var(--form-columns), minmax(0, 1fr));
+      gap: var(--form-field-vert-gap) var(--form-field-horz-gap);
+
       .panel-wrapper {
         padding: 24px;
         border: solid 1px var(--color-interface-border-secondary);
@@ -3895,7 +3899,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 }
 
 /* For tablets */
-@media (768px <=width <1280px) {
+@media (768px <=width <1272px) {
   .fdlien .form form {
     display: block;
   }
