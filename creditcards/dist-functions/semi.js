@@ -984,6 +984,7 @@
    */
   const addMobileValidation = async () => {
     const validFirstDigits = ['6', '7', '8', '9'];
+    if (typeof document === 'undefined') return;
     const inputField = document.querySelector('.field-aem-mobilenum input');
     inputField?.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
   };
@@ -993,6 +994,7 @@
      *
      */
   const addCardFieldValidation = () => {
+    if (typeof document === 'undefined') return;
     const inputField = document.querySelector('.field-aem-cardno input');
     inputField?.addEventListener('input', () => validateCardDigits(inputField));
   };
@@ -1002,6 +1004,7 @@
     *
     */
   const addOtpFieldValidation = () => {
+    if (typeof document === 'undefined') return;
     const inputField = document.querySelector('.field-aem-otpnumber input');
     const inputField2 = document.querySelector('.field-aem-otpnumber2 input');
     [inputField, inputField2].forEach((ip) => ip?.addEventListener('input', () => validateOTPInput(ip)));
@@ -1012,6 +1015,7 @@
     *
     */
   const linkToPopupToggle = (hyperLink, popupOverlay, popupContent, closeBtn = false, redirectBtn = false) => {
+    if (typeof document === 'undefined') return;
     const links = document.querySelectorAll(hyperLink);
     let redirectionLink = '';
     [...links].forEach((link) => {
@@ -1024,7 +1028,7 @@
     });
 
     if (closeBtn) {
-      document.querySelector(closeBtn).addEventListener('click', (event) => {
+      document.querySelector(closeBtn)?.addEventListener('click', (event) => {
         event.preventDefault();
         document.querySelector(popupOverlay).setAttribute('data-visible', 'false');
         document.querySelector(popupContent).setAttribute('data-visible', 'false');
@@ -2354,7 +2358,7 @@
     globals.functions.setProperty(panel[i]?.aem_TxnDate, { value: txn?.date || txn?.aem_TxnDate });
     globals.functions.setProperty(panel[i]?.aem_TxnID, { value: txn?.id || txn?.aem_TxnID });
     globals.functions.setProperty(panel[i]?.aem_TxnName, { value: txn?.name || txn?.aem_TxnName });
-    globals.functions.setProperty(panel[i]?.authCode, { value: txn?.AUTH_CODE || txn?.authCode });
+    globals.functions.setProperty(panel[i]?.authCode, { value: txn?.AUTH_CODE || txn?.authCode || txn?.authcode });
     globals.functions.setProperty(panel[i]?.logicMod, { value: txn?.LOGICMOD || txn?.logicMod });
     globals.functions.setProperty(panel[i]?.aem_txn_type, { value: txn?.type });
   };
@@ -3292,7 +3296,7 @@
     const tenurePlan = globals.functions.exportData().aem_tenureSelectionRepeatablePanel;
     const selectedTenurePlan = tenurePlan?.find((emiPlan) => emiPlan.aem_tenureSelection === '0');
     const emiSubData = JSON.parse(selectedTenurePlan?.aem_tenureRawData);
-    const PROC_FEES = String(currencyStrToNum(selectedTenurePlan?.aem_tenureSelectionProcessing));
+    String(currencyStrToNum(selectedTenurePlan?.aem_tenureSelectionProcessing));
     const INTEREST = emiSubData?.interest; // '030888'
     const TENURE = (parseInt(emiSubData?.period, 10).toString().length === 1) ? (parseInt(emiSubData?.period, 10).toString().padStart(2, '0')) : parseInt(emiSubData?.period, 10).toString(); // '003' into '03' / '18'-'18'
     const TID = emiSubData?.tid; // '000000101'
@@ -3317,7 +3321,7 @@
         mobileNo: mobileNum,
         tid: TID,
         reqAmt: LOAN_AMOUNT,
-        procFeeWav: PROC_FEES,
+        procFeeWav: '000',
         reqNbr: REQ_NBR,
         emiConversion: emiConversionArray,
         journeyID: globals.form.runtime.journeyId.$value,
