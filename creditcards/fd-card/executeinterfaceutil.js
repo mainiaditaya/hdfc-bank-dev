@@ -297,7 +297,16 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
       requestObj.requestString.authMode = 'IDCOM';
     }
   }
-  requestObj.requestString.ekycMobileMatch = globals.functions.exportData()?.aadhaarMobileMatch || '';
+  const mobileValid = globals.functions.exportData()?.aadhaar_otp_val_data?.result?.mobileValid;
+
+  if (mobileValid === 'y') {
+    requestObj.requestString.ekycMobileMatch = 'true';
+  } else if (mobileValid === 'n') {
+    requestObj.requestString.ekycMobileMatch = 'false';
+  } else {
+    requestObj.requestString.ekycMobileMatch = '';
+  }
+
   const apiEndPoint = urlPath(FD_ENDPOINTS.executeInterface);
   const eventHandlers = {
     successCallBack: (response) => {
