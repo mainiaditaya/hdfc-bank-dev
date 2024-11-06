@@ -18,7 +18,7 @@ const ERROR_MSG = {
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
   invalidPan: 'Maximum PAN retry attempts exceeded.',
   matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
-  invalidAddress: 'Please enter a valid address',
+  invalidAddress: 'Please enter a valid address, allowed special characters(.,/-)',
   tooShortAddress: 'Address is too short(minimum 10 characters)',
   tooLongAddress: 'Address is too long(maximum 30 characters)',
   shortAddressNote: 'Note: Address is too short, please enter valid address.',
