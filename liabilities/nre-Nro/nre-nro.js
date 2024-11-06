@@ -19,6 +19,8 @@ import {
   selectSingleAccount,
   confirmDetailsConsent,
   crmProductID,
+  nreNroAccountType,
+  multiAccountVarient,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -51,4 +53,6 @@ export {
   selectSingleAccount,
   confirmDetailsConsent,
   crmProductID,
+  nreNroAccountType,
+  multiAccountVarient,
 };
