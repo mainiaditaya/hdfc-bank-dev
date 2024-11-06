@@ -5,6 +5,7 @@ import { fetchJsonResponse, restAPICall } from '../../common/makeRestAPI.js';
 import { confirmCardState } from './confirmcardutil.js';
 import {
   JOURNEY_NAME, FD_ENDPOINTS, EMPLOYEE_MAP, MIN_ADDRESS_LENGTH,
+  IDCOM,
 } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
@@ -295,6 +296,8 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
   if (source === 'idCom') {
     if (requestObj?.requestString?.addressEditFlag?.toUpperCase() !== 'Y') {
       requestObj.requestString.authMode = 'IDCOM';
+    } else if (globals.functions.exportData()?.queryParams?.errorCode === IDCOM.response.idcomFail.errorCode) {
+      requestObj.requestString.authMode = kycModes.biokyc;
     }
   }
   const mobileValid = globals.functions.exportData()?.aadhaar_otp_val_data?.result?.mobileValid;
