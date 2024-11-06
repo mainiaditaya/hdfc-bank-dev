@@ -73,6 +73,9 @@ const IDCOM = {
       errorCode: '9997',
       errorMsg: 'Session expired',
     },
+    idcomFail: {
+      errorCode: '2001',
+    },
   },
   maxRetry: 1,
 };
