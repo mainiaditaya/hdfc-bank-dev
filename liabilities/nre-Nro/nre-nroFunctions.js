@@ -591,8 +591,8 @@ function prefillAccountDetail(response, globals, i, responseLength) {
     setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName);
     setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
     setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
-    prefillCustomerDetail(currentFormContext.fatca_response, globals);
   }
+  prefillCustomerDetail(currentFormContext.fatca_response, globals);
 }
 
 function multiCustomerId(response, selectAccount, singleAccountCust, multipleAccountsPanel, globals) {
