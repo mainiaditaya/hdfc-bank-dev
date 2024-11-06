@@ -798,9 +798,9 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
     .button-wrapper:nth-child(7) {
       position: absolute;
-      top: 80%;
-      right: 175px;
-      width: inherit;
+      top: 75%;
+      left: 4%;
+      width: 92%;
     }
   }
 
@@ -4235,9 +4235,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
 
     .button-wrapper:nth-child(7) {
-      top: 85% !important;
+      top: 75% !important;
       left: 20px !important;
-      text-align: right !important;
     }
   }
 
@@ -4483,7 +4482,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .button-wrapper:nth-child(7) {
-        top: 92%;
+        top: 65%;
         left: 40px !important;
         width: 80% !important;
       }
