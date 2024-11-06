@@ -36,13 +36,19 @@ const createDapRequestObj = (userRedirected, globals) => {
   const ekycSuccess = (!aadhaarMobileMatch && aadhaarData.ADVRefrenceKey !== undefined && selectedKyc === 'aadhaar')
     ? `${aadhaarData?.ADVRefrenceKey}X${aadhaarData?.RRN}`
     : '';
-  const VKYCConsent = fetchFiller4(
+  let VKYCConsent = fetchFiller4(
     aadhaarMobileMatch,
     selectedKyc,
     'ETB',
   );
+  let filler4 = fdFiller4(userRedirected, aadhaarMobileMatch, selectedKyc);
+  if (globals.functions.exportData()?.queryParams?.visitType === 'EKYC_AUTH_FAILED') {
+    VKYCConsent = '';
+    if (selectedKyc === 'bioinperson') {
+      filler4 = selectedKyc;
+    }
+  }
   const filler3 = fetchFiller3(formData?.queryParams?.authmode, formData?.queryParams?.success);
-  const filler4 = fdFiller4(userRedirected, aadhaarMobileMatch, selectedKyc);
   return {
     requestString: {
       applRefNumber: formContextCallbackData?.executeInterfaceResponse?.APS_APPL_REF_NUM,
