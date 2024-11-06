@@ -163,10 +163,11 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   setFormValue(addressDetails.newCurentAddressPanel.newCurrentAddressLine1, resumeJourneyResponse?.FDlienCard?.addressLine1);
   setFormValue(addressDetails.newCurentAddressPanel.newCurrentAddressLine2, resumeJourneyResponse?.FDlienCard?.addressLine2);
   setFormValue(addressDetails.newCurentAddressPanel.newCurrentAddressLine3, resumeJourneyResponse?.FDlienCard?.addressLine3);
+  globals.functions.setProperty(addressDetails.newCurentAddressPanel.newCurrentAddressLine3, { readOnly: true });
   setFormValue(addressDetails.newCurentAddressPanel.newCurentAddressPin, resumeJourneyResponse?.FDlienCard?.pincode);
   setFormValue(employmentDetails.employmentType, resumeJourneyResponse?.FDlienCard?.employmentType);
   setFormValue(employmentDetails.annualIncome, resumeJourneyResponse?.FDlienCard?.annualIncome);
-  globals.functions.setProperty(employeeAssistance.employeeAssistanceToggle, { value: resumeJourneyResponse?.FDlienCard?.assistanceToggle });
+  globals.functions.setProperty(employeeAssistance.employeeAssistanceToggle, { value: resumeJourneyResponse?.FDlienCard?.assistanceToggle, readOnly: true });
   setFormValue(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, resumeJourneyResponse?.FDlienCard?.inPersonBioKYCOptions);
   setFormValue(employeeAssistance.employeeAssistancePanel.channel, resumeJourneyResponse?.FDlienCard?.channel);
   setFormValue(employeeAssistance.employeeAssistancePanel.branchCode, resumeJourneyResponse?.FDlienCard?.branchCode);
