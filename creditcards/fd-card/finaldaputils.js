@@ -33,7 +33,7 @@ const createDapRequestObj = (userRedirected, globals) => {
   const aadhaarData = formData.aadhaar_otp_val_data?.result || {};
   const aadhaarMobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid === 'y';
   const selectedKyc = CURRENT_FORM_CONTEXT.aadhaarFailed ? CURRENT_FORM_CONTEXT?.selectedKyc : formContextCallbackData?.selectedKyc;
-  const ekycSuccess = (!aadhaarMobileMatch && aadhaarData.ADVRefrenceKey !== undefined && selectedKyc === 'aadhaar')
+  let ekycSuccess = (!aadhaarMobileMatch && aadhaarData.ADVRefrenceKey !== undefined && selectedKyc === 'aadhaar')
     ? `${aadhaarData?.ADVRefrenceKey}X${aadhaarData?.RRN}`
     : '';
   let VKYCConsent = fetchFiller4(
@@ -41,9 +41,12 @@ const createDapRequestObj = (userRedirected, globals) => {
     selectedKyc,
     'ETB',
   );
+  let ekycConsent = selectedKyc === 'aadhaar' ? `${getCurrentDateAndTime(3)}YEnglishxeng1x0` : '';
   let filler4 = fdFiller4(userRedirected, aadhaarMobileMatch, selectedKyc);
   if (globals.functions.exportData()?.queryParams?.visitType === 'EKYC_AUTH_FAILED') {
     VKYCConsent = '';
+    ekycSuccess = '';
+    ekycConsent = '';
     if (selectedKyc === 'bioinperson') {
       filler4 = selectedKyc;
     }
@@ -69,7 +72,7 @@ const createDapRequestObj = (userRedirected, globals) => {
       filler3,
       filler4,
       biometricStatus: selectedKyc || '',
-      ekycConsent: selectedKyc === 'aadhaar' ? `${getCurrentDateAndTime(3)}YEnglishxeng1x0` : '',
+      ekycConsent,
       ekycSuccess,
       VKYCConsent,
     },
