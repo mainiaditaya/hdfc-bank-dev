@@ -196,8 +196,19 @@ const PAGE_NAME = {
     'thank you screen': 'Confirmation',
   },
   fd: {
-    getOtp: 'Identify Yourself',
-    submitOtp: 'Verify with OTP',
+    getOtp: 'Step 1 - Identify Yourself',
+    submitOtp: 'Step 2 - Verify with OTP',
+    selectCustomerId: 'Select Customer ID',
+    selectFd: 'Step 3 - Select FD',
+    reviewDetailsBack: 'Step 4 - Confirm your details',
+    reviewDetails: 'Step 4 - Confirm your details',
+    selectCard: 'Step 5 - Choose Card',
+    selectCardConsent: 'Step 5 - Choose Card',
+    validationMethodKYC: 'Step 6 - Validation Method - KYC Details',
+    aadhaarKYCLangPopup: 'Aadhaar KYC Language Popup',
+    docUpload: 'Step 6 – Validation Method – Document Upload',
+    docUploadUpload: 'Step 6 – Validation Method – Document Upload',
+    confirmationPage: 'Confirmation',
   },
 };
 export {
