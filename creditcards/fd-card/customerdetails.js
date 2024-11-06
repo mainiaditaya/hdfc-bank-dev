@@ -73,6 +73,8 @@ const bindEmployeeAssistanceField = async (globals) => {
     lc2Code: getUrlParamCaseInsensitive('lc2'),
     dsaCode: getUrlParamCaseInsensitive('dsacode'),
     branchCode: getUrlParamCaseInsensitive('branchcode'),
+    cardsBdrLc1: getUrlParamCaseInsensitive('lc1'),
+    tseLgCode: getUrlParamCaseInsensitive('lgcode'),
   };
 
   try {
@@ -114,7 +116,7 @@ const bindEmployeeAssistanceField = async (globals) => {
       globals.functions.setProperty(dropDownSelectField, { readOnly: true });
     }
     const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-    ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
+    ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode', 'cardsBdrLc1', 'tseLgCode'].forEach((code) => {
       const util = formUtil(globals, employeeAssistancePanel[code]);
       if (codes[code] !== null) util.setValue(codes[code], changeDataAttrObj);
     });
