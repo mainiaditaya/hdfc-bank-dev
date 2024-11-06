@@ -14,13 +14,12 @@ export default function accordionLayout(panel) {
     });
   });
   return panel;
-} 
+}
 
 let currentlyOpenPanel = null;
 export function accordionLayoutv2(panel) {
   const legend = panel?.querySelector('legend');
-  legend?.classList.add('hdfc-accordion-legend');
-
+  legend?.classList.add('nrenro-accordian');
   legend?.addEventListener('click', () => {
     if (currentlyOpenPanel && currentlyOpenPanel !== panel) {
       const currentlyOpenLegend = currentlyOpenPanel.querySelector('legend');
