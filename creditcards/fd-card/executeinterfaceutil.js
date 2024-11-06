@@ -89,6 +89,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       bankAccountNumber: SELECTED_CUSTOMER_ID?.selectedCustId?.codAcctNo,
       bankEmployee: 'N',
       branchCity: (empAssistanceToggle && employeeAssistancePanel?.branchCity?.$value) || '',
+      branchCode: (empAssistanceToggle && employeeAssistancePanel?.branchCode?.$value) || '',
       branchName: (empAssistanceToggle && employeeAssistancePanel?.branchName?._data?.$_value) || '',
       CCAD_Relationship_number: '',
       cardsData: '',
