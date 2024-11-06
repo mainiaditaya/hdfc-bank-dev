@@ -24,7 +24,7 @@ const ERROR_MSG = {
   shortAddressNote: 'Note: Address is too short, please enter valid address.',
   invalidPinNote: 'Note: Pincode is not matching with the city in address as per the bank records, please provide correct address.',
   sessionExpired: 'Session expired',
-  sessionExpiredDescription: 'You seems to be idle for a while please try again.',
+  sessionExpiredDescription: 'Oops! your session expired due to inactivity. Please do not refresh the page and try again.',
   branchVisitWithRefNum: 'Visit your nearest dealership or HDFC Bank branch with reference number:',
   aadhaarMaxOtpAttemptsTitle: 'OTP Attempt Limit Reached',
   aadhaarMaxOtpAttempts: 'You have exceeded the maximum number of OTP attempts.',
