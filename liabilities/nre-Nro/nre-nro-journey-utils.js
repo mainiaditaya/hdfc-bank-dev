@@ -45,7 +45,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
       leadProfile: {
         mobileNumber: isdCode + mobileNumber,
         isCountryCodeappended: 'true',
-        isdCode,
+        countryCode: isdCode,
       },
       formData: {
         channel: CHANNEL,
@@ -86,7 +86,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
         mobileNumber: isdCode + mobileNumber,
         isCountryCodeappended: 'true',
         leadProfileId: leadProfileId?.toString(),
-        isdCode,
+        countryCode: isdCode,
       },
       formData: {
         channel: CHANNEL,
