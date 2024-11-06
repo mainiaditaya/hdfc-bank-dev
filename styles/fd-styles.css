@@ -177,16 +177,16 @@ main {
 
     .radio-group-wrapper.field-resumejourneyoptions {
       margin-top: -20px;
-    
+
       .radio-wrapper.field-resumejourneyoptions {
         margin: 10px 0 0;
         position: relative;
-        padding-left: 30px;    
-        
-        input[type="radio"] {
+        padding-left: 30px;
+
+        input[type='radio'] {
           display: none;
-        }    
-        
+        }
+
         label {
           &::before {
             content: '';
@@ -199,14 +199,14 @@ main {
             border-radius: 50%;
             border: 2px solid var(--color-interface-border-secondary);
             transition: all 0.3s ease;
-            cursor: pointer
-          }    
+            cursor: pointer;
+          }
 
-          input[type="radio"]:checked + &::before {
+          input[type='radio']:checked + &::before {
             border: 2px solid var(--color-interface-icon-highlight);
           }
-          
-          input[type="radio"]:checked + &::after {
+
+          input[type='radio']:checked + &::after {
             content: '';
             position: absolute;
             left: 7px;
@@ -217,15 +217,14 @@ main {
             border-radius: 50%;
             background-color: var(--color-interface-icon-highlight);
             transition: all 0.3s ease;
-          }    
-          
+          }
+
           &:hover::before {
             border-color: var(--color-interface-icon-highlight);
           }
         }
       }
     }
-    
 
     .field-resumejourneycontinue {
       margin-top: -20px;
@@ -796,6 +795,13 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       right: 175px;
       width: 90%;
     }
+
+    .button-wrapper:nth-child(7) {
+      position: absolute;
+      top: 75%;
+      left: 4%;
+      width: 92%;
+    }
   }
 
   .field-error2colresultpanel {
@@ -985,6 +991,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     text-align: right;
   }
 
+  .button-wrapper.field-idcomretry {
+    text-align: center;
+  }
+
   .field-successresultpanel {
     display: grid;
 
@@ -1068,7 +1078,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           vertical-align: bottom;
           margin-right: 5px;
         }
-      }       
+      }
     }
 
     .field-ratingsubmittedtext[data-visible='true'] {
@@ -1385,7 +1395,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               color: var(--color-interface-text-primary);
             }
 
-            .field-selectedfdnum input[type="text"] {
+            .field-selectedfdnum input[type='text'] {
               font-size: var(--body-fd-lg-font-size);
               font-weight: var(--font-weight-medium);
               color: var(--color-interface-text-primary);
@@ -1908,7 +1918,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
             }
 
             &:disabled {
-              background:  none !important;
+              background: none !important;
               color: var(--color-input-text-disabled) !important;
             }
           }
@@ -2395,10 +2405,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
 
     .field-branchcode {
-      input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-outer-spin-button {
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
         appearance: none;
       }
-    }    
+    }
   }
 
   .wrapper-disabled {
@@ -2431,7 +2442,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
     select:disabled {
       background: none !important;
-      
     }
   }
 }
@@ -2459,7 +2469,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       color: var(--color-interface-text-primary) !important;
     }
 
-    input, input:disabled {
+    input,
+    input:disabled {
       padding: 0;
       text-align: center;
       margin: 0;
@@ -2552,7 +2563,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         background: url('/content/dam/fd-lien/folderopen.svg') no-repeat;
       }
 
-      .field-cardfeatures1, .field-cardfeatures2 {
+      .field-cardfeatures1,
+      .field-cardfeatures2 {
         margin-bottom: 5px;
       }
 
@@ -2687,14 +2699,14 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .field-knowmorebenefitspanel {
-        .field-wrapper {     
+        .field-wrapper {
           display: grid;
 
           &:not(:first-child) {
             margin-top: -5px;
           }
 
-          .field-cardbenefitstext {  
+          .field-cardbenefitstext {
             position: relative;
 
             textarea {
@@ -2712,7 +2724,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               box-sizing: border-box;
               border: none;
               padding-left: 35px;
-              
+
               &:hover {
                 box-shadow: none;
               }
@@ -2720,7 +2732,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               &:focus {
                 box-shadow: none;
               }
-            }           
+            }
 
             &::before {
               content: '.';
@@ -2731,7 +2743,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               color: var(--color-input-text-primary);
             }
           }
-      }
+        }
       }
     }
   }
@@ -2748,7 +2760,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       margin: 0;
     }
 
-    .field-singlecardname, .field-singlecardname p {
+    .field-singlecardname,
+    .field-singlecardname p {
       font-size: var(--body-fd-lg-font-size) !important;
       font-weight: var(--font-weight-extra-bold) !important;
       color: var(--color-interface-text-primary) !important;
@@ -3019,7 +3032,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     margin-top: 30px;
   }
 
-
   .field-wrongattemptpopupwrapper {
     position: fixed;
     top: 0;
@@ -3066,31 +3078,31 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
-        .field-wrongattemptpopuptext1 {
-          p {
-            font-size: var(--body-fd-lg-font-size);
-            font-weight: var(--font-weight-bold);
-            color: var(--color-interfave-errorpopup-text-primary);
-            margin-bottom: 0;
-          }
+      .field-wrongattemptpopuptext1 {
+        p {
+          font-size: var(--body-fd-lg-font-size);
+          font-weight: var(--font-weight-bold);
+          color: var(--color-interfave-errorpopup-text-primary);
+          margin-bottom: 0;
         }
+      }
 
-        .field-wrongattemptpopuptext2 {
-          p {
-            font-size: var(--body-fd-md-font-size);
-            font-weight: var(--font-weight-regular);
-            color: var(--color-interfave-errorpopup-text-primary);
-            margin-bottom: 0;
-          }
+      .field-wrongattemptpopuptext2 {
+        p {
+          font-size: var(--body-fd-md-font-size);
+          font-weight: var(--font-weight-regular);
+          color: var(--color-interfave-errorpopup-text-primary);
+          margin-bottom: 0;
         }
+      }
 
-        .field-wrongattemptpopupclose {
-          text-align: center !important;
+      .field-wrongattemptpopupclose {
+        text-align: center !important;
 
-          button::after {
-            background: none !important;
-          }
+        button::after {
+          background: none !important;
         }
+      }
     }
   }
 }
@@ -3130,7 +3142,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
   }
 
-  .field-docuploadfrontwrapper, .field-docuploadbackwrapper, .field-addressprooffile1wrapper, .field-addressprooffile2wrapper {
+  .field-docuploadfrontwrapper,
+  .field-docuploadbackwrapper,
+  .field-addressprooffile1wrapper,
+  .field-addressprooffile2wrapper {
     grid-column: span 4;
   }
 
@@ -3170,7 +3185,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
   }
 
-  .field-docuploadfrontmsg, .field-docuploadbackmsg, .field-addressprooffile1msg, .field-addressprooffile2msg {
+  .field-docuploadfrontmsg,
+  .field-docuploadbackmsg,
+  .field-addressprooffile1msg,
+  .field-addressprooffile2msg {
     font-size: var(--body-fd-sm-font-size);
     font-weight: var(--font-weight-regular);
     color: var(--color-interface-text-secondary);
@@ -3350,7 +3368,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       border-top: 1px dashed var(--color-interface-border-secondary);
     }
 
-    .field-aadhaarbankstatement p{
+    .field-aadhaarbankstatement p {
       font-size: var(--body-fd-sm-font-size);
       margin-bottom: 0;
     }
@@ -3506,7 +3524,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
 /* Aadhar Consent Popup */
 .fdlien .field-aadharconsent {
-  legend{
+  legend {
     display: none;
   }
 
@@ -3594,7 +3612,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
-      label p{
+      label p {
         font-size: var(--body-x-sm-font-size);
         font-weight: var(--font-weight-regular);
         color: var(--color-interface-text-secondary);
@@ -3712,7 +3730,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
     }
 
-    label p{
+    label p {
       font-size: var(--body-x-sm-font-size);
       font-weight: var(--font-weight-regular);
       color: var(--color-interface-text-secondary);
@@ -4162,7 +4180,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
   .field-selectkycoptionspanel fieldset[class*='field-selectkycmethodoption'] {
     grid-column: span 6 !important;
-  }  
+  }
 
   .fdlien .field-docuploadflow {
     padding: 0 20px 20px;
@@ -4173,7 +4191,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
     }
 
-    .field-docuploadfrontwrapper, .field-docuploadbackwrapper, .field-addressprooffile1wrapper, .field-addressprooffile2wrapper {
+    .field-docuploadfrontwrapper,
+    .field-docuploadbackwrapper,
+    .field-addressprooffile1wrapper,
+    .field-addressprooffile2wrapper {
       grid-column: span 6;
     }
 
@@ -4211,6 +4232,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       top: 85% !important;
       left: 20px !important;
       text-align: right !important;
+    }
+
+    .button-wrapper:nth-child(7) {
+      top: 75% !important;
+      left: 20px !important;
     }
   }
 
@@ -4451,6 +4477,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
       .button-wrapper:nth-child(6) {
         top: 92%;
+        left: 40px !important;
+        width: 80% !important;
+      }
+
+      .button-wrapper:nth-child(7) {
+        top: 65%;
         left: 40px !important;
         width: 80% !important;
       }
@@ -4787,7 +4819,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     .field-aadharconsentpopup {
       top: 15%;
       height: 430px;
-      
+
       .field-closepopup {
         top: 0;
       }
@@ -4903,7 +4935,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       margin: 10px 0 0;
     }
 
-    .field-docuploadfrontmsg, .field-docuploadbackmsg, .field-addressprooffile1msg, .field-addressprooffile2msg {
+    .field-docuploadfrontmsg,
+    .field-docuploadbackmsg,
+    .field-addressprooffile1msg,
+    .field-addressprooffile2msg {
       margin-top: 5px;
     }
 
