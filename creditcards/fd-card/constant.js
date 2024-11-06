@@ -33,6 +33,7 @@ const ERROR_MSG = {
   aadhaarTimeout: 'Sorry, we are unable to proceed with Aadhaar EKYC due to technical issues.',
   requestNotProcessed: 'Your request could not be processed, please try again to continue.',
   pleaseRetry: 'Please retry.',
+  forceApplicationSubmit: 'You have exhausted all attempts(3) to verify your details. Our bank representative will reach out to you shortly for completing the application.',
 };
 
 const FD_ENDPOINTS = {
