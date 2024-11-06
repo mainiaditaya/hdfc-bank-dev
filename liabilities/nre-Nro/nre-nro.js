@@ -20,6 +20,8 @@ import {
   confirmDetailsConsent,
   crmProductID,
   nreNroPageRedirected,
+  nreNroAccountType,
+  multiAccountVarient,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -53,4 +55,6 @@ export {
   confirmDetailsConsent,
   crmProductID,
   nreNroPageRedirected,
+  nreNroAccountType,
+  multiAccountVarient,
 };

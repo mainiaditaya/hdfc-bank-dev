@@ -15,6 +15,7 @@ import {
   maskNumber,
   moveWizardView,
   formUtil,
+  convertDateToMmmDdYyyy,
   santizedFormDataWithContext,
 } from '../../common/formutils.js';
 import {
@@ -59,6 +60,9 @@ currentFormContext.errorCode = '';
 currentFormContext.errorMessage = '';
 currentFormContext.eligibleOffers = '';
 currentFormContext.selectedCheckedValue = 0;
+currentFormContext.productAccountType = '';
+currentFormContext.productAccountName = '';
+currentFormContext.journeyAccountType = '';
 
 formRuntime.getOtpLoader = currentFormContext.getOtpLoader || (typeof window !== 'undefined') ? displayLoader : false;
 formRuntime.otpValLoader = currentFormContext.otpValLoader || (typeof window !== 'undefined') ? displayLoader : false;
@@ -239,21 +243,35 @@ const validateLogin = (globals) => {
 const getOtpNRE = (mobileNumber, pan, dob, globals) => {
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
-  const [year, month, day] = dob.$value.split('-');
+  const [year, month, day] = dob.$value ? dob.$value.split('-') : ['', '', ''];
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
   currentFormContext.mobileNumber = mobileNumber.$value;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
   currentFormContext.journeyName = globals.form.runtime.journeyName.$value;
+  let identifierNam = '';
+  let identifierVal = '';
+  let datOfBirth = '';
+  if (pan.$value != null) {
+    identifierNam = 'PAN';
+    identifierVal = pan.$value;
+    dob.$value = '';
+    datOfBirth = '';
+  } else {
+    identifierNam = 'DOB';
+    identifierVal = dob.$value;
+    pan.$value = '';
+    datOfBirth = year + month + day;
+  }
   const jsonObj = {
     requestString: {
       mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
-      dateOfBirth: year + month + day,
-      panNumber: pan.$value || '',
+      dateOfBirth: datOfBirth,
+      panNumber: clearString(pan.$value || ''),
       journeyID: globals.form.runtime.journeyId.$value ?? jidTemporary,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
-      identifierValue: pan.$value || clearString(dob.$value),
-      identifierName: pan.$value ? 'PAN' : 'DOB',
+      identifierValue: clearString(identifierVal),
+      identifierName: identifierNam,
       getEmail: 'Y',
     },
   };
@@ -354,12 +372,20 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
   const referenceNumber = `AD${getTimeStamp(new Date())}` ?? '';
   currentFormContext.referenceNumber = referenceNumber;
   currentFormContext.leadProfileId = globals.form.runtime.leadProifileId.$value;
+  let datOfBirth = '';
+  if (pan.$value != null) {
+    dob.$value = '';
+    datOfBirth = '';
+  } else {
+    pan.$value = '';
+    datOfBirth = clearString(dob.$value) || '';
+  }
   const jsonObj = {
     requestString: {
       mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
       passwordValue: otpNumber.$value,
-      dateOfBirth: clearString(dob.$value) || '',
-      panNumber: pan.$value || '',
+      dateOfBirth: datOfBirth,
+      panNumber: clearString(pan.$value) || '',
       journeyID: currentFormContext.journeyID,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
       referenceNumber: referenceNumber ?? '',
@@ -401,20 +427,55 @@ function setupBankUseSection(mainBankUsePanel, globals) {
 }
 
 function showFinancialDetails(financialDetails, response, occupation, globals) {
-  const occupationCode = response.customerAMLDetailsDTO[0].codOccupation;
-  const selectElement = document.querySelector('[name=occupationDropdown]');
-  selectElement.setAttribute('value', occupationCode);
-  selectElement.value = occupationCode;
-  const occupationText = selectElement.options[selectElement.selectedIndex].text;
-  globals.functions.setProperty(financialDetails.occupation, { value: occupationText });
-  globals.functions.setProperty(financialDetails.residenceType, { visible: true });
-  globals.functions.setProperty(financialDetails.grossAnnualIncome, { visible: true });
-  globals.functions.setProperty(financialDetails.currencyName, { visible: true });
-  globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true });
-  globals.functions.setProperty(financialDetails.occupation, { visible: true });
-  globals.functions.setProperty(financialDetails.occupation, { value: occupationText });
+  const customerAMLDetails = response.customerAMLDetailsDTO[0];
+  const {
+    codOccupation: occupationCode,
+    typCompany: typCompanyCode,
+    natureOfBus: natureOfBusCode,
+    incomeSource: incomeSourceCode,
+    annualTurnover: annualTurnoverCode,
+    typResidence: residenceTypeMappingCode,
+    txtProfessionDesc: txtProfessionDescCode,
+    typEmployer: employeerCatCode,
+  } = customerAMLDetails;
 
-  if (occupationCode === 2) globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+  const setDropdownValue = (name, code) => {
+    const mappedValue = document.querySelector(`[name=${name}]`);
+    if (mappedValue && customerAMLDetails != null) {
+      const item = Array.from(mappedValue.options).find((option) => option.value === code);
+      if (item) {
+        mappedValue.value = code;
+        return item.text;
+      }
+      mappedValue.value = '';
+      return 'Others';
+    }
+    return '';
+  };
+
+  const occupationText = setDropdownValue('occupationDropdown', occupationCode);
+  const residenceTypeProfText = setDropdownValue('residenceTypeMapping', residenceTypeMappingCode);
+  const natureOfBusinessText = setDropdownValue('natureOfBusinessMapping', natureOfBusCode);
+  const typeOfCompanyText = setDropdownValue('typeOfCompanyMapping', typCompanyCode);
+  const sourceOfFundText = setDropdownValue('sourceOfFundMapping', incomeSourceCode);
+  const grossAnnualIncomeText = setDropdownValue('grossAnnualIncomeMapping', annualTurnoverCode);
+  const selfEmployedProfText = setDropdownValue('selfEmployedProfMapping', txtProfessionDescCode);
+  const employeerCatCodeText = setDropdownValue('employerCategoryMapping', employeerCatCode);
+
+  globals.functions.setProperty(financialDetails.residenceType, { visible: true, value: residenceTypeProfText });
+  globals.functions.setProperty(financialDetails.grossAnnualIncome, { visible: true, value: grossAnnualIncomeText });
+  globals.functions.setProperty(financialDetails.currencyName, { visible: true });
+  globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true, value: sourceOfFundText });
+  globals.functions.setProperty(financialDetails.occupation, { value: occupationText });
+  globals.functions.setProperty(financialDetails.selfEmployedProfessional, { value: selfEmployedProfText });
+  globals.functions.setProperty(financialDetails.natureOfBusiness, { value: natureOfBusinessText });
+  globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { value: typeOfCompanyText });
+  globals.functions.setProperty(financialDetails.employerCategory, { value: employeerCatCodeText });
+
+  if (occupationCode === 2) {
+    globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+    globals.functions.setProperty(financialDetails.employerCategory, { visible: true });
+  }
   if (occupationCode === 3) {
     globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
     globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
@@ -431,14 +492,32 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
 
 function showNomineeDetails(nomineeDetails, response, globals) {
   const accIndex = currentFormContext.selectedCheckedValue;
-  const listdropdown = response.customerAccountDetailsDTO[accIndex].codRel;
-  const relationDropDown = document.querySelector('[name=relationShipDropdown]');
-  relationDropDown.setAttribute('value', listdropdown);
-  relationDropDown.value = listdropdown;
-  const relationText = relationDropDown.options[relationDropDown.selectedIndex].text;
-  if (listdropdown !== 0 && listdropdown != null) {
+  const nomineeName = response.customerAccountDetailsDTO[0].nomineeNam;
+  const nomineeDob = response.customerAccountDetailsDTO[0].nomineeDOB;
+  const relationCode = response.customerAccountDetailsDTO[accIndex].codRel;
+  const relationDropdown = document.querySelector('[name=relationShipDropdown]');
+  relationDropdown.value = relationCode;
+  const setDropdownValue = (dropdown, code) => {
+    const item = Array.from(dropdown.options).find((option) => option.value === code);
+    if (item) {
+      dropdown.value = code;
+      return item.text;
+    }
+    dropdown.value = '';
+    return 'Others';
+  };
+  const relationText = setDropdownValue(relationDropdown, relationCode);
+  if (nomineeName !== null) {
     globals.functions.setProperty(nomineeDetails, { visible: true });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineerelation, { value: relationText });
+    const formattedDate = convertDateToMmmDdYyyy(nomineeDob);
+    globals.functions.setProperty(nomineeDetails.nomineePanel.relation, { value: relationText });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeName, { value: nomineeName });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineedob, { value: formattedDate });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineedob, { visible: true });
+    globals.functions.setProperty(nomineeDetails.nonomineeText, { visible: false });
+  } else if (nomineeName === null) {
+    globals.functions.setProperty(nomineeDetails.nomineePanel, { visible: false });
+    globals.functions.setProperty(nomineeDetails.nonomineeText, { visible: true });
   }
 }
 
@@ -447,7 +526,6 @@ function prefillCustomerDetail(response, globals) {
     personalDetails,
     fatcaDetails,
     financialDetails,
-    nomineeDetails,
 
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
 
@@ -457,7 +535,6 @@ function prefillCustomerDetail(response, globals) {
     const fieldUtil = formUtil(globals, field);
     fieldUtil.setValue(value, changeDataAttrObj);
   };
-  const accIndex = currentFormContext.selectedCheckedValue;
 
   // globals.functions.setProperty(globals.form.runtime.fatca_response, { value: response });
   setFormValue(personalDetails.emailID, customerDataMasking('eMail', response.refCustEmail));
@@ -480,20 +557,12 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(fatcaDetails.mothersName, response.namMotherMaiden);
   setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namSpouseCust);
   setFormValue(fatcaDetails.taxIdType, response.customerFATCADtlsDTO[0].typTinNo1);
-  setFormValue(financialDetails.sourceOfFunds, response.customerAMLDetailsDTO[0].incomeSource);
   setFormValue(financialDetails.employeerName, response.customerFATCADtlsDTO[0].namCustEmp);
-  setFormValue(financialDetails.selfEmployedProfessional, response.customerAMLDetailsDTO[0].txtProfessionDesc);
   setFormValue(financialDetails.selfEmployedSince, response.customerAMLDetailsDTO[0].selfEmpFrom);
   setFormValue(financialDetails.dateOfIncorporation, response.datIncorporated);
-  setFormValue(financialDetails.natureOfBusiness, response.customerAMLDetailsDTO[0].natureOfBus);
-  setFormValue(financialDetails.typeOfCompoanyFirm, response.customerAMLDetailsDTO[0].typCompany);
-  setFormValue(financialDetails.residenceType, response.customerAMLDetailsDTO[0].typResidence);
   setFormValue(financialDetails.currencyName, response.customerAMLDetailsDTO[0].namCcy);
-  setFormValue(financialDetails.grossAnnualIncome, response.customerAMLDetailsDTO[0].annualTurnover);
   setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
   setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
-  setFormValue(nomineeDetails.nomineeName, response.customerAccountDetailsDTO[accIndex].nomineeNam);
-  setFormValue(nomineeDetails.dateOfBirth, response.customerAccountDetailsDTO[accIndex].nomineeDOB);
 }
 
 function prefillAccountDetail(response, globals, i, responseLength) {
@@ -521,18 +590,26 @@ function prefillAccountDetail(response, globals, i, responseLength) {
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.branch, response.customerAccountDetailsDTO[i].branchName);
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.ifscCode, response.customerAccountDetailsDTO[i].ifscCode);
   } else {
-    setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[i].accountNumber, 10));
-    setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[i].productName);
-    setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[i].branchName);
-    setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[i].ifscCode);
-    prefillCustomerDetail(response, globals);
+    setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
+    setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName);
+    setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
+    setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
   }
+  prefillCustomerDetail(currentFormContext.fatca_response, globals);
 }
 
-function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, globals) {
+function multiCustomerId(response, selectAccount, singleAccountCust, multipleAccountsPanel, globals) {
   const accountDetailsList = response.customerAccountDetailsDTO;
   const responseLength = accountDetailsList.length;
+  currentFormContext.journeyAccountType = response.customerAccountDetailsDTO[0].productTypeDescription;
   currentFormContext.fatca_response = response;
+  if (responseLength === 1 && currentFormContext.journeyAccountType === 'NRE') {
+    globals.functions.setProperty(selectAccount.nro_account_type_pannel, { visible: true });
+    globals.functions.setProperty(selectAccount.nre_account_type_pannel.nreeliteSavingsAccountPanel.eliteSavingsAccount, { value: null });
+  } else if (responseLength === 1 && currentFormContext.journeyAccountType === 'NRO') {
+    globals.functions.setProperty(selectAccount.nre_account_type_pannel, { visible: true });
+    globals.functions.setProperty(selectAccount.nro_account_type_pannel.eliteSavingsAccountPanel.eliteSavingsAccount, { value: null });
+  }
 
   // globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.multipleAccounts.multipleAccountRepeatable[0]?.AccountNumber, { value: accountDetailsList[0].accountNumber });
   if (responseLength > 1) {
@@ -559,7 +636,6 @@ function multiCustomerId(response, singleAccountCust, multipleAccountsPanel, glo
       }, 1000);
     });
   } else {
-    globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.nro_account_type_pannel, { visible: true });
     globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
     prefillAccountDetail(response, globals, responseLength - 1, responseLength);
   }
@@ -1507,6 +1583,49 @@ function crmProductID(crmProductPanel, response, globals) {
   }
 }
 
+function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel) {
+  const nroEliteSavingsAcco = nroAccountTypePanel.eliteSavingsAccountPanel.eliteSavingsAccount.$value;
+  const nroRegularSavingsAcco = nroAccountTypePanel.regularSavingsAccountPanel.regularSavingsAccount.$value;
+  const nroCurrentAcco = nroAccountTypePanel.currentAccountPanel.currentAccount.$value;
+  const nreEliteSavingsAcco = nreAccountTypePanel.nreeliteSavingsAccountPanel.eliteSavingsAccount.$value;
+  const nreRegularSavingsAcco = nreAccountTypePanel.NreregularSavingsAccountPanel.regularSavingsAccount.$value;
+  const nreCurrentAcco = nreAccountTypePanel.nreCurrentAccountPanel.currentAccount.$value;
+  if (nroEliteSavingsAcco === 'on') {
+    currentFormContext.productAccountName = 'NRO ELITE SAVINGS';
+    currentFormContext.productAccountType = '1345';
+  } else if (nroRegularSavingsAcco === 'on') {
+    currentFormContext.productAccountName = 'SAVINGS - NRO';
+    currentFormContext.productAccountType = '101';
+  } else if (nroCurrentAcco === 'on') {
+    currentFormContext.productAccountName = 'CURRENT ACCOUNT - NRO';
+    currentFormContext.productAccountType = '201';
+  } else if (nreRegularSavingsAcco === 'on') {
+    currentFormContext.productAccountName = 'SAVINGS - NRE';
+    currentFormContext.productAccountType = '106';
+  } else if (nreEliteSavingsAcco === 'on') {
+    currentFormContext.productAccountName = 'NRE ELITE SAVINGS';
+    currentFormContext.productAccountType = '1350';
+  } else if (nreCurrentAcco === 'on') {
+    currentFormContext.productAccountName = 'CURRENT ACCOUNT - NRE';
+    currentFormContext.productAccountType = '218';
+  }
+}
+
+function multiAccountVarient(selectAccount, globals) {
+  const varientType = currentFormContext.journeyAccountType;
+  globals.functions.setProperty(selectAccount.multipleAccounts, { visible: false });
+  globals.functions.setProperty(globals.form.wizardPanel.continue, { visible: true });
+  globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
+  globals.functions.setProperty(selectAccount.text, { visible: false });
+  globals.functions.setProperty(selectAccount.customerName, { visible: false });
+  if (varientType === 'NRE') {
+    globals.functions.setProperty(selectAccount.nro_account_type_pannel, { visible: true });
+    globals.functions.setProperty(selectAccount.nre_account_type_pannel.nreeliteSavingsAccountPanel.eliteSavingsAccount, { value: null });
+  } else if (varientType === 'NRO') {
+    globals.functions.setProperty(selectAccount.nre_account_type_pannel, { visible: true });
+    globals.functions.setProperty(selectAccount.nro_account_type_pannel.eliteSavingsAccountPanel.eliteSavingsAccount, { value: null });
+  }
+}
 export {
   validateLogin,
   getOtpNRE,
@@ -1529,4 +1648,6 @@ export {
   confirmDetailsConsent,
   crmProductID,
   nreNroPageRedirected,
+  nreNroAccountType,
+  multiAccountVarient,
 };
