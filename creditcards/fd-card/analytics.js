@@ -57,9 +57,12 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
   digitalData.page.pageInfo.pageName = PAGE_NAME.fd[eventType];
   switch (eventType) {
     case 'getOtp':
-      digitalData.event.status = '';
+      digitalData.event.status = '1';
       digitalData.event.validationMethod = (formData.form.login.panDobSelection === '0') ? 'DOB' : 'PAN';
       digitalData.event.phone = await hashPhoneNumber(formData.form.login.registeredMobileNumber);
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName, ANALYTICS.event.getOtp.nextPage);
@@ -67,13 +70,19 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       break;
     case 'submitOtp':
       digitalData.event.status = 1;
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName, ANALYTICS.event.submitOtp.nextPage);
       }, 2000);
       break;
     case 'selectCustomerId':
-      digitalData.event.status = '';
+      digitalData.event.status = '1';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.submitOtp.pageName, ANALYTICS.event.selectCustomerId.nextPage);
@@ -84,6 +93,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
         .filter((fd) => fd.fdAccSelect === 'on')
         .map((fd) => fd.fdNumber);
       digitalData.card.newLimit = formData.maxCreditLimit;
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
@@ -91,6 +103,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       break;
     case 'reviewDetailsBack':
       digitalData.event.status = '1';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
@@ -113,6 +128,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       digitalData.assisted.dsa = formData.dsaCode;
       digitalData.assisted.sm = formData.smCode;
       digitalData.assisted.lc2 = formData.lc2Code;
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.reviewDetails.nextPage);
@@ -121,6 +139,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
     case 'selectCard':
       digitalData.card.selectedCard = formData.currentFormContext.selectedCreditCard.cardProductCode;
       digitalData.card.annualFee = formData.currentFormContext.selectedCreditCard.annualFee;
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
@@ -128,6 +149,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       break;
     case 'selectCardConsent':
       digitalData.event.status = '1';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
@@ -139,6 +163,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       } else if (formData.form.officiallyValidDocumentsMethod && formData.form.officiallyValidDocumentsMethod === '0') {
         digitalData.event.validationMethod = 'officiallyValidDocumentsMethod';
       }
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.validationMethodKYC.nextPage);
@@ -146,6 +173,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       break;
     case 'aadhaarKYCLangPopup':
       digitalData.formDetails.languageSelected = '';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
@@ -153,6 +183,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       break;
     case 'docUpload':
       digitalData.formDetails.documentProof = `ID Proof: ${formData.DocUploadFront.name}, Address Proof: ${formData.addressProofFile1.name}`;
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
@@ -160,6 +193,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       break;
     case 'docUploadUpload':
       digitalData.event.status = '1';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
@@ -167,6 +203,9 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       break;
     case 'confirmationPage':
       digitalData.event.rating = '';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.confirmationPage.nextPage);

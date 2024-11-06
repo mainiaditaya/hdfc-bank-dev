@@ -2530,7 +2530,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .field-cardtagline {
-        min-height: 11px;
+        min-height: 52px;
         margin-bottom: 20px;
 
         p {
@@ -2539,6 +2539,9 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .field-cardfaciaimage {
+        margin-bottom: 10px;
+        min-height: 205px;
+
         img {
           border-radius: 12px;
         }
