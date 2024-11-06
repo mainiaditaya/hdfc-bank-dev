@@ -38,6 +38,8 @@ import {
   checkPanValidation,
   panvalidationSuccessHandler,
   addressChangeHandler,
+  mailingAddressToggleHandler,
+  employeeAssistanceToggleHandler,
 } from './customerdetails.js';
 
 // import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
@@ -195,4 +197,6 @@ export {
   getResumeJourneyJsonObject,
   loadHomePage,
   idcomRetry,
+  mailingAddressToggleHandler,
+  employeeAssistanceToggleHandler,
 };

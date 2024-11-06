@@ -553,6 +553,26 @@ const addressChangeHandler = (addressLineNumber, globals) => {
   }
 };
 
+const employeeAssistanceToggleHandler = (globals) => {
+  const { addressDetails, employeeAssistance } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const { employeeAssistanceToggle } = employeeAssistance;
+  if (employeeAssistanceToggle.$value === 'on' && addressDetails.mailingAddressToggle.$value === 'off') {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: true });
+  } else {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: false });
+  }
+};
+
+const mailingAddressToggleHandler = (globals) => {
+  const { employeeAssistance, addressDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const { employeeAssistanceToggle } = employeeAssistance;
+  if (employeeAssistanceToggle.$value === 'on' && addressDetails.mailingAddressToggle.$value === 'off') {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: true });
+  } else {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: false });
+  }
+};
+
 export {
   bindCustomerDetails,
   validateFdEmail,
@@ -565,4 +585,6 @@ export {
   checkPanValidation,
   panvalidationSuccessHandler,
   addressChangeHandler,
+  mailingAddressToggleHandler,
+  employeeAssistanceToggleHandler,
 };
