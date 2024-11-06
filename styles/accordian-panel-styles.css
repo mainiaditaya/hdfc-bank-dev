@@ -1,0 +1,18 @@
+.hdfc-accordian{
+ fieldset.panel-wrapper.field-wrapper.hdfc-accordian{
+    &>.field-wrapper.text-wrapper,
+    &>fieldset.panel-wrapper.field-wrapper,
+    & .plain-text-wrapper.field-wrapper,
+    & .multiline-wrapper.field-wrapper {
+        display: none !important;
+    }
+ }
+ fieldset.panel-wrapper.field-wrapper.hdfc-accordian:has(.accordion-collapse){
+    &>div.field-wrapper.text-wrapper,
+    &>fieldset.panel-wrapper.field-wrapper,
+    & .plain-text-wrapper.field-wrapper,
+    & .multiline-wrapper.field-wrapper {
+        display: block !important;
+    }
+ }
+}
