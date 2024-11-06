@@ -63,6 +63,7 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstNa
 const bindEmployeeAssistanceField = async (globals) => {
   const { resultPanel, fdBasedCreditCardWizard } = globals.form;
   const { employeeAssistancePanel, employeeAssistanceToggle, inPersonBioKYCPanel } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  globals.functions.setProperty(inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: false });
   const defaultChannel = getUrlParamCaseInsensitive('channel');
   const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC');
   const codes = {
