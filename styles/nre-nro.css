@@ -1235,7 +1235,7 @@
         fieldset.field-nomineedetails {
           border: 1px solid var(--color-interface-border-primary);
           border-radius: 15px;
-          margin-bottom: 20px;
+          margin-bottom: 10px;
 
           @media (320px <=width <=600px) {
             margin-bottom: 20px !important;
@@ -1431,22 +1431,9 @@
               border-top-right-radius: 15px;
             }
           }        
-        }
+        }     
        
-        fieldset.field-nomineedetails:has(.accordion-collapse) {
-          & fieldset.panel-wrapper.field-nomineepanel.field-wrapper{
-            display: grid !important;
-            &[data-visible="false"]{
-            display: none !important;
-          }
-          }
-        }
-
-        fieldset.field-nomineedetails:has(.accordion-collapse) {
-          & div.plain-text-wrapper.field-nonomineetext.field-wrapper{
-            display: flex !important;
-          }
-        }
+       
         fieldset.field-nomineedetails .field-wrapper {
           legend.field-label {
             display: none;
@@ -2283,7 +2270,6 @@
         .field-confirmdetails {
 
           .field-confirmdetailsaccordion {
-            display: block !important;
             .text-wrapper.field-wrapper,
             .multiline-wrapper,
             .drop-down-wrapper {
@@ -2349,6 +2335,21 @@
 
               &.drop-down-wrapper {
                 grid-column: span 4;
+              }
+            }
+
+            fieldset.field-nomineedetails.nre-style-accordian{
+              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"]:not([data-visible="false"]){
+                display: grid !important;
+              }
+              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"][data-visible="false"]{
+                display: none !important;
+              }
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"]:not([data-visible="false"]){
+                display: flex !important;
+              }
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"][data-visible="false"]{
+                display: none !important;
               }
             }
           }
