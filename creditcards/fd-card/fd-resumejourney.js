@@ -137,7 +137,7 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
       }, 100);
     });
   }
-  const changeDataAttrObj = { attrChange: true, value: false };
+  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
   const { reviewDetailsView } = globals.form.fdBasedCreditCardWizard.basicDetails;
   const {
     personalDetails, addressDetails, employmentDetails, employeeAssistance,
@@ -158,6 +158,7 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   setFormValue(personalDetails.nameOnCard, resumeJourneyResponse?.FDlienCard?.nameOnCard);
   setFormValue(personalDetails.nameOnCardDD, resumeJourneyResponse?.FDlienCard?.nameOnCard);
   setFormValue(addressDetails.prefilledMailingAdddress, resumeJourneyResponse?.prefilledMailingAdddress);
+  globals.functions.setProperty(addressDetails.mailingAddressToggle, { readOnly: true });
   globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: resumeJourneyResponse?.FDlienCard?.currentAddressToggle });
   setFormValue(addressDetails.newCurentAddressPanel.newCurrentAddressLine1, resumeJourneyResponse?.FDlienCard?.addressLine1);
   setFormValue(addressDetails.newCurentAddressPanel.newCurrentAddressLine2, resumeJourneyResponse?.FDlienCard?.addressLine2);
@@ -167,7 +168,6 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   setFormValue(employmentDetails.annualIncome, resumeJourneyResponse?.FDlienCard?.annualIncome);
   globals.functions.setProperty(employeeAssistance.employeeAssistanceToggle, { value: resumeJourneyResponse?.FDlienCard?.assistanceToggle });
   setFormValue(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, resumeJourneyResponse?.FDlienCard?.inPersonBioKYCOptions);
-  changeDataAttrObj.disable = true;
   setFormValue(employeeAssistance.employeeAssistancePanel.channel, resumeJourneyResponse?.FDlienCard?.channel);
   setFormValue(employeeAssistance.employeeAssistancePanel.branchCode, resumeJourneyResponse?.FDlienCard?.branchCode);
   setFormValue(employeeAssistance.employeeAssistancePanel.dsaCode, resumeJourneyResponse?.FDlienCard?.dsaCode);
@@ -177,13 +177,16 @@ const prefillResumeJourneyData = async (resumeJourneyResponse, globals) => {
   setFormValue(employeeAssistance.employeeAssistancePanel.smCode, resumeJourneyResponse?.FDlienCard?.smCode);
   setFormValue(employeeAssistance.employeeAssistancePanel.tseLgCode, resumeJourneyResponse?.FDlienCard?.tseLgCode);
   setFormValue(employeeAssistance.employeeAssistancePanel.cardsBdrLc1, resumeJourneyResponse?.FDlienCard?.cardsBdrLc1);
-
   const propertiesToHide = EMPLOYEE_SECTION_VISIBILITY?.[resumeJourneyResponse?.FDlienCard?.channel?.toLowerCase()] || EMPLOYEE_SECTION_VISIBILITY.default;
   setVisibility(employeeAssistance.employeeAssistancePanel, propertiesToHide, false, globals);
-  const personaldetails = document.querySelector('.field-personaldetails');
+  const personaldetailsEl = document.querySelector('.field-personaldetails');
+  const addressDetailsEl = document.querySelector('.field-addressdetails');
+  const empDetailsEl = document.querySelector('.field-employmentdetails');
   return new Promise((resolve) => {
     setTimeout(() => {
-      addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
+      addDisableClass(personaldetailsEl);
+      addDisableClass(addressDetailsEl);
+      addDisableClass(empDetailsEl);
       resolve(true);
     }, 100);
   });
