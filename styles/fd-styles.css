@@ -1245,6 +1245,19 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           font-size: var(--body-fd-md-font-size);
           font-weight: var(--font-weight-regular);
         }
+
+        textarea {
+          font-size: var(--body-fd-md-font-size);
+          font-weight: var(--font-weight-regular);
+          border: none;
+          height: 30px;
+          min-height: 50px;
+          overflow-y: hidden;
+
+          &:hover {
+            box-shadow: none;
+          }
+        }
       }
     }
 
