@@ -317,10 +317,9 @@ const checkModeFd = async (globals) => {
       const attemptCount = parseInt(idcomRedirectAttempt.$value, 10);
       if (attemptCount < FD_CONSTANT.IDCOM.maxRetry) {
         globals.functions.setProperty(resultPanel.errorResultPanel.idcomRetry, { visible: true });
-        // globals.functions.setProperty(errorMessageTextPlaceHolder, { value: FD_CONSTANT.ERROR_MSG.sessionExpiredDescription });
         globals.functions.setProperty(errorMessageText, { value: FD_CONSTANT.ERROR_MSG.sessionExpired });
         globals.functions.setProperty(resultPanel.errorResultPanel.tryAgainButtonErrorPanel, { visible: false });
-        globals.functions.setProperty(errResDealerPanel.errResDealerText1, { visible: false });
+        globals.functions.setProperty(errResDealerPanel.errResDealerText1, { value: FD_CONSTANT.ERROR_MSG.pleaseRetry });
         globals.functions.setProperty(errResDealerPanel.errResDealerText2, { value: FD_CONSTANT.ERROR_MSG.sessionExpiredDescription });
         globals.functions.setProperty(errResDealerPanel, { visible: true });
         globals.functions.setProperty(idcomRedirectAttempt, { value: attemptCount + 1 });

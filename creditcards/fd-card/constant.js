@@ -32,6 +32,7 @@ const ERROR_MSG = {
   aadhaarTimeoutTitle: 'Aadhaar eKYC Unavailable Due to Technical Issues',
   aadhaarTimeout: 'Sorry, we are unable to proceed with Aadhaar EKYC due to technical issues.',
   requestNotProcessed: 'Your request could not be processed, please try again to continue.',
+  pleaseRetry: 'Please retry.',
 };
 
 const FD_ENDPOINTS = {
