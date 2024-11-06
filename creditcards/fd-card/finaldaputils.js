@@ -4,7 +4,7 @@ import {
 } from '../../common/formutils.js';
 import { restAPICall } from '../../common/makeRestAPI.js';
 import { invokeJourneyDropOffUpdate } from '../corporate-creditcard/journey-utils.js';
-import { FD_ENDPOINTS } from './constant.js';
+import { ERROR_MSG, FD_ENDPOINTS } from './constant.js';
 import { finalPagePanelVisibility } from './thankyouutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
 
@@ -80,6 +80,8 @@ const finalDap = (userRedirected, globals) => {
     payload.requestString.filler8 = 'IDCOMFAIL';
     payload.requestString.filler4 = 'bioKYC';
     payload.requestString.VKYCConsent = '';
+    const { referenceNumberTagLine } = resultPanel.successResultPanel.tqSuccessWrapper.refNumPanel;
+    globals.functions.setProperty(referenceNumberTagLine, { value: ERROR_MSG.forceApplicationSubmit });
   }
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
