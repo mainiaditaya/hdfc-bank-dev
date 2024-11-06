@@ -1035,9 +1035,14 @@
                   color: var(--color-interface-background-quaternary);
                   font-weight: 600;
                   margin-top: 6px;
+                  cursor: text;
 
                   @media (320px <=width <=600px) {
                     margin-top: 3px;
+                  }
+                  
+                  &:focus{
+                    outline: none;
                   }
                 }
               }
