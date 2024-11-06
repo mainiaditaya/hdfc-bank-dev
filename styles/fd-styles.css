@@ -3097,7 +3097,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
 /* Doc Upload */
 .fdlien .field-docuploadflow {
-  padding: 0 60px 60px;
+  padding: 20px 60px 60px;
 
   .plain-text-wrapper.field-identificationverificationtitle p b {
     font-size: var(--body-fd-xx-lg-font-size);
