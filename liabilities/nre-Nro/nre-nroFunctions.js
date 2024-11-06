@@ -745,27 +745,30 @@ const nreNroFetchRes = async (globals) => {
             currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
           }
           // await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, journeyId, globals);
-          invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, journeyId, globals);
-          prefillAccountDetail(currentFormContext.fatca_response, globals, currentFormContext.selectedCheckedValue, 1);
+          // invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, journeyId, globals);
+          // prefillAccountDetail(currentFormContext.fatca_response, globals, currentFormContext.selectedCheckedValue, 1);
           
           // Fetching IDComToken
           const idComTokenResponse = await fetchIdComToken(globals);
           console.log(idComTokenResponse);
           currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
 
-          if(currentFormContext.IDCOMSuccessToken != null || currentFormContext.IDCOMSuccessToken != undefined){
+          if(currentFormContext.IDCOMSuccessToken != null || currentFormContext.IDCOMSuccessToken != undefined || currentFormContext.IDCOMSuccessToken != ''){
             // Calling Account Opening Functions
             let accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo,globals);
             console.log("Account Opening Response : " , accountOpeningResponse);
             
-            if(accountOpeningNreNro){
+            if(accountOpeningResponse.accountOpening.errorCode == '0'){
               hideLoaderGif();
+              currentFormContext.accountNumber = accountOpeningResponse.accountOpening.accountNo;
               console.log("CurrentFormContext : " , currentFormContext);
               // globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
               globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
               globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
 
               prefillThankYouPage(finalResult.journeyParamStateInfo,globals);
+            } else{
+              console.log("Error Scenario");
             }
             // On Success -> Show Thank You Page and assign field values and hide other pages.
             // Else journey drop off update onboarding failure, generic error page show here. 
@@ -802,7 +805,7 @@ const nreNroFetchRes = async (globals) => {
  * @returns {void}
  */
 function prefillThankYouPage(journeyParamStateInfo, globals){
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: journeyParamStateInfo.accountNumber }); // Setting the account number
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: currentFormContext.accountNumber }); // Setting the account number
   globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.accounttype, { value: journeyParamStateInfo.accounttype }); // Setting the account type
   globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.homeBranch, { value: journeyParamStateInfo.homeBranch }); // Setting the home branch
   globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchCode, { value: journeyParamStateInfo.branchCode }); // Setting the branch code
@@ -817,7 +820,6 @@ function prefillThankYouPage(journeyParamStateInfo, globals){
  */
 async function accountOpeningNreNro(journeyParamStateInfo, globals){
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
-
   const jsonObj = {
     requestString: {
       journeyID: currentFormContext.journeyID,
@@ -825,6 +827,7 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       userAgent: window.navigator.userAgent,
       misCodeDetails: '',
       identifierValue: parseDate(response.datBirthCust),
+      flgChqBookIssue: 'N',
       DoB: parseDate(response.datBirthCust),
       IDCOM_Token:currentFormContext.IDCOMSuccessToken,
       Id_token_jwt: journeyParamStateInfo.AccountOpeningNRENRO.fatcaJwtToken,
@@ -841,6 +844,8 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       typeOfFirm_label: '',
       accountNumber: response.customerAccountDetailsDTO[accIndex].accountNumber,
       customerID: response.customerId.toString(),
+      maskedCustID: response.customerId.toString().slice((response.customerId.toString().length-4),response.customerId.toString().length),
+      maskedAccountNumber: 'X'.repeat((response.customerAccountDetailsDTO[accIndex].accountNumber.length-4)) + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length-4) , (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
       agriculturalIncome: '',
       sex: response.txtCustSex,
       email: response.refCustEmail,
@@ -856,8 +861,8 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       countryOfNominee: '',
       country: response.namHoldadrCntry,
       passpostExpiryDate: '',
-      LCCode: '',
-      LGCode: '',
+      codeLC: '',
+      codeLG: '',
       applicationDate: new Date().toISOString().slice(0, 19),
       DLExpiryDate: '',
       selfEmployedProfessionalCategory: '',
@@ -997,7 +1002,7 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       occupationTypeID: '',
       ownerCode: '',
       productCategoryID: '483',
-      productCode: '193',
+      productCode: '201',
       productKey: '413',
       ItemKey: "679214581",
       leadCustomerID:"",
@@ -1216,8 +1221,8 @@ const crmLeadIdDetail = () => {
       countryOfNominee: '',
       country: response.namHoldadrCntry,
       passpostExpiryDate: '',
-      LCCode: '',
-      LGCode: '',
+      codeLC: '',
+      codeLG: '',
       applicationDate: new Date().toISOString().slice(0, 19),
       DLExpiryDate: '',
       selfEmployedProfessionalCategory: '',
@@ -1324,7 +1329,7 @@ const crmLeadIdDetail = () => {
       leadSourceKey: '33609',
       middleName: response.customerMiddleName || '',
       // mobileNo: currentFormContext.mobileNumber,
-      mobileNo: '8548385535',
+      mobileNo: '8548385546',
       multipleTaxResidencyID: '',
       employmentType: '',
       employmentTypeOthers: '',
@@ -1358,7 +1363,7 @@ const crmLeadIdDetail = () => {
       occupationTypeID: '',
       ownerCode: '',
       productCategoryID: '483',
-      productCode: '193',
+      productCode: '201',
       productKey: '413',
       residentialStatusID: '',
       websiteUrl: '',
