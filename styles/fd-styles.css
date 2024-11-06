@@ -795,6 +795,13 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       right: 175px;
       width: 90%;
     }
+
+    .button-wrapper:nth-child(7) {
+      position: absolute;
+      top: 75%;
+      left: 4%;
+      width: 92%;
+    }
   }
 
   .field-error2colresultpanel {
@@ -982,6 +989,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
   .button-wrapper.field-booknewfd {
     text-align: right;
+  }
+
+  .button-wrapper.field-idcomretry {
+    text-align: center;
   }
 
   .field-successresultpanel {
@@ -3102,7 +3113,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
 /* Doc Upload */
 .fdlien .field-docuploadflow {
-  padding: 0 60px 60px;
+  padding: 20px 60px 60px;
 
   .plain-text-wrapper.field-identificationverificationtitle p b {
     font-size: var(--body-fd-xx-lg-font-size);
@@ -4226,6 +4237,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       left: 20px !important;
       text-align: right !important;
     }
+
+    .button-wrapper:nth-child(7) {
+      top: 75% !important;
+      left: 20px !important;
+    }
   }
 
   .field-successresultpanel {
@@ -4465,6 +4481,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
 
       .button-wrapper:nth-child(6) {
         top: 92%;
+        left: 40px !important;
+        width: 80% !important;
+      }
+
+      .button-wrapper:nth-child(7) {
+        top: 65%;
         left: 40px !important;
         width: 80% !important;
       }

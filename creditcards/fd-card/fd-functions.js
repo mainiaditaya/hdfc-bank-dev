@@ -97,7 +97,11 @@ import {
   fdIpaSuccessHandler,
 } from './ipautil.js';
 
-import { idcomm, idcomSuccessHandler } from './idcomutil.js';
+import {
+  idcomm,
+  idcomSuccessHandler,
+  idcomRetry,
+} from './idcomutil.js';
 
 import {
   kycProceedClickHandler,
@@ -188,4 +192,5 @@ export {
   resumeJourneySuccessHandler,
   getResumeJourneyJsonObject,
   loadHomePage,
+  idcomRetry,
 };

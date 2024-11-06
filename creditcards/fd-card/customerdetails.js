@@ -208,16 +208,32 @@ const bindCustomerDetails = async (globals) => {
   }
 
   if (parsedAddress.length) {
-    const [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = parsedAddress;
+    let [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = parsedAddress;
     Object.assign(CURRENT_FORM_CONTEXT.customerAddress, { addressLine1, addressLine2, addressLine3 });
+
     formattedCustomerAddress = `${parsedAddress.join(' ')}, ${pincode}, ${city}, ${state}`;
-    if (addressLine1.length < 10 || addressLine2 === '') {
-      const { newCurrentAddressLine1, newCurrentAddressLine2, newCurentAddressPin } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails.newCurentAddressPanel;
-      globals.functions.setProperty(addressDetails.invalidAddressNote, { value: ERROR_MSG.shortAddressNote, visible: true });
+    const isShortAddress = addressLine1.length < 10 || !addressLine2;
+    if (isShortAddress) {
+      [addressLine1 = '', addressLine2 = '', addressLine3 = ''] = address
+        .split('|')
+        .map((item) => removeSpecialCharacters(item.trim(), ALLOWED_CHARACTERS));
+      const {
+        invalidAddressNote,
+        mailingAddressToggle,
+        newCurentAddressPanel,
+      } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.addressDetails;
+      const {
+        newCurrentAddressLine1,
+        newCurrentAddressLine2,
+        newCurentAddressPin,
+      } = newCurentAddressPanel;
+
+      globals.functions.setProperty(invalidAddressNote, { value: ERROR_MSG.shortAddressNote, visible: true });
       globals.functions.setProperty(newCurrentAddressLine1, { value: addressLine1 });
       globals.functions.setProperty(newCurrentAddressLine2, { value: addressLine2 });
       globals.functions.setProperty(newCurentAddressPin, { value: pincode });
-      globals.functions.setProperty(addressDetails.mailingAddressToggle, { value: 'off', readOnly: true });
+      globals.functions.setProperty(mailingAddressToggle, { value: 'off', readOnly: true });
+
       addClassToElement('.field-mailingaddresstoggle label.field-label', 'cursor-na');
     }
   } else {

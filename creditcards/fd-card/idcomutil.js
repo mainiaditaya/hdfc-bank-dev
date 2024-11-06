@@ -42,6 +42,7 @@ const idcomm = async (globals) => {
     Object.assign(CURRENT_FORM_CONTEXT, JSON.parse(globals?.functions?.exportData()?.formContext));
   }
   const idComRequest = createIdComRequestObj(globals);
+  CURRENT_FORM_CONTEXT.idComRequest = idComRequest;
   const apiEndPoint = urlPath(ENDPOINTS.fetchAuthCode);
   return fetchJsonResponse(apiEndPoint, idComRequest, 'POST');
 };
@@ -54,7 +55,14 @@ const idcomSuccessHandler = async (authCode, redirectUrl) => new Promise((resolv
   }, 100);
 });
 
+const idcomRetry = (globals) => {
+  const { idComRequest } = globals.functions.exportData().currentFormContext;
+  const apiEndPoint = urlPath(ENDPOINTS.fetchAuthCode);
+  return fetchJsonResponse(apiEndPoint, idComRequest, 'POST');
+};
+
 export {
   idcomm,
   idcomSuccessHandler,
+  idcomRetry,
 };

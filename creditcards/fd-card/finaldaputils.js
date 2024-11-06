@@ -79,6 +79,7 @@ const finalDap = (userRedirected, globals) => {
   if (globals?.functions?.exportData()?.queryParams?.success === 'false') {
     payload.requestString.filler8 = 'IDCOMFAIL';
     payload.requestString.filler4 = 'bioKYC';
+    payload.requestString.VKYCConsent = '';
   }
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;
