@@ -31,6 +31,7 @@ const ERROR_MSG = {
   aadhaarMaxOtpAttemptsStatusCode: '35',
   aadhaarTimeoutTitle: 'Aadhaar eKYC Unavailable Due to Technical Issues',
   aadhaarTimeout: 'Sorry, we are unable to proceed with Aadhaar EKYC due to technical issues.',
+  requestNotProcessed: 'Your request could not be processed, please try again to continue.',
 };
 
 const FD_ENDPOINTS = {
