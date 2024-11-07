@@ -51,6 +51,7 @@ const createDapRequestObj = (userRedirected, globals) => {
       filler4 = selectedKyc;
     }
   }
+  const filler8 = selectedKyc === 'biokyc' || selectedKyc === 'bioinperson' ? '' : 'IDCOMSUCCESS';
   const filler3 = fetchFiller3(formData?.queryParams?.authmode, formData?.queryParams?.success);
   return {
     requestString: {
@@ -71,6 +72,7 @@ const createDapRequestObj = (userRedirected, globals) => {
       filler1: '',
       filler3,
       filler4,
+      filler8,
       biometricStatus: selectedKyc || '',
       ekycConsent,
       ekycSuccess,
