@@ -690,7 +690,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         padding: 0;
         font-size: var(--body-fd-xxx-lg-font-size);
         font-weight: var(--font-weight-bold);
-        line-height: var(--font-linehight-m-large);
+        line-height: var(--font-linehight-x-large);
       }
 
       p::before {
