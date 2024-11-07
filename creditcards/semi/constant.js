@@ -17,7 +17,7 @@ const CHANNELS = {
   adobeWhatsApp: 'ADOBE_WHATSAPP',
 };
 
-const ENV = 'prod';
+const ENV = 'dev';
 
 const DEV_URL = 'https://applyonlinedev.hdfcbank.com';
 const PROD_URL = 'https://applyonline.hdfcbank.com';
