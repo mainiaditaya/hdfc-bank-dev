@@ -309,7 +309,7 @@ const checkModeFd = async (globals) => {
   creditCardSummary(globals);
 
   if (idcomVisit) {
-    if (globals?.functions?.exportData()?.queryParams?.errorCode === FD_CONSTANT.IDCOM.response.sessionExpired.errorCode) {
+    if (formData?.queryParams?.errorCode === FD_CONSTANT.IDCOM.response.sessionExpired.errorCode) {
       const { errorMessageText, errResDealerPanel } = resultPanel.errorResultPanel;
       globals.functions.setProperty(resultPanel, { visible: true });
       globals.functions.setProperty(resultPanel.errorResultPanel, { visible: true });
@@ -329,6 +329,11 @@ const checkModeFd = async (globals) => {
         globals.functions.setProperty(errResDealerPanel?.errResDealerText2, { value: `${FD_CONSTANT.ERROR_MSG.branchVisitWithRefNum} ${arnNum}` });
       }
     } else {
+      if (formData?.queryParams?.success === 'false' && formData?.queryParams?.errorCode === FD_CONSTANT.IDCOM.response.idcomFail.errorCode) {
+        const { referenceNumberTagLine, idComRefNumberTagLine } = resultPanel.successResultPanel.tqSuccessWrapper.refNumPanel;
+        globals.functions.setProperty(referenceNumberTagLine, { visible: false });
+        globals.functions.setProperty(idComRefNumberTagLine, { visible: true });
+      }
       executeInterfacePostRedirect('idCom', true, globals);
       return;
     }
