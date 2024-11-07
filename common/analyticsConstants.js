@@ -6,6 +6,57 @@ const data = {
   },
   'submit otp': {
     error: '',
+    linkPosition: 'Form',
+  },
+  'select fd': {
+    linkType: 'button',
+    linkName: 'Select FD',
+    linkPosition: 'Form',
+  },
+  'review details': {
+    linkType: 'button',
+    linkName: 'Review Details',
+    linkPosition: 'Form',
+  },
+  'review details back': {
+    linkType: 'button',
+    linkName: 'Review Details',
+    linkPosition: 'Form',
+  },
+  'select card': {
+    linkType: 'button',
+    linkName: 'Select Card',
+    linkPosition: 'Form',
+  },
+  'select card consent': {
+    linkType: 'button',
+    linkName: 'Select Card Consent',
+    linkPosition: 'Form',
+  },
+  'validation method kyc': {
+    linkType: 'button',
+    linkName: 'Validation Method KYC',
+    linkPosition: 'Form',
+  },
+  'aadhaar kyc language popup': {
+    linkType: 'button',
+    linkName: 'Aadhaar KYC Language Popup',
+    linkPosition: 'Form',
+  },
+  'documents upload': {
+    linkType: 'button',
+    linkName: 'Documents Upload',
+    linkPosition: 'Form',
+  },
+  'documents upload upload': {
+    linkType: 'button',
+    linkName: 'Documents Upload',
+    linkPosition: 'Form',
+  },
+  'confirmation page': {
+    linkType: 'button',
+    linkName: 'Confirmation Page',
+    linkPosition: 'Form',
   },
   'check offers': {
     linkType: 'button',
@@ -143,6 +194,21 @@ const PAGE_NAME = {
     'start kyc': 'Confirmation',
     'submit review': 'Confirmation',
     'thank you screen': 'Confirmation',
+  },
+  fd: {
+    getOtp: 'Step 1 - Identify Yourself',
+    submitOtp: 'Step 2 - Verify with OTP',
+    selectCustomerId: 'Select Customer ID',
+    selectFd: 'Step 3 - Select FD',
+    reviewDetailsBack: 'Step 4 - Confirm your details',
+    reviewDetails: 'Step 4 - Confirm your details',
+    selectCard: 'Step 5 - Choose Card',
+    selectCardConsent: 'Step 5 - Choose Card',
+    validationMethodKYC: 'Step 6 - Validation Method - KYC Details',
+    aadhaarKYCLangPopup: 'Aadhaar KYC Language Popup',
+    docUpload: 'Step 6 – Validation Method – Document Upload',
+    docUploadUpload: 'Step 6 – Validation Method – Document Upload',
+    confirmationPage: 'Confirmation',
   },
 };
 export {

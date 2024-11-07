@@ -37,6 +37,17 @@ const FORM_CONSTANT = [
       loadTime: 900,
     },
   },
+  {
+    // FD
+    formPath: ['fdlien'],
+    class: 'fdlien',
+    urlKey: ['fdlien'],
+    launchScript: {
+      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
+      prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
+      loadTime: 900,
+    },
+  },
 ];
 const ENV = 'prod'; // take it from common constant to denote
 
