@@ -29,7 +29,7 @@ const createDocPayload = async ({ docValue, docType, fileId }, mobileNumber) => 
     } = CURRENT_FORM_CONTEXT;
     const file = docValue?.$value?.data;
     const fileBinary = file;
-    const documentName = file.name?.replace(/[^a-zA-Z0-9]/g, '');
+    const documentName = file.name?.replace(/[^a-zA-Z0-9.]/g, '');
     const { userAgent } = window.navigator;
     const uuId = generateUUID();
     const payloadKeyValuePairs = {
