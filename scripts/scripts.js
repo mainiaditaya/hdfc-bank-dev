@@ -39,7 +39,7 @@ const FORM_CONSTANT = [
   },
   {
     // FD
-    formPath: ['fdlien'],
+    formPath: ['etb-fixed-deposit-cc'],
     class: 'fdlien',
     urlKey: ['fdlien'],
     launchScript: {
