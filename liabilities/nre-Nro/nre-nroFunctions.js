@@ -35,8 +35,9 @@ import {
 
 setTimeout(async () => {
   if (typeof window !== 'undefined') {
-    const { addGaps } = await import('./nre-nro-dom-functions.js');
+    const { addGaps, validateOtpInput } = await import('./nre-nro-dom-functions.js');
     addGaps();
+    validateOtpInput();
   }
 }, 1200);
 
@@ -356,6 +357,11 @@ function otpTimer(globals) {
 function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
   if (!email) globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)}` });
   globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)} & email ID ${customerDataMasking('eMail', email)}.` });
+
+  const otpField = document.querySelector('.field-otpnumber input');
+  otpField.addEventListener('mouseover', () => {
+    otpField.focus();
+  });
 }
 
 /**
@@ -515,6 +521,11 @@ function showNomineeDetails(nomineeDetails, response, globals) {
   } else if (nomineeName === null) {
     globals.functions.setProperty(nomineeDetails.nomineePanel, { visible: false });
     globals.functions.setProperty(nomineeDetails.nonomineeText, { visible: true });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.relation, { visible: false });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeName, { visible: false });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineedob, { visible: false });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.relation, { visible: false });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.textnominee, { visible: false });
   }
 }
 
@@ -619,17 +630,21 @@ function multiCustomerId(response, selectAccount, singleAccountCust, multipleAcc
         globals.functions.dispatchEvent(multipleAccountsPanel.multipleAccountRepeatable, 'addItem');
       }
       setTimeout(() => {
-        prefillAccountDetail(response, globals, i, responseLength);
         const radioButtons = Array.from(document.querySelectorAll('.field-multiplecustidaccount input'));
         radioButtons.forEach((radioButton, index) => {
           const setIndexValue = index;
           radioButton.setAttribute('name', 'cust-id-radio');
           radioButton.setAttribute('value', setIndexValue);
+          if (index === 0) {
+            radioButton.checked = true;
+            currentFormContext.selectedCheckedValue = setIndexValue;
+          }
           radioButton.addEventListener('click', () => {
             const checkedValue = radioButtons.find((checkVal) => checkVal.checked)?.value;
             currentFormContext.selectedCheckedValue = checkedValue;
           });
         });
+        prefillAccountDetail(response, globals, i, responseLength);
       }, 1000);
     });
   } else {
@@ -717,8 +732,12 @@ const fetchAuthCode = (globals) => {
 
 function customFocus(numRetries, globals) {
   MAX_COUNT -= 1;
-  if (MAX_COUNT < MAX_OTP_RESEND_COUNT) {
+  if (MAX_COUNT >= resendOtpCount) {
     globals.functions.setProperty(numRetries, { value: `${MAX_COUNT}/${MAX_OTP_RESEND_COUNT}` });
+  } else {
+    globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.incorrectOTPPanel, { visible: true });
+    globals.functions.setProperty(globals.form.otppanelwrapper.submitOTP, { visible: false });
   }
 }
 
