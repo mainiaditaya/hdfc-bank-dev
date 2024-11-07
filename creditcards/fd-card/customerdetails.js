@@ -63,6 +63,7 @@ const initializeNameOnCardDdOptions = (globals, personalDetails, customerFirstNa
 const bindEmployeeAssistanceField = async (globals) => {
   const { resultPanel, fdBasedCreditCardWizard } = globals.form;
   const { employeeAssistancePanel, employeeAssistanceToggle, inPersonBioKYCPanel } = fdBasedCreditCardWizard.basicDetails.reviewDetailsView.employeeAssistance;
+  globals.functions.setProperty(inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: false });
   const defaultChannel = getUrlParamCaseInsensitive('channel');
   const inPersonBioKYC = getUrlParamCaseInsensitive('InpersonBioKYC');
   const codes = {
@@ -72,6 +73,8 @@ const bindEmployeeAssistanceField = async (globals) => {
     lc2Code: getUrlParamCaseInsensitive('lc2'),
     dsaCode: getUrlParamCaseInsensitive('dsacode'),
     branchCode: getUrlParamCaseInsensitive('branchcode'),
+    cardsBdrLc1: getUrlParamCaseInsensitive('lc1'),
+    tseLgCode: getUrlParamCaseInsensitive('lgcode'),
   };
 
   try {
@@ -113,7 +116,7 @@ const bindEmployeeAssistanceField = async (globals) => {
       globals.functions.setProperty(dropDownSelectField, { readOnly: true });
     }
     const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-    ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode'].forEach((code) => {
+    ['lc1Code', 'lgCode', 'smCode', 'lc2Code', 'dsaCode', 'branchCode', 'cardsBdrLc1', 'tseLgCode'].forEach((code) => {
       const util = formUtil(globals, employeeAssistancePanel[code]);
       if (codes[code] !== null) util.setValue(codes[code], changeDataAttrObj);
     });
@@ -553,6 +556,26 @@ const addressChangeHandler = (addressLineNumber, globals) => {
   }
 };
 
+const employeeAssistanceToggleHandler = (globals) => {
+  const { addressDetails, employeeAssistance } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const { employeeAssistanceToggle } = employeeAssistance;
+  if (employeeAssistanceToggle.$value === 'on' && addressDetails.mailingAddressToggle.$value === 'off') {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: true });
+  } else {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: false });
+  }
+};
+
+const mailingAddressToggleHandler = (globals) => {
+  const { employeeAssistance, addressDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const { employeeAssistanceToggle } = employeeAssistance;
+  if (employeeAssistanceToggle.$value === 'on' && addressDetails.mailingAddressToggle.$value === 'off') {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: true });
+  } else {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: false });
+  }
+};
+
 export {
   bindCustomerDetails,
   validateFdEmail,
@@ -565,4 +588,6 @@ export {
   checkPanValidation,
   panvalidationSuccessHandler,
   addressChangeHandler,
+  mailingAddressToggleHandler,
+  employeeAssistanceToggleHandler,
 };

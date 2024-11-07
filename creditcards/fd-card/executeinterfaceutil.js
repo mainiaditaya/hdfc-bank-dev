@@ -77,6 +77,19 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
   const annualIncome = employmentDetails?.annualIncome?.$value ?? '';
   const empAssistanceToggle = employeeAssistanceToggle?.$value === 'on';
   const companyName = employmentDetails.employmentType?.$value === '1' || employmentDetails.employmentType.$value === '2' ? customerInfo?.customerFullName : '';
+  let lc1 = '';
+  let lgCode = '';
+  let channel = '';
+  if (empAssistanceToggle) {
+    channel = employeeAssistancePanel?.channel?.$value;
+    if (channel.toLowerCase() === 'branch') {
+      lc1 = employeeAssistancePanel?.cardsBdrLc1?.$value || '';
+      lgCode = employeeAssistancePanel?.tseLgCode?.$value || '';
+    } else {
+      lc1 = employeeAssistancePanel?.lc1Code?.$value || '';
+      lgCode = employeeAssistancePanel?.lgCode?._data?.$_value || '';
+    }
+  }
   const request = {
     requestString: {
       addressEditFlag: addressEditFlag ? 'Y' : 'N',
@@ -88,12 +101,12 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       authMode: '',
       bankAccountNumber: SELECTED_CUSTOMER_ID?.selectedCustId?.codAcctNo,
       bankEmployee: 'N',
-      branchCity: (empAssistanceToggle && employeeAssistancePanel?.branchCity?.$value) || '',
-      branchCode: (empAssistanceToggle && employeeAssistancePanel?.branchCode?.$value) || '',
-      branchName: (empAssistanceToggle && employeeAssistancePanel?.branchName?._data?.$_value) || '',
+      branchCity: (empAssistanceToggle && channel.toLowerCase() === 'branch' && employeeAssistancePanel?.branchCity?.$value) || '',
+      branchCode: (empAssistanceToggle && channel.toLowerCase() === 'branch' && employeeAssistancePanel?.branchCode?.$value) || '',
+      branchName: (empAssistanceToggle && channel.toLowerCase() === 'branch' && employeeAssistancePanel?.branchName?._data?.$_value) || '',
       CCAD_Relationship_number: '',
       cardsData: '',
-      channel: (empAssistanceToggle && employeeAssistancePanel?.channel?._data?.$_value) || '',
+      channel,
       channelSource: '',
       communicationAddress1: communicationAddress?.line1,
       communicationAddress2: communicationAddress?.line2,
@@ -108,8 +121,8 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       dateOfBirth: personalDetails.dateOfBirthPersonalDetails.$value,
       departmentOrEmpCode: '',
       designation: EMPLOYEE_MAP[employmentDetails.employmentType._data.$_value],
-      dsaValue: (empAssistanceToggle && employeeAssistancePanel?.dsaName?._data?.$_value) || '',
-      dseCode: (empAssistanceToggle && employeeAssistancePanel?.dsaCode?._data?.$_value) || '',
+      dsaValue: (empAssistanceToggle && channel.toLowerCase() === 'dsa' && employeeAssistancePanel?.dsaName?._data?.$_value) || '',
+      dsaCode: (empAssistanceToggle && channel.toLowerCase() === 'dsa' && employeeAssistancePanel?.dsaCode?._data?.$_value) || '',
       eReferenceNumber: CURRENT_FORM_CONTEXT.referenceNumber,
       filler6: '',
       firstName: customerInfo.customerFirstName,
@@ -122,6 +135,8 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       lastName: customerInfo.customerLastName,
       leadClosures: '',
       leadGenerater: '',
+      lc1,
+      lgCode,
       lc2: (empAssistanceToggle && employeeAssistancePanel?.lc2Code?._data?.$_value) || '',
       lienConsent: new Date().toISOString(),
       middleName: customerInfo.customerMiddleName,

@@ -18,7 +18,7 @@ const ERROR_MSG = {
   ageLimit: `Age should be between ${AGE_LIMIT.min} to ${AGE_LIMIT.max}`,
   invalidPan: 'Maximum PAN retry attempts exceeded.',
   matchingAddressLine: 'Address Line 1 and Address Line 2 cannot be same',
-  invalidAddress: 'Please enter a valid address',
+  invalidAddress: 'Please enter a valid address, allowed special characters(.,/-)',
   tooShortAddress: 'Address is too short(minimum 10 characters)',
   tooLongAddress: 'Address is too long(maximum 30 characters)',
   shortAddressNote: 'Note: Address is too short, please enter valid address.',
@@ -33,6 +33,7 @@ const ERROR_MSG = {
   aadhaarTimeout: 'Sorry, we are unable to proceed with Aadhaar EKYC due to technical issues.',
   requestNotProcessed: 'Your request could not be processed, please try again to continue.',
   pleaseRetry: 'Please retry.',
+  forceApplicationSubmit: 'You have exhausted all attempts(3) to verify your details. Our bank representative will reach out to you shortly for completing the application.',
 };
 
 const FD_ENDPOINTS = {
@@ -85,6 +86,12 @@ const DOM_ELEMENT = {
     aadharModalContent: 'aadharConsentPopup',
     modalBtnWrapper: 'button-wrapper',
     defaultLanguage: 'English',
+  },
+  identifyYourself: {
+    dob: 'dateOfBirth',
+  },
+  personalDetails: {
+    dob: 'dateOfBirthPersonalDetails',
   },
 };
 
