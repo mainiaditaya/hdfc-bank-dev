@@ -89,9 +89,6 @@ const finalDap = (userRedirected, globals) => {
     payload.requestString.filler8 = 'IDCOMFAIL';
     payload.requestString.filler4 = 'bioKYC';
     payload.requestString.VKYCConsent = '';
-    const { referenceNumberTagLine, idComRefNumberTagLine } = resultPanel.successResultPanel.tqSuccessWrapper.refNumPanel;
-    globals.functions.setProperty(referenceNumberTagLine, { visible: false });
-    globals.functions.setProperty(idComRefNumberTagLine, { visible: true });
   }
   const mobileNumber = formData?.form?.login?.registeredMobileNumber || globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber.$value;
   const leadProfileId = formData?.leadProifileId || globals?.form?.runtime?.leadProifileId.$value;

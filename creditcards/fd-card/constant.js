@@ -87,6 +87,12 @@ const DOM_ELEMENT = {
     modalBtnWrapper: 'button-wrapper',
     defaultLanguage: 'English',
   },
+  identifyYourself: {
+    dob: 'dateOfBirth',
+  },
+  personalDetails: {
+    dob: 'dateOfBirthPersonalDetails',
+  },
 };
 
 const ANALYTICS = {

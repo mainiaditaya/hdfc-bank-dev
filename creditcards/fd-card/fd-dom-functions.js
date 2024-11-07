@@ -3,7 +3,9 @@ import {
   validatePhoneNumber,
   validatePanInput,
   createLabelInElement,
+  setMaxDateToToday,
 } from '../domutils/domutils.js';
+import { DOM_ELEMENT } from './constant.js';
 
 /**
  * Validates the OTP input field to ensure it contains only digits.
@@ -75,6 +77,7 @@ const buttonEnableOnCheck = (selector, ctaSelector) => {
 };
 
 setTimeout(() => {
+  [DOM_ELEMENT.identifyYourself.dob, DOM_ELEMENT.personalDetails.dob].forEach((dateField) => setMaxDateToToday(dateField));
   addGaps('.field-pan.char-gap-4 input');
   addMobileValidation();
 }, 1200);
