@@ -1235,7 +1235,7 @@
         fieldset.field-nomineedetails {
           border: 1px solid var(--color-interface-border-primary);
           border-radius: 15px;
-          /* padding-bottom: 20px; */
+          margin-bottom: 10px;
 
           @media (320px <=width <=600px) {
             margin-bottom: 20px !important;
@@ -1255,7 +1255,6 @@
             height: 70px;
             display: flex;
             align-items: center;
-           /*  margin-bottom: 20px; */
 
             @media (768px <=width <=991px) {
               font-size: 24px;
@@ -1432,39 +1431,9 @@
               border-top-right-radius: 15px;
             }
           }        
-        }
-
-        /* fieldset.field-personaldetails,
-        fieldset.field-fatcadetails,
-        fieldset.field-financialdetails,
-        fieldset.field-nomineedetails {
-          & > div.text-wrapper.field-wrapper{
-            display: none !important;
-          }
-        }
-
-
-        fieldset.field-personaldetails:has(.accordion-collapse),
-        fieldset.field-fatcadetails:has(.accordion-collapse),
-        fieldset.field-financialdetails:has(.accordion-collapse),
-        fieldset.field-nomineedetails:has(.accordion-collapse) {
-          & > div.text-wrapper.field-wrapper{
-            display: block !important;
-          }
-        } */
-
+        }     
        
-        fieldset.field-nomineedetails:has(.accordion-collapse) {
-          & fieldset.panel-wrapper.field-nomineepanel.field-wrapper{
-            display: grid !important;
-          }
-        }
-
-        fieldset.field-nomineedetails:has(.accordion-collapse) {
-          & div.plain-text-wrapper.field-nonomineetext.field-wrapper{
-            display: flex !important;
-          }
-        }
+       
         fieldset.field-nomineedetails .field-wrapper {
           legend.field-label {
             display: none;
@@ -1857,6 +1826,7 @@
             &.field-ifsc,
             &.field-branch {
               height: 70px;
+              position: relative;
             }
 
             @media (min-width: 768px) {
@@ -1893,7 +1863,6 @@
               background: none;
               margin: 0;
               padding: 0;
-              width: auto;
               height: auto;
               font-size: 18px;
               line-height: 28px;
@@ -2135,11 +2104,8 @@
             }
           }
 
-          /*   .field-multipleaccounts {
-            border: 1px dashed var(--color-interface-border-secondary);
-          } */
-
-          .field-nro-account-type-pannel {
+          .field-nro-account-type-pannel,
+          .field-nre-account-type-pannel {
             border-top: 1px dashed var(--color-interface-border-secondary);
             padding-top: 30px;
 
@@ -2148,7 +2114,7 @@
             }
 
             .plain-text-wrapper {
-              h3 {
+              h3, p p {
                 margin-top: 0;
                 font-size: 28px;
                 font-weight: 600;
@@ -2172,7 +2138,10 @@
 
           .field-elitesavingsaccountpanel,
           .field-regularsavingsaccountpanel,
-          .field-currentaccountpanel {
+          .field-currentaccountpanel,
+          .field-nreelitesavingsaccountpanel,
+          .field-nreregularsavingsaccountpanel,
+          .field-nrecurrentaccountpanel {
             border: 1px solid var(--color-interface-border-secondary);
             border-radius: 20px;
             padding: 20px;
@@ -2301,7 +2270,6 @@
         .field-confirmdetails {
 
           .field-confirmdetailsaccordion {
-
             .text-wrapper.field-wrapper,
             .multiline-wrapper,
             .drop-down-wrapper {
@@ -2367,6 +2335,21 @@
 
               &.drop-down-wrapper {
                 grid-column: span 4;
+              }
+            }
+
+            fieldset.field-nomineedetails.nre-style-accordian{
+              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"]:not([data-visible="false"]){
+                display: grid !important;
+              }
+              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"][data-visible="false"]{
+                display: none !important;
+              }
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"]:not([data-visible="false"]){
+                display: flex !important;
+              }
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"][data-visible="false"]{
+                display: none !important;
               }
             }
           }
@@ -3605,9 +3588,6 @@
               margin-bottom: 20px;
             }
 
-            /*   @media (320px <=width <=600px) {
-              margin-top: 20px;
-            } */
             p {
               font-size: 16px;
               font-weight: 400;
