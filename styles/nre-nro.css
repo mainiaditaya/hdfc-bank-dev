@@ -2459,7 +2459,6 @@
                   font-size: 14px;
                   line-height: 20px;
                   font-weight: 400;
-                  top: -3px;
                   background: #fff;
                   padding: 0 5px;
                 }
@@ -2482,11 +2481,11 @@
                   }
                 }
 
-                &[data-active="true"] {
+               /*  &[data-active="true"] {
                   label.field-label {
                     margin: 2px 0 0 10px;
                   }
-                }
+                } */
               }
             }
 
