@@ -38,12 +38,14 @@ const getCurrentContext = () => currentFormContext;
      * @return {PROMISE}
      */
 const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
-  const DEFAULT_MOBILENO = '9999999999';
+  const isdCode = (globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.countryCode.$value)?.replace(/[^a-zA-Z0-9]+/g, '');
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
       leadProfile: {
-        mobileNumber: mobileNumber || DEFAULT_MOBILENO,
+        mobileNumber: isdCode + mobileNumber,
+        isCountryCodeappended: 'true',
+        countryCode: isdCode,
       },
       formData: {
         channel: CHANNEL,
@@ -75,13 +77,16 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
      * @return {PROMISE}
      */
 const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, journeyId, globals) => {
+  const isdCode = (globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.countryCode.$value)?.replace(/[^a-zA-Z0-9]+/g, '');
   const sanitizedFormData = santizedFormDataWithContext(globals, currentFormContext);
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : '',
       leadProfile: {
-        mobileNumber,
+        mobileNumber: isdCode + mobileNumber,
+        isCountryCodeappended: 'true',
         leadProfileId: leadProfileId?.toString(),
+        countryCode: isdCode,
       },
       formData: {
         channel: CHANNEL,
