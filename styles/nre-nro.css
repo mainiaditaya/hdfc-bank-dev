@@ -1393,27 +1393,27 @@
             &.field-permanentaddress {
               textarea {
                 height: 100%;
-                margin-bottom: 20px;
+                /* margin-bottom: 20px; */
                 width: 100% !important;
               }
 
-              &.field-communicationaddress {
+             /*  &.field-communicationaddress {
                 textarea {
                   min-height: 90px;
                   @media (320px <=width <=600px) {
                     min-height: 70px;
                   }
                 }
-              }
+              } */
 
-              &.field-permanentaddress {
+             /*  &.field-permanentaddress {
                 textarea {
                   min-height: 146px;
                   @media (320px <=width <=600px) {
                   min-height: 80px;
                   }
                 }
-              }
+              } */
             }
           }
 
@@ -1827,6 +1827,13 @@
             &.field-branch {
               height: 70px;
               position: relative;
+
+              &.field-customerid,
+              &.field-accountnumber{
+                input{
+                  letter-spacing: 10px;
+                }
+              }
             }
 
             @media (min-width: 768px) {
@@ -1891,7 +1898,7 @@
 
           /* second block multipleAccounts  */
           .field-multipleaccounts {
-            border-bottom: 1px dotted var(--color-interface-border-secondary);
+            border-bottom: 1px dashed var(--color-interface-border-secondary);
             padding-bottom: 10px;
             margin-bottom: 10px;
 
@@ -2073,6 +2080,7 @@
                           position: absolute;
                           padding-left: 8px;
                           margin-left: 5px;
+                          background-color: transparent;
 
                           &::before {
                             content: "";
@@ -2404,6 +2412,10 @@
                 position: relative;
                 transition: background-color 0.3s, background-position 0.3s;
                 margin-top: 5px;
+
+                &[disabled]{
+                  background-color: var(--color-action-background-primary-disabled);
+                }
               }
 
               input[type="checkbox"]::after {
