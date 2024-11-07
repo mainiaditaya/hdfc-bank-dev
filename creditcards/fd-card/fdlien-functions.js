@@ -328,6 +328,13 @@ const checkModeFd = async (globals) => {
         globals.functions.setProperty(errorMessageText, { value: FD_CONSTANT.ERROR_MSG.requestNotProcessed });
         globals.functions.setProperty(errResDealerPanel?.errResDealerText2, { value: `${FD_CONSTANT.ERROR_MSG.branchVisitWithRefNum} ${arnNum}` });
       }
+    } else if (globals?.functions?.exportData()?.queryParams?.errorCode === FD_CONSTANT.IDCOM.response.cancelledByUser.errorCode) {
+      const { errorMessageText } = resultPanel.errorResultPanel;
+      globals.functions.setProperty(resultPanel, { visible: true });
+      globals.functions.setProperty(resultPanel.errorResultPanel, { visible: true });
+      globals.functions.setProperty(resultPanel.errorResultPanel.idcomRetry, { visible: true });
+      globals.functions.setProperty(errorMessageText, { value: FD_CONSTANT.ERROR_MSG.idcomCancelledByUser });
+      globals.functions.setProperty(resultPanel.errorResultPanel.tryAgainButtonErrorPanel, { visible: false });
     } else {
       if (formData?.queryParams?.success === 'false' && formData?.queryParams?.errorCode === FD_CONSTANT.IDCOM.response.idcomFail.errorCode) {
         const { referenceNumberTagLine, idComRefNumberTagLine } = resultPanel.successResultPanel.tqSuccessWrapper.refNumPanel;
