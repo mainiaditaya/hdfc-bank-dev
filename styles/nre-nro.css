@@ -1235,7 +1235,7 @@
         fieldset.field-nomineedetails {
           border: 1px solid var(--color-interface-border-primary);
           border-radius: 15px;
-          /* padding-bottom: 20px; */
+          margin-bottom: 10px;
 
           @media (320px <=width <=600px) {
             margin-bottom: 20px !important;
@@ -1255,7 +1255,6 @@
             height: 70px;
             display: flex;
             align-items: center;
-           /*  margin-bottom: 20px; */
 
             @media (768px <=width <=991px) {
               font-size: 24px;
@@ -1394,27 +1393,27 @@
             &.field-permanentaddress {
               textarea {
                 height: 100%;
-                margin-bottom: 20px;
+                /* margin-bottom: 20px; */
                 width: 100% !important;
               }
 
-              &.field-communicationaddress {
+             /*  &.field-communicationaddress {
                 textarea {
                   min-height: 90px;
                   @media (320px <=width <=600px) {
                     min-height: 70px;
                   }
                 }
-              }
+              } */
 
-              &.field-permanentaddress {
+             /*  &.field-permanentaddress {
                 textarea {
                   min-height: 146px;
                   @media (320px <=width <=600px) {
                   min-height: 80px;
                   }
                 }
-              }
+              } */
             }
           }
 
@@ -1432,39 +1431,9 @@
               border-top-right-radius: 15px;
             }
           }        
-        }
-
-        /* fieldset.field-personaldetails,
-        fieldset.field-fatcadetails,
-        fieldset.field-financialdetails,
-        fieldset.field-nomineedetails {
-          & > div.text-wrapper.field-wrapper{
-            display: none !important;
-          }
-        }
-
-
-        fieldset.field-personaldetails:has(.accordion-collapse),
-        fieldset.field-fatcadetails:has(.accordion-collapse),
-        fieldset.field-financialdetails:has(.accordion-collapse),
-        fieldset.field-nomineedetails:has(.accordion-collapse) {
-          & > div.text-wrapper.field-wrapper{
-            display: block !important;
-          }
-        } */
-
+        }     
        
-        fieldset.field-nomineedetails:has(.accordion-collapse) {
-          & fieldset.panel-wrapper.field-nomineepanel.field-wrapper{
-            display: grid !important;
-          }
-        }
-
-        fieldset.field-nomineedetails:has(.accordion-collapse) {
-          & div.plain-text-wrapper.field-nonomineetext.field-wrapper{
-            display: flex !important;
-          }
-        }
+       
         fieldset.field-nomineedetails .field-wrapper {
           legend.field-label {
             display: none;
@@ -1857,6 +1826,14 @@
             &.field-ifsc,
             &.field-branch {
               height: 70px;
+              position: relative;
+
+              &.field-customerid,
+              &.field-accountnumber{
+                input{
+                  letter-spacing: 10px;
+                }
+              }
             }
 
             @media (min-width: 768px) {
@@ -1893,7 +1870,6 @@
               background: none;
               margin: 0;
               padding: 0;
-              width: auto;
               height: auto;
               font-size: 18px;
               line-height: 28px;
@@ -1922,7 +1898,7 @@
 
           /* second block multipleAccounts  */
           .field-multipleaccounts {
-            border-bottom: 1px dotted var(--color-interface-border-secondary);
+            border-bottom: 1px dashed var(--color-interface-border-secondary);
             padding-bottom: 10px;
             margin-bottom: 10px;
 
@@ -2104,6 +2080,7 @@
                           position: absolute;
                           padding-left: 8px;
                           margin-left: 5px;
+                          background-color: transparent;
 
                           &::before {
                             content: "";
@@ -2135,11 +2112,8 @@
             }
           }
 
-          /*   .field-multipleaccounts {
-            border: 1px dashed var(--color-interface-border-secondary);
-          } */
-
-          .field-nro-account-type-pannel {
+          .field-nro-account-type-pannel,
+          .field-nre-account-type-pannel {
             border-top: 1px dashed var(--color-interface-border-secondary);
             padding-top: 30px;
 
@@ -2148,7 +2122,7 @@
             }
 
             .plain-text-wrapper {
-              h3 {
+              h3, p p {
                 margin-top: 0;
                 font-size: 28px;
                 font-weight: 600;
@@ -2172,7 +2146,10 @@
 
           .field-elitesavingsaccountpanel,
           .field-regularsavingsaccountpanel,
-          .field-currentaccountpanel {
+          .field-currentaccountpanel,
+          .field-nreelitesavingsaccountpanel,
+          .field-nreregularsavingsaccountpanel,
+          .field-nrecurrentaccountpanel {
             border: 1px solid var(--color-interface-border-secondary);
             border-radius: 20px;
             padding: 20px;
@@ -2301,7 +2278,6 @@
         .field-confirmdetails {
 
           .field-confirmdetailsaccordion {
-
             .text-wrapper.field-wrapper,
             .multiline-wrapper,
             .drop-down-wrapper {
@@ -2369,6 +2345,21 @@
                 grid-column: span 4;
               }
             }
+
+            fieldset.field-nomineedetails.nre-style-accordian{
+              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"]:not([data-visible="false"]){
+                display: grid !important;
+              }
+              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"][data-visible="false"]{
+                display: none !important;
+              }
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"]:not([data-visible="false"]){
+                display: flex !important;
+              }
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"][data-visible="false"]{
+                display: none !important;
+              }
+            }
           }
 
           .field-needbankhelp {
@@ -2421,6 +2412,10 @@
                 position: relative;
                 transition: background-color 0.3s, background-position 0.3s;
                 margin-top: 5px;
+
+                &[disabled]{
+                  background-color: var(--color-action-background-primary-disabled);
+                }
               }
 
               input[type="checkbox"]::after {
@@ -2464,7 +2459,6 @@
                   font-size: 14px;
                   line-height: 20px;
                   font-weight: 400;
-                  top: -3px;
                   background: #fff;
                   padding: 0 5px;
                 }
@@ -2487,11 +2481,11 @@
                   }
                 }
 
-                &[data-active="true"] {
+               /*  &[data-active="true"] {
                   label.field-label {
                     margin: 2px 0 0 10px;
                   }
-                }
+                } */
               }
             }
 
@@ -3605,9 +3599,6 @@
               margin-bottom: 20px;
             }
 
-            /*   @media (320px <=width <=600px) {
-              margin-top: 20px;
-            } */
             p {
               font-size: 16px;
               font-weight: 400;
