@@ -36,7 +36,7 @@ const fdCardBoardingSuccess = async (data, stateInfoData) => {
   }
   setArnNumberInResult(stateInfoData.currentFormContext.ARN_NUM, 'refNumPanel', 'referenceNumber');
   invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
-  sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETED', stateInfoData, 'Thank You Page', 'confirmationPage');
+  sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETED', stateInfoData, 'Confirmation', 'confirmationPage');
 };
 
 const fdCardBoardingFailure = (err, stateInfoData) => {
