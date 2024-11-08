@@ -22,6 +22,12 @@ import {
   nreNroPageRedirected,
   nreNroAccountType,
   multiAccountVarient,
+  nreNroInit,
+  nreNroInvokeJourneyDropOffByParam,
+  prefillAccountDetail,
+  fetchIdComToken,
+  prefillThankYouPage,
+  accountOpeningNreNro,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -57,4 +63,10 @@ export {
   nreNroPageRedirected,
   nreNroAccountType,
   multiAccountVarient,
+  nreNroInit,
+  nreNroInvokeJourneyDropOffByParam,
+  prefillAccountDetail,
+  fetchIdComToken,
+  prefillThankYouPage,
+  accountOpeningNreNro,
 };

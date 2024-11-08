@@ -1,6 +1,3 @@
-import { getSubmitBaseUrl } from '../../blocks/form/constant.js';
-
-const BASEURL = getSubmitBaseUrl();
 const NRENROENDPOINTS = {
   accountOpening: '/content/hdfc_haf_nrenro/api/nrenroAccountOpening.json',
 };

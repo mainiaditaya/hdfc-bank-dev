@@ -176,8 +176,8 @@ const validateLogin = (globals) => {
   currentFormContext.isdCode = isdCode;
   globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
 
-  const panInput = document.querySelector(`[name=${'pan'} ]`);
-  const panWrapper = panInput.parentElement;
+  const panInput = document?.querySelector(`[name=${'pan'} ]`);
+  const panWrapper = panInput?.parentElement;
 
   switch (radioSelect) {
     case 'DOB':
@@ -206,9 +206,9 @@ const validateLogin = (globals) => {
       }
       break;
     case 'PAN':
-      panWrapper.setAttribute('data-empty', true);
+      panWrapper?.setAttribute('data-empty', true);
       if (panValue) {
-        panWrapper.setAttribute('data-empty', false);
+        panWrapper?.setAttribute('data-empty', false);
         if (panIsValid && consentFirst && mobileNo) {
           globals.functions.markFieldAsInvalid('$form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.pan', '', { useQualifiedName: true });
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: true });
@@ -284,7 +284,7 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
 const getCountryCodes = (dropdown) => {
   const finalURL = '/content/hdfc_commonforms/api/mdm.ETB.NRI_ISD_MASTER.COUNTRYNAME-.json';
   fetchJsonResponse(urlPath(finalURL), null, 'GET', true).then((response) => {
-    dropdown.addEventListener('change', () => {
+    dropdown?.addEventListener('change', () => {
       if (prevSelectedIndex !== -1) {
         dropdown.remove(prevSelectedIndex);
       }
@@ -300,7 +300,9 @@ const getCountryCodes = (dropdown) => {
       dropdown.add(newOption, selectedIndex + 1);
       prevSelectedIndex = selectedIndex;
     });
-    dropdown.innerHTML = '';
+    if (dropdown) {
+      dropdown.innerHTML = '';
+    }
     response.forEach((countryCode) => {
       if (countryCode.ISDCODE != null && countryCode.DESCRIPTION != null) {
         const val = ` +${String(countryCode.ISDCODE)}`;
@@ -308,21 +310,23 @@ const getCountryCodes = (dropdown) => {
         const newOption = document.createElement('option');
         newOption.value = val;
         newOption.textContent = key;
-        dropdown.appendChild(newOption);
+        dropdown?.appendChild(newOption);
         if (val === ' +91') {
-          defaultDropdownIndex = dropdown.options.length - 1;
+          defaultDropdownIndex = dropdown?.options.length - 1;
         }
       }
     });
-    dropdown.selectedIndex = 0;
-    if (defaultDropdownIndex !== -1) {
-      dropdown.selectedIndex = defaultDropdownIndex;
+    if (dropdown) {
+      dropdown.selectedIndex = 0;
+      if (defaultDropdownIndex !== -1) {
+        dropdown.selectedIndex = defaultDropdownIndex;
+      }
     }
     const event = new Event('change', {
       bubbles: true, // Allow the event to bubble up
       cancelable: true, // Allow the event to be canceled
     });
-    dropdown.dispatchEvent(event);
+    dropdown?.dispatchEvent(event);
   }).catch((error) => {
     console.error('Dropdown Promise rejected:', error); // Handle any error (failure case)
   });
@@ -562,10 +566,10 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(financialDetails.dateOfIncorporation, response.datIncorporated);
   setFormValue(financialDetails.currencyName, response.customerAMLDetailsDTO[0].namCcy);
   setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
-  setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
+  // setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
 }
 
-function prefillAccountDetail(response, globals, i, responseLength) {
+function prefillAccountDetail(response, i, responseLength, globals) {
   const {
     customerName,
     customerID,
@@ -683,32 +687,6 @@ const resendOTP = async (globals) => {
 };
 
 /**
-   * Fetch IDCom Token
-   * @param {Object} globals - The global object containing necessary data for IdComToken request.
-   * @returns {Object} - The IDCom Response
-   */
-async function fetchIdComToken(globals) {
-  // Making the IDComToken request
-  const formData = santizedFormDataWithContext(globals);
-  console.log(formData);
-  const idComTokenObj = {
-    requestString: {
-      mobileNumber: currentFormContext.mobileNumber ,
-      scope: "ADOBE_ACNRI",
-      userAgent: window.navigator.userAgent,
-      authCode: idComAuthCode,
-      journeyID: currentFormContext.journeyID,
-      journeyName: currentFormContext.journeyName
-    }
-  };
-
-
-  // Calling the fetch IDComToken API
-  const apiEndPoint = urlPath(ENDPOINTS.fetchIDComToken);
-  return fetchJsonResponse(apiEndPoint, idComTokenObj, 'POST');
-};
-
-/**
    * Creates an IdCom request object based on the provided global data.
    * @param {Object} globals - The global object containing necessary data for IdCom request.
    * @returns {Object} - The IdCom request object.
@@ -719,7 +697,7 @@ const createIdComRequestObj = (globals) => {
     requestString: {
       CustID: globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.custIDWithoutMasking.$value,
       ProductCode: 'ADETBACO',
-      userAgent: window.navigator.userAgent,
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
       journeyID: formData.journeyId,
       journeyName: formData.journeyName,
       scope: 'ADOBE_ACNRI',
@@ -757,17 +735,22 @@ async function idComRedirection(globals) {
     leadProfileId,
     journeyID,
   } = currentFormContext;
-  debugger;
   const resp = await fetchAuthCode(globals);
   if (resp.status.errorMessage === 'Success') {
     await globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.idcom_token, { value: resp.authCode });
-    console.log("Journey ID : " , currentFormContext.journeyID);
-    console.log("JWT : " , globals.form.parentLandingPagePanel.landingPanel.fatca_jwt_id_token.$value);
-    console.log("IDCOM Token : " , globals.form.parentLandingPagePanel.landingPanel.idcom_token.$value);
-    debugger;
     await invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
     window.location.href = resp.redirectUrl;
   }
+}
+
+function parseDate(dateString) {
+  if (dateString.length !== 8) {
+    throw new Error("Invalid date format. Expected 'YYYYMMDD'.");
+  }
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+  return `${day}/${month}/${year}`;
 }
 
 /**
@@ -778,134 +761,22 @@ const finalResult = {
   journeyParamStateInfo: null,
 };
 
-// post-redirect-or-idcom
-const searchParam = new URLSearchParams(window.location.search);
-const authModeParam = searchParam.get('authmode');
-const journeyId = searchParam.get('journeyId');
-const idComAuthCode = searchParam.get('authcode');
-// const idComErrorCode = searchParam.get('errorCode');
-// const idComErrorMessage = searchParam.get('errorMessage');
-const idComSuccess = searchParam.get('success');
-const idComRedirect = authModeParam && ((authModeParam === 'DebitCard') || (authModeParam === 'NetBanking')); // debit card or net banking flow
-
-/**
- * @name nreNroFetchRes - async action call maker until it reaches the final response.
- * @returns {void}
- */
-// eslint-disable-next-line no-unused-vars
-const nreNroFetchRes = async (globals) => {
-  try {
-    globals.functions.setProperty(globals.form.runtime.journeyId, { value: journeyId });
-    const data = await nreNroInvokeJourneyDropOffByParam('', '', journeyId);
-
-    if (data && data.errorCode === 'FJ0000') {
-      const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
-      finalResult.journeyParamState = journeyDropOffParamLast.state;
-      finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
-      let leadId = '';
-      let mobileNumber = '';
-      if (data.leadProfile && data.leadProfile.mobileNumber) {
-        mobileNumber = data.leadProfile.mobileNumber;
-      }
-      if (data.leadProfile && data.leadProfile.leadProfileId) {
-        leadId = data.leadProfile.leadProfileId;
-      }
-      // if(journeyDropOffParamLast.state == 'CUSTOMER_ONBOARDING_COMPLETE'){
-      // console.log("Show Error Here");
-      // }
-      // eslint-disable-next-line no-unused-vars
-      const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
-      if (checkFinalSuccess) {
-        if (idComSuccess === 'true') {
-          if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
-            currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
-          }
-          // await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, journeyId, globals);
-          // invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, journeyId, globals);
-          // prefillAccountDetail(currentFormContext.fatca_response, globals, currentFormContext.selectedCheckedValue, 1);
-          
-          // Fetching IDComToken
-          const idComTokenResponse = await fetchIdComToken(globals);
-          console.log(idComTokenResponse);
-          currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
-
-          if(currentFormContext.IDCOMSuccessToken != null || currentFormContext.IDCOMSuccessToken != undefined || currentFormContext.IDCOMSuccessToken != ''){
-            // Calling Account Opening Functions
-            let accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo,globals);
-            console.log("Account Opening Response : " , accountOpeningResponse);
-            
-            if(accountOpeningResponse.accountOpening.errorCode == '0'){
-              hideLoaderGif();
-              currentFormContext.accountNumber = accountOpeningResponse.accountOpening.accountNo;
-              console.log("CurrentFormContext : " , currentFormContext);
-              // globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-              globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-              globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
-
-              prefillThankYouPage(finalResult.journeyParamStateInfo,globals);
-            } else{
-              console.log("Error Scenario");
-            }
-            // On Success -> Show Thank You Page and assign field values and hide other pages.
-            // Else journey drop off update onboarding failure, generic error page show here. 
-          }
-          else{
-            await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, journeyId, globals);
-            // Show generic error page here
-          }
-        } else {
-          await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, journeyId, globals);
-        }
-      } else {
-        const err = 'Bad response';
-        throw err;
-      }
-    } else {
-      const err = 'Journey Drop Off Params Update response failed';
-      throw err;
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-unused-vars
-    const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
-    // eslint-disable-next-line no-unused-vars
-    const stateInfoData = finalResult.journeyParamStateInfo;
-    // if (errorCase) {
-    //   console.log("Error Case : " , errorCase);
-    // }
-  }
-};
-
-
-/**
- * Prefills the Thank You page based on the DB
- * @returns {void}
- */
-function prefillThankYouPage(journeyParamStateInfo, globals){
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: currentFormContext.accountNumber }); // Setting the account number
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.accounttype, { value: journeyParamStateInfo.accounttype }); // Setting the account type
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.homeBranch, { value: journeyParamStateInfo.homeBranch }); // Setting the home branch
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchCode, { value: journeyParamStateInfo.branchCode }); // Setting the branch code
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.ifsc, { value: journeyParamStateInfo.ifsc }); // Setting the ifsc code
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchAddress, { value: journeyParamStateInfo.branchAddress }); // Setting the branch address
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.communicationAddress, { value: journeyParamStateInfo.communicationAddress }); // Setting the communication address
-}
-
 /**
  * Call Account Opening Function
- * @returns {void}
+ * @returns {PROMISE}
  */
-async function accountOpeningNreNro(journeyParamStateInfo, globals){
+async function accountOpeningNreNro(journeyParamStateInfo) {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
     requestString: {
       journeyID: currentFormContext.journeyID,
       journeyName: currentFormContext.journeyName,
-      userAgent: window.navigator.userAgent,
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
       misCodeDetails: '',
       identifierValue: parseDate(response.datBirthCust),
       flgChqBookIssue: 'N',
       DoB: parseDate(response.datBirthCust),
-      IDCOM_Token:currentFormContext.IDCOMSuccessToken,
+      IDCOM_Token: currentFormContext.IDCOMSuccessToken,
       Id_token_jwt: journeyParamStateInfo.AccountOpeningNRENRO.fatcaJwtToken,
       dateofBirth: parseDate(response.datBirthCust),
       custBirthDate: parseDate(response.datBirthCust),
@@ -920,8 +791,9 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       typeOfFirm_label: '',
       accountNumber: response.customerAccountDetailsDTO[accIndex].accountNumber,
       customerID: response.customerId.toString(),
-      maskedCustID: response.customerId.toString().slice((response.customerId.toString().length-4),response.customerId.toString().length),
-      maskedAccountNumber: 'X'.repeat((response.customerAccountDetailsDTO[accIndex].accountNumber.length-4)) + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length-4) , (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
+      maskedCustID: response.customerId.toString().slice((response.customerId.toString().length - 4), response.customerId.toString().length),
+      maskedAccountNumber: 'X'.repeat((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4))
+                            + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
       agriculturalIncome: '',
       sex: response.txtCustSex,
       email: response.refCustEmail,
@@ -1036,12 +908,12 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       allotmentLEtterBSDocument: '',
       firstName: response.customerFirstName || '',
       gender: response.txtCustSex,
-      lastName: response.customerLastName || 'test',
+      lastName: response.customerLastName || '',
       layout: '',
       customerFullName: response.customerFullName,
       leadParentLame: '',
       leadRating: '',
-      leadSource: 'NRI Insta ETB STP',
+      leadSource: 'NRI Insta ETB STP', // TODO: Check in Backend if it is being picked from Backend
       leadSourceKey: '33609',
       middleName: response.customerMiddleName || '',
       mobileNo: currentFormContext.mobileNumber,
@@ -1080,8 +952,8 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       productCategoryID: '483',
       productCode: '201',
       productKey: '413',
-      ItemKey: "679214581",
-      leadCustomerID:"",
+      ItemKey: '679214581',
+      leadCustomerID: '',
       residentialStatusID: '',
       websiteUrl: '',
       expirayDateVideo: '',
@@ -1136,15 +1008,13 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       ADVRefrenceKey: '',
       RRN: '',
       validPAN: response.refCustItNum ? 'Y' : 'N',
-      oneAadhaarOneAcStatus: "N",
+      oneAadhaarOneAcStatus: '',
       docType: '',
       resStatus: '',
       mandateFlag: '',
       acctOperInstrs: response.customerAccountDetailsDTO[accIndex].accountOperatingInstructions,
       amtShareFixed: '',
       codRel: response.customerAccountDetailsDTO[accIndex].codRel.toString(),
-      AMBValue: '',
-      TPTConsent: '',
       AMBDateTime: new Date().toISOString().slice(0, 19),
       guardianName: null,
       namGuardian: null,
@@ -1160,8 +1030,6 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       guardAdrState: '',
       guardAdrZip: '',
       addressIndicator: '',
-      videoKYCConsentDateTime: "2024-09-16T15:38:22",
-      isGigAccount: "No",
       partnerId: '',
       referenceNo: '',
       utmSource: '',
@@ -1169,22 +1037,8 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
       utmCampaign: '',
       utmMcId: '',
       pep: '',
-      isAccountCreated: '',
+      isAccountCreated: 'No',
       annualTurnOver: '',
-      seedingBankName: '',
-      bankIinNumber: '',
-      dbtConsentDateTime: '',
-      isGigaCard: '',
-      isfunded: "N",
-      isAccountCreated: "No",
-      annualTurnOver: "",
-      seedingBankName: "",
-      bankIinNumber: "",
-      dbtConsentDateTime: "",
-      dbtConsent: '',
-      identificationNumber: "121383571136",
-      docExpiryDate: "",
-      identificationType: "E -UID Aadhar",
     },
   };
 
@@ -1194,16 +1048,168 @@ async function accountOpeningNreNro(journeyParamStateInfo, globals){
 }
 
 /**
- * Redirects the user to different panels based on conditions.
- * If `idCom` is true, initiates a journey drop-off process and handles the response.
+   * Fetch IDCom Token
+   * @param {Object} globals - The global object containing necessary data for IdComToken request.
+   * @returns {Object} - The IDCom Response
+   */
+async function fetchIdComToken() {
+  // Making the IDComToken request
+  const idComTokenObj = {
+    requestString: {
+      mobileNumber: currentFormContext.mobileNumber,
+      scope: 'ADOBE_ACNRI',
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
+      authCode: currentFormContext.idComAuthCode,
+      journeyID: currentFormContext.journeyId,
+      journeyName: currentFormContext.journeyName,
+    },
+  };
+
+  // Calling the fetch IDComToken API
+  const apiEndPoint = urlPath(ENDPOINTS.fetchIDComToken);
+  return fetchJsonResponse(apiEndPoint, idComTokenObj, 'POST');
+}
+
+/**
+ * Prefills the Thank You page based on the DB
  * @returns {void}
  */
-function nreNroPageRedirected(globals) {
-  if (idComRedirect) {
-    setTimeout(() => {
-      displayLoader();
-      nreNroFetchRes(globals);
-    }, 2000);
+function prefillThankYouPage(journeyParamStateInfo, globals) {
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: currentFormContext.accountNumber }); // Setting the account number
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.accounttype, { value: journeyParamStateInfo.accounttype }); // Setting the account type
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.homeBranch, { value: journeyParamStateInfo.homeBranch }); // Setting the home branch
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchCode, { value: journeyParamStateInfo.branchCode }); // Setting the branch code
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.ifsc, { value: journeyParamStateInfo.ifsc }); // Setting the ifsc code
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.communicationAddress, { value: journeyParamStateInfo.communicationAddress }); // Setting the communication address
+}
+
+/**
+ * @name nreNroFetchRes - async action call maker until it reaches the final response.
+ * @returns {void}
+ */
+// eslint-disable-next-line no-unused-vars
+// const nreNroFetchRes = (globals) => {
+//   try {
+//     globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
+//     const data = await nreNroInvokeJourneyDropOffByParam('', '', currentFormContext.journeyId);
+//     // debugger;
+//     if (data && data.errorCode === 'FJ0000') {
+//       const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
+//       finalResult.journeyParamState = journeyDropOffParamLast.state;
+//       finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
+//       let leadId = '';
+//       let mobileNumber = '';
+//       if (data.leadProfile && data.leadProfile.mobileNumber) {
+//         mobileNumber = data.leadProfile.mobileNumber;
+//         currentFormContext.mobileNumber = mobileNumber;
+//       }
+//       if (data.leadProfile && data.leadProfile.leadProfileId) {
+//         leadId = data.leadProfile.leadProfileId;
+//       }
+//       if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
+//         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+//         // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//         // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//       }
+//       // eslint-disable-next-line no-unused-vars
+//       const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
+//       if (checkFinalSuccess) {
+//         if (currentFormContext.idComSuccess === 'true') {
+//           if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
+//             currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
+//           }
+//           invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, currentFormContext.journeyId, globals);
+//           invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, currentFormContext.journeyId, globals);
+//           prefillAccountDetail(currentFormContext.fatca_response, globals, currentFormContext.selectedCheckedValue, 1);
+//           // Fetching IDComToken
+//           const idComTokenResponse = await fetchIdComToken();
+//           currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
+//           if (currentFormContext.IDCOMSuccessToken !== null || currentFormContext.IDCOMSuccessToken !== undefined || currentFormContext.IDCOMSuccessToken !== '') {
+//             // Calling Account Opening Functions
+//             // const accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
+//             let accountOpeningResponse = {
+//               accountOpening: {
+//                 errorCode: '0',
+//                 accountNumber: '50919394857273',
+//               }
+//             };
+//             if (accountOpeningResponse.accountOpening.errorCode === '0') {
+//               // hideLoaderGif(); // TODO : Uncomment
+//               currentFormContext.accountNumber = accountOpeningResponse.accountOpening.accountNumber;
+//               // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//               // globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
+//               globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '0' }); // Setting the account number
+//               prefillThankYouPage(finalResult.journeyParamStateInfo, globals);
+//             } else {
+//               // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//               // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//               globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+//             }
+//             // Else journey drop off update onboarding failure, generic error page show here.
+//           } else {
+//             await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, currentFormContext.journeyId, globals);
+//             // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//             // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//             globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+//           }
+//         } else {
+//           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, currentFormContext.journeyId, globals);
+//           // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//           // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//           globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+//         }
+//       } else {
+//         const err = 'Bad response';
+//         throw err;
+//       }
+//     } else {
+//       const err = 'Journey Drop Off Params Update response failed';
+//       throw err;
+//     }
+//   } catch (error) {
+//     // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//     // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+//     // eslint-disable-next-line no-unused-vars
+//     const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
+//     // eslint-disable-next-line no-unused-vars
+//     const stateInfoData = finalResult.journeyParamStateInfo;
+//     // if (errorCase) {
+//     //   console.log("Error Case : " , errorCase);
+//     // }
+//   }
+// };
+
+/**
+ * Function to prefill a hidden field, invoking nreNroPageRedirected.
+ * @name nreNroInit
+ * @param {Object} globals - The global object containing necessary data.
+ */
+function nreNroInit(globals){
+  globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.init_hidden_field, { value: 'INIT' }); // Setting the hidden field
+}
+
+/**
+ * Function to check whether we have been redirected from Idcom
+ * @name nreNroPageRedirected
+ * @param {Object} globals - The global object containing necessary data.
+ */
+async function nreNroPageRedirected(globals) {
+  const queryParams = globals.functions.exportData().queryParams;
+  currentFormContext.authModeParam = queryParams?.authmode;
+  currentFormContext.journeyId = queryParams?.journeyId;
+  currentFormContext.idComAuthCode = queryParams?.authcode;
+  // idComErrorCode = queryParams?.errorCode;
+  // idComErrorMessage = queryParams?.errorMessage;
+  currentFormContext.idComSuccess = queryParams?.success;
+  currentFormContext.idComRedirect = currentFormContext?.authModeParam && ((currentFormContext?.authModeParam === 'DebitCard') || (currentFormContext?.authModeParam === 'NetBanking')); // debit card or net banking flow
+  if (currentFormContext.idComRedirect) {
+    globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'true' });
+    globals.functions.setProperty(globals.form.runtime.journeyId, { value : currentFormContext.journeyId })
+    // displayLoader(); // TODO : Uncomment : Error popping up
+    // await nreNroFetchRes(globals);
+  } else {
+    globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'false' });
   }
 }
 
@@ -1242,21 +1248,10 @@ const switchWizard = (globals) => {
 
 // eslint-disable-next-line func-names
 setTimeout(async () => {
-  // await nreNroPageRedirected(globals);
   if (typeof window !== 'undefined') { /* check document-undefined */
     getCountryCodes(document.querySelector('.field-countrycode select'));
   }
 }, 10000);
-
-function parseDate(dateString) {
-  if (dateString.length !== 8) {
-    throw new Error("Invalid date format. Expected 'YYYYMMDD'.");
-  }
-  const year = dateString.substring(0, 4);
-  const month = dateString.substring(4, 6);
-  const day = dateString.substring(6, 8);
-  return `${day}/${month}/${year}`;
-}
 
 const crmLeadIdDetail = () => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
@@ -1265,7 +1260,7 @@ const crmLeadIdDetail = () => {
     requestString: {
       journeyID: currentFormContext.journeyID,
       journeyName: currentFormContext.journeyName,
-      userAgent: window.navigator.userAgent,
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
       misCodeDetails: '',
       identifierValue: parseDate(response.datBirthCust),
       DoB: parseDate(response.datBirthCust),
@@ -1405,7 +1400,7 @@ const crmLeadIdDetail = () => {
       leadSourceKey: '33609',
       middleName: response.customerMiddleName || '',
       // mobileNo: currentFormContext.mobileNumber,
-      mobileNo: '8548385546',
+      mobileNo: '8548385541',
       multipleTaxResidencyID: '',
       employmentType: '',
       employmentTypeOthers: '',
@@ -1439,7 +1434,7 @@ const crmLeadIdDetail = () => {
       occupationTypeID: '',
       ownerCode: '',
       productCategoryID: '483',
-      productCode: '201',
+      productCode: '193',
       productKey: '413',
       residentialStatusID: '',
       websiteUrl: '',
@@ -1650,4 +1645,10 @@ export {
   nreNroPageRedirected,
   nreNroAccountType,
   multiAccountVarient,
+  nreNroInit,
+  nreNroInvokeJourneyDropOffByParam,
+  prefillAccountDetail,
+  fetchIdComToken,
+  prefillThankYouPage,
+  accountOpeningNreNro,
 };

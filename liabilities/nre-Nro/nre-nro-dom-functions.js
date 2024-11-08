@@ -26,13 +26,13 @@ const validateOtpInput = () => {
 
 const addGaps = () => {
   const panInputField = document.querySelector('.field-pan input');
-  panInputField.addEventListener('input', () => {
-    panInputField.value = panInputField.value.toUpperCase();
-    const validInput = validatePanInput(panInputField.value.replace(/\s+/g, ''));
+  panInputField?.addEventListener('input', () => {
+    panInputField.value = panInputField?.value.toUpperCase();
+    const validInput = validatePanInput(panInputField?.value.replace(/\s+/g, ''));
     if (!validInput) {
-      panInputField.value = panInputField.value.slice(0, -1);
-      if (panInputField.value.length > 10) {
-        panInputField.value = panInputField.value.slice(0, 9);
+      panInputField.value = panInputField?.value.slice(0, -1);
+      if (panInputField?.value.length > 10) {
+        panInputField.value = panInputField?.value.slice(0, 9);
       }
     }
     groupCharacters(panInputField, [5, 4]);
@@ -54,8 +54,8 @@ const addMobileValidation = () => {
     }
     validatePhoneNumber(inputField, validFirstDigits);
   };
-  countryCode.addEventListener('input', validateInput);
-  inputField.addEventListener('input', validateInput);
+  countryCode?.addEventListener('input', validateInput);
+  inputField?.addEventListener('input', validateInput);
 };
 
 /**
