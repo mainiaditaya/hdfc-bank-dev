@@ -420,12 +420,10 @@ function setupBankUseSection(mainBankUsePanel, globals) {
     globals.functions.setProperty(lgCode, { value: utmParams.lgCode });
     globals.functions.setProperty(lcCode, { value: utmParams.lcCode });
   } else {
-    globals.functions.setProperty(lgCode, { value: 'NETADDON' });
     globals.functions.setProperty(lcCode, { value: 'NRI INSTASTP' });
   }
   globals.functions.setProperty(resetAllBtn, { enabled: false });
   globals.functions.setProperty(toggle, { enabled: false });
-  globals.functions.setProperty(lgCode, { enabled: false });
   globals.functions.setProperty(lcCode, { enabled: false });
 }
 
@@ -553,8 +551,8 @@ function prefillCustomerDetail(response, globals) {
   else setFormValue(personalDetails.telephoneNumber, response.refCustTelex);
   setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1} ${response.txtCustadrAdd2} ${response.txtCustadrAdd3} ${response.namCustadrCity} ${response.namCustadrState} ${response.namCustadrCntry} ${response.txtCustadrZip}`);
   setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)}
-   ${customerDataMasking('AddressLine', response.txtPermadrAdd3)} ${customerDataMasking('CityState', response.namPermadrCity)} ${customerDataMasking('CityState', response.namPermadrState)}
-   ${customerDataMasking('Country', response.namPermadrCntry)} ${customerDataMasking('PIN', response.txtPermadrZip)}`);
+${customerDataMasking('AddressLine', response.txtPermadrAdd3)} ${customerDataMasking('CityState', response.namPermadrCity)} ${customerDataMasking('CityState', response.namPermadrState)} ${customerDataMasking('Country', response.namPermadrCntry)} 
+${customerDataMasking('PIN', response.txtPermadrZip)}`);
   setFormValue(fatcaDetails.nationality, response.txtCustNATNLTY);
   setFormValue(fatcaDetails.countryTaxResidence, response.customerFATCADtlsDTO[0].codTaxCntry1);
   setFormValue(fatcaDetails.taxIdNumber, response.customerFATCADtlsDTO[0].tinNo1);
