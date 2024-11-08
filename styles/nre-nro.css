@@ -124,7 +124,11 @@
       }
 
       form {
-        padding: 40px 35px 40px 40px;
+        padding: 40px 35px 40px 40px !important;
+
+        @media (320px <=width <=600px) {
+          padding: 30px 20px 50px 20px !important;
+        }
 
         .field-parentlandingpagepanel {
           .field-landingpanel {
@@ -246,7 +250,7 @@
                   max-width: 350px;
                   left: 0;
                   background-color: #fff;
-                  width: 100%;
+                  width: 98%;
                   height: 96%;
 
                   label {
@@ -270,6 +274,13 @@
                     font-weight: 500;
                     border-radius: 12px;
                     background-color: transparent !important;
+
+                    &:-webkit-autofill,
+                    &:-webkit-autofill:hover,
+                    &:-webkit-autofill:focus,
+                    :-webkit-autofill:active{
+                      -webkit-box-shadow: 0 0 0 30px white inset;
+                    }
 
                     input:-webkit-autofill {
                       -webkit-text-fill-color: yellow !important;
@@ -957,7 +968,6 @@
             }
 
             .field-otpnumber {
-              margin: -28px 0 -18px;
               grid-column: span 12;
               position: relative;
 
@@ -966,16 +976,20 @@
               }
 
               input {
-                width: 100% !important;
+                width: 100%;
                 max-width: 100%;
-                letter-spacing: 65px !important;
-                height: 60px !important;
+                letter-spacing: 65px;
+                height: 60px;
                 font-size: 41px;
                 font-weight: 500;
                 line-height: 40px;
                 color: var(--color-interface-text-primary);
                 border-color: var(--color-interface-border-secondary);
                 caret-color: currentcolor;
+
+                @media (320px <=width <=600px) {
+                  letter-spacing: 25px;
+                }
 
                 &:focus-visible {
                   outline: none;
@@ -1391,29 +1405,17 @@
 
             &.field-communicationaddress,
             &.field-permanentaddress {
+              @media (320px <=width <=600px) {
+                margin-bottom: 20px;
+              }
               textarea {
                 height: 100%;
                 margin-bottom: 20px;
                 width: 100% !important;
+                @media (320px <=width <=600px) {
+                  height: auto;
+                }
               }
-
-              /*  &.field-communicationaddress {
-                textarea {
-                  min-height: 90px;
-                  @media (320px <=width <=600px) {
-                    min-height: 70px;
-                  }
-                }
-              } */
-
-              /*  &.field-permanentaddress {
-                textarea {
-                  min-height: 146px;
-                  @media (320px <=width <=600px) {
-                  min-height: 80px;
-                  }
-                }
-              } */
             }
           }
 
@@ -1446,12 +1448,18 @@
             }
 
             fieldset.field-nomineedetails .field-wrapper {
+              @media (320px <=width <=600px) {
+                grid-column: span 12;
+              }
               legend.field-label {
                 display: none;
               }
 
               .plain-text-wrapper {
                 padding: 20px 20px 0 30px;
+                @media (320px <=width <=600px) {
+                  padding: 0px 15px 0 15px;
+                }
 
                 p {
                   margin: 0;
@@ -1579,6 +1587,7 @@
                 line-height: 28px;
               }
 
+             
               @media (320px <=width <=600px) {
                 display: flex;
                 align-items: center;
@@ -1586,6 +1595,11 @@
                 flex-direction: column;
                 min-width: 21%;
               }
+
+              @media (320px <=width <=360px) {
+                min-width: auto;
+              }
+
 
               &:first-child {
                 &::before {
@@ -1654,6 +1668,10 @@
                 @media (320px <=width <=600px) {
                   right: -25px !important;
                 }
+
+                @media (320px <=width <=360px) {
+                  right: -18px !important;
+                }
               }
             }
           }
@@ -1701,6 +1719,8 @@
 
             @media (320px <=width <=600px) {
               width: 100%;
+              max-width: 100%;
+              margin-bottom: 30px;
             }
 
             button {
@@ -1709,7 +1729,7 @@
               &::after {
                 content: '';
                 position: absolute;
-                right: 29%;
+                /* right: 29%; */
                 top: 17px;
                 height: 20px;
                 width: 20px;
@@ -1832,7 +1852,10 @@
             }
           }
 
-          .field-wrapper.text-wrapper {
+          .field-wrapper.text-wrapper{
+            @media (768px <=width <=991px) {
+              grid-column: span 6;
+            }
 
             &.field-customerid,
             &.field-accountnumber,
@@ -1929,6 +1952,9 @@
             .field-multiselectaccounttext {
               margin-bottom: 20px;
               margin-top: -20px;
+              @media (320px <=width <=600px) {
+                margin-top: 0;
+              }
 
               p {
                 font-size: 16px;
@@ -2173,9 +2199,11 @@
             position: relative;
             display: initial;
 
-            @media (min-width: 768px) {
-              margin-bottom: 0;
+           &:last-child{
+            @media (320px <=width <=600px) {
+              margin-bottom: 0px;
             }
+           }
 
             &.active {
               background-color: var(--color-interface-background-quinary);
@@ -2502,6 +2530,9 @@
                 }
 
                 &.field-lccode {
+                  @media (320px <=width <=600px) {
+                    margin-top: 20px;
+                  }
                   label.field-label {
                     top: -2px;
                   }
@@ -2838,7 +2869,7 @@
           }
 
           @media (320px <=width <=600px) {
-            margin-left: 15px;
+           /*  margin-left: 15px; */
             margin-top: 15px;
           }
         }
