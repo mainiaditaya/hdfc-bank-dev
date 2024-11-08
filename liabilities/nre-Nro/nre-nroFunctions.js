@@ -1100,12 +1100,12 @@ function prefillThankYouPage(journeyParamStateInfo, globals) {
   globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.communicationAddress, { value: journeyParamStateInfo.communicationAddress }); // Setting the communication address
 }
 
-/**
- * @name nreNroFetchRes - async action call maker until it reaches the final response.
- * @returns {void}
- */
-// eslint-disable-next-line no-unused-vars
-// const nreNroFetchRes = (globals) => {
+// /**
+//  * @name nreNroFetchRes - async action call maker until it reaches the final response.
+//  * @returns {void}
+//  */
+// // eslint-disable-next-line no-unused-vars
+// const nreNroFetchRes = async (globals) => {
 //   try {
 //     globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
 //     const data = await nreNroInvokeJourneyDropOffByParam('', '', currentFormContext.journeyId);
