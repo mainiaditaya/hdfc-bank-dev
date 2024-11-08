@@ -1,5 +1,3 @@
-import { CURRENT_FORM_CONTEXT } from './constants.js';
-import { data } from './analyticsConstants.js';
 /**
  * set analytics generic props for page load
  * @name setAnalyticPageLoadProps
@@ -10,10 +8,10 @@ import { data } from './analyticsConstants.js';
  * @param {object} digitalData
  */
 
-function setAnalyticPageLoadProps(journeyState, formData, digitalData, formName, pageName) {
+function setAnalyticPageLoadProps(journeyState, formData, digitalData, formName, pageName, currentFormContext) {
   digitalData.page.pageInfo.pageName = pageName;
   digitalData.user.pseudoID = '';// Need to check
-  digitalData.user.journeyName = CURRENT_FORM_CONTEXT?.journeyName;
+  digitalData.user.journeyName = currentFormContext?.journeyName;
   digitalData.user.journeyID = formData?.journeyId;
   digitalData.user.journeyState = journeyState;
   digitalData.user.casa = '';
@@ -25,20 +23,21 @@ function setAnalyticPageLoadProps(journeyState, formData, digitalData, formName,
  * @name setAnalyticClickGenericProps
  * @param {string} linkName - linkName
  * @param {string} linkType - linkType
+ * @param {string} linkPosition - linkPosition
  * @param {object} formContext - currentFormContext.
  * @param {string} formName - formName
  * @param {object} digitalData
  */
 
-function setAnalyticClickGenericProps(linkName, linkType, formData, journeyState, digitalData, formName) {
+function setAnalyticClickGenericProps(linkName, linkType, linkPosition, formData, journeyState, digitalData, formName, currentFormContext) {
   digitalData.link = {
     linkName,
     linkType,
   };
-  digitalData.link.linkPosition = data[linkName].linkPosition;
+  digitalData.link.linkPosition = linkPosition;
   digitalData.user.pseudoID = '';
-  digitalData.user.journeyName = CURRENT_FORM_CONTEXT?.journeyName;
-  digitalData.user.journeyID = CURRENT_FORM_CONTEXT?.journeyID;
+  digitalData.user.journeyName = currentFormContext?.journeyName;
+  digitalData.user.journeyID = currentFormContext?.journeyID;
   digitalData.user.journeyState = journeyState;
   if (linkName === 'otp click') {
     digitalData.form.name = formName;

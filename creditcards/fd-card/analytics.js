@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { ANALYTICS_PAGE_LOAD_OBJECT, ANALYTICS_CLICK_OBJECT, PAGE_NAME } from '../../common/analyticsConstants.js';
+import { ANALYTICS_PAGE_LOAD_OBJECT, ANALYTICS_CLICK_OBJECT } from '../../common/analyticsConstants.js';
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { setAnalyticPageLoadProps, setAnalyticClickGenericProps, hashPhoneNumber } from '../../common/formanalytics.js';
 import { createDeepCopyFromBlueprint, santizedFormDataWithContext } from '../../common/formutils.js';
@@ -19,9 +19,10 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
   }
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
   digitalData.page.pageInfo.pageName = pageName;
-  setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName, pageName);
+  setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName, pageName, CURRENT_FORM_CONTEXT);
   switch (nextPage) {
-    case 'selectCustomerId':
+    case 'selectFd':
+      digitalData.formDetails = {};
       digitalData.formDetails.eligibleCustomerID = '';
       break;
     case 'selectCard':
@@ -51,10 +52,10 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
  */
 const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalData) => {
   formData.etbFlowSelected = 'on';
-  setAnalyticClickGenericProps(ANALYTICS.event[eventType].name, ANALYTICS.event[eventType].type, formData, journeyState, digitalData, ANALYTICS.formName);
+  setAnalyticClickGenericProps(ANALYTICS.event[eventType].name, ANALYTICS.event[eventType].type, ANALYTICS.event[eventType].linkPosition, formData, journeyState, digitalData, ANALYTICS.formName, CURRENT_FORM_CONTEXT);
   digitalData.form.name = ANALYTICS.formName;
   // const phone = formData?.login?.registeredMobileNumber;
-  digitalData.page.pageInfo.pageName = PAGE_NAME.fd[eventType];
+  digitalData.page.pageInfo.pageName = ANALYTICS.event[eventType].pageName;
   switch (eventType) {
     case 'getOtp':
       digitalData.event.status = '1';
@@ -89,9 +90,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }, 2000);
       break;
     case 'selectFd':
-      digitalData.formDetails.FDSelected = formData.FDlienCard.fdNumberSelection
-        .filter((fd) => fd.fdAccSelect === 'on')
-        .map((fd) => fd.fdNumber);
+      digitalData.formDetails.FDSelected = formData.FDlienCard.fdNumberSelection.length;
       digitalData.card.newLimit = formData.maxCreditLimit;
       if (window) {
         window.digitalData = digitalData || {};
@@ -134,6 +133,16 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       _satellite.track('submit');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.reviewDetails.nextPage);
+      }, 2000);
+      break;
+    case 'selectCardBack':
+      digitalData.event.status = '1';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      setTimeout(() => {
+        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
       }, 2000);
       break;
     case 'selectCard':
@@ -181,6 +190,20 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
       }, 2000);
       break;
+    case 'addressDeclaration':
+      digitalData.formDetails.state = '';
+      digitalData.formDetails.city = '';
+      digitalData.formDetails.pincode = '';
+      digitalData.formDetails.VKycConsent = '';
+      digitalData.event.status = '1';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      setTimeout(() => {
+        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
+      }, 2000);
+      break;
     case 'docUpload':
       digitalData.formDetails.documentProof = `ID Proof: ${formData.DocUploadFront.name}, Address Proof: ${formData.addressProofFile1.name}`;
       if (window) {
@@ -206,10 +229,24 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       if (window) {
         window.digitalData = digitalData || {};
       }
-      _satellite.track('submit');
+      _satellite.track('survey');
       setTimeout(() => {
         sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.confirmationPage.nextPage);
       }, 2000);
+      break;
+    case 'comepleteVKYC':
+      digitalData.event.status = '1';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      break;
+    case 'copyRef':
+      digitalData.event.status = '1';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
       break;
     default:
   }
