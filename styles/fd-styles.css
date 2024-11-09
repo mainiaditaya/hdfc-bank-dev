@@ -2636,7 +2636,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           width: 89px;
           height: 36px !important;
           text-align: right;
-          padding-right: 20px;
+          padding-right: 15px;
           margin: 0;
           border-radius: 0 12px 12px 0 !important;
           border: none;
