@@ -28,6 +28,7 @@ import {
   fetchIdComToken,
   prefillThankYouPage,
   accountOpeningNreNro,
+  validateJourneyParams,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -69,4 +70,5 @@ export {
   fetchIdComToken,
   prefillThankYouPage,
   accountOpeningNreNro,
+  validateJourneyParams,
 };

@@ -55,7 +55,7 @@ let dispSec = OTP_TIMER;
 
 const { CHANNEL, JOURNEY_NAME, VISIT_MODE } = NRE_CONSTANT;
 // Initialize all NRE/NRO Journey Context Variables.
-currentFormContext.journeyName = NRE_CONSTANT.JOURNEY_NAME;
+currentFormContext.journeyName = JOURNEY_NAME;
 currentFormContext.journeyType = 'NTB';
 currentFormContext.errorCode = '';
 currentFormContext.errorMessage = '';
@@ -264,6 +264,7 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
     pan.$value = '';
     datOfBirth = year + month + day;
   }
+  currentFormContext.isdCode = '91'; // TODO : Comment
   const jsonObj = {
     requestString: {
       mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
@@ -313,7 +314,7 @@ const getCountryCodes = (dropdown) => {
         newOption.textContent = key;
         dropdown?.appendChild(newOption);
         if (val === ' +91') {
-          defaultDropdownIndex = dropdown?.options.length - 1;
+          defaultDropdownIndex = (dropdown?.options.length ?? 1) - 1;
         }
       }
     });
@@ -649,12 +650,12 @@ function multiCustomerId(response, selectAccount, singleAccountCust, multipleAcc
             currentFormContext.selectedCheckedValue = checkedValue;
           });
         });
-        prefillAccountDetail(response, globals, i, responseLength);
+        prefillAccountDetail(response, i, responseLength, globals);
       }, 1000);
     });
   } else {
     globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
-    prefillAccountDetail(response, globals, responseLength - 1, responseLength);
+    prefillAccountDetail(response, responseLength - 1, responseLength, globals);
   }
 }
 
@@ -782,18 +783,19 @@ const finalResult = {
  * Call Account Opening Function
  * @returns {PROMISE}
  */
-async function accountOpeningNreNro(journeyParamStateInfo) {
+async function accountOpeningNreNro(idComToken) {
+  const journeyParamStateInfo = finalResult.journeyParamStateInfo;
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
     requestString: {
-      journeyID: currentFormContext.journeyID,
+      journeyID: journeyParamStateInfo.currentFormContext.journeyID,
       journeyName: currentFormContext.journeyName,
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
       misCodeDetails: '',
       identifierValue: parseDate(response.datBirthCust),
       flgChqBookIssue: 'N',
       DoB: parseDate(response.datBirthCust),
-      IDCOM_Token: currentFormContext.IDCOMSuccessToken,
+      IDCOM_Token: idComToken,
       Id_token_jwt: journeyParamStateInfo.AccountOpeningNRENRO.fatcaJwtToken,
       dateofBirth: parseDate(response.datBirthCust),
       custBirthDate: parseDate(response.datBirthCust),
@@ -933,13 +935,13 @@ async function accountOpeningNreNro(journeyParamStateInfo) {
       leadSource: 'NRI Insta ETB STP', // TODO: Check in Backend if it is being picked from Backend
       leadSourceKey: '33609',
       middleName: response.customerMiddleName || '',
-      mobileNo: currentFormContext.mobileNumber,
+      mobileNo: journeyParamStateInfo.currentFormContext.mobileNumber,
       multipleTaxResidencyID: '',
       employmentType: '',
       employmentTypeOthers: '',
-      phone: currentFormContext.mobileNumber,
-      productCategory: 'Savings Account',
-      productName: 'Savings Max Account',
+      phone: journeyParamStateInfo.currentFormContext.mobileNumber,
+      productCategory: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productCategory,
+      productName: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productName,
       ratingKey: '',
       residentialStatus: '',
       residentialStatus_label: '',
@@ -966,10 +968,10 @@ async function accountOpeningNreNro(journeyParamStateInfo) {
       occupationTypeCode: '',
       occupationTypeID: '',
       ownerCode: '',
-      productCategoryID: '483',
-      productCode: '201',
-      productKey: '413',
-      ItemKey: '679214581',
+      productCategoryID: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productCategoryID,
+      productCode: journeyParamStateInfo.currentFormContext.productAccountType,
+      productKey: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productKey,
+      ItemKey: journeyParamStateInfo.form.confirmDetails.crm_leadId,
       leadCustomerID: '',
       residentialStatusID: '',
       websiteUrl: '',
@@ -1091,19 +1093,62 @@ async function fetchIdComToken() {
  * Prefills the Thank You page based on the DB
  * @returns {void}
  */
-function prefillThankYouPage(journeyParamStateInfo, globals) {
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: currentFormContext.accountNumber }); // Setting the account number
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.accounttype, { value: journeyParamStateInfo.accounttype }); // Setting the account type
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.homeBranch, { value: journeyParamStateInfo.homeBranch }); // Setting the home branch
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchCode, { value: journeyParamStateInfo.branchCode }); // Setting the branch code
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.ifsc, { value: journeyParamStateInfo.ifsc }); // Setting the ifsc code
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.communicationAddress, { value: journeyParamStateInfo.communicationAddress }); // Setting the communication address
+function prefillThankYouPage(accountNumber, globals) {
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: accountNumber }); // Setting the account number
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.accounttype, { value: finalResult.journeyParamStateInfo.accounttype }); // Setting the account type
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.homeBranch, { value: finalResult.journeyParamStateInfo.homeBranch }); // Setting the home branch
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchCode, { value: finalResult.journeyParamStateInfo.branchCode }); // Setting the branch code
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.ifsc, { value: finalResult.journeyParamStateInfo.ifsc }); // Setting the ifsc code
+  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.communicationAddress, { value: finalResult.journeyParamStateInfo.communicationAddress }); // Setting the communication address
 }
 
-// /**
-//  * @name nreNroFetchRes - async action call maker until it reaches the final response.
-//  * @returns {void}
-//  */
+/**
+ * @name validateJourneyParams - Validates the last Journey state
+ * @returns {PROMISE}
+ */
+async function validateJourneyParams(formData, globals) {
+  try {
+    const journeyDropOffParamLast = formData.journeyStateInfo[formData.journeyStateInfo.length - 1];
+    finalResult.journeyParamState = journeyDropOffParamLast.state;
+    finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
+    if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
+      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'showErrorPage' });
+      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+      return {
+        status: 'showErrorPage',
+        errorMessage: 'CUSTOMER_ONBOARDING_COMPLETE',
+        journeyParamStateInfo: finalResult.journeyParamStateInfo,
+      };
+    }
+    // eslint-disable-next-line no-unused-vars
+    const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
+    if (checkFinalSuccess) {
+      if (currentFormContext.idComSuccess === 'true') {
+        if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
+          currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
+        }
+        // invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, currentFormContext.journeyId, globals);
+        // invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, currentFormContext.journeyId, globals);
+        // prefillAccountDetail(currentFormContext.fatca_response, currentFormContext.selectedCheckedValue, 1, globals);
+        globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'fetchIdComToken' });
+        return {
+          status: 'fetchIdComToken',
+          journeyParamStateInfo: finalResult.journeyParamStateInfo,
+        };
+      }
+    }
+  } catch (error) {
+    globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'showErrorPage' });
+    globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+    return {
+      status: 'showErrorPage',
+    };
+  }
+
+  return {
+    status: 'showErrorPage',
+  };
+}
 // // eslint-disable-next-line no-unused-vars
 // const nreNroFetchRes = async (globals) => {
 //   try {
@@ -1137,7 +1182,7 @@ function prefillThankYouPage(journeyParamStateInfo, globals) {
 //           }
 //           invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, currentFormContext.journeyId, globals);
 //           invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//           prefillAccountDetail(currentFormContext.fatca_response, globals, currentFormContext.selectedCheckedValue, 1);
+//           prefillAccountDetail(currentFormContext.fatca_response, currentFormContext.selectedCheckedValue, 1, globals);
 //           // Fetching IDComToken
 //           const idComTokenResponse = await fetchIdComToken();
 //           currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
@@ -1202,7 +1247,8 @@ function prefillThankYouPage(journeyParamStateInfo, globals) {
  * @name nreNroInit
  * @param {Object} globals - The global object containing necessary data.
  */
-function nreNroInit(globals){
+function nreNroInit(globals) {
+  globals.functions.setProperty(globals.form.runtime.journeyName, { value: JOURNEY_NAME }); // Setting the hidden field
   globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.init_hidden_field, { value: 'INIT' }); // Setting the hidden field
 }
 
@@ -1216,13 +1262,13 @@ async function nreNroPageRedirected(globals) {
   currentFormContext.authModeParam = queryParams?.authmode;
   currentFormContext.journeyId = queryParams?.journeyId;
   currentFormContext.idComAuthCode = queryParams?.authcode;
-  // idComErrorCode = queryParams?.errorCode;
-  // idComErrorMessage = queryParams?.errorMessage;
+  currentFormContext.idComErrorCode = queryParams?.errorCode;
+  currentFormContext.idComErrorMessage = queryParams?.errorMessage;
   currentFormContext.idComSuccess = queryParams?.success;
   currentFormContext.idComRedirect = currentFormContext?.authModeParam && ((currentFormContext?.authModeParam === 'DebitCard') || (currentFormContext?.authModeParam === 'NetBanking')); // debit card or net banking flow
   if (currentFormContext.idComRedirect) {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'true' });
-    globals.functions.setProperty(globals.form.runtime.journeyId, { value : currentFormContext.journeyId })
+    globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
     // displayLoader(); // TODO : Uncomment : Error popping up
     // await nreNroFetchRes(globals);
   } else {
@@ -1416,8 +1462,7 @@ const crmLeadIdDetail = () => {
       leadSource: 'NRI Insta ETB STP',
       leadSourceKey: '33609',
       middleName: response.customerMiddleName || '',
-      // mobileNo: currentFormContext.mobileNumber,
-      mobileNo: '8548385541',
+      mobileNo: currentFormContext.mobileNumber,
       multipleTaxResidencyID: '',
       employmentType: '',
       employmentTypeOthers: '',
@@ -1668,4 +1713,5 @@ export {
   fetchIdComToken,
   prefillThankYouPage,
   accountOpeningNreNro,
+  validateJourneyParams,
 };
