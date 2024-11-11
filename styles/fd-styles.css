@@ -1166,7 +1166,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         margin-top: -10px;
 
         p {
-          margin: 0 0 0 5px;          
+          margin: 0 0 0 5px;
           font-size: var(--body-fd-sm-font-size);
           font-weight: var(--font-weight-regular);
 
@@ -1427,7 +1427,8 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               padding: 0 5px;
               margin: 0;
               height: auto !important;
-              width: 65%;
+              width: 100%;
+              text-align: center;
             }
           }
         }
