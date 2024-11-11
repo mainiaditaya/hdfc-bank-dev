@@ -15,10 +15,19 @@ const ENDPOINTS = {
   journeyDropOff: '/content/hdfc_commonforms/api/journeydropoff.json',
   journeyDropOffParam: '/content/hdfc_commonforms/api/journeydropoffparam.json',
   journeyDropOffUpdate: '/content/hdfc_commonforms/api/journeydropoffupdate.json',
+  resumeJourneyInfo: '/content/hdfc_commonforms/api/returnjourneyinfo.json',
   otpGen: '/content/hdfc_haf/api/otpgenerationccV4.json',
   otpValFetchAssetDemog: '/content/hdfc_haf/api/otpvaldemogV4.json',
   panValNameMatch: '/content/hdfc_forms_common_v2/api/panValNameMatch.json',
   docUpload: '/content/hdfc_etb_wo_pacc/api/documentUpload.json',
+  aadhaarCallBack: {
+    CORPORATE_CARD_JOURNEY: '/content/hdfc_etb_wo_pacc/api/aadharCallback.json',
+    EXISTING_CC_BASED_FDLIEN_JOURNEY: '/content/hdfc_hafcards/api/aadhaarCallback.json',
+  },
+  aadhaarInit: {
+    CORPORATE_CARD_JOURNEY: '/content/hdfc_haf/api/aadhaarInit.json',
+    EXISTING_CC_BASED_FDLIEN_JOURNEY: '/content/hdfc_hafcards/api/hdfccardsaadharauthenticationinit.json',
+  },
 };
 
 const DEAD_PAN_STATUS = ['D', 'ED', 'X', 'F'];
@@ -45,10 +54,13 @@ const ID_COM = {
 };
 
 const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
+// eslint-disable-next-line import/no-mutable-exports
 let ENV = 'dev';
-if(isNodeEnv) {
-  ENV = 'dev'
+if (isNodeEnv) {
+  ENV = 'dev';
 }
+
+const PIN_CODE_LENGTH = 6;
 
 export {
   BASEURL,
@@ -59,4 +71,5 @@ export {
   FORM_RUNTIME,
   ID_COM,
   ENV,
+  PIN_CODE_LENGTH,
 };

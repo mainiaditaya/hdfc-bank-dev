@@ -103,16 +103,16 @@ function getCurrentFormContext(globals) {
 /**
    * generates the journeyId
    * @param {string} visitMode - The visit mode (e.g., "online", "offline").
-   * @param {string} journeyAbbreviation - The abbreviation for the journey.
+   * @param {string} journeyAbbreviationValue - The abbreviation for the journey.
    * @param {string} channel - The channel through which the journey is initiated.
    * @param {object} globals
    */
-function createJourneyId(visitMode, journeyAbbreviation, channelValue, globals) {
+function createJourneyId(visitMode, journeyAbbreviationValue, channelValue, globals) {
   const dynamicUUID = generateUUID();
   // var dispInstance = getDispatcherInstance();
   let channel = channelValue;
-  journeyAbbreviation = 'SEMI'
-  channel = 'WEB'
+  const journeyAbbreviation = journeyAbbreviationValue || 'SEMI';
+  channel = 'WEB';
   if (isNodeEnv) {
     channel = 'WHATSAPP';
   }
