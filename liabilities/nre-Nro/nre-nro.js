@@ -29,6 +29,7 @@ import {
   prefillThankYouPage,
   accountOpeningNreNro,
   validateJourneyParams,
+  errorHandling,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -71,4 +72,5 @@ export {
   prefillThankYouPage,
   accountOpeningNreNro,
   validateJourneyParams,
+  errorHandling,
 };
