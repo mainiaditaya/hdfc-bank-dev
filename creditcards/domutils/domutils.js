@@ -34,6 +34,11 @@ const setDataAttributeOnClosestAncestor = (elementName, fieldValue, dataAttribut
  */
 const setSelectOptions = (optionLists, elementName) => {
   const selectOption = document.querySelector(`[name=${elementName}]`);
+  if (optionLists.length === 0) {
+    const options = selectOption.querySelectorAll('option:not(:first-child)');
+    options.forEach((option) => option.remove());
+    return;
+  }
   optionLists?.forEach((option) => {
     const optionElement = document.createElement('option');
     optionElement.value = option?.value;
@@ -125,15 +130,15 @@ const removeIncorrectOtpText = () => {
  * if their values are truthy (or) the name of the panel input is 'middleName'.
  * @param {HTMLElement} selectedPanel - The panel element containing the inputs or selects.
  */
-const addDisableClass = (selectedPanel) => {
+const addDisableClass = (selectedPanel, exceptions = []) => {
   const panelInputs = Array.from(selectedPanel.querySelectorAll('input, select'));
 
   // Iterates over each input or select element
-  panelInputs.forEach((panelInput) => {
-    // Checks if the input or select element has a truthy value
-    if (panelInput.value || panelInput.name === 'middleName') {
-      // Adds the 'wrapper-disabled' class to the parent element
-      panelInput.parentElement.classList.add('wrapper-disabled');
+  panelInputs.forEach(({ value, name, parentElement }) => {
+    const shouldDisable = value || name === 'middleName';
+    const isException = exceptions.includes(name);
+    if (shouldDisable && !isException) {
+      parentElement.classList.add('wrapper-disabled');
     }
   });
 };
@@ -308,6 +313,58 @@ const validatePhoneNumber = (inputField, validStartingDigits) => {
   inputField.value = value;
 };
 
+const validateTextInputOnPaste = (inputField, fieldRegex) => {
+  const { value } = inputField;
+  if (!fieldRegex.test(value)) {
+    inputField.value = '';
+  }
+};
+
+const validatePanInput = (panNumber) => {
+  if (panNumber.length <= 5) {
+    if (/^[a-zA-Z]+$/.test(panNumber) && (panNumber.length !== 4 || panNumber[3].toLowerCase() === 'p')) {
+      return true;
+    }
+    return false;
+  } if (panNumber.length <= 9) {
+    return /^[a-zA-Z]{5}\d{0,4}$/.test(panNumber);
+  } if (panNumber.length >= 10) {
+    return /^[a-zA-Z]{3}[pP][a-zA-Z]{1}[0-9]{4}[a-zA-Z]{1}$/.test(panNumber);
+  }
+  return true;
+};
+
+const validateTextInput = (inputField, fieldRegex, length) => {
+  let { value } = inputField;
+  if (value.length > length) {
+    value = value.slice(0, length);
+  }
+  inputField.value = value;
+  if (!fieldRegex.test(value)) {
+    inputField.value = value.slice(0, -1);
+  }
+};
+
+const imageClickable = (selector, url, target) => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.addEventListener('click', (event) => {
+      event.preventDefault();
+      window.open(url, target);
+    });
+  }
+};
+
+const setArnNumberInResult = (arnNumRef, arnNumberPanel, arnNumberFieldName) => {
+  const arnRefNumPanel = document.querySelector(`[name= ${arnNumberPanel}]`);
+  const arnNumberElement = arnRefNumPanel.querySelector(`[name= ${arnNumberFieldName}]`);
+  arnNumberElement.value = arnNumRef;
+};
+
+const addClassToElement = (selector, classNames) => {
+  document.querySelector(selector)?.classList?.add(...classNames.split(' '));
+};
+
 const validateCardDigits = (inputField) => {
   let { value } = inputField;
 
@@ -348,6 +405,11 @@ const attachRedirectOnClick = (selector, url, target = '_blank') => {
     });
   }
 };
+
+const updateInnerHtml = (selectorName, updatedValue) => {
+  if (typeof document !== 'undefined') document.querySelector(selectorName).innerHTML = updatedValue;
+};
+
 export {
   setDataAttributeOnClosestAncestor,
   setSelectOptions,
@@ -363,7 +425,14 @@ export {
   restrictToAlphabetsNoSpaces,
   groupCharacters,
   validatePhoneNumber,
+  validatePanInput,
+  validateTextInput,
+  validateTextInputOnPaste,
+  setArnNumberInResult,
+  addClassToElement,
   validateCardDigits,
   validateOTPInput,
   attachRedirectOnClick,
+  imageClickable,
+  updateInnerHtml,
 };

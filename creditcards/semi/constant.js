@@ -17,14 +17,20 @@ const CHANNELS = {
   adobeWhatsApp: 'ADOBE_WHATSAPP',
 };
 
+const ENV = 'dev';
+
+const DEV_URL = 'https://applyonlinedev.hdfcbank.com';
+const PROD_URL = 'https://applyonline.hdfcbank.com';
+const BASE_URL = (ENV === 'dev') ? DEV_URL : PROD_URL;
+
 const SEMI_ENDPOINTS = {
-  otpGen: 'https://applyonline.hdfcbank.com/content/hdfc_ccforms/api/validatecardotpgen.json',
-  otpVal: 'https://applyonline.hdfcbank.com/content/hdfc_hafcards/api/eligibilitycheck.json',
-  preexecution: 'https://applyonline.hdfcbank.com/content/hdfc_ccforms/api/preexecution.json',
-  masterChanel: 'https://applyonline.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_CHANNEL_MASTER.json',
-  ccSmartEmi: 'https://applyonline.hdfcbank.com/content/hdfc_ccforms/api/ccsmartemi.json',
-  branchMaster: 'https://applyonline.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_BRANCH_MASTER.BRANCH_CODE',
-  dsaCode: 'https://applyonline.hdfcbank.com/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_DSA_MASTER.DSACODE',
+  otpGen: `${BASE_URL}/content/hdfc_ccforms/api/validatecardotpgen.json`,
+  otpVal: (ENV === 'dev') ? `${'https://applyonlineuat01.hdfcbank.com'}/content/hdfc_hafcards/api/eligibilitycheck.json` : `${BASE_URL}/content/hdfc_hafcards/api/eligibilitycheck.json`,
+  preexecution: `${BASE_URL}/content/hdfc_ccforms/api/preexecution.json`,
+  masterChanel: `${BASE_URL}/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_CHANNEL_MASTER.json`,
+  ccSmartEmi: `${BASE_URL}/content/hdfc_ccforms/api/ccsmartemi.json`,
+  branchMaster: `${BASE_URL}/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_BRANCH_MASTER.BRANCH_CODE`,
+  dsaCode: `${BASE_URL}/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_DSA_MASTER.DSACODE`,
 };
 
 const DOM_ELEMENT = {

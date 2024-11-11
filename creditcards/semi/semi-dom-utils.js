@@ -10,6 +10,7 @@ import {
  *
  */
 const addMobileValidation = async () => {
+  if (typeof document === 'undefined') return;
   const validFirstDigits = ['6', '7', '8', '9'];
   if (typeof document === 'undefined') return;
   const inputField = document.querySelector('.field-aem-mobilenum input');

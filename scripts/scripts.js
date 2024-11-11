@@ -23,17 +23,29 @@ const FORM_CONSTANT = [
     launchScript: {
       dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-94203efd95a9-staging.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
-      loadTime: 3000,
+      loadTime: 1200,
     },
   },
   {
     // CC
     formPath: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
+    class: '',
     urlKey: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
     launchScript: {
       dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
-      loadTime: 3000,
+      loadTime: 1200,
+    },
+  },
+  {
+    // FD
+    formPath: ['etb-fixed-deposit-cc'],
+    class: 'fdlien',
+    urlKey: ['fdlien'],
+    launchScript: {
+      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
+      prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
+      loadTime: 1200,
     },
   },
 ];

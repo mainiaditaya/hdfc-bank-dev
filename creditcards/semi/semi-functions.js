@@ -35,10 +35,10 @@ import {
 const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
 
 if (isNodeEnv) {
-   // eslint-disable-next-line no-restricted-globals
+  // eslint-disable-next-line no-restricted-globals, no-underscore-dangle
   global._satellite = {
     track: () => {},
-  }
+  };
 }
 
 export {
