@@ -63,7 +63,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
   digitalData.form.name = ANALYTICS.formName;
   // const phone = formData?.login?.registeredMobileNumber;
   digitalData.page.pageInfo.pageName = ANALYTICS.event[eventType].pageName;
-  const executeInterfaceRequestObj = JSON.parse(formData.formContext)?.executeInterfaceRequest?.requestString;
+  const executeInterfaceRequestObj = JSON.parse(formData?.formContext ?? '{}')?.executeInterfaceRequest?.requestString;
   switch (eventType) {
     case 'getOtp':
       digitalData.event.status = '1';
