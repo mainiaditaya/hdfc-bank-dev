@@ -11,7 +11,7 @@ const {
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
 
-const BASEURL = 'https://applyonline.hdfcbank.com';
+const BASEURL = "https://applyonline.hdfcbank.com";
 const urlPath = (path) => `${BASEURL}${path}`;
 
 /**
@@ -112,18 +112,19 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   * @return {PROMISE}
   */
 const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
-  const mobileNo = mobileNumber?.trim();
+  mobileNumber = mobileNumber?.trim();
   const journeyJSONObj = {
     RequestPayload: {
       leadProfile: {
-        ...(mobileNo?.length < 10 ? {} : { mobileNo }),
+        ...(mobileNumber?.length < 10 ? {} :  { mobileNumber }),
       },
       journeyInfo: {
         journeyID,
       },
     },
   };
-  const url = urlPath('/content/hdfc_commonforms/api/whatsappdata.json');
+  
+  const url = urlPath("/content/hdfc_commonforms/api/whatsappdata.json");
   const method = 'POST';
   return fetchJsonResponse(url, journeyJSONObj, method);
 };

@@ -1253,7 +1253,7 @@ const getCCSmartEmi = (mobileNum, cardNum, otpNum, globals) => {
       mobileNo: mobileNum,
       tid: TID,
       reqAmt: LOAN_AMOUNT,
-      procFeeWav: PROC_FEES,
+      procFeeWav: '000',
       reqNbr: REQ_NBR,
       emiConversion: emiConversionArray,
       journeyID: globals.form.runtime.journeyId.$value,

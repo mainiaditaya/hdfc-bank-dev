@@ -12,6 +12,7 @@ import {
 const addMobileValidation = async () => {
   if (typeof document === 'undefined') return;
   const validFirstDigits = ['6', '7', '8', '9'];
+  if (typeof document === 'undefined') return;
   const inputField = document.querySelector('.field-aem-mobilenum input');
   inputField?.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
 };
@@ -55,7 +56,7 @@ const linkToPopupToggle = (hyperLink, popupOverlay, popupContent, closeBtn = fal
   });
 
   if (closeBtn) {
-    document.querySelector(closeBtn).addEventListener('click', (event) => {
+    document.querySelector(closeBtn)?.addEventListener('click', (event) => {
       event.preventDefault();
       document.querySelector(popupOverlay).setAttribute('data-visible', 'false');
       document.querySelector(popupContent).setAttribute('data-visible', 'false');
