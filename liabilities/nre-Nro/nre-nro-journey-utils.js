@@ -127,14 +127,14 @@ function journeyResponseHandlerUtil(payload, formContext) {
     * @param {string} journeyId
     * @return {PROMISE}
     */
+// eslint-disable-next-line
 const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
   const journeyJSONObj = {
     RequestPayload: {
       leadProfile: {
-        mobileNumber,
       },
       journeyInfo: {
-        journeyID,
+        journeyID: currentFormContext.journeyId,
       },
     },
   };

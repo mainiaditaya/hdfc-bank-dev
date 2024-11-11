@@ -19,8 +19,16 @@ import {
   selectSingleAccount,
   confirmDetailsConsent,
   crmProductID,
+  nreNroPageRedirected,
   nreNroAccountType,
   multiAccountVarient,
+  nreNroInit,
+  nreNroInvokeJourneyDropOffByParam,
+  prefillAccountDetail,
+  fetchIdComToken,
+  prefillThankYouPage,
+  accountOpeningNreNro,
+  validateJourneyParams,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -53,6 +61,14 @@ export {
   selectSingleAccount,
   confirmDetailsConsent,
   crmProductID,
+  nreNroPageRedirected,
   nreNroAccountType,
   multiAccountVarient,
+  nreNroInit,
+  nreNroInvokeJourneyDropOffByParam,
+  prefillAccountDetail,
+  fetchIdComToken,
+  prefillThankYouPage,
+  accountOpeningNreNro,
+  validateJourneyParams,
 };
