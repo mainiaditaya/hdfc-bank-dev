@@ -264,7 +264,7 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
     pan.$value = '';
     datOfBirth = year + month + day;
   }
-  currentFormContext.isdCode = '91'; // TODO : Comment
+  // currentFormContext.isdCode = '91'; // TODO : Comment
   const jsonObj = {
     requestString: {
       mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
@@ -305,6 +305,11 @@ const getCountryCodes = (dropdown) => {
     if (dropdown) {
       dropdown.innerHTML = '';
     }
+    const newOptionTemp = document.createElement('option');
+    newOptionTemp.value = '+91';
+    newOptionTemp.textContent = 'INDIA (+91)';
+    dropdown?.appendChild(newOptionTemp);
+    defaultDropdownIndex = 0;
     response.forEach((countryCode) => {
       if (countryCode.ISDCODE != null && countryCode.DESCRIPTION != null) {
         const val = ` +${String(countryCode.ISDCODE)}`;
@@ -1169,9 +1174,9 @@ async function validateJourneyParams(formData, globals) {
 //         leadId = data.leadProfile.leadProfileId;
 //       }
 //       if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
-//         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-//         // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//         // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//         // globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+//         globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//         globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //       }
 //       // eslint-disable-next-line no-unused-vars
 //       const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
@@ -1188,36 +1193,36 @@ async function validateJourneyParams(formData, globals) {
 //           currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
 //           if (currentFormContext.IDCOMSuccessToken !== null || currentFormContext.IDCOMSuccessToken !== undefined || currentFormContext.IDCOMSuccessToken !== '') {
 //             // Calling Account Opening Functions
-//             // const accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
-//             let accountOpeningResponse = {
-//               accountOpening: {
-//                 errorCode: '0',
-//                 accountNumber: '50919394857273',
-//               }
-//             };
+//             const accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
+//             // let accountOpeningResponse = {
+//             //   accountOpening: {
+//             //     errorCode: '0',
+//             //     accountNumber: '50919394857273',
+//             //   }
+//             // };
 //             if (accountOpeningResponse.accountOpening.errorCode === '0') {
 //               // hideLoaderGif(); // TODO : Uncomment
 //               currentFormContext.accountNumber = accountOpeningResponse.accountOpening.accountNumber;
-//               // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//               // globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
+//               globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//               globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
 //               globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '0' }); // Setting the account number
 //               prefillThankYouPage(finalResult.journeyParamStateInfo, globals);
 //             } else {
-//               // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//               // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//               globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//               globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //               globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
 //             }
 //             // Else journey drop off update onboarding failure, generic error page show here.
 //           } else {
 //             await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//             // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//             // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//             globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//             globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //             globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
 //           }
 //         } else {
 //           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//           // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//           // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//           globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//           globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //           globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
 //         }
 //       } else {
@@ -1229,8 +1234,8 @@ async function validateJourneyParams(formData, globals) {
 //       throw err;
 //     }
 //   } catch (error) {
-//     // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//     // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//     globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//     globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
 //     // eslint-disable-next-line no-unused-vars
 //     const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
