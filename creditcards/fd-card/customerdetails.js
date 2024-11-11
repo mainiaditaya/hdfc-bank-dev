@@ -294,7 +294,7 @@ const bindCustomerDetails = async (globals) => {
   setTimeout(() => {
     addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
   }, 100);
-  sendFDAnalytics('selectFd', 'Select FD', {}, 'CUSTOMER_LEAD_QUALIFIED', globals);
+  sendFDAnalytics('selectFd', 'Step 3 - Select FD', {}, 'CUSTOMER_LEAD_QUALIFIED', globals);
 };
 
 /**
