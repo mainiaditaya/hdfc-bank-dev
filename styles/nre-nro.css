@@ -124,7 +124,11 @@
       }
 
       form {
-        padding: 40px 35px 40px 40px;
+        padding: 40px 35px 40px 40px !important;
+
+        @media (320px <=width <=600px) {
+          padding: 30px 20px 50px 20px !important;
+        }
 
         .field-parentlandingpagepanel {
           .field-landingpanel {
@@ -246,7 +250,7 @@
                   max-width: 350px;
                   left: 0;
                   background-color: #fff;
-                  width: 100%;
+                  width: 98%;
                   height: 96%;
 
                   label {
@@ -270,6 +274,13 @@
                     font-weight: 500;
                     border-radius: 12px;
                     background-color: transparent !important;
+
+                    &:-webkit-autofill,
+                    &:-webkit-autofill:hover,
+                    &:-webkit-autofill:focus,
+                    :-webkit-autofill:active{
+                      -webkit-box-shadow: 0 0 0 30px white inset;
+                    }
 
                     input:-webkit-autofill {
                       -webkit-text-fill-color: yellow !important;
@@ -957,7 +968,6 @@
             }
 
             .field-otpnumber {
-              margin: -28px 0 -18px;
               grid-column: span 12;
               position: relative;
 
@@ -966,16 +976,20 @@
               }
 
               input {
-                width: 100% !important;
+                width: 100%;
                 max-width: 100%;
-                letter-spacing: 65px !important;
-                height: 60px !important;
+                letter-spacing: 65px;
+                height: 60px;
                 font-size: 41px;
                 font-weight: 500;
                 line-height: 40px;
                 color: var(--color-interface-text-primary);
                 border-color: var(--color-interface-border-secondary);
                 caret-color: currentcolor;
+
+                @media (320px <=width <=600px) {
+                  letter-spacing: 25px;
+                }
 
                 &:focus-visible {
                   outline: none;
@@ -1040,8 +1054,8 @@
                   @media (320px <=width <=600px) {
                     margin-top: 3px;
                   }
-                  
-                  &:focus{
+
+                  &:focus {
                     outline: none;
                   }
                 }
@@ -1280,10 +1294,10 @@
             }
 
             &.accordion-collapse {
-             border-bottom-left-radius: 0;
-             border-bottom-right-radius: 0;
-             margin-bottom: 20px;
-             
+              border-bottom-left-radius: 0;
+              border-bottom-right-radius: 0;
+              margin-bottom: 20px;
+
 
               &::after {
                 transform: rotate(0deg);
@@ -1391,29 +1405,17 @@
 
             &.field-communicationaddress,
             &.field-permanentaddress {
+              @media (320px <=width <=600px) {
+                margin-bottom: 20px;
+              }
               textarea {
                 height: 100%;
-                /* margin-bottom: 20px; */
+                margin-bottom: 20px;
                 width: 100% !important;
+                @media (320px <=width <=600px) {
+                  height: auto;
+                }
               }
-
-             /*  &.field-communicationaddress {
-                textarea {
-                  min-height: 90px;
-                  @media (320px <=width <=600px) {
-                    min-height: 70px;
-                  }
-                }
-              } */
-
-             /*  &.field-permanentaddress {
-                textarea {
-                  min-height: 146px;
-                  @media (320px <=width <=600px) {
-                  min-height: 80px;
-                  }
-                }
-              } */
             }
           }
 
@@ -1430,54 +1432,74 @@
               border-top-left-radius: 15px;
               border-top-right-radius: 15px;
             }
-          }        
-        }     
-       
-       
-        fieldset.field-nomineedetails .field-wrapper {
-          legend.field-label {
-            display: none;
-          }
-
-          .plain-text-wrapper {
-            padding: 20px 20px 0 30px;
-
-            p {
-              margin: 0;
-              font-size: 16px;
-              font-weight: 600;
-              color: var(--color-interface-text-primary);
-
-              @media (768px <=width <=991px) {
-                font-size: 18px;
-                line-height: 24px;
-              }
-
-              @media (320px <=width <=600px) {
-                font-size: 16px;
-              }
-            }
-
-            @media (768px <=width <=991px) {
-              left: 10px;
-              top: 55px;
-              border-left: none;
-            }
-
-            @media (320px <=width <=600px) {
-              left: 5px;
-              top: 55px;
-              border-left: none;
-            }
           }
         }
 
-        fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
-          margin: 0;
-          font-size: 14px;
-          color: #6B7280;
-          line-height: 20px;
-          font-weight: 400;
+        fieldset.field-confirmdetails.nre-style-accordian {
+          fieldset.panel-wrapper.field-wrapper {
+            fieldset.panel-wrapper.field-wrapper.nre-style-accordian {
+
+              &>.field-wrapper.text-wrapper[data-visible="false"],
+              &>fieldset.panel-wrapper.field-wrapper[data-visible="false"],
+              & .plain-text-wrapper.field-wrapper[data-visible="false"],
+              & .multiline-wrapper.field-wrapper[data-visible="false"] {
+                display: none !important;
+              }
+            }
+
+            fieldset.field-nomineedetails .field-wrapper {
+              @media (320px <=width <=600px) {
+                grid-column: span 12;
+              }
+              legend.field-label {
+                display: none;
+              }
+
+              .plain-text-wrapper {
+                padding: 20px 20px 0 30px;
+                @media (320px <=width <=600px) {
+                  padding: 0px 15px 0 15px;
+                }
+
+                p {
+                  margin: 0;
+                  font-size: 16px;
+                  font-weight: 600;
+                  color: var(--color-interface-text-primary);
+
+                  @media (768px <=width <=991px) {
+                    font-size: 18px;
+                    line-height: 24px;
+                  }
+
+                  @media (320px <=width <=600px) {
+                    font-size: 16px;
+                  }
+                }
+
+                @media (768px <=width <=991px) {
+                  left: 10px;
+                  top: 55px;
+                  border-left: none;
+                }
+
+                @media (320px <=width <=600px) {
+                  left: 5px;
+                  top: 55px;
+                  border-left: none;
+                }
+              }
+            }
+
+            fieldset.field-personaldetails .field-wrapper[data-active="true"] label {
+              margin: 0;
+              font-size: 14px;
+              color: #6B7280;
+              line-height: 20px;
+              font-weight: 400;
+            }
+
+          }
         }
 
         .field-wizardnrenro,
@@ -1565,6 +1587,7 @@
                 line-height: 28px;
               }
 
+             
               @media (320px <=width <=600px) {
                 display: flex;
                 align-items: center;
@@ -1572,6 +1595,11 @@
                 flex-direction: column;
                 min-width: 21%;
               }
+
+              @media (320px <=width <=360px) {
+                min-width: auto;
+              }
+
 
               &:first-child {
                 &::before {
@@ -1640,6 +1668,10 @@
                 @media (320px <=width <=600px) {
                   right: -25px !important;
                 }
+
+                @media (320px <=width <=360px) {
+                  right: -18px !important;
+                }
               }
             }
           }
@@ -1687,6 +1719,8 @@
 
             @media (320px <=width <=600px) {
               width: 100%;
+              max-width: 100%;
+              margin-bottom: 30px;
             }
 
             button {
@@ -1695,7 +1729,7 @@
               &::after {
                 content: '';
                 position: absolute;
-                right: 29%;
+                /* right: 29%; */
                 top: 17px;
                 height: 20px;
                 width: 20px;
@@ -1818,7 +1852,10 @@
             }
           }
 
-          .field-wrapper.text-wrapper {
+          .field-wrapper.text-wrapper{
+            @media (768px <=width <=991px) {
+              grid-column: span 6;
+            }
 
             &.field-customerid,
             &.field-accountnumber,
@@ -1829,8 +1866,8 @@
               position: relative;
 
               &.field-customerid,
-              &.field-accountnumber{
-                input{
+              &.field-accountnumber {
+                input {
                   letter-spacing: 10px;
                 }
               }
@@ -1915,6 +1952,9 @@
             .field-multiselectaccounttext {
               margin-bottom: 20px;
               margin-top: -20px;
+              @media (320px <=width <=600px) {
+                margin-top: 0;
+              }
 
               p {
                 font-size: 16px;
@@ -2122,7 +2162,9 @@
             }
 
             .plain-text-wrapper {
-              h3, p p {
+
+              h3,
+              p p {
                 margin-top: 0;
                 font-size: 28px;
                 font-weight: 600;
@@ -2157,9 +2199,11 @@
             position: relative;
             display: initial;
 
-            @media (min-width: 768px) {
-              margin-bottom: 0;
+           &:last-child{
+            @media (320px <=width <=600px) {
+              margin-bottom: 0px;
             }
+           }
 
             &.active {
               background-color: var(--color-interface-background-quinary);
@@ -2278,15 +2322,16 @@
         .field-confirmdetails {
 
           .field-confirmdetailsaccordion {
+
             .text-wrapper.field-wrapper,
             .multiline-wrapper,
             .drop-down-wrapper {
               min-height: 50px;
-              
 
-            @media (768px <=width <=991px) {
-              grid-column: span 6;
-            }
+
+              @media (768px <=width <=991px) {
+                grid-column: span 6;
+              }
 
               @media (320px <=width <=600px) {
                 height: 70px;
@@ -2346,17 +2391,20 @@
               }
             }
 
-            fieldset.field-nomineedetails.nre-style-accordian{
-              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"]:not([data-visible="false"]){
+            fieldset.field-nomineedetails.nre-style-accordian {
+              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"]:not([data-visible="false"]) {
                 display: grid !important;
               }
-              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"][data-visible="false"]{
+
+              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"][data-visible="false"] {
                 display: none !important;
               }
-              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"]:not([data-visible="false"]){
+
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"]:not([data-visible="false"]) {
                 display: flex !important;
               }
-              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"][data-visible="false"]{
+
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"][data-visible="false"] {
                 display: none !important;
               }
             }
@@ -2413,7 +2461,7 @@
                 transition: background-color 0.3s, background-position 0.3s;
                 margin-top: 5px;
 
-                &[disabled]{
+                &[disabled] {
                   background-color: var(--color-action-background-primary-disabled);
                 }
               }
@@ -2481,11 +2529,14 @@
                   }
                 }
 
-               /*  &[data-active="true"] {
-                  label.field-label {
-                    margin: 2px 0 0 10px;
+                &.field-lccode {
+                  @media (320px <=width <=600px) {
+                    margin-top: 20px;
                   }
-                } */
+                  label.field-label {
+                    top: -2px;
+                  }
+                }
               }
             }
 
@@ -2681,7 +2732,7 @@
             display: flex;
           }
 
-          picture{
+          picture {
             display: none;
           }
         }
@@ -2818,7 +2869,7 @@
           }
 
           @media (320px <=width <=600px) {
-            margin-left: 15px;
+           /*  margin-left: 15px; */
             margin-top: 15px;
           }
         }
