@@ -6,6 +6,7 @@ import {
 } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
+import { sendPageloadEvent } from './analytics.js';
 
 const IPA_RESPONSE = {};
 const createIpaRequest = (payload, globals) => {
@@ -137,6 +138,8 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  */
 const fdIpaSuccessHandler = (response, globals) => {
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
+  CURRENT_FORM_CONTEXT.eligibleCards = response?.FILLER1;
+  sendPageloadEvent('CUSTOMER_CARD_SELECTED', CURRENT_FORM_CONTEXT, 'Step 5 - Choose Card', 'selectCard');
   const productDetails = response?.productEligibility?.productDetails?.length
     ? response.productEligibility.productDetails
     : response?.productEligibility?.defaultProducts ?? [];
