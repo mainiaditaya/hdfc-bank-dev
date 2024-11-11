@@ -1,7 +1,8 @@
 @import url("../../styles/color-palette.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 .nre {
-  font-family: var(--body-font-family) !important;
+  font-family: "Inter", sans-serif !important;
 
   header {
     background: var(--color-interface-fd-background-primary);
@@ -1392,6 +1393,7 @@
               height: fit-content;
               resize: none;
               min-height: auto;
+              font-family: "Inter", sans-serif !important;
 
               @media (320px <=width <=600px) {
                 font-size: 14px;
@@ -1422,7 +1424,7 @@
 
                 @media (320px <=width <=600px) {
                   height: auto;
-                }
+                } 
               }
             }
           }
@@ -1830,6 +1832,7 @@
               height: 100%;
               min-height: auto;
               resize: none;
+              font-family: "Inter", sans-serif !important;
 
               &:focus-visible {
                 outline: none;
@@ -1984,6 +1987,7 @@
               font-weight: 500;
               color: var(--color-interface-background-quaternary);
               position: absolute;
+              font-family: "Inter", sans-serif !important;
 
               &:focus-visible {
                 outline: none;
@@ -2379,7 +2383,7 @@
                   }
 
                   a {
-                    color: var(--color-input-text-primary);
+                    color: var(--color-interface-icon-highlight);
                     text-decoration: underline;
                     font-weight: 400 !important;
                   }
@@ -2436,6 +2440,7 @@
                 color: var(--color-interface-background-quaternary);
                 margin-top: 2px;
                 position: absolute;
+                font-family: "Inter", sans-serif !important;
 
                 &:focus-visible {
                   outline: none;
