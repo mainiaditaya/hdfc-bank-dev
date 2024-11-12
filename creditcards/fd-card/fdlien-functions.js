@@ -347,7 +347,7 @@ const checkModeFd = async (globals) => {
   const aadhaarSuccess = aadhaarVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message?.toLowerCase() === 'aadhaar otp validate success';
   const aadhaarFail = aadhaarVisit === 'EKYC_AUTH_FAILED';
   if (aadhaarSuccess) {
-    sendPageloadEvent('IDCOM_REDIRECTION_INITIATED', CURRENT_FORM_CONTEXT, 'Address Details', '');
+    // sendPageloadEvent('IDCOM_REDIRECTION_INITIATED', CURRENT_FORM_CONTEXT, 'Address Details', '');
     try {
       const {
         Address1, Address2, Address3, City, State, Zipcode,
