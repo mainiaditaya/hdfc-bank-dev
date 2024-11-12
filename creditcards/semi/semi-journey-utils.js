@@ -26,8 +26,8 @@ const restructFormData = (data, formContextObject, globals) => {
   const utmParams = formContextObject?.UTM_PARAMS;
   const utmChannel = globals.form.aem_semiWizard.aem_selectTenure.aem_employeeAssistancePanel.aem_channel.$value || formContextObject?.UTM_PARAMS?.channel;
   const allURLParams = {
-    LGCODE: (formData?.smartemi?.LGTSECode || formData?.smartemi?.BranchEmployeeTseLGCode) ?? '',
-    DSACODE: formData?.smartemi?.DSACode ?? '',
+    LGCODE: (formData?.smartemi?.LGTSECode || formData?.smartemi?.BranchEmployeeTseLGCode || utmParams?.lgcode) ?? '',
+    DSACODE: (formData?.smartemi?.DSACode || utmParams?.dsacode) ?? '',
     utm_campaign: utmParams?.utm_campaign ?? '',
     utm_medium: utmParams?.utm_medium ?? '',
     ICID: utmParams?.icid ?? '',
@@ -36,14 +36,14 @@ const restructFormData = (data, formContextObject, globals) => {
     utm_creative: utmParams?.utm_creative ?? '',
     utm_content: utmParams?.utm_content ?? '',
     utm_source: utmParams?.utm_source ?? '',
-    BRANCHCODE: formData?.smartemi?.BranchCode ?? '',
+    BRANCHCODE: (formData?.smartemi?.BranchCode || utmParams?.branchcode) ?? '',
   };
   formData.allURLParams = allURLParams ?? '';
   formData.channel = utmChannel ?? '';
   formData.DSAName = formData?.smartemi?.DSAName ?? '';
   formData.BranchName = formData?.smartemi?.BranchName ?? '';
   formData.BranchCity = formData?.smartemi?.BranchCity ?? '';
-  formData.CardBDRLC1Code = formData?.smartemi?.LC1Code ?? '';
+  formData.CardBDRLC1Code = (formData?.smartemi?.LC1Code || utmParams?.lc1) ?? '';
   formData.NetAmountPayable = formData?.smartemi.SmartEMIAmt ?? '';
   const auditData = {
     params: {
@@ -55,6 +55,12 @@ const restructFormData = (data, formContextObject, globals) => {
     // clientIPAddress: '',
   };
   formData.auditData = auditData;
+  const formSmartEmiData = structuredClone(formData?.smartemi);
+  formSmartEmiData.LC1Code = (formSmartEmiData.LC1Code || utmParams?.lc1) ?? '';
+  formSmartEmiData.LC2Code = (formSmartEmiData.LC1Code || utmParams?.lc2) ?? '';
+  formSmartEmiData.SMCode = (formSmartEmiData.SMCode || utmParams?.smcode) ?? '';
+  formSmartEmiData.LGTSECode = allURLParams?.LGCODE ?? '';
+  formData.smartemi = formSmartEmiData;
   return formData;
 };
 
