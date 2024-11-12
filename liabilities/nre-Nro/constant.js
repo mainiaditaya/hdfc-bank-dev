@@ -5,8 +5,7 @@ const NRENROENDPOINTS = {
 // declare CONSTANTS for NRE NRO only.
 const FORM_NAME = 'NRE NRO Account Opening';
 const CHANNEL = 'WEB';
-// const JOURNEY_NAME = 'ACCOPNRENRO';
-const JOURNEY_NAME = 'ACCOUNTOPENING_NRE_NRO_JOURNEY';
+const JOURNEY_NAME = 'AONRENRO';
 const VISIT_MODE = 'U';
 const DOM_ELEMENT = {
   identifyYourself: {

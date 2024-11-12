@@ -278,7 +278,7 @@
                     &:-webkit-autofill,
                     &:-webkit-autofill:hover,
                     &:-webkit-autofill:focus,
-                    :-webkit-autofill:active{
+                    :-webkit-autofill:active {
                       -webkit-box-shadow: 0 0 0 30px white inset;
                     }
 
@@ -501,6 +501,7 @@
 
                   label {
                     margin: 13px;
+                    font-weight: 400;
                   }
 
                   input[name="pan"] {
@@ -510,6 +511,7 @@
                     letter-spacing: 5px;
                     color: var(--color-interface-text-secondary);
                     border-color: var(--color-interface-border-secondary);
+                    padding-left: 15px;
 
                     @media (320px <=width <=600px) {
                       width: 100% !important;
@@ -980,7 +982,7 @@
                 max-width: 100%;
                 letter-spacing: 65px;
                 height: 60px;
-                font-size: 41px;
+                font-size: 20px;
                 font-weight: 500;
                 line-height: 40px;
                 color: var(--color-interface-text-primary);
@@ -993,6 +995,10 @@
 
                 &:focus-visible {
                   outline: none;
+                }
+
+                &[type="password"] {
+                  font-size: 41px;
                 }
               }
 
@@ -1408,10 +1414,12 @@
               @media (320px <=width <=600px) {
                 margin-bottom: 20px;
               }
+
               textarea {
-                height: 100%;
+                height: 80%;
                 margin-bottom: 20px;
                 width: 100% !important;
+
                 @media (320px <=width <=600px) {
                   height: auto;
                 }
@@ -1448,15 +1456,19 @@
             }
 
             fieldset.field-nomineedetails .field-wrapper {
+              padding-top: 0 !important;
+              
               @media (320px <=width <=600px) {
                 grid-column: span 12;
               }
+
               legend.field-label {
                 display: none;
               }
 
               .plain-text-wrapper {
                 padding: 20px 20px 0 30px;
+
                 @media (320px <=width <=600px) {
                   padding: 0px 15px 0 15px;
                 }
@@ -1507,8 +1519,8 @@
 
           .field-wizardtitle {
             position: absolute;
-            top: 10px;
-            left: 240px;
+            top: 15px;
+            left: 300px;
             padding-left: 15px;
             border-left: 1px solid var(--color-interface-fd-title-border);
 
@@ -1530,7 +1542,7 @@
             }
 
             @media (768px <=width <=991px) {
-              left: 10px;
+              left: 25px;
               top: 55px;
               border-left: none;
             }
@@ -1539,6 +1551,52 @@
               left: 5px;
               top: 55px;
               border-left: none;
+            }
+          }
+
+          .field-accountsuccessmsg {
+            display: none !important;
+            position: absolute;
+            top: 15px;
+            left: 37%;
+            padding-left: 15px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: #EBF9EF;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+
+            @media (768px <=width <=991px) {
+              left: 30%;
+            }
+
+            @media (320px <=width <=600px) {
+              left: 7%;
+              top: 55px;
+            }
+
+            &::before {
+              content: '';
+              position: absolute;
+              height: 16px;
+              width: 16px;
+              background: #00875F url('../icons/tick-completed-step.svg') no-repeat center center;
+              border-radius: 100%;
+              background-size: 7px;
+            }
+
+            p {
+              margin: 0;
+
+              p {
+                margin: 0;
+                color: #00875F;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 24px;
+                padding-left: 30px;
+              }
             }
           }
 
@@ -1587,7 +1645,7 @@
                 line-height: 28px;
               }
 
-             
+
               @media (320px <=width <=600px) {
                 display: flex;
                 align-items: center;
@@ -1764,8 +1822,8 @@
               background: none;
               margin: 0;
               padding: 0;
-              font-size: 18px;
-              line-height: 28px;
+              font-size: 18px !important;
+              line-height: 28px !important;
               font-weight: 500;
               color: var(--color-interface-background-quaternary);
               width: 90% !important;
@@ -1852,7 +1910,20 @@
             }
           }
 
-          .field-wrapper.text-wrapper{
+          .field-singleaccount {
+            .multiline-wrapper.field-branch {
+
+              label.field-label {
+                @media (320px <=width <=600px) {
+                  transform: initial;
+                  position: initial;
+                  margin-bottom: 0;
+                }
+              }
+            }
+          }
+
+          .field-wrapper.text-wrapper {
             @media (768px <=width <=991px) {
               grid-column: span 6;
             }
@@ -1952,6 +2023,7 @@
             .field-multiselectaccounttext {
               margin-bottom: 20px;
               margin-top: -20px;
+
               @media (320px <=width <=600px) {
                 margin-top: 0;
               }
@@ -2155,7 +2227,7 @@
           .field-nro-account-type-pannel,
           .field-nre-account-type-pannel {
             border-top: 1px dashed var(--color-interface-border-secondary);
-            padding-top: 30px;
+            padding-top: 40px;
 
             @media (320px <=width <=991px) {
               display: initial;
@@ -2199,11 +2271,11 @@
             position: relative;
             display: initial;
 
-           &:last-child{
-            @media (320px <=width <=600px) {
-              margin-bottom: 0px;
+            &:last-child {
+              @media (320px <=width <=600px) {
+                margin-bottom: 0px;
+              }
             }
-           }
 
             &.active {
               background-color: var(--color-interface-background-quinary);
@@ -2362,7 +2434,7 @@
                 line-height: 28px;
                 font-weight: 500;
                 color: var(--color-interface-background-quaternary);
-                margin-top: -2px;
+                margin-top: 2px;
                 position: absolute;
 
                 &:focus-visible {
@@ -2533,6 +2605,7 @@
                   @media (320px <=width <=600px) {
                     margin-top: 20px;
                   }
+
                   label.field-label {
                     top: -2px;
                   }
@@ -2848,7 +2921,8 @@
     }
 
     & header {
-      height: 100px !important;
+      height: 115px !important;
+      padding-top: 5px;
 
       @media (768px <=width <=991px) {
         height: 150px !important;
@@ -2869,7 +2943,7 @@
           }
 
           @media (320px <=width <=600px) {
-           /*  margin-left: 15px; */
+            /*  margin-left: 15px; */
             margin-top: 15px;
           }
         }

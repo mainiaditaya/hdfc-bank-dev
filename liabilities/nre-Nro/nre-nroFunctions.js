@@ -76,6 +76,27 @@ function customerDataMasking(fieldName, value) {
     switch
     (fieldName) {
       case
+        'cutomerIDMasking':
+        if (value.length > 7) {
+          const last4 = value.slice(-4); // Extract the last 4 digits
+          const masked = value.slice(0, -4).replace(/./g, '*'); // Mask all digits except the last 4
+          return `${masked} ${last4}`;
+        }
+        return '';
+
+      case
+        'accountNumberMasking':
+        if (value.length > 12) {
+          const strNum = value.toString();
+
+          // Mask the first 10 digits with '*' and format with spaces
+          const masked = `**** **** **${strNum.slice(-4, -2)} ${strNum.slice(-2)}`;
+
+          return masked;
+        }
+        return '';
+
+      case
         'PANnmbr':// check legth 10
         if (value.length === 10) {
           const PANvalue = value;
@@ -264,7 +285,7 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
     pan.$value = '';
     datOfBirth = year + month + day;
   }
-  currentFormContext.isdCode = '91'; // TODO : Comment
+  // currentFormContext.isdCode = '91'; // TODO : Comment
   const jsonObj = {
     requestString: {
       mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
@@ -305,6 +326,11 @@ const getCountryCodes = (dropdown) => {
     if (dropdown) {
       dropdown.innerHTML = '';
     }
+    const newOptionTemp = document.createElement('option');
+    newOptionTemp.value = '+91';
+    newOptionTemp.textContent = 'INDIA (+91)';
+    dropdown?.appendChild(newOptionTemp);
+    defaultDropdownIndex = 0;
     response.forEach((countryCode) => {
       if (countryCode.ISDCODE != null && countryCode.DESCRIPTION != null) {
         const val = ` +${String(countryCode.ISDCODE)}`;
@@ -595,16 +621,16 @@ function prefillAccountDetail(response, i, responseLength, globals) {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
   setFormValue(customerName, response.customerFullName);
-  setFormValue(customerID, maskNumber(response.customerId, 4));
   setFormValue(custIDWithoutMasking, response.customerId);
-  setFormValue(singleAccount.customerID, maskNumber(response.customerId, 4));
   if (responseLength > 1) {
-    setFormValue(multipleAccounts.multipleAccountRepeatable[i].accountNumber, maskNumber(response.customerAccountDetailsDTO[i].accountNumber, 10));
+    setFormValue(customerID, customerDataMasking('cutomerIDMasking', response.customerId.toString()));
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].accountNumber, customerDataMasking('accountNumberMasking', response.customerAccountDetailsDTO[0].accountNumber));
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiSubPanel.accountType, response.customerAccountDetailsDTO[i].productName);
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.branch, response.customerAccountDetailsDTO[i].branchName);
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.ifscCode, response.customerAccountDetailsDTO[i].ifscCode);
   } else {
-    setFormValue(singleAccount.accountNumber, maskNumber(response.customerAccountDetailsDTO[0].accountNumber, 10));
+    setFormValue(singleAccount.customerID, customerDataMasking('cutomerIDMasking', response.customerId.toString()));
+    setFormValue(singleAccount.accountNumber, customerDataMasking('accountNumberMasking', response.customerAccountDetailsDTO[0].accountNumber));
     setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName);
     setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
     setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
@@ -669,6 +695,11 @@ function selectSingleAccount(globals) {
  * @return {PROMISE}
  */
 const resendOTP = async (globals) => {
+  const {
+    mobileNumber,
+    journeyID,
+  } = currentFormContext;
+
   dispSec = OTP_TIMER;
   const mobileNo = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber;
   const panValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.pan;
@@ -680,6 +711,7 @@ const resendOTP = async (globals) => {
     resendOtpCount += 1;
 
     const otpResult = await getOtpNRE(mobileNo, panValue, dobValue, globals);
+    invokeJourneyDropOffUpdate('CUSTOMER_LEAD_QUALIFIED_SUCESS', mobileNumber, globals.form.runtime.leadProifileId.$value, journeyID, globals);
     globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.secondsPanel.seconds, { value: dispSec });
     if (otpResult && otpResult.customerIdentificationResponse.existingCustomer === 'Y') {
       sec = OTP_TIMER;
@@ -1169,9 +1201,9 @@ async function validateJourneyParams(formData, globals) {
 //         leadId = data.leadProfile.leadProfileId;
 //       }
 //       if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
-//         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-//         // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//         // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//         // globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+//         globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//         globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //       }
 //       // eslint-disable-next-line no-unused-vars
 //       const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
@@ -1188,36 +1220,36 @@ async function validateJourneyParams(formData, globals) {
 //           currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
 //           if (currentFormContext.IDCOMSuccessToken !== null || currentFormContext.IDCOMSuccessToken !== undefined || currentFormContext.IDCOMSuccessToken !== '') {
 //             // Calling Account Opening Functions
-//             // const accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
-//             let accountOpeningResponse = {
-//               accountOpening: {
-//                 errorCode: '0',
-//                 accountNumber: '50919394857273',
-//               }
-//             };
+//             const accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
+//             // let accountOpeningResponse = {
+//             //   accountOpening: {
+//             //     errorCode: '0',
+//             //     accountNumber: '50919394857273',
+//             //   }
+//             // };
 //             if (accountOpeningResponse.accountOpening.errorCode === '0') {
 //               // hideLoaderGif(); // TODO : Uncomment
 //               currentFormContext.accountNumber = accountOpeningResponse.accountOpening.accountNumber;
-//               // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//               // globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
+//               globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//               globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
 //               globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '0' }); // Setting the account number
 //               prefillThankYouPage(finalResult.journeyParamStateInfo, globals);
 //             } else {
-//               // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//               // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//               globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//               globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //               globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
 //             }
 //             // Else journey drop off update onboarding failure, generic error page show here.
 //           } else {
 //             await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//             // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//             // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//             globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//             globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //             globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
 //           }
 //         } else {
 //           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//           // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//           // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//           globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//           globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //           globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
 //         }
 //       } else {
@@ -1229,8 +1261,8 @@ async function validateJourneyParams(formData, globals) {
 //       throw err;
 //     }
 //   } catch (error) {
-//     // globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//     // globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+//     globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
+//     globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
 //     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
 //     // eslint-disable-next-line no-unused-vars
 //     const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
@@ -1316,7 +1348,7 @@ setTimeout(async () => {
   }
 }, 10000);
 
-const crmLeadIdDetail = () => {
+const crmLeadIdDetail = (globals) => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
 
   const jsonObj = {
@@ -1344,7 +1376,7 @@ const crmLeadIdDetail = () => {
       sex: response.txtCustSex,
       email: response.refCustEmail,
       accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
-      ProductCategory: response.customerAccountDetailsDTO[accIndex].productName,
+      ProductCategory: globals.form.crmProductPanel.productCategory.$value,
       name: response.customerFullName,
       otherThanAgriIncome: '',
       nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
@@ -1412,7 +1444,7 @@ const crmLeadIdDetail = () => {
       selfServiceAnnualIncome: '',
       sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
       sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
-      displayProductName: response.customerAccountDetailsDTO[accIndex].productName,
+      displayProductName: globals.form.crmProductPanel.productCategory.$value,
       state: response.namPermadrState,
       city: response.namPermadrCity,
       residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
@@ -1467,8 +1499,8 @@ const crmLeadIdDetail = () => {
       employmentType: '',
       employmentTypeOthers: '',
       phone: currentFormContext.mobileNumber,
-      productCategory: 'Savings Account',
-      productName: 'Savings Max Account',
+      productCategory: globals.form.crmProductPanel.productCategory.$value,
+      productName: globals.form.crmProductPanel.productName.$value,
       ratingKey: '',
       residentialStatus: '',
       residentialStatus_label: '',
@@ -1495,9 +1527,9 @@ const crmLeadIdDetail = () => {
       occupationTypeCode: '',
       occupationTypeID: '',
       ownerCode: '',
-      productCategoryID: '483',
-      productCode: '193',
-      productKey: '413',
+      productCategoryID: globals.form.crmProductPanel.productCategoryID.$value,
+      productCode: response.customerAccountDetailsDTO[accIndex].productCode.toString(),
+      productKey: globals.form.crmProductPanel.productKey.$value,
       residentialStatusID: '',
       websiteUrl: '',
       expirayDateVideo: '',
@@ -1618,12 +1650,12 @@ function crmProductID(crmProductPanel, response, globals) {
     fieldUtil.setValue(value, changeDataAttrObj);
   };
   if (productID === 201 && productvarient === 'NRO') {
-    setFormValue(crmProductPanel.productName, 'NRE Current account');
+    setFormValue(crmProductPanel.productName, 'NRO current account');
     setFormValue(crmProductPanel.productCategory, 'Current');
     setFormValue(crmProductPanel.productCategoryID, '484');
     setFormValue(crmProductPanel.productKey, '604');
   } else if (productID === 218 && productvarient === 'NRE') {
-    setFormValue(crmProductPanel.productName, 'NRO current account');
+    setFormValue(crmProductPanel.productName, 'NRE Current account');
     setFormValue(crmProductPanel.productCategory, 'Current');
     setFormValue(crmProductPanel.productCategoryID, '484');
     setFormValue(crmProductPanel.productKey, '605');
@@ -1683,6 +1715,32 @@ function multiAccountVarient(selectAccount, globals) {
     globals.functions.setProperty(selectAccount.nro_account_type_pannel.eliteSavingsAccountPanel.eliteSavingsAccount, { value: null });
   }
 }
+
+function errorHandling(response, journeyState, globals) {
+  const {
+    mobileNumber,
+    leadProfileId,
+    journeyID,
+  } = currentFormContext;
+
+  if (response.errorCode === '02') {
+    globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.incorrectOTPText, { visible: true });
+  } else if (response.errorCode === '04') {
+    document.body.classList.add('errorPageBody');
+    document.body.classList.remove('wizardPanelBody');
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.incorrectOTPPanel, { visible: true });
+  } else {
+    document.body.classList.add('errorPageBody');
+    document.body.classList.remove('wizardPanelBody');
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+  }
+
+  invokeJourneyDropOffUpdate(journeyState, mobileNumber, leadProfileId, journeyID, globals);
+}
+
 export {
   validateLogin,
   getOtpNRE,
@@ -1714,4 +1772,5 @@ export {
   prefillThankYouPage,
   accountOpeningNreNro,
   validateJourneyParams,
+  errorHandling,
 };
