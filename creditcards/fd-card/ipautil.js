@@ -33,6 +33,7 @@ const createIpaRequest = (payload, globals) => {
       productCode: applicableCardsArr.join(','),
     },
   };
+  CURRENT_FORM_CONTEXT.eligibleCards = ipaRequest?.requestString?.productCode;
   return ipaRequest;
 };
 /**
@@ -138,7 +139,7 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  */
 const fdIpaSuccessHandler = (response, globals) => {
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
-  CURRENT_FORM_CONTEXT.eligibleCards = response?.FILLER1;
+  if (response?.FILLER1 !== '') CURRENT_FORM_CONTEXT.eligibleCards = response?.FILLER1;
   sendPageloadEvent('CUSTOMER_CARD_SELECTED', CURRENT_FORM_CONTEXT, 'Step 5 - Choose Card', 'selectCard');
   const productDetails = response?.productEligibility?.productDetails?.length
     ? response.productEligibility.productDetails
