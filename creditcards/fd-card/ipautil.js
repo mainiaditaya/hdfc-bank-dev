@@ -71,12 +71,12 @@ const updateData = (globals, productDetail, panel, index) => {
 
   const properties = [
     { element: panel.cardSelection_display, value: product },
-    { element: panel.joiningFeeAmt, value: joiningFee },
-    { element: panel.renewalFeeAmt, value: renewalFee },
+    { element: panel.joiningRenewalFeeWrapper.joiningFeeAmt, value: joiningFee },
+    { element: panel.joiningRenewalFeeWrapper.renewalFeeAmt, value: renewalFee },
     { element: panel.cardTagline, value: cardLine },
-    { element: panel.cardfeatures1, value: keyBenefits[0] || '' },
-    { element: panel.cardfeatures2, value: keyBenefits[1] || '' },
-    { element: panel.cardfeatures3, value: keyBenefits[2] || '' },
+    { element: panel.cardfeaturesWrapper.cardfeatures1, value: keyBenefits[0] || '' },
+    { element: panel.cardfeaturesWrapper.cardfeatures2, value: keyBenefits[1] || '' },
+    { element: panel.cardfeaturesWrapper.cardfeatures3, value: keyBenefits[2] || '' },
   ];
 
   properties.forEach(({ element, value }) => setProperty(element, { value }));
