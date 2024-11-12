@@ -14,6 +14,50 @@ const {
 const BASEURL = "https://applyonline.hdfcbank.com";
 const urlPath = (path) => `${BASEURL}${path}`;
 
+ /* Restructures sanitizedFormData adding URL parameters and missing properties for the journey state:CUSTOMER_ONBOARDING_COMPLETE
+ *
+ * @param {Object} data - The original form data to be restructured.
+ * @param {Object} formContextObject - Contains current form context-specific parameters, such as UTM tracking values.
+ * @param {Object} globals - Global object.
+ * @returns {Object} The restructured form data with additional fields for URL parameters, channel, and audit data.
+ */
+const restructFormData = (data, formContextObject, globals) => {
+  const formData = structuredClone(data);
+  const utmParams = formContextObject?.UTM_PARAMS;
+  const utmChannel = globals.form.aem_semiWizard.aem_selectTenure.aem_employeeAssistancePanel.aem_channel.$value || formContextObject?.UTM_PARAMS?.channel;
+  const allURLParams = {
+    LGCODE: (formData?.smartemi?.LGTSECode || formData?.smartemi?.BranchEmployeeTseLGCode) ?? '',
+    DSACODE: formData?.smartemi?.DSACode ?? '',
+    utm_campaign: utmParams?.campaign ?? '',
+    utm_medium: utmParams?.medium ?? '',
+    ICID: utmParams?.icid ?? '',
+    utmTerm: utmParams?.term ?? '',
+    utm_term: utmParams?.term ?? '',
+    utm_creative: utmParams?.creative ?? '',
+    utm_content: utmParams?.content ?? '',
+    utm_source: utmParams?.source ?? '',
+    BRANCHCODE: formData?.smartemi?.BranchCode ?? '',
+  };
+  formData.allURLParams = allURLParams ?? '';
+  formData.channel = utmChannel ?? '';
+  formData.DSAName = formData?.smartemi?.DSAName ?? '';
+  formData.BranchName = formData?.smartemi?.BranchName ?? '';
+  formData.BranchCity = formData?.smartemi?.BranchCity ?? '';
+  formData.CardBDRLC1Code = formData?.smartemi?.LC1Code ?? '';
+  formData.NetAmountPayable = formData?.smartemi.SmartEMIAmt ?? '';
+  const auditData = {
+    params: {
+      utm_source: allURLParams?.utm_source,
+      utm_content: allURLParams?.utm_content,
+      utm_campaign: allURLParams?.utm_campaign,
+      utm_medium: allURLParams?.utm_medium,
+    },
+    // clientIPAddress: '',
+  };
+  formData.auditData = auditData;
+  return formData;
+};
+
 /**
  * For Web returing currentFormContext as defined in variable
  * Ideally every custom function should be pure function, i.e it should not have any side effect
@@ -78,6 +122,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
     formContext.LoanReferenceNumber = journeyId?.loanNbr;
   }
   const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
+  const formDataSanitized = (state === 'CUSTOMER_ONBOARDING_COMPLETE') ? restructFormData(sanitizedFormData, formContext, globals) : sanitizedFormData;
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : '',
@@ -92,7 +137,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
         journeyStateInfo: [
           {
             state,
-            stateInfo: JSON.stringify(sanitizedFormData),
+            stateInfo: JSON.stringify(formDataSanitized),
             timeinfo: new Date().toISOString(),
           },
         ],
@@ -112,11 +157,10 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
   * @return {PROMISE}
   */
 const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
-  mobileNumber = mobileNumber?.trim();
   const journeyJSONObj = {
     RequestPayload: {
       leadProfile: {
-        ...(mobileNumber?.length < 10 ? {} :  { mobileNumber }),
+        ...(mobileNumber?.trim()?.length < 10 ? {} : { mobileNumber: mobileNumber?.trim() }),
       },
       journeyInfo: {
         journeyID,
