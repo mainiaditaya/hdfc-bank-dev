@@ -185,7 +185,7 @@ const validFDPan = (val) => {
 
 const validateLogin = (globals) => {
   const mobileNo = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value;
-  const isdCode = (globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.countryCode.$value)?.replace(/[^a-zA-Z0-9]+/g, '');
+  const isdCode = '291';
   const dobValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.dateOfBirth.$value;
   const panValue = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.pan.$value;
   const panDobSelection = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.panDobSelection.$value;
@@ -497,15 +497,15 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
   const selfEmployedProfText = setDropdownValue('selfEmployedProfMapping', txtProfessionDescCode);
   const employeerCatCodeText = setDropdownValue('employerCategoryMapping', employeerCatCode);
 
-  globals.functions.setProperty(financialDetails.residenceType, { visible: true, value: residenceTypeProfText });
-  globals.functions.setProperty(financialDetails.grossAnnualIncome, { visible: true, value: grossAnnualIncomeText });
+  globals.functions.setProperty(financialDetails.residenceType, { visible: true, value: residenceTypeProfText.toUpperCase() });
+  globals.functions.setProperty(financialDetails.grossAnnualIncome, { visible: true, value: grossAnnualIncomeText.toUpperCase() });
   globals.functions.setProperty(financialDetails.currencyName, { visible: true });
-  globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true, value: sourceOfFundText });
-  globals.functions.setProperty(financialDetails.occupation, { value: occupationText });
-  globals.functions.setProperty(financialDetails.selfEmployedProfessional, { value: selfEmployedProfText });
-  globals.functions.setProperty(financialDetails.natureOfBusiness, { value: natureOfBusinessText });
-  globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { value: typeOfCompanyText });
-  globals.functions.setProperty(financialDetails.employerCategory, { value: employeerCatCodeText });
+  globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true, value: sourceOfFundText.toUpperCase() });
+  globals.functions.setProperty(financialDetails.occupation, { value: occupationText.toUpperCase() });
+  globals.functions.setProperty(financialDetails.selfEmployedProfessional, { value: selfEmployedProfText.toUpperCase() });
+  globals.functions.setProperty(financialDetails.natureOfBusiness, { value: natureOfBusinessText.toUpperCase() });
+  globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { value: typeOfCompanyText.toUpperCase() });
+  globals.functions.setProperty(financialDetails.employerCategory, { value: employeerCatCodeText.toUpperCase() });
 
   if (occupationCode === 2) {
     globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
@@ -545,8 +545,8 @@ function showNomineeDetails(nomineeDetails, response, globals) {
   if (nomineeName !== null) {
     globals.functions.setProperty(nomineeDetails, { visible: true });
     const formattedDate = convertDateToMmmDdYyyy(nomineeDob);
-    globals.functions.setProperty(nomineeDetails.nomineePanel.relation, { value: relationText });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeName, { value: nomineeName });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.relation, { value: relationText.toUpperCase() });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeName, { value: nomineeName.toUpperCase() });
     globals.functions.setProperty(nomineeDetails.nomineePanel.nomineedob, { value: formattedDate });
     globals.functions.setProperty(nomineeDetails.nomineePanel.nomineedob, { visible: true });
     globals.functions.setProperty(nomineeDetails.nonomineeText, { visible: false });
@@ -577,25 +577,25 @@ function prefillCustomerDetail(response, globals) {
   };
 
   // globals.functions.setProperty(globals.form.runtime.fatca_response, { value: response });
-  setFormValue(personalDetails.emailID, customerDataMasking('eMail', response.refCustEmail));
-  setFormValue(personalDetails.fullName, response.customerFullName);
+  setFormValue(personalDetails.emailID, customerDataMasking('eMail', response.refCustEmail).toUpperCase());
+  setFormValue(personalDetails.fullName, response.customerFullName.toUpperCase());
   setFormValue(personalDetails.mobileNumber, `+${currentFormContext.isdCode} ${maskNumber(currentFormContext.mobileNumber, 6)}`);
-  setFormValue(personalDetails.pan, customerDataMasking('PANnmbr', response.refCustItNum));
+  setFormValue(personalDetails.pan, customerDataMasking('PANnmbr', response.refCustItNum).toUpperCase());
   if (!response.refCustTelex) globals.functions.setProperty(personalDetails.telephoneNumber, { visible: false });
-  else setFormValue(personalDetails.telephoneNumber, response.refCustTelex);
-  setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1} ${response.txtCustadrAdd2} ${response.txtCustadrAdd3} ${response.namCustadrCity} ${response.namCustadrState} ${response.namCustadrCntry} ${response.txtCustadrZip}`);
+  else setFormValue(personalDetails.telephoneNumber, response.refCustTelex.toUpperCase());
+  setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1} ${response.txtCustadrAdd2} ${response.txtCustadrAdd3} ${response.namCustadrCity} ${response.namCustadrState} ${response.namCustadrCntry} ${response.txtCustadrZip}`.toUpperCase());
   setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)}
-${customerDataMasking('AddressLine', response.txtPermadrAdd3)} ${customerDataMasking('CityState', response.namPermadrCity)} ${customerDataMasking('CityState', response.namPermadrState)} ${customerDataMasking('Country', response.namPermadrCntry)} 
-${customerDataMasking('PIN', response.txtPermadrZip)}`);
-  setFormValue(fatcaDetails.nationality, response.txtCustNATNLTY);
-  setFormValue(fatcaDetails.countryTaxResidence, response.customerFATCADtlsDTO[0].codTaxCntry1);
+  ${customerDataMasking('AddressLine', response.txtPermadrAdd3)} ${customerDataMasking('CityState', response.namPermadrCity)} ${customerDataMasking('CityState', response.namPermadrState)} ${customerDataMasking('Country', response.namPermadrCntry)} 
+  ${customerDataMasking('PIN', response.txtPermadrZip)}`.toUpperCase());
+  setFormValue(fatcaDetails.nationality, response.txtCustNATNLTY.toUpperCase());
+  setFormValue(fatcaDetails.countryTaxResidence, response.customerFATCADtlsDTO[0].codTaxCntry1.toUpperCase());
   setFormValue(fatcaDetails.taxIdNumber, response.customerFATCADtlsDTO[0].tinNo1);
   setFormValue(fatcaDetails.addressForTaxPurpose, response.customerFATCADtlsDTO[0].typAddrTax1);
-  setFormValue(fatcaDetails.cityOfBirth, response.customerFATCADtlsDTO[0].namCityBirth);
-  setFormValue(fatcaDetails.countryOfBirth, response.customerFATCADtlsDTO[0].codCntryBirth);
-  setFormValue(fatcaDetails.fathersName, response.customerFATCADtlsDTO[0].namCustFather);
-  setFormValue(fatcaDetails.mothersName, response.namMotherMaiden);
-  setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namSpouseCust);
+  setFormValue(fatcaDetails.cityOfBirth, response.customerFATCADtlsDTO[0].namCityBirth.toUpperCase());
+  setFormValue(fatcaDetails.countryOfBirth, response.customerFATCADtlsDTO[0].codCntryBirth.toUpperCase());
+  setFormValue(fatcaDetails.fathersName, response.customerFATCADtlsDTO[0].namCustFather.toUpperCase());
+  setFormValue(fatcaDetails.mothersName, response.namMotherMaiden.toUpperCase());
+  setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namSpouseCust.toUpperCase());
   setFormValue(fatcaDetails.taxIdType, response.customerFATCADtlsDTO[0].typTinNo1);
   setFormValue(financialDetails.employeerName, response.customerFATCADtlsDTO[0].namCustEmp);
   setFormValue(financialDetails.selfEmployedSince, response.customerAMLDetailsDTO[0].selfEmpFrom);
@@ -625,16 +625,19 @@ function prefillAccountDetail(response, i, responseLength, globals) {
   if (responseLength > 1) {
     setFormValue(customerID, customerDataMasking('cutomerIDMasking', response.customerId.toString()));
     setFormValue(multipleAccounts.multipleAccountRepeatable[i].accountNumber, customerDataMasking('accountNumberMasking', response.customerAccountDetailsDTO[0].accountNumber));
-    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiSubPanel.accountType, response.customerAccountDetailsDTO[i].productName);
-    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.branch, response.customerAccountDetailsDTO[i].branchName);
-    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.ifscCode, response.customerAccountDetailsDTO[i].ifscCode);
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiSubPanel.accountType, response.customerAccountDetailsDTO[i].productName.toUpperCase());
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.branch, response.customerAccountDetailsDTO[i].branchName.toUpperCase());
+    setFormValue(multipleAccounts.multipleAccountRepeatable[i].multiIFSCBranchPanel.ifscCode, response.customerAccountDetailsDTO[i].ifscCode.toUpperCase());
   } else {
     setFormValue(singleAccount.customerID, customerDataMasking('cutomerIDMasking', response.customerId.toString()));
     setFormValue(singleAccount.accountNumber, customerDataMasking('accountNumberMasking', response.customerAccountDetailsDTO[0].accountNumber));
-    setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName);
-    setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName);
-    setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode);
+    setFormValue(singleAccount.accountType, response.customerAccountDetailsDTO[0].productName.toUpperCase());
+    setFormValue(singleAccount.branch, response.customerAccountDetailsDTO[0].branchName.toUpperCase());
+    setFormValue(singleAccount.ifsc, response.customerAccountDetailsDTO[0].ifscCode.toUpperCase());
   }
+  setTimeout(() => {
+    globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.accountsuccessMsg, { visible: false });
+  }, 5000);
   prefillCustomerDetail(currentFormContext.fatca_response, globals);
 }
 
