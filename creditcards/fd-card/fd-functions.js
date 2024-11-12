@@ -50,8 +50,6 @@ import {
 } from './docuploadutil.js';
 
 import {
-  addGaps,
-  addMobileValidation,
   validateOtpInput,
   updateElementAttr,
   changeCheckboxToToggle,
@@ -117,8 +115,6 @@ export {
   validateLogin,
   createJourneyId,
   maskedMobNum,
-  addGaps,
-  addMobileValidation,
   redirect,
   resendOTP,
   customSetFocus,
