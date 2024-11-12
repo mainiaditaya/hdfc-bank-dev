@@ -330,6 +330,10 @@ const getCountryCodes = (dropdown) => {
     newOptionTemp.value = '+91';
     newOptionTemp.textContent = 'INDIA (+91)';
     dropdown?.appendChild(newOptionTemp);
+    const newOptionTemp1 = document.createElement('option');
+    newOptionTemp1.value = '+291';1
+    newOptionTemp1.textContent = 'Eritrea (+291)';
+    dropdown?.appendChild(newOptionTemp1);
     defaultDropdownIndex = 0;
     response.forEach((countryCode) => {
       if (countryCode.ISDCODE != null && countryCode.DESCRIPTION != null) {
@@ -1095,7 +1099,13 @@ async function accountOpeningNreNro(idComToken) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  return fetchJsonResponse(apiEndPoint, jsonObj, 'POST');
+  // return fetchJsonResponse(apiEndPoint, jsonObj, 'POST');
+  return {
+      accountOpening: {
+        errorCode: '0',
+        accountNumber: '50919394857273',
+      }
+    };
 }
 
 /**
@@ -1220,7 +1230,7 @@ async function validateJourneyParams(formData, globals) {
 //           currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
 //           if (currentFormContext.IDCOMSuccessToken !== null || currentFormContext.IDCOMSuccessToken !== undefined || currentFormContext.IDCOMSuccessToken !== '') {
 //             // Calling Account Opening Functions
-//             const accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
+//             const eningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
 //             // let accountOpeningResponse = {
 //             //   accountOpening: {
 //             //     errorCode: '0',
@@ -1333,13 +1343,13 @@ const switchWizard = (globals) => {
   Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
 
-const onPageLoadAnalytics = async (globals) => {
-  await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
-};
+// const onPageLoadAnalytics = async (globals) => {
+//   await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
+// };
 
-setTimeout(() => {
-  onPageLoadAnalytics();
-}, 5000);
+// setTimeout(() => {
+//   onPageLoadAnalytics();
+// }, 5000);
 
 // eslint-disable-next-line func-names
 setTimeout(async () => {
