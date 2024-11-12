@@ -16,7 +16,7 @@ import { addGaps } from './fd-dom-functions.js';
 import { executeInterfacePostRedirect } from './executeinterfaceutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
-import { sendPageloadEvent } from './analytics.js';
+// import { sendPageloadEvent } from './analytics.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
