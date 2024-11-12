@@ -14,6 +14,14 @@ const UTM_PARAMS = {
   lc1: null, // LC2
   dsacode: null, // DSACODE
   branchcode: null, // BRANCHCODE
+  // all Params value
+  campaign: null,
+  medium: null,
+  icid: null,
+  term: null,
+  creative: null,
+  content: null,
+  source: null,
 };
 
 /**
@@ -276,6 +284,7 @@ const handleMdmUtmParam = async (globals) => {
     });
     const paramFound = Object.entries(UTM_PARAMS).some(([, val]) => val);
     if (paramFound) {
+      SEMI_CONSTANT.CURRENT_FORM_CONTEXT.UTM_PARAMS = UTM_PARAMS;
       globals.functions.setProperty(globals.form.aem_semiWizard.aem_selectTenure.aem_bankAssistedToggle, { value: 'Yes' });
     }
   }
