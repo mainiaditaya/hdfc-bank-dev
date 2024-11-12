@@ -460,14 +460,28 @@ const modifyResponseByTadMad = (res) => {
 };
 
 /**
+ * Removes duplicate transaction objects from the `unbilledTransactions` and `billedTransactions` fields within a response object.
+ *
+ * @param {Object} response - The original response object containing transaction data.
+ * @returns {Object} A cloned version of the response object with duplicates removed from the `transactions` arrays in both `unbilledTransactions` and `billedTransactions`.
+ */
+const removeDuplicateTxns = (response) => {
+  const data = structuredClone(response);
+  const deDuplicateArrObj = (ArrayOfObject) => [...new Set((Array.isArray(ArrayOfObject) ? ArrayOfObject : [])?.map((item) => JSON.stringify(item)))].map(JSON.parse);
+  data.ccUnBilledTxnResponse.responseString = deDuplicateArrObj(data?.ccUnBilledTxnResponse?.responseString);
+  data.ccBilledTxnResponse.responseString = deDuplicateArrObj(data?.ccBilledTxnResponse?.responseString);
+  return data;
+};
+
+/**
 * @param {resPayload} Object - checkEligibility response.
 * @param {object} globals - global object
 * @return {PROMISE}
 */
 // eslint-disable-next-line no-unused-vars
 function checkELigibilityHandler(resPayload1, globals) {
-  // const resPayload = RESPONSE_PAYLOAD.response;
-  const resPayload = modifyResponseByTadMad(resPayload1);
+  const filteredResPayload = resPayload1 && removeDuplicateTxns(resPayload1);
+  const resPayload = modifyResponseByTadMad(filteredResPayload);
   const response = {};
   const formContext = getCurrentFormContext(globals);
   try {
