@@ -16,6 +16,7 @@ import { addGaps } from './fd-dom-functions.js';
 import { executeInterfacePostRedirect } from './executeinterfaceutil.js';
 import creditCardSummary from './creditcardsumaryutil.js';
 import { invokeJourneyDropOffUpdate } from './fd-journey-util.js';
+import { sendPageloadEvent } from './analytics.js';
 
 const { FORM_RUNTIME: formRuntime, CURRENT_FORM_CONTEXT } = CONSTANT;
 const { JOURNEY_NAME, FD_ENDPOINTS } = FD_CONSTANT;
@@ -346,6 +347,7 @@ const checkModeFd = async (globals) => {
   const aadhaarSuccess = aadhaarVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message?.toLowerCase() === 'aadhaar otp validate success';
   const aadhaarFail = aadhaarVisit === 'EKYC_AUTH_FAILED';
   if (aadhaarSuccess) {
+    sendPageloadEvent('IDCOM_REDIRECTION_INITIATED', CURRENT_FORM_CONTEXT, 'Address Details', '');
     try {
       const {
         Address1, Address2, Address3, City, State, Zipcode,

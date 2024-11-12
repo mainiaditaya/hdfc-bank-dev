@@ -119,6 +119,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }, 2000);
       break;
     case 'reviewDetails':
+      digitalData.event.status = '1';
       digitalData.user.gender = getGender(formData.FDlienCard.gender);
       digitalData.user.email = await hashPhoneNumber(formData.FDlienCard.emailID);
       digitalData.assisted = {};
@@ -129,7 +130,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       digitalData.formDetails.employmentType = getEmploymentType(formData.FDlienCard.employmentType);
       digitalData.formDetails.AnnualIncome = formData.FDlienCard.annualIncome;
       digitalData.assisted.flag = formData.FDlienCard.assistanceToggle;
-      digitalData.assisted.lg = formData.lgCode;
+      digitalData.assisted.lg = formData.FDlienCard.lgCode;
       digitalData.assisted.lc = formData.FDlienCard.lc1Code;
       digitalData.assisted.channel = formData.FDlienCard.channel;
       digitalData.assisted.dsa = formData.FDlienCard.dsaCode;
@@ -139,9 +140,6 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
         window.digitalData = digitalData || {};
       }
       _satellite.track('submit');
-      setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectCard.pageName, ANALYTICS.event.reviewDetails.nextPage);
-      }, 2000);
       break;
     case 'selectCardBack':
       digitalData.event.status = '1';
