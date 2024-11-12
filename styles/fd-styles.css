@@ -2564,6 +2564,12 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
+      .field-cardfeatureswrapper {
+        border: none;
+        padding: 0;
+        min-height: 125px;
+      }
+
       .field-cardfeatures1:has(p:empty),
       .field-cardfeatures2:has(p:empty),
       .field-cardfeatures3:has(p:empty) {
@@ -2614,6 +2620,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           margin: 0 0 -3px 6px;
           vertical-align: text-top !important;
         }
+      }
+
+      .field-joiningrenewalfeewrapper {
+        border: none;
+        padding: 0;
       }
 
       .field-joiningfeeamt,
@@ -4116,6 +4127,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           .field-cardselection-display {
             margin-top: 0 !important;
           }
+          
+          .field-cardfaciaimage {
+            min-height: 180px;
+          }
         }
       }
 
@@ -4815,6 +4830,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           .field-cardtagline {
             margin-top: 20px !important;
             margin-bottom: 10px !important;
+          }
+
+          .field-cardfaciaimage {
+            min-height: 180px;
           }
 
           .field-cardfeatures2,
