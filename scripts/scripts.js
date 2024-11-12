@@ -48,6 +48,17 @@ const FORM_CONSTANT = [
       loadTime: 900,
     },
   },
+  {
+    // NRE NRO
+    formPath: ['nre-nro', 'account-opening-nre-nro'],
+    class: 'nre',
+    urlKey: ['nre-nro', 'account-opening-nre-nro'],
+    launchScript: {
+      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-e17de29eec01-development.min.js',
+      prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
+      loadTime: 3600,
+    },
+  },
 ];
 const ENV = 'prod'; // take it from common constant to denote
 

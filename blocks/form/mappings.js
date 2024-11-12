@@ -25,6 +25,10 @@ export default async function componentDecorator(fd) {
     const module = await import('./components/accordion.js');
     return module.default;
   }
+  if (fd.appliedCssClassNames?.includes('nre-style-accordian')) {
+    const module = await import('./components/accordion.js');
+    return module.accordionLayoutv2;
+  }
 
   if (fd.appliedCssClassNames?.includes('passwordField')) {
     const module = await import('./components/passwordField.js');
