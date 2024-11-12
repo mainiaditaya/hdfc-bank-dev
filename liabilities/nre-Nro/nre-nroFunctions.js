@@ -3,6 +3,7 @@ import {
   createJourneyId,
   nreNroInvokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
+  postIdCommRedirect,
 } from './nre-nro-journey-utils.js';
 // import {
 //   moveWizardView,
@@ -1285,6 +1286,23 @@ async function validateJourneyParams(formData, globals) {
 // };
 
 /**
+ * Function to show hide page
+ * @name nreNroShowHidePage
+ * @param {Object} globals - The global object containing necessary data.
+ * @returns {PROMISE}
+ */
+async function nreNroShowHidePage(globals){
+  globals.functions.setProperty(globals.form.parentLandingPagePanel, {visible: false});
+  console.log(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value);
+
+  return {
+    'payload': {
+      'response': globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value
+    }
+  }
+}
+
+/**
  * Function to prefill a hidden field, invoking nreNroPageRedirected.
  * @name nreNroInit
  * @param {Object} globals - The global object containing necessary data.
@@ -1783,4 +1801,6 @@ export {
   accountOpeningNreNro,
   validateJourneyParams,
   errorHandling,
+  postIdCommRedirect,
+  nreNroShowHidePage,
 };

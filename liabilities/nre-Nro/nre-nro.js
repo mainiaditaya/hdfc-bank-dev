@@ -30,6 +30,8 @@ import {
   accountOpeningNreNro,
   validateJourneyParams,
   errorHandling,
+  postIdCommRedirect,
+  nreNroShowHidePage,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -73,4 +75,6 @@ export {
   accountOpeningNreNro,
   validateJourneyParams,
   errorHandling,
+  postIdCommRedirect,
+  nreNroShowHidePage,
 };

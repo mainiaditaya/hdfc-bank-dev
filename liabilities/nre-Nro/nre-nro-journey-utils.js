@@ -143,6 +143,40 @@ const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, jo
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
 
+/**
+ * @name postIdCommRedirect - functionality after IDCOMM redirect
+ * @param {String} mobileNumber 
+ * @param {String} leadProfileId 
+ * @param {String} journeyID 
+ * @param {Object} globals 
+ * @returns {Promise}
+ */
+const postIdCommRedirect = async (globals) => {
+  const journeyJSONObj = {
+    RequestPayload: {
+      leadProfile: {
+      },
+      journeyInfo: {
+        journeyID: currentFormContext.journeyId,
+      },
+    },
+  };
+  const url = urlPath(ENDPOINTS.journeyDropOffParam);
+  const method = 'POST';
+  let dropOffPromise = fetchJsonResponse(url, journeyJSONObj, method);
+  dropOffPromise.then((response) => {
+    if(response && response.errorCode==='FJ0000'){
+      console.log(response);
+      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, {value: 'thankYouPage'});
+      globals.functions.setProperty(globals.form.parentLandingPagePanel, {visible: false});
+    }
+  }).catch((error) => {
+    console.log(error);
+
+  });
+};
+
+
 export {
   invokeJourneyDropOff,
   invokeJourneyDropOffUpdate,
@@ -150,4 +184,5 @@ export {
   createJourneyId,
   journeyResponseHandlerUtil,
   nreNroInvokeJourneyDropOffByParam,
+  postIdCommRedirect,
 };
