@@ -13,6 +13,10 @@ export default class RuleEngine {
   getState() {
     return this.form.getState(true);
   }
+
+  getFieldChanges() {
+    return this.fieldChanges;
+  }
 }
 
 let ruleEngine;
