@@ -3,6 +3,7 @@ import {
   createJourneyId,
   nreNroInvokeJourneyDropOffByParam,
   invokeJourneyDropOffUpdate,
+  postIdCommRedirect,
 } from './nre-nro-journey-utils.js';
 // import {
 //   moveWizardView,
@@ -330,6 +331,10 @@ const getCountryCodes = (dropdown) => {
     newOptionTemp.value = '+91';
     newOptionTemp.textContent = 'INDIA (+91)';
     dropdown?.appendChild(newOptionTemp);
+    const newOptionTemp1 = document.createElement('option');
+    newOptionTemp1.value = '+291';1
+    newOptionTemp1.textContent = 'Eritrea (+291)';
+    dropdown?.appendChild(newOptionTemp1);
     defaultDropdownIndex = 0;
     response.forEach((countryCode) => {
       if (countryCode.ISDCODE != null && countryCode.DESCRIPTION != null) {
@@ -1095,7 +1100,13 @@ async function accountOpeningNreNro(idComToken) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
- return fetchJsonResponse(apiEndPoint, jsonObj, 'POST');
+  // return fetchJsonResponse(apiEndPoint, jsonObj, 'POST');
+  return {
+      accountOpening: {
+        errorCode: '0',
+        accountNumber: '50919394857273',
+      }
+    };
 }
 
 /**
@@ -1220,7 +1231,7 @@ async function validateJourneyParams(formData, globals) {
 //           currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
 //           if (currentFormContext.IDCOMSuccessToken !== null || currentFormContext.IDCOMSuccessToken !== undefined || currentFormContext.IDCOMSuccessToken !== '') {
 //             // Calling Account Opening Functions
-//             const accountOpeningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
+//             const eningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
 //             // let accountOpeningResponse = {
 //             //   accountOpening: {
 //             //     errorCode: '0',
@@ -1273,6 +1284,23 @@ async function validateJourneyParams(formData, globals) {
 //     // }
 //   }
 // };
+
+/**
+ * Function to show hide page
+ * @name nreNroShowHidePage
+ * @param {Object} globals - The global object containing necessary data.
+ * @returns {PROMISE}
+ */
+async function nreNroShowHidePage(globals){
+  globals.functions.setProperty(globals.form.parentLandingPagePanel, {visible: false});
+  console.log(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value);
+
+  return {
+    'payload': {
+      'response': globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value
+    }
+  }
+}
 
 /**
  * Function to prefill a hidden field, invoking nreNroPageRedirected.
@@ -1773,4 +1801,6 @@ export {
   accountOpeningNreNro,
   validateJourneyParams,
   errorHandling,
+  postIdCommRedirect,
+  nreNroShowHidePage,
 };

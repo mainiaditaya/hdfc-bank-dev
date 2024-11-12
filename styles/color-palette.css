@@ -60,6 +60,9 @@
   --color-interface-popup-background: #00000080;
   --color-interface-fileupload-border: #B9D7CA;
   --color-interface-fileupload-background: #FAFFFD;
+  --color-interface-popup-background: #00000080;
+  --color-interface-fileupload-border: #B9D7CA;
+  --color-interface-fileupload-background: #FAFFFD;
   --color-input-border-error: #e22853;
   --color-input-box-shadow-error-default: #e2285324;
   --color-action-stepper-style: linear-gradient(
