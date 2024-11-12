@@ -65,14 +65,14 @@ async function hashPhoneNumber(phoneNumber) {
     .join('');
 }
 
-function getGender(gender) {
+const getGender = (gender) => {
   if (gender === '1') return 'Male';
   if (gender === '2') return 'Female';
   if (gender === '3') return 'Others';
   return 'Unknown';
-}
+};
 
-function getEmploymentType(type) {
+const getEmploymentType = (type) => {
   switch (type) {
     case '1': return 'Salaried';
     case '2': return 'Self Employed';
@@ -81,7 +81,7 @@ function getEmploymentType(type) {
     case '5': return 'Retired';
     default: return 'Unknown';
   }
-}
+};
 
 export {
   setAnalyticClickGenericProps,
