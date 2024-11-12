@@ -12,14 +12,6 @@ import {
 } from './fdlien-functions.js';
 
 import {
-  tConvert,
-  invokeResumeJourneyApi,
-  prefillResumeJourneyData,
-  resumeJourneySuccessHandler,
-  getResumeJourneyJsonObject,
-} from './fd-resumejourney.js';
-
-import {
   invokeJourneyDropOff,
   fdWizardSwitch,
   journeyResponseHandler,
@@ -39,10 +31,8 @@ import {
   panvalidationSuccessHandler,
   addressChangeHandler,
   mailingAddressToggleHandler,
-  employeeAssistanceToggleHandler,
 } from './customerdetails.js';
 
-// import { getOTP, otpValidation } from '../../common/functions.js'; // improvisation required to make it generic, till then using the journey specific function getotp,otpVal 👆
 import {
   redirect,
   validatePan,
@@ -188,13 +178,7 @@ export {
   panvalidationSuccessHandler,
   addressChangeHandler,
   fullNamePanValidation,
-  tConvert,
-  invokeResumeJourneyApi,
-  prefillResumeJourneyData,
-  resumeJourneySuccessHandler,
-  getResumeJourneyJsonObject,
   loadHomePage,
   idcomRetry,
   mailingAddressToggleHandler,
-  employeeAssistanceToggleHandler,
 };
