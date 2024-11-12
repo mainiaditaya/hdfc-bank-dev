@@ -30,14 +30,14 @@ function setAnalyticPageLoadProps(journeyState, formData, digitalData) {
   digitalData.form.name = FORM_NAME;
 }
 
-/**
- * set analytics generic props for click event
- * @name setAnalyticClickGenericProps
- * @param {string} linkName - linkName
- * @param {string} linkType - linkName
- * @param {object} formContext - currentFormContext.
- * @param {object} digitalData
- */
+// /**
+//  * set analytics generic props for click event
+//  * @name setAnalyticClickGenericProps
+//  * @param {string} linkName - linkName
+//  * @param {string} linkType - linkName
+//  * @param {object} formContext - currentFormContext.
+//  * @param {object} digitalData
+//  */
 
 function setAnalyticClickGenericProps(linkName, linkType, formData, journeyState, digitalData) {
   digitalData.link = {
@@ -54,9 +54,10 @@ function setAnalyticClickGenericProps(linkName, linkType, formData, journeyState
 }
 
 const getValidationMethod = (formContext) => {
-  if (formContext && formContext?.login && formContext.login.panDobSelection) {
-    return formContext.login.panDobSelection === '0' ? 'DOB' : 'PAN';
-  }
+  console.log(formContext);
+  // if (formContext && formContext?.form?.login && formContext.login.panDobSelection) {
+    return formContext?.form?.login?.panDobSelection === '0' ? 'DOB' : 'PAN';
+  // }
   return '';
 };
 
@@ -100,14 +101,14 @@ function sendPageloadEvent(journeyState, formData, pageName) {
   _satellite.track('pageload');
 }
 
-/**
- *Creates digital data for otp click event.
- * @param {string} phone
- * @param {string} validationType
- * @param {string} eventType
- * @param {object} formContext
- * @param {object} digitalData
- */
+// /**
+//  *Creates digital data for otp click event.
+//  * @param {string} phone
+//  * @param {string} validationType
+//  * @param {string} eventType
+//  * @param {object} formContext
+//  * @param {object} digitalData
+//  */
 function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState, digitalData) {
   setAnalyticClickGenericProps(eventType, linkType, formData, journeyState, digitalData);
   digitalData.page.pageInfo.pageName = PAGE_NAME.nrenro[eventType];
@@ -191,15 +192,15 @@ function populateResponse(payload, eventType, digitalData, formData) {
       let callSmsWhatsappConsent = '';
       let countryCode = '';
       // Check for privacy consent
-      if (formData && formData?.consent && formData.consent.checkboxConsent1Label) {
-        privacyConsent = formData.consent.checkboxConsent1Label;
-      }
-      if (formData && formData?.consent && formData.consent.checkboxConsent2Label) {
-        callSmsWhatsappConsent = formData.consent.checkboxConsent2Label;
-      }
-      if (formData && formData?.login && formData.login.countryCode) {
-        countryCode = formData.login.countryCode;
-      }
+      // if (formData && formData?.form && formData.form?.consent && formData.form.consent?.checkboxConsent1Label) {
+      privacyConsent = formData?.form?.consent?.checkboxConsent1Label ?? '';
+      // }
+      // if (formData && formData?.form && formData.form?.consent && formData.form.consent?.checkboxConsent2Label) {
+      callSmsWhatsappConsent = formData?.form?.consent?.checkboxConsent2Label ?? '';
+      // }
+      // if (formData && formData?.form && formData.form?.consent && formData.form.login?.countryCode) {
+      countryCode = formData?.form?.login?.countryCode ?? '';
+      // }
       digitalData.formDetails.privacyContent = privacyConsent;
       digitalData.formDetails.callSmsWhatsappConsent = callSmsWhatsappConsent;
       digitalData.event.validationMethod = getValidationMethod(formData);
@@ -230,12 +231,12 @@ function populateResponse(payload, eventType, digitalData, formData) {
       let existingAccountType = '';
       let bankBranch = '';
 
-      if (formData && formData?.form && formData.form?.singleAccount && formData.form.singleAccount?.selectAccount && formData.form.singleAccount.selectAccount.accountType) {
-        existingAccountType = formData.form.singleAccount.selectAccount.accountType;
-      }
-      if (formData && formData?.form && formData.form?.singleAccount && formData.form.singleAccount?.selectAccount && formData.form.singleAccount.selectAccount.branch) {
-        bankBranch = formData.form.singleAccount.selectAccount.branch;
-      }
+      // if (formData && formData?.form && formData.form?.singleAccount && formData.form.singleAccount?.selectAccount && formData.form.singleAccount.selectAccount.accountType) {
+      existingAccountType = formData?.form?.singleAccount?.selectAccount?.accountType;
+      // }
+      // if (formData && formData?.form && formData.form?.singleAccount && formData.form.singleAccount?.selectAccount && formData.form.singleAccount.selectAccount.branch) {
+      bankBranch = formData?.form?.singleAccount?.selectAccount?.branch;
+      // }
       digitalData.formDetails.existingAccountType = existingAccountType;
       digitalData.formDetails.bankBranch = bankBranch;
       break;

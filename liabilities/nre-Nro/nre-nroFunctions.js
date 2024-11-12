@@ -1333,13 +1333,13 @@ const switchWizard = (globals) => {
   Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
 
-// const onPageLoadAnalytics = async (globals) => {
-//   await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
-// };
+const onPageLoadAnalytics = async (globals) => {
+  await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
+};
 
-// setTimeout(() => {
-//   onPageLoadAnalytics();
-// }, 5000);
+setTimeout(() => {
+  onPageLoadAnalytics();
+}, 5000);
 
 // eslint-disable-next-line func-names
 setTimeout(async () => {
