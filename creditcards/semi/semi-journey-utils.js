@@ -28,14 +28,14 @@ const restructFormData = (data, formContextObject, globals) => {
   const allURLParams = {
     LGCODE: (formData?.smartemi?.LGTSECode || formData?.smartemi?.BranchEmployeeTseLGCode) ?? '',
     DSACODE: formData?.smartemi?.DSACode ?? '',
-    utm_campaign: utmParams?.campaign ?? '',
-    utm_medium: utmParams?.medium ?? '',
+    utm_campaign: utmParams?.utm_campaign ?? '',
+    utm_medium: utmParams?.utm_medium ?? '',
     ICID: utmParams?.icid ?? '',
     utmTerm: utmParams?.term ?? '',
     utm_term: utmParams?.term ?? '',
-    utm_creative: utmParams?.creative ?? '',
-    utm_content: utmParams?.content ?? '',
-    utm_source: utmParams?.source ?? '',
+    utm_creative: utmParams?.utm_creative ?? '',
+    utm_content: utmParams?.utm_content ?? '',
+    utm_source: utmParams?.utm_source ?? '',
     BRANCHCODE: formData?.smartemi?.BranchCode ?? '',
   };
   formData.allURLParams = allURLParams ?? '';
