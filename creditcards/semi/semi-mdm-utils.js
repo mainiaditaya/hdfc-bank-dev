@@ -25,6 +25,8 @@ const UTM_PARAMS = {
   utm_source: null,
 };
 
+const utmCheckKey = ['lgcode', 'smcode', 'lc2', 'lc1', 'dsacode', 'branchcode'];
+ 
 /**
  * Extracts specific tenure-related fields from the global form object.
  * @param {object} globals - global form object
@@ -150,6 +152,11 @@ const assistedToggleHandler = async (globals) => {
         globals.functions.setProperty(continueToTQbtn, { enabled: true });
       }
       asstPannelArray?.forEach((pannel) => globals.functions.setProperty(pannel, { visible: false }));
+      // freeze dropdown if utm param have no channel value
+      if (utmCheckKey?.some((key) => UTM_PARAMS[key])) {
+        globals.functions.setProperty(channelDropDown, { enabled: false });
+      }
+ 
     }
   } catch (error) {
     // eslint-disable-next-line no-console
