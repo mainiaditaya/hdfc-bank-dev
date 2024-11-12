@@ -4127,6 +4127,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           .field-cardselection-display {
             margin-top: 0 !important;
           }
+          
+          .field-cardfaciaimage {
+            min-height: 180px;
+          }
         }
       }
 
@@ -4826,6 +4830,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           .field-cardtagline {
             margin-top: 20px !important;
             margin-bottom: 10px !important;
+          }
+
+          .field-cardfaciaimage {
+            min-height: 180px;
           }
 
           .field-cardfeatures2,
