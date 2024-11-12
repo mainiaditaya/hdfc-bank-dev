@@ -15,13 +15,14 @@ const UTM_PARAMS = {
   dsacode: null, // DSACODE
   branchcode: null, // BRANCHCODE
   // all Params value
-  campaign: null,
-  medium: null,
+  utm_campaign: null,
+  utm_medium: null,
   icid: null,
   term: null,
-  creative: null,
+  utm_creative: null,
+  utm_content: null,
   content: null,
-  source: null,
+  utm_source: null,
 };
 
 /**
