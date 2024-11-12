@@ -3998,7 +3998,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     .field-bannerimagepanel,
     .field-multiplecustidbanner {
       background: var(--color-interface-fd-background-secondary)
-        url('../icons/banner_tablet.png') no-repeat center center / 100% 100%;
+        url('../icons/banner_tablet.webp') no-repeat center center / 100% 100%;
       min-height: 225px;
     }
 
@@ -4476,7 +4476,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     .field-bannerimagepanel,
     .field-multiplecustidbanner {
       background: var(--color-interface-fd-background-secondary)
-        url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
+        url('../icons/banner_mobile.webp') no-repeat center center / 100% 100%;
       min-height: 225px;
     }
 
