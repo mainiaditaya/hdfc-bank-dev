@@ -1557,7 +1557,6 @@
           }
 
           .field-accountsuccessmsg {
-            display: none !important;
             position: absolute;
             top: 15px;
             left: 37%;
