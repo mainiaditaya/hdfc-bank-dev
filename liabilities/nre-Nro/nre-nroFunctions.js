@@ -574,11 +574,8 @@ function prefillCustomerDetail(response, globals) {
 
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
 
-  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-
   const setFormValue = (field, value) => {
-    const fieldUtil = formUtil(globals, field);
-    fieldUtil.setValue(value, changeDataAttrObj);
+    globals.functions.setProperty(field, { value : value });
   };
 
   // globals.functions.setProperty(globals.form.runtime.fatca_response, { value: response });
@@ -622,8 +619,7 @@ function prefillAccountDetail(response, i, responseLength, globals) {
   const changeDataAttrObj = { attrChange: true, value: false, disable: true };
 
   const setFormValue = (field, value) => {
-    const fieldUtil = formUtil(globals, field);
-    fieldUtil.setValue(value, changeDataAttrObj);
+    globals.functions.setProperty(field, { value : value });
   };
   setFormValue(customerName, response.customerFullName);
   setFormValue(custIDWithoutMasking, response.customerId);
@@ -1114,32 +1110,22 @@ async function accountOpeningNreNro(idComToken) {
    * @param {Object} globals - The global object containing necessary data for IdComToken request.
    * @returns {Object} - The IDCom Response
    */
-async function fetchIdComToken(globals) {
-  const resp = JSON.parse(globals.form.parentLandingPagePanel.landingPanel.journeyParamResponse.$value);
-  if(resp.status === 'fetchIdComToken') {
-    // Making the IDComToken request
-    const idComTokenObj = {
-      requestString: {
-        mobileNumber: currentFormContext.mobileNumber,
-        scope: 'ADOBE_ACNRI',
-        userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
-        authCode: currentFormContext.idComAuthCode,
-        journeyID: currentFormContext.journeyId,
-        journeyName: currentFormContext.journeyName,
-      },
-    };
+async function fetchIdComToken() {
+  // Making the IDComToken request
+  const idComTokenObj = {
+    requestString: {
+      mobileNumber: currentFormContext.mobileNumber,
+      scope: 'ADOBE_ACNRI',
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
+      authCode: currentFormContext.idComAuthCode,
+      journeyID: currentFormContext.journeyId,
+      journeyName: currentFormContext.journeyName,
+    },
+  };
 
-    // Calling the fetch IDComToken API
-    const apiEndPoint = urlPath(ENDPOINTS.fetchIDComToken);
-    return fetchJsonResponse(apiEndPoint, idComTokenObj, 'POST');
-    globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // Setting the account number
-    globals.functions.setProperty(globals.form.thankYouPanel, { visible: true }); // Setting the account number
-  } else {
-    globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // Setting the account number
-    globals.functions.setProperty(globals.form.itsNotYouPanel, { visible: true }); // Setting the account number
-
-    return false;
-  }
+  // Calling the fetch IDComToken API
+  const apiEndPoint = urlPath(ENDPOINTS.fetchIDComToken);
+  return fetchJsonResponse(apiEndPoint, idComTokenObj, 'POST');
 }
 
 /**
@@ -1166,11 +1152,12 @@ async function validateJourneyParams(formData, globals) {
     finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
     if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
       globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'showErrorPage' });
-      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.journeyParamResponse, { value : JSON.stringify({
+      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
+      return {
         status: 'showErrorPage',
         errorMessage: 'CUSTOMER_ONBOARDING_COMPLETE',
         journeyParamStateInfo: finalResult.journeyParamStateInfo,
-      })});
+      };
     }
     // eslint-disable-next-line no-unused-vars
     const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
@@ -1179,23 +1166,25 @@ async function validateJourneyParams(formData, globals) {
         if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
           currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
         }
-        // invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, currentFormContext.journeyId, globals);
-        // invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, currentFormContext.journeyId, globals);
-        // prefillAccountDetail(currentFormContext.fatca_response, currentFormContext.selectedCheckedValue, 1, globals);
+        invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value, globals.form.runtime.leadProifileId.$value, currentFormContext.journeyId, globals);
         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'fetchIdComToken' });
-        globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.journeyParamResponse, { value : JSON.stringify({
+        return {
           status: 'fetchIdComToken',
           journeyParamStateInfo: finalResult.journeyParamStateInfo,
-        })});
+        };
       }
     }
   } catch (error) {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'showErrorPage' });
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-    globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.journeyParamResponse, { value : JSON.stringify({
+    return {
       status: 'showErrorPage',
-    })});
+    };
   }
+
+  return {
+    status: 'showErrorPage',
+  };
 }
 // // eslint-disable-next-line no-unused-vars
 // const nreNroFetchRes = async (globals) => {
