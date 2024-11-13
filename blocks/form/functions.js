@@ -1,5 +1,6 @@
 export const formIdPathMapping = {
   '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
+  '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro-copy': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
   '/content/forms/af/hdfc_haf/liabilities/nre-nro/forms/account-opening-nre-nro-error-handling1': '../../../liabilities/nre-Nro/nre-nro.js', // nre-Nro
   '/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', // cc
   '/content/forms/af/hdfc_haf/digital/etb-fixed-deposit-cc': '../../../creditcards/fd-card/fd-functions.js', // fd

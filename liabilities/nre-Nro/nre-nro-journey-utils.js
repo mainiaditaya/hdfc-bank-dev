@@ -128,19 +128,21 @@ function journeyResponseHandlerUtil(payload, formContext) {
     * @return {PROMISE}
     */
 // eslint-disable-next-line
-const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
-  const journeyJSONObj = {
-    RequestPayload: {
-      leadProfile: {
+const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID, globals) => {
+  if(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp.$value === 'true') {
+    const journeyJSONObj = {
+      RequestPayload: {
+        leadProfile: {
+        },
+        journeyInfo: {
+          journeyID: currentFormContext.journeyId,
+        },
       },
-      journeyInfo: {
-        journeyID: currentFormContext.journeyId,
-      },
-    },
-  };
-  const url = urlPath(ENDPOINTS.journeyDropOffParam);
-  const method = 'POST';
-  return fetchJsonResponse(url, journeyJSONObj, method);
+    };
+    const url = urlPath(ENDPOINTS.journeyDropOffParam);
+    const method = 'POST';
+    return fetchJsonResponse(url, journeyJSONObj, method);
+  }
 };
 
 /**

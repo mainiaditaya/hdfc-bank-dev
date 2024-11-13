@@ -3071,8 +3071,7 @@ class FunctionRuntimeImpl {
                         success = valueOf(args[4]);
                         error = valueOf(args[5]);
                     }
-                    request(interpreter.globals, uri, httpVerb, payload, success, error, headers);
-                    return {};
+                    return request(interpreter.globals, uri, httpVerb, payload, success, error, headers);
                 },
                 _signature: []
             },
@@ -3254,7 +3253,11 @@ class Form extends Container {
         this.promises.push(updates);
     }
     async waitForPromises() {
-        await Promise.all(this.promises);
+        let length = 0;
+        while (this.promises.length > length) {
+            length = this.promises.length;
+            await Promise.all(this.promises);
+        }
         this.promises = [];
     }
     _applyDefaultsInModel() {

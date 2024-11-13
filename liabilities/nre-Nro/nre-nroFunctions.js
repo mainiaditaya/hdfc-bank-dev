@@ -1114,22 +1114,32 @@ async function accountOpeningNreNro(idComToken) {
    * @param {Object} globals - The global object containing necessary data for IdComToken request.
    * @returns {Object} - The IDCom Response
    */
-async function fetchIdComToken() {
-  // Making the IDComToken request
-  const idComTokenObj = {
-    requestString: {
-      mobileNumber: currentFormContext.mobileNumber,
-      scope: 'ADOBE_ACNRI',
-      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
-      authCode: currentFormContext.idComAuthCode,
-      journeyID: currentFormContext.journeyId,
-      journeyName: currentFormContext.journeyName,
-    },
-  };
+async function fetchIdComToken(globals) {
+  const resp = JSON.parse(globals.form.parentLandingPagePanel.landingPanel.journeyParamResponse.$value);
+  if(resp.status === 'fetchIdComToken') {
+    // Making the IDComToken request
+    const idComTokenObj = {
+      requestString: {
+        mobileNumber: currentFormContext.mobileNumber,
+        scope: 'ADOBE_ACNRI',
+        userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
+        authCode: currentFormContext.idComAuthCode,
+        journeyID: currentFormContext.journeyId,
+        journeyName: currentFormContext.journeyName,
+      },
+    };
 
-  // Calling the fetch IDComToken API
-  const apiEndPoint = urlPath(ENDPOINTS.fetchIDComToken);
-  return fetchJsonResponse(apiEndPoint, idComTokenObj, 'POST');
+    // Calling the fetch IDComToken API
+    const apiEndPoint = urlPath(ENDPOINTS.fetchIDComToken);
+    return fetchJsonResponse(apiEndPoint, idComTokenObj, 'POST');
+    globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // Setting the account number
+    globals.functions.setProperty(globals.form.thankYouPanel, { visible: true }); // Setting the account number
+  } else {
+    globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // Setting the account number
+    globals.functions.setProperty(globals.form.itsNotYouPanel, { visible: true }); // Setting the account number
+
+    return false;
+  }
 }
 
 /**
@@ -1156,12 +1166,11 @@ async function validateJourneyParams(formData, globals) {
     finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
     if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
       globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'showErrorPage' });
-      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-      return {
+      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.journeyParamResponse, { value : JSON.stringify({
         status: 'showErrorPage',
         errorMessage: 'CUSTOMER_ONBOARDING_COMPLETE',
         journeyParamStateInfo: finalResult.journeyParamStateInfo,
-      };
+      })});
     }
     // eslint-disable-next-line no-unused-vars
     const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
@@ -1174,23 +1183,19 @@ async function validateJourneyParams(formData, globals) {
         // invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, currentFormContext.journeyId, globals);
         // prefillAccountDetail(currentFormContext.fatca_response, currentFormContext.selectedCheckedValue, 1, globals);
         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'fetchIdComToken' });
-        return {
+        globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.journeyParamResponse, { value : JSON.stringify({
           status: 'fetchIdComToken',
           journeyParamStateInfo: finalResult.journeyParamStateInfo,
-        };
+        })});
       }
     }
   } catch (error) {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'showErrorPage' });
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-    return {
+    globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.journeyParamResponse, { value : JSON.stringify({
       status: 'showErrorPage',
-    };
+    })});
   }
-
-  return {
-    status: 'showErrorPage',
-  };
 }
 // // eslint-disable-next-line no-unused-vars
 // const nreNroFetchRes = async (globals) => {
@@ -1289,9 +1294,8 @@ async function validateJourneyParams(formData, globals) {
  * Function to show hide page
  * @name nreNroShowHidePage
  * @param {Object} globals - The global object containing necessary data.
- * @returns {PROMISE}
  */
-async function nreNroShowHidePage(globals){
+function nreNroShowHidePage(globals){
   globals.functions.setProperty(globals.form.parentLandingPagePanel, {visible: false});
   console.log(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value);
 
@@ -1317,7 +1321,7 @@ function nreNroInit(globals) {
  * @name nreNroPageRedirected
  * @param {Object} globals - The global object containing necessary data.
  */
-async function nreNroPageRedirected(globals) {
+function nreNroPageRedirected(globals) {
   const queryParams = globals.functions.exportData().queryParams;
   currentFormContext.authModeParam = queryParams?.authmode;
   currentFormContext.journeyId = queryParams?.journeyId;
