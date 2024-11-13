@@ -53,13 +53,9 @@ function setAnalyticClickGenericProps(linkName, linkType, formData, journeyState
   digitalData.user.casa = '';
 }
 
-const getValidationMethod = (formContext) => {
-  console.log(formContext);
-  // if (formContext && formContext?.form?.login && formContext.login.panDobSelection) {
-    return formContext?.form?.login?.panDobSelection === '0' ? 'DOB' : 'PAN';
-  // }
-  return '';
-};
+function getValidationMethod(formContext) {
+  return formContext?.form?.login?.panDobSelection === '0' ? 'DOB' : 'PAN';
+}
 
 /**
  * Sends analytics event on page load.

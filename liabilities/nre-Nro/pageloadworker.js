@@ -1,3 +1,4 @@
+
 let thanks = document?.querySelector('[name="thankYouPanel"]');
 
 function setBodyPage(thanks){
@@ -60,9 +61,4 @@ function setBodyPage(thanks){
 }
 
 setBodyPage();
-
-
-  
-  
-
 

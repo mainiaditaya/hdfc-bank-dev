@@ -332,7 +332,7 @@ const getCountryCodes = (dropdown) => {
     newOptionTemp.textContent = 'INDIA (+91)';
     dropdown?.appendChild(newOptionTemp);
     const newOptionTemp1 = document.createElement('option');
-    newOptionTemp1.value = '+291';1
+    newOptionTemp1.value = '+291';
     newOptionTemp1.textContent = 'Eritrea (+291)';
     dropdown?.appendChild(newOptionTemp1);
     defaultDropdownIndex = 0;
@@ -575,7 +575,7 @@ function prefillCustomerDetail(response, globals) {
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
 
   const setFormValue = (field, value) => {
-    globals.functions.setProperty(field, { value : value });
+    globals.functions.setProperty(field, { value });
   };
 
   // globals.functions.setProperty(globals.form.runtime.fatca_response, { value: response });
@@ -616,10 +616,8 @@ function prefillAccountDetail(response, i, responseLength, globals) {
     custIDWithoutMasking,
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount;
 
-  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-
   const setFormValue = (field, value) => {
-    globals.functions.setProperty(field, { value : value });
+    globals.functions.setProperty(field, { value });
   };
   setFormValue(customerName, response.customerFullName);
   setFormValue(custIDWithoutMasking, response.customerId);
@@ -1287,15 +1285,13 @@ async function validateJourneyParams(formData, globals) {
  * @name nreNroShowHidePage
  * @param {Object} globals - The global object containing necessary data.
  */
-function nreNroShowHidePage(globals){
-  globals.functions.setProperty(globals.form.parentLandingPagePanel, {visible: false});
-  console.log(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value);
-
+function nreNroShowHidePage(globals) {
+  globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
   return {
-    'payload': {
-      'response': globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value
-    }
-  }
+    payload: {
+      response: globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value,
+    },
+  };
 }
 
 /**
@@ -1357,20 +1353,20 @@ const switchWizard = (globals) => {
   Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
 
-// const onPageLoadAnalytics = async (globals) => {
-//   await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
-// };
+const onPageLoadAnalytics = async (globals) => {
+  await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
+};
 
-// setTimeout(() => {
-//   onPageLoadAnalytics();
-// }, 5000);
+setTimeout(() => {
+  onPageLoadAnalytics();
+}, 5000);
 
 // eslint-disable-next-line func-names
 setTimeout(async () => {
   if (typeof window !== 'undefined') { /* check document-undefined */
     getCountryCodes(document.querySelector('.field-countrycode select'));
   }
-}, 10000);
+}, 1200);
 
 const crmLeadIdDetail = (globals) => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
