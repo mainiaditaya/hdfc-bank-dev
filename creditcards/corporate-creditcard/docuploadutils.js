@@ -106,7 +106,7 @@ const documentUpload = async (globals) => {
       );
       if ((fsFileResponse.value?.errorCode === '0000') && (bsFileResponse.value?.errorCode === '0000')) {
         hideLoaderGif();
-        //moveWizardView('corporateCardWizardView', 'confirmAndSubmitPanel');
+        moveWizardView('corporateCardWizardView', 'confirmAndSubmitPanel');
         invokeJourneyDropOffUpdate('DOCUMENT_UPLOAD_SUCCESS', mobileNumber, leadProfileId, journeyId, globals);
         globals.functions.setProperty(AddressDeclarationAadhar, { visible: false });
         globals.functions.setProperty(addressDeclarationOffice, { visible: false });
