@@ -26,10 +26,10 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
   }
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
   digitalData.page.pageInfo.pageName = pageName;
+  digitalData.formDetails = {};
   setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName, pageName, CURRENT_FORM_CONTEXT);
   switch (nextPage) {
     case 'selectFd':
-      digitalData.formDetails = {};
       digitalData.formDetails.eligibleCustomerID = '';
       break;
     case 'selectCard':
@@ -194,7 +194,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
+        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.addressDeclaration.nextPage);
       }, 2000);
       break;
     case 'docUpload':
@@ -204,7 +204,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
+        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.docUpload.nextPage);
       }, 2000);
       break;
     case 'docUploadUpload':
@@ -221,7 +221,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('survey');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.confirmationPage.nextPage);
+        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.confirmationPage.pageName, ANALYTICS.event.confirmationPage.nextPage);
       }, 2000);
       break;
     case 'comepleteVKYC':
