@@ -84,7 +84,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.submitOtp.nextPage);
+        sendPageloadEvent(ANALYTICS.event.selectFd.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.submitOtp.nextPage);
       }, 2000);
       break;
     case 'selectCustomerId':
@@ -148,7 +148,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.selectCard.journeyState, formData, ANALYTICS.event.selectCard.pageName, ANALYTICS.event.selectCard.nextPage);
+        sendPageloadEvent(ANALYTICS.event.reviewDetails.journeyState, formData, ANALYTICS.event.reviewDetails.pageName, ANALYTICS.event.selectFd.nextPage);
       }, 2000);
       break;
     case 'selectCard':
@@ -204,7 +204,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.docUpload.nextPage);
+        sendPageloadEvent(ANALYTICS.event.docUpload.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.docUpload.nextPage);
       }, 2000);
       break;
     case 'docUploadUpload':
@@ -221,7 +221,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('survey');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.confirmationPage.pageName, ANALYTICS.event.confirmationPage.nextPage);
+        sendPageloadEvent(ANALYTICS.event.confirmationPage.journeyState, formData, ANALYTICS.event.confirmationPage.pageName, ANALYTICS.event.confirmationPage.nextPage);
       }, 2000);
       break;
     case 'comepleteVKYC':
