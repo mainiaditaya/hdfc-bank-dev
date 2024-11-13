@@ -45,7 +45,7 @@ setTimeout(() => {
   if (typeof window !== 'undefined') {
     import('./pageloadworker.js');
   }
-}, 2000);
+}, 300);
 
 export {
   validateLogin,
