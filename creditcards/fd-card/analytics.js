@@ -215,14 +215,11 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       _satellite.track('submit');
       break;
     case 'confirmationPage':
-      digitalData.event.rating = '';
+      digitalData.event.rating = formData.FDlienCard.rating;
       if (window) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('survey');
-      setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.confirmationPage.journeyState, formData, ANALYTICS.event.confirmationPage.pageName, ANALYTICS.event.confirmationPage.nextPage);
-      }, 2000);
       break;
     case 'comepleteVKYC':
       digitalData.event.status = '1';
