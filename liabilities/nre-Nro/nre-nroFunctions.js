@@ -332,7 +332,7 @@ const getCountryCodes = (dropdown) => {
     newOptionTemp.textContent = 'INDIA (+91)';
     dropdown?.appendChild(newOptionTemp);
     const newOptionTemp1 = document.createElement('option');
-    newOptionTemp1.value = '+291';1
+    newOptionTemp1.value = '+291';
     newOptionTemp1.textContent = 'Eritrea (+291)';
     dropdown?.appendChild(newOptionTemp1);
     defaultDropdownIndex = 0;
@@ -574,11 +574,8 @@ function prefillCustomerDetail(response, globals) {
 
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
 
-  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-
   const setFormValue = (field, value) => {
-    const fieldUtil = formUtil(globals, field);
-    fieldUtil.setValue(value, changeDataAttrObj);
+    globals.functions.setProperty(field, { value });
   };
 
   // globals.functions.setProperty(globals.form.runtime.fatca_response, { value: response });
@@ -619,11 +616,8 @@ function prefillAccountDetail(response, i, responseLength, globals) {
     custIDWithoutMasking,
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount;
 
-  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
-
   const setFormValue = (field, value) => {
-    const fieldUtil = formUtil(globals, field);
-    fieldUtil.setValue(value, changeDataAttrObj);
+    globals.functions.setProperty(field, { value });
   };
   setFormValue(customerName, response.customerFullName);
   setFormValue(custIDWithoutMasking, response.customerId);
@@ -1100,7 +1094,10 @@ async function accountOpeningNreNro(idComToken) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  // return fetchJsonResponse(apiEndPoint, jsonObj, 'POST');
+  // return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
+  if(typeof window !== 'undefined') {
+    hideLoaderGif();
+  }
   return {
       accountOpening: {
         errorCode: '0',
@@ -1170,9 +1167,7 @@ async function validateJourneyParams(formData, globals) {
         if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
           currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
         }
-        // invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, currentFormContext.journeyId, globals);
-        // invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, currentFormContext.journeyId, globals);
-        // prefillAccountDetail(currentFormContext.fatca_response, currentFormContext.selectedCheckedValue, 1, globals);
+        invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value, globals.form.runtime.leadProifileId.$value, currentFormContext.journeyId, globals);
         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'fetchIdComToken' });
         return {
           status: 'fetchIdComToken',
@@ -1289,17 +1284,14 @@ async function validateJourneyParams(formData, globals) {
  * Function to show hide page
  * @name nreNroShowHidePage
  * @param {Object} globals - The global object containing necessary data.
- * @returns {PROMISE}
  */
-async function nreNroShowHidePage(globals){
-  globals.functions.setProperty(globals.form.parentLandingPagePanel, {visible: false});
-  console.log(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value);
-
+function nreNroShowHidePage(globals) {
+  globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
   return {
-    'payload': {
-      'response': globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value
-    }
-  }
+    payload: {
+      response: globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable.$value,
+    },
+  };
 }
 
 /**
@@ -1317,7 +1309,7 @@ function nreNroInit(globals) {
  * @name nreNroPageRedirected
  * @param {Object} globals - The global object containing necessary data.
  */
-async function nreNroPageRedirected(globals) {
+function nreNroPageRedirected(globals) {
   const queryParams = globals.functions.exportData().queryParams;
   currentFormContext.authModeParam = queryParams?.authmode;
   currentFormContext.journeyId = queryParams?.journeyId;
@@ -1361,20 +1353,20 @@ const switchWizard = (globals) => {
   Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
 
-// const onPageLoadAnalytics = async (globals) => {
-//   await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
-// };
+const onPageLoadAnalytics = async (globals) => {
+  await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
+};
 
-// setTimeout(() => {
-//   onPageLoadAnalytics();
-// }, 5000);
+setTimeout(() => {
+  onPageLoadAnalytics();
+}, 5000);
 
 // eslint-disable-next-line func-names
 setTimeout(async () => {
   if (typeof window !== 'undefined') { /* check document-undefined */
     getCountryCodes(document.querySelector('.field-countrycode select'));
   }
-}, 10000);
+}, 1200);
 
 const crmLeadIdDetail = (globals) => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;

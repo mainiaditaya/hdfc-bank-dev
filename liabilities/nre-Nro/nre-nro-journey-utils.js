@@ -5,7 +5,10 @@ import {
   urlPath,
   generateUUID,
 } from '../../common/formutils.js';
-import { fetchJsonResponse } from '../../common/makeRestAPI.js';
+import { 
+  fetchJsonResponse,
+  displayLoader,
+ } from '../../common/makeRestAPI.js';
 import * as NRE_CONSTANT from './constant.js';
 
 import * as CONSTANT from '../../common/constants.js';
@@ -128,7 +131,7 @@ function journeyResponseHandlerUtil(payload, formContext) {
     * @return {PROMISE}
     */
 // eslint-disable-next-line
-const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID) => {
+const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyID, globals) => {
   const journeyJSONObj = {
     RequestPayload: {
       leadProfile: {
@@ -140,15 +143,18 @@ const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, jo
   };
   const url = urlPath(ENDPOINTS.journeyDropOffParam);
   const method = 'POST';
+  if(typeof window !== 'undefined') {
+    displayLoader();
+  }
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
 
 /**
  * @name postIdCommRedirect - functionality after IDCOMM redirect
- * @param {String} mobileNumber 
- * @param {String} leadProfileId 
- * @param {String} journeyID 
- * @param {Object} globals 
+ * @param {String} mobileNumber
+ * @param {String} leadProfileId
+ * @param {String} journeyID
+ * @param {Object} globals
  * @returns {Promise}
  */
 const postIdCommRedirect = async (globals) => {
@@ -163,19 +169,16 @@ const postIdCommRedirect = async (globals) => {
   };
   const url = urlPath(ENDPOINTS.journeyDropOffParam);
   const method = 'POST';
-  let dropOffPromise = fetchJsonResponse(url, journeyJSONObj, method);
+  const dropOffPromise = fetchJsonResponse(url, journeyJSONObj, method);
   dropOffPromise.then((response) => {
-    if(response && response.errorCode==='FJ0000'){
-      console.log(response);
-      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, {value: 'thankYouPage'});
-      globals.functions.setProperty(globals.form.parentLandingPagePanel, {visible: false});
+    if (response && response.errorCode === 'FJ0000') {
+      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: 'thankYouPage' });
+      globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
     }
   }).catch((error) => {
     console.log(error);
-
   });
 };
-
 
 export {
   invokeJourneyDropOff,
