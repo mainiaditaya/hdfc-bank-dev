@@ -113,6 +113,11 @@ const pageRedirected = () => {
     }, 1200);
     return;
   }
+  if (aadharRedirect && delayedUtilState.visitType === 'EKYC_AUTH') {
+    setTimeout(() => {
+      sendPageloadEvent('IDCOM_REDIRECTION_INITIATED', CURRENT_FORM_CONTEXT, 'Address Details', '');
+    }, 1200);
+  }
   if (idComRedirect && errorCode !== sessionExpiredErrorCode) {
     displayLoader();
     setTimeout(finalDapFetchRes, 5000);
