@@ -84,7 +84,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.submitOtp.nextPage);
+        sendPageloadEvent(ANALYTICS.event.selectFd.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.submitOtp.nextPage);
       }, 2000);
       break;
     case 'selectCustomerId':
@@ -105,7 +105,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.reviewDetails.pageName, ANALYTICS.event.selectFd.nextPage);
+        sendPageloadEvent(ANALYTICS.event.reviewDetails.journeyState, formData, ANALYTICS.event.reviewDetails.pageName, ANALYTICS.event.selectFd.nextPage);
       }, 2000);
       break;
     case 'reviewDetailsBack':
@@ -115,7 +115,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
+        sendPageloadEvent(ANALYTICS.event.selectFd.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
       }, 2000);
       break;
     case 'reviewDetails':
@@ -148,7 +148,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
+        sendPageloadEvent(ANALYTICS.event.reviewDetails.journeyState, formData, ANALYTICS.event.reviewDetails.pageName, ANALYTICS.event.selectFd.nextPage);
       }, 2000);
       break;
     case 'selectCard':
@@ -159,7 +159,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.validationMethodKYC.pageName, ANALYTICS.event.selectCard.nextPage);
+        sendPageloadEvent(ANALYTICS.event.validationMethodKYC.journeyState, formData, ANALYTICS.event.validationMethodKYC.pageName, ANALYTICS.event.selectCard.nextPage);
       }, 2000);
       break;
     case 'selectCardConsent':
@@ -180,7 +180,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.validationMethodKYC.nextPage);
+        sendPageloadEvent(ANALYTICS.event.addressDeclaration.journeyState, formData, ANALYTICS.event.addressDeclaration.pageName, ANALYTICS.event.validationMethodKYC.nextPage);
       }, 2000);
       break;
     case 'addressDeclaration':
@@ -194,7 +194,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.addressDeclaration.nextPage);
+        sendPageloadEvent(ANALYTICS.event.docUpload.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.addressDeclaration.nextPage);
       }, 2000);
       break;
     case 'docUpload':
@@ -204,7 +204,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.docUpload.nextPage);
+        sendPageloadEvent(ANALYTICS.event.docUpload.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.docUpload.nextPage);
       }, 2000);
       break;
     case 'docUploadUpload':
@@ -221,7 +221,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('survey');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.confirmationPage.pageName, ANALYTICS.event.confirmationPage.nextPage);
+        sendPageloadEvent(ANALYTICS.event.confirmationPage.journeyState, formData, ANALYTICS.event.confirmationPage.pageName, ANALYTICS.event.confirmationPage.nextPage);
       }, 2000);
       break;
     case 'comepleteVKYC':
