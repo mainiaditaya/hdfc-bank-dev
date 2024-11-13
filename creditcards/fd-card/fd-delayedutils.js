@@ -35,8 +35,8 @@ const fdCardBoardingSuccess = async (data, stateInfoData) => {
     vkycConfirmationPanel.setAttribute('data-visible', true);
   }
   setArnNumberInResult(stateInfoData.currentFormContext.ARN_NUM, 'refNumPanel', 'referenceNumber');
-  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
-  sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETED', stateInfoData, 'Confirmation', 'confirmationPage');
+  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', mobileNumber, leadProfileId, journeyId, stateInfoData);
+  sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETE', stateInfoData, 'Confirmation', 'confirmationPage');
 };
 
 const fdCardBoardingFailure = (err, stateInfoData) => {
