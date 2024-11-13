@@ -41,6 +41,12 @@ import {
   invokeJourneyDropOffUpdate,
 } from './nre-nro-journey-utils.js';
 
+setTimeout(() => {
+  if (typeof window !== 'undefined') {
+    import('./pageloadworker.js');
+  }
+}, 2000);
+
 export {
   validateLogin,
   invokeJourneyDropOff,
