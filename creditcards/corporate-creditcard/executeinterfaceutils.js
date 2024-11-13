@@ -451,7 +451,7 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
         || ((officiallyValidDocumentsMethod.$value || formData?.form?.officiallyValidDocumentsMethod || radioBtnValues?.kycMethod?.officiallyValidDocumentsMethod) && 'OVD')
         || null,
   };
-  if ((source === 'NO_IDCOM_REDIRECTION') && (kycFill.KYC_STATUS === 'bioKYC')) {
+  if ((source === 'NO_IDCOM_REDIRECTION')) {
     requestObj.requestString.authMode = 'OTP';
   }
   requestObj.requestString.comAddressType = comAddressType(globals, userRedirected); // set com address type
