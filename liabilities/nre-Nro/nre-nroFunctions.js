@@ -1341,14 +1341,17 @@ function nreNroPageRedirected(globals) {
   currentFormContext.idComAuthCode = queryParams?.authcode;
   currentFormContext.idComErrorCode = queryParams?.errorCode;
   currentFormContext.idComErrorMessage = queryParams?.errorMessage;
-  currentFormContext.idComSuccess = queryParams?.success;
+  currentFormContext.idComSuccess = queryParams?.success.toUpperCase();
   currentFormContext.idComRedirect = currentFormContext?.authModeParam && ((currentFormContext?.authModeParam === 'DebitCard') || (currentFormContext?.authModeParam === 'NetBanking')); // debit card or net banking flow
-  if (currentFormContext.idComRedirect) {
+  if (currentFormContext.idComRedirect && currentFormContext.idComSuccess == "TRUE") {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'true' });
     globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
     // displayLoader(); // TODO : Uncomment : Error popping up
     // await nreNroFetchRes(globals);
-  } else {
+  }  else if(currentFormContext.idComSuccess == "FALSE"){
+    globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'false' });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: 'true' });
+  }  else {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'false' });
   }
 }
