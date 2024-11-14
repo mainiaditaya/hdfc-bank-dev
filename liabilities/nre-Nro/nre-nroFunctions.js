@@ -1351,7 +1351,7 @@ function nreNroPageRedirected(globals) {
   }  else if(currentFormContext.idComSuccess == "FALSE"){
       globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'false' });
       globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-      globals.functions.setProperty(globals.form.nreNroPageRedirected, { visible: false });    
+      globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });    
       globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
       globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
   }  else {
