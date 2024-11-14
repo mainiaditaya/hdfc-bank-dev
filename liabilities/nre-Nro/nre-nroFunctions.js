@@ -1188,7 +1188,7 @@ async function validateJourneyParams(formData, globals) {
     // eslint-disable-next-line no-unused-vars
     const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
     if (checkFinalSuccess) {
-      if (currentFormContext.idComSuccess === 'true') {
+      if (currentFormContext.idComSuccess === 'TRUE') {
         if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
           currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
         }
