@@ -1314,6 +1314,7 @@
 
               &::after {
                 transform: rotate(0deg);
+                top: 30px;
               }
             }
           }
@@ -1339,7 +1340,7 @@
 
             @media (320px <=width <=600px) {
               margin: 10px;
-            }           
+            }
 
             p {
               margin-bottom: 0;
@@ -1353,7 +1354,7 @@
                 width: 20px;
                 background: url('../icons/info-circle.png') no-repeat left center;
                 left: 15px;
-  
+
                 @media (320px <=width <=600px) {
                   margin-left: -5px;
                 }
@@ -1476,8 +1477,8 @@
                 display: none;
               }
 
-              .plain-text-wrapper {
-                padding: 20px 20px 0 30px;
+              .plain-text-wrapper.field-textnominee {
+                padding: 20px 20px 20px 30px;
 
                 @media (320px <=width <=600px) {
                   padding: 0px 15px 0 15px;
@@ -1761,7 +1762,7 @@
               margin-bottom: 35px;
               display: block;
 
-              &::after{
+              &::after {
                 display: none;
               }
 
@@ -2238,15 +2239,16 @@
               }
             }
 
-            &[data-visible="false"]~.field-nro-account-type-pannel {
-              border-top: none;
-            }
+            /*  &[data-visible="false"]~.field-nro-account-type-pannel {
+                border-top: none;
+              } */
           }
 
           .field-nro-account-type-pannel,
           .field-nre-account-type-pannel {
             border-top: 1px dashed var(--color-interface-border-secondary);
             padding-top: 40px;
+            margin-top: 40px;
 
             @media (320px <=width <=991px) {
               display: initial;
@@ -2457,6 +2459,7 @@
                 margin-top: 2px;
                 position: absolute;
                 font-family: "Inter", sans-serif !important;
+                border-radius: 0;
 
                 &:focus-visible {
                   outline: none;
@@ -2735,7 +2738,9 @@
 
     .field-errorresults {
 
-      .field-itsnotyoupanel {
+      .field-itsnotyoupanel,
+      .field-differenterrorcodes,
+      .field-errorconnection {
 
         .image-wrapper {
           &::before {
@@ -2747,8 +2752,7 @@
             margin: 0px auto;
 
             @media (320px <=width <=600px) {
-              width: 129px;
-              height: 111px;
+              width: 100%;
             }
           }
 
@@ -2814,7 +2818,7 @@
         }
       }
 
-      /* incorrect OTP enter */
+      /* incorrect OTP enter screen */
       .field-incorrectotppanel {
         .image-wrapper {
           &::before {
@@ -2927,6 +2931,93 @@
           }
         }
       }
+
+      /* differnt error code screen */
+
+      .field-differenterrorcodes {
+        .plain-text-wrapper.field-wrapper {
+          p {
+            margin-bottom: 0;
+          }
+        }
+
+        & .plain-text-wrapper.field-errorcodedes {
+          width: 88%;
+          margin: 20px auto 0 auto;
+
+          @media (768px <=width <=991px) {
+            width: 88%;
+          }
+
+          @media (320px <=width <=600px) {
+            width: initial;
+          }
+
+          a {
+            font-weight: 600;
+            text-decoration: underline;
+          }
+        }
+      }
+
+      /* error-connect screen */
+      .field-errorconnection {
+        .image-wrapper {
+          &::before {
+            background: url('../icons/service_unavailable.png') no-repeat center center;
+          }
+        }
+
+        .plain-text-wrapper.field-wrapper {
+          p {
+            margin-bottom: 0;
+          }
+
+          &.field-errorconnectiontitle {
+
+            p {
+              @media (320px <=width <=600px) {
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                margin-top: 10px;
+              }
+            }
+          }
+
+          &.field-errorconnectiondesc {
+            margin-top: -10px;
+
+            @media (320px <=width <=600px) {
+              margin-top: 0px;
+            }
+
+            p {
+              @media (320px <=width <=600px) {
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 20px;
+              }
+            }
+          }
+        }
+
+        .field-okaybutton {
+          width: 272px;
+          margin: 20px auto;
+
+          @media (768px <=width <=991px) {
+            width: 222px;
+          }
+
+          @media (320px <=width <=600px) {
+            width: 100%;
+            max-width: 100%;
+          }
+        }
+      }
+
+
     }
   }
 
@@ -2993,6 +3084,12 @@
       &~.form-container {
         width: 100%;
         max-width: inherit !important;
+
+        .form-wrapper {
+          @media (768px <=width <=991px) {
+            max-width: inherit;
+          }
+        }
       }
     }
   }
@@ -3018,17 +3115,34 @@
           margin-right: 5px;
         }
       }
+
+      .cmp-container {
+        @media (width >=900px) {
+          max-width: 1200px !important;
+        }
+
+      }
     }
 
     main {
       overflow: initial;
+
+      @media (width >=900px) {
+        max-width: 1400px !important;
+      }
 
       .cmp-container-container {
         display: none;
       }
 
       .form-container {
-        max-width: initial !important;
+        @media (width >=900px) {
+          max-width: inherit !important;
+        }
+
+        .form-wrapper {
+          max-width: inherit;
+        }
       }
 
       .field-thankyoupanel {
@@ -3042,8 +3156,12 @@
           }
 
           .field-thankyouleftpanel {
-            flex: 0 0 72%;
-            margin-top: -60px;
+            flex: 0 0 74%;
+           
+            margin-top: -130px;
+            @media (width >=1440px) {
+              flex: 0 0 76%;             
+            }
 
             @media (320px <=width <=991px) {
               max-width: 100%;
@@ -3056,7 +3174,7 @@
                 font-weight: 600;
                 line-height: 44px;
                 color: #fff;
-                margin-top: -125px;
+                margin-top: -150px;
 
                 @media (768px <=width <=991px) {
                   font-size: 32px;
@@ -3079,7 +3197,7 @@
                   height: 158px;
                   position: absolute;
                   width: 100%;
-                  top: -275px;
+                  top: -245px;
                   right: 0;
 
                   /*   @media (768px <=width <=991px) {
@@ -3323,8 +3441,8 @@
                   font-weight: 500;
                   color: var(--color-interface-background-quaternary);
                   resize: none;
-                  width: 100%;
-                  min-height: auto;
+                  /* width: 100%; 
+                  min-height: auto;*/
 
                   @media (768px <=width <=991px) {
                     min-height: auto;
@@ -3341,9 +3459,9 @@
                   }
                 }
 
-                &.multiline-wrapper {
+                /* &.multiline-wrapper {
                   grid-column: span 12;
-                }
+                } */
               }
             }
 
@@ -3675,9 +3793,9 @@
           /* left panel end */
 
           .field-personalizeddebitcard {
-            flex: 0 0 23%;
+            flex: 0 0 240px;
             display: flex;
-            margin-top: -95px;
+            margin-top: -165px;
             position: relative;
 
             @media (320px <=width <=991px) {
