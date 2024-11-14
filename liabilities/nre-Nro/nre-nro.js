@@ -33,6 +33,8 @@ import {
   getCountryName,
   postIdCommRedirect,
   nreNroShowHidePage,
+  submitThankYou,
+  reloadPage,
 } from './nre-nroFunctions.js';
 
 import { sendAnalytics } from './analytics.js';
@@ -85,4 +87,6 @@ export {
   postIdCommRedirect,
   nreNroShowHidePage,
   getCountryName,
+  submitThankYou,
+  reloadPage,
 };
