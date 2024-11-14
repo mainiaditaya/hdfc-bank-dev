@@ -565,19 +565,16 @@ function showNomineeDetails(nomineeDetails, response, globals) {
   if (nomineeName !== null) {
     globals.functions.setProperty(nomineeDetails, { visible: true });
     const formattedDate = convertDateToMmmDdYyyy(nomineeDob);
-    globals.functions.setProperty(nomineeDetails.nomineePanel.relation, { value: relationText?.toUpperCase() });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeName, { value: nomineeName?.toUpperCase() });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineedob, { value: formattedDate });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineedob, { visible: true });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.relation, { value: relationText?.toUpperCase() });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.nomineeName, { value: nomineeName?.toUpperCase() });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.nomineedob, { value: formattedDate });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.nomineedob, { visible: true });
     globals.functions.setProperty(nomineeDetails.nonomineeText, { visible: false });
   } else if (nomineeName === null) {
     globals.functions.setProperty(nomineeDetails.nomineePanel, { visible: false });
     globals.functions.setProperty(nomineeDetails.nonomineeText, { visible: true });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.relation, { visible: false });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeName, { visible: false });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineedob, { visible: false });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.relation, { visible: false });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.textnominee, { visible: false });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel, { visible: false });
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.textnominee, { visible: false });
   }
 }
 
