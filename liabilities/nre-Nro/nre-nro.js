@@ -30,6 +30,7 @@ import {
   accountOpeningNreNro,
   validateJourneyParams,
   errorHandling,
+  getCountryName,
   postIdCommRedirect,
   nreNroShowHidePage,
 } from './nre-nroFunctions.js';
@@ -83,4 +84,5 @@ export {
   errorHandling,
   postIdCommRedirect,
   nreNroShowHidePage,
+  getCountryName,
 };
