@@ -70,6 +70,11 @@
     display: flex;
     overflow: auto;
     justify-content: center;
+    margin: 0 auto;
+
+    @media (width >=900px) {
+      max-width: 1200px;
+    }
 
     &:has(.form-container[style="display: none;"]) {
       justify-content: flex-start;
@@ -1334,9 +1339,9 @@
 
             @media (320px <=width <=600px) {
               margin: 10px;
-            }
+            }           
 
-            &>p {
+            p {
               margin-bottom: 0;
               display: flex;
               align-items: center;
@@ -1348,7 +1353,7 @@
                 width: 20px;
                 background: url('../icons/info-circle.png') no-repeat left center;
                 left: 15px;
-
+  
                 @media (320px <=width <=600px) {
                   margin-left: -5px;
                 }
@@ -1521,11 +1526,12 @@
 
         .field-wizardnrenro,
         .field-wizardpanel {
+          position: relative;
 
           .field-wizardtitle {
             position: absolute;
-            top: 15px;
-            left: 233px;
+            top: -140px;
+            left: 162px;
             padding-left: 15px;
             border-left: 1px solid var(--color-interface-fd-title-border);
 
@@ -1547,22 +1553,23 @@
             }
 
             @media (768px <=width <=991px) {
-              left: 25px;
-              top: 55px;
+              left: 0;
               border-left: none;
+              padding-left: 0;
             }
 
             @media (320px <=width <=600px) {
-              left: 5px;
-              top: 55px;
+              left: 0;
               border-left: none;
+              padding-left: 0;
+              top: -120px;
             }
           }
 
           .field-accountsuccessmsg {
             position: absolute;
-            top: 15px;
-            left: 35%;
+            top: -140px;
+            left: 380px;
             padding-left: 15px;
             height: 40px;
             border-radius: 8px;
@@ -1576,8 +1583,9 @@
             }
 
             @media (320px <=width <=600px) {
-              left: 7%;
-              top: 55px;
+              left: 0;
+              top: -115px;
+              padding: 0 10px;
             }
 
             &::before {
@@ -1752,6 +1760,10 @@
               color: var(--color-interface-text-primary);
               margin-bottom: 35px;
               display: block;
+
+              &::after{
+                display: none;
+              }
 
               @media (768px <=width <=991px) {
                 font-size: 24px;
@@ -2479,14 +2491,14 @@
                 display: none !important;
               }
 
-               div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"]:not([data-visible="false"]) {
+              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"]:not([data-visible="false"]) {
                 display: flex !important;
               }
 
               div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"][data-visible="false"] {
                 display: none !important;
-              } 
-            }*/
+              }
+            } */
           }
 
           .field-needbankhelp {
