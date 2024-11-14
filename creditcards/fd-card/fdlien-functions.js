@@ -8,14 +8,6 @@ import {
   pincodeCheck,
   pinCodeMasterCheck,
   urlPath,
-  ageValidator,
-  clearString,
-  generateErefNumber,
-  maskNumber,
-  parseCustomerAddress,
-  pincodeCheck,
-  pinCodeMasterCheck,
-  urlPath,
 } from '../../common/formutils.js';
 import * as FD_CONSTANT from './constant.js';
 import * as CONSTANT from '../../common/constants.js';
