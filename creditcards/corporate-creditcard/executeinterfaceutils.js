@@ -22,6 +22,7 @@ import {
   CURRENT_FORM_CONTEXT as currentFormContext,
   FORM_RUNTIME as formRuntime,
 } from '../../common/constants.js';
+import { NAME_ON_CARD_MAX_LENGTH } from './constant.js';
 
 import { sendAnalytics } from './analytics.js';
 
@@ -240,7 +241,7 @@ const listNameOnCard = (globals) => {
   const middleName = personalDetails.middleName.$value;
   const lastName = personalDetails.lastName.$value;
   const dropDownSelectField = globals.form.corporateCardWizardView.confirmCardPanel.cardBenefitsPanel.CorporatetImageAndNamePanel.nameOnCardDropdown;
-  const options = composeNameOption(firstName, middleName, lastName);
+  const options = composeNameOption(firstName, middleName, lastName, 'ccc', NAME_ON_CARD_MAX_LENGTH);
   const initialValue = options[0]?.value;
   setSelectOptions(options, elementNameSelect);
   const setDropdownField = formUtil(globals, dropDownSelectField);
@@ -450,7 +451,7 @@ const executeInterfacePostRedirect = async (source, userRedirected, globals) => 
         || ((officiallyValidDocumentsMethod.$value || formData?.form?.officiallyValidDocumentsMethod || radioBtnValues?.kycMethod?.officiallyValidDocumentsMethod) && 'OVD')
         || null,
   };
-  if ((source === 'NO_IDCOM_REDIRECTION') && (kycFill.KYC_STATUS === 'bioKYC')) {
+  if ((source === 'NO_IDCOM_REDIRECTION')) {
     requestObj.requestString.authMode = 'OTP';
   }
   requestObj.requestString.comAddressType = comAddressType(globals, userRedirected); // set com address type
