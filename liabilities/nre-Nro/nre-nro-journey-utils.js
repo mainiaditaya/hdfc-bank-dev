@@ -5,10 +5,10 @@ import {
   urlPath,
   generateUUID,
 } from '../../common/formutils.js';
-import { 
+import {
   fetchJsonResponse,
   displayLoader,
- } from '../../common/makeRestAPI.js';
+} from '../../common/makeRestAPI.js';
 import * as NRE_CONSTANT from './constant.js';
 
 import * as CONSTANT from '../../common/constants.js';
@@ -143,7 +143,7 @@ const nreNroInvokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, jo
   };
   const url = urlPath(ENDPOINTS.journeyDropOffParam);
   const method = 'POST';
-  if(typeof window !== 'undefined') {
+  if (typeof window !== 'undefined') {
     displayLoader();
   }
   return fetchJsonResponse(url, journeyJSONObj, method);

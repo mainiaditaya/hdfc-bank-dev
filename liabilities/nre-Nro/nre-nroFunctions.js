@@ -36,6 +36,7 @@ import {
 import {
   sendAnalytics,
 } from './analytics.js';
+import { reloadPage } from '../../common/functions.js';
 
 setTimeout(async () => {
   if (typeof window !== 'undefined') {
@@ -73,7 +74,7 @@ formRuntime.hideLoader = (typeof window !== 'undefined') ? hideLoaderGif : false
 
 function customerDataMasking(fieldName, value) {
   if (value != null && value !== undefined && value.length > 0) {
-    let splittedValue; let adress; let adressLength; let cityLength; let city; let pin; let pinLength; let country; let contryLength;
+    let splittedValue; let adress; let adressLength; let cityLength; let city; let country; let contryLength;
 
     switch
     (fieldName) {
@@ -130,7 +131,7 @@ function customerDataMasking(fieldName, value) {
       case
         'AddressLine': // string length
 
-        adress = value;
+        adress = value.trim();
         adressLength = adress.length;
         if (adressLength > 1) {
           const maskdAdress = adress.replace(adress.substring(adressLength - Math.round(0.80 * adressLength), adressLength), '*'.repeat(adressLength - (adressLength - Math.round(0.80 * adressLength))));
@@ -146,17 +147,7 @@ function customerDataMasking(fieldName, value) {
           const maskdCity = city.replace(city.substring(1, cityLength - 1), '*'.repeat(cityLength - 2));
           return maskdCity;
         }
-        return '';
-
-      case
-        'PIN': // check legth
-        pin = value;
-        pinLength = pin.length;
-        if (pinLength === 6) {
-          const makdPIN = pin.substring(0, 3) + '*'.repeat(3);
-          return makdPIN;
-        }
-        return '';
+        return value;
 
       case
         'Country':
@@ -598,10 +589,12 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(personalDetails.pan, customerDataMasking('PANnmbr', response.refCustItNum)?.toUpperCase());
   if (!response.refCustTelex) globals.functions.setProperty(personalDetails.telephoneNumber, { visible: false });
   else setFormValue(personalDetails.telephoneNumber, response.refCustTelex?.toUpperCase());
-  setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1} ${response.txtCustadrAdd2} ${response.txtCustadrAdd3} ${response.namCustadrCity} ${response.namCustadrState} ${response.namCustadrCntry} ${response.txtCustadrZip}`?.toUpperCase());
-  setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)}
-  ${customerDataMasking('AddressLine', response.txtPermadrAdd3)} ${customerDataMasking('CityState', response.namPermadrCity)} ${customerDataMasking('CityState', response.namPermadrState)} ${customerDataMasking('Country', response.namPermadrCntry)} 
-  ${customerDataMasking('PIN', response.txtPermadrZip)}`?.toUpperCase());
+
+  setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1.trim()}, ${response.txtCustadrAdd2.trim()}, ${response.txtCustadrAdd3.trim()}, ${response.namCustadrCity}, ${response.namCustadrState}, ${response.namCustadrCntry}, ${response.txtCustadrZip}`?.toUpperCase());
+
+  setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)}, ${customerDataMasking('AddressLine', response.txtPermadrAdd3)},
+${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMasking('CityState', response.namPermadrState)}, ${customerDataMasking('Country', response.namPermadrCntry)}, ${response.txtPermadrZip}`);
+
   getCountryName(response.txtCustNATNLTY)
     .then(() => setFormValue(fatcaDetails.nationality, currentFormContext.countryName?.toUpperCase()));
   getCountryName(response.customerFATCADtlsDTO[0].codTaxCntry1)
@@ -1117,15 +1110,15 @@ async function accountOpeningNreNro(idComToken) {
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
   // return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
-  if(typeof window !== 'undefined') {
+  if (typeof window !== 'undefined') {
     hideLoaderGif();
   }
   return {
-      accountOpening: {
-        errorCode: '0',
-        accountNumber: '50919394857273',
-      }
-    };
+    accountOpening: {
+      errorCode: '0',
+      accountNumber: '50919394857273',
+    },
+  };
 }
 
 /**
@@ -1340,18 +1333,18 @@ function nreNroPageRedirected(globals) {
   currentFormContext.idComErrorMessage = queryParams?.errorMessage;
   currentFormContext.idComSuccess = queryParams?.success.toUpperCase();
   currentFormContext.idComRedirect = currentFormContext?.authModeParam && ((currentFormContext?.authModeParam === 'DebitCard') || (currentFormContext?.authModeParam === 'NetBanking')); // debit card or net banking flow
-  if (currentFormContext.idComRedirect && currentFormContext.idComSuccess == "TRUE") {
+  if (currentFormContext.idComRedirect && currentFormContext.idComSuccess === 'TRUE') {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'true' });
     globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
     // displayLoader(); // TODO : Uncomment : Error popping up
     // await nreNroFetchRes(globals);
-  }  else if(currentFormContext.idComSuccess == "FALSE"){
-      globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'false' });
-      globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-      globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });    
-      globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
-      globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
-  }  else {
+  } else if (currentFormContext.idComSuccess === 'FALSE') {
+    globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'false' });
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
+    globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+  } else {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'false' });
   }
 }
@@ -1789,13 +1782,21 @@ function errorHandling(response, journeyState, globals) {
     document.body.classList.remove('wizardPanelBody');
     globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
     globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
   }
 
   invokeJourneyDropOffUpdate(journeyState, mobileNumber, leadProfileId, journeyID, globals);
 }
 
+function submitThankYou(globals) {
+  const {
+    mobileNumber,
+    leadProfileId,
+    journeyID,
+  } = currentFormContext;
 
+  invokeJourneyDropOffUpdate('CUSTOMER_REVIEW_SUBMITTED', mobileNumber, leadProfileId, journeyID, globals);
+}
 
 export {
   validateLogin,
@@ -1832,4 +1833,6 @@ export {
   getCountryName,
   postIdCommRedirect,
   nreNroShowHidePage,
+  submitThankYou,
+  reloadPage,
 };
