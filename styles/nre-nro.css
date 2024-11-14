@@ -3558,7 +3558,7 @@
                     height: 100%;
                     border-radius: 0;
 
-                    &:active,
+                    &.active,
                     &:hover {
                       background: #ED5A6E !important;
 
@@ -3573,7 +3573,8 @@
                   &:nth-child(9),
                   &:nth-child(10) {
                     button {
-                      &:hover {
+                      &:hover,
+                      &.active {
                         background: #F99F35 !important;
                       }
                     }
@@ -3582,7 +3583,8 @@
                   &:nth-child(11),
                   &:nth-child(12) {
                     button {
-                      &:hover {
+                      &:hover,
+                      &.active {
                         background: #2DB780 !important;
                       }
                     }
@@ -3888,6 +3890,53 @@
 
         }
       }
+
+      .field-rateabovenine, .field-beloweight{
+        position: absolute;
+        top: -280px;
+        left: 380px;
+        padding-left: 15px;
+        height: 40px;
+        border-radius: 8px;
+        background-color: #EBF9EF;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+
+        @media (768px <=width <=991px) {
+          left: 30%;
+        }
+
+        @media (320px <=width <=600px) {
+          left: 0;
+          top: -115px;
+          padding: 0 10px;
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          height: 16px;
+          width: 16px;
+          background: #00875F url('../icons/tick-completed-step.svg') no-repeat center center;
+          border-radius: 100%;
+          background-size: 7px;
+        }
+
+        p {
+          margin: 0;
+
+          p {
+            margin: 0;
+            color: #00875F;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            padding-left: 30px;
+          }
+        }
+      }
+
     }
   }
 
