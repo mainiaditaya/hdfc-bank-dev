@@ -1553,15 +1553,16 @@
             }
 
             @media (768px <=width <=991px) {
-              left: 25px;
-              top: 55px;
+              left: 0;
               border-left: none;
+              padding-left: 0;
             }
 
             @media (320px <=width <=600px) {
-              left: 5px;
-              top: 55px;
+              left: 0;
               border-left: none;
+              padding-left: 0;
+              top: -120px;
             }
           }
 
@@ -1582,8 +1583,9 @@
             }
 
             @media (320px <=width <=600px) {
-              left: 7%;
-              top: 55px;
+              left: 0;
+              top: -115px;
+              padding: 0 10px;
             }
 
             &::before {
