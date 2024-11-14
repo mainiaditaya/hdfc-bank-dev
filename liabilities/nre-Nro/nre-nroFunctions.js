@@ -1109,16 +1109,10 @@ async function accountOpeningNreNro(idComToken) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  // return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
-  if (typeof window !== 'undefined') {
+  return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
+ /* if (typeof window !== 'undefined') {
     hideLoaderGif();
-  }
-  return {
-    accountOpening: {
-      errorCode: '0',
-      accountNumber: '50919394857273',
-    },
-  };
+  }*/
 }
 
 /**
