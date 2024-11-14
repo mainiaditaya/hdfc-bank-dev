@@ -412,7 +412,6 @@ function otpTimer(globals) {
 function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
   if (!email) globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)}` });
   globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)} & email ID ${customerDataMasking('eMail', email)}.` });
-  //globals.functions.setProperty(globals.form.otppanelwrapper.submitOTP, { enabled: false });
   const otpField = document.querySelector('.field-otpnumber input');
   otpField.addEventListener('mouseover', () => {
     otpField.focus();
@@ -590,7 +589,7 @@ function prefillCustomerDetail(response, globals) {
 
   } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
 
-  const changeDataAttrObj = { attrChange: true, value: false, disable: true };
+  // const changeDataAttrObj = { attrChange: true, value: false, disable: true };
 
   const setFormValue = (field, value) => {
     globals.functions.setProperty(field, { value });
