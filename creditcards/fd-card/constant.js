@@ -1,7 +1,6 @@
 // declare CONSTANTS for (fd) fd only.
 
 const JOURNEY_NAME = 'EXISTING_CC_BASED_FDLIEN_JOURNEY';
-const JOURNEY_NAME = 'EXISTING_CC_BASED_FDLIEN_JOURNEY';
 
 const AGE_LIMIT = {
   min: 18,
@@ -56,8 +55,6 @@ const FD_ENDPOINTS = {
 };
 
 const OTP_TIMER = 30;
-const MODE = 'dev';
-// const MODE = 'prod';
 const MODE = 'dev';
 // const MODE = 'prod';
 const MAX_OTP_RESEND_COUNT = 3;
