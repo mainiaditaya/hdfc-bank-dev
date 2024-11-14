@@ -1426,7 +1426,7 @@
               }
 
               textarea {
-                height: 80%;
+                height: 115px !important;
                 margin-bottom: 20px;
                 width: 100% !important;
 
@@ -1940,7 +1940,8 @@
             }
           }
 
-          .field-wrapper.text-wrapper {
+          .field-wrapper.text-wrapper,
+          .multiline-wrapper.field-wrapper {
             @media (768px <=width <=991px) {
               grid-column: span 6;
             }
@@ -2417,6 +2418,7 @@
             .multiline-wrapper,
             .drop-down-wrapper {
               min-height: 50px;
+              position: relative;
 
 
               @media (768px <=width <=991px) {
@@ -2446,7 +2448,7 @@
                 background: none;
                 margin: 0;
                 padding: 0;
-                width: auto;
+                width: 100%;
                 height: auto;
                 font-size: 18px !important;
                 line-height: 28px;
