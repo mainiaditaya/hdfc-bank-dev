@@ -40,9 +40,10 @@ import { reloadPage } from '../../common/functions.js';
 
 setTimeout(async () => {
   if (typeof window !== 'undefined') {
-    const { addGaps, validateOtpInput } = await import('./nre-nro-dom-functions.js');
+    const { addGaps, validateOtpInput, enableSubmitOTPBtn } = await import('./nre-nro-dom-functions.js');
     addGaps();
     validateOtpInput();
+    enableSubmitOTPBtn();
   }
 }, 1200);
 
@@ -409,6 +410,7 @@ function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
   const maskedMobile = maskNumber(mobileNo, 6);
 
   globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskedMobile}${emailText}` });
+  globals.functions.setProperty(globals.form.otppanelwrapper.submitOTP, { enabled: false });
   const otpField = document.querySelector('.field-otpnumber input');
   otpField.addEventListener('mouseover', () => {
     otpField.focus();
@@ -637,7 +639,7 @@ function prefillAccountDetail(response, i, responseLength, globals) {
   const setFormValue = (field, value) => {
     globals.functions.setProperty(field, { value });
   };
-  setFormValue(customerName, response.customerFullName);
+  setFormValue(customerName, response.customerFullName?.toUpperCase());
   setFormValue(custIDWithoutMasking, response.customerId);
   if (responseLength > 1) {
     setFormValue(customerID, customerDataMasking('cutomerIDMasking', response.customerId.toString()));
@@ -727,6 +729,8 @@ const resendOTP = async (globals) => {
   globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.otpResend, { visible: false });
   globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.secondsPanel, { visible: true });
   globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.secondsPanel.seconds, { value: dispSec });
+  globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.incorrectOTPText, { visible: false });
+  globals.functions.setProperty(globals.form.otppanelwrapper.submitOTP, { enabled: false });
   if (resendOtpCount < MAX_OTP_RESEND_COUNT) {
     resendOtpCount += 1;
 

@@ -8,6 +8,21 @@ import {
   DOM_ELEMENT,
 } from './constant.js';
 
+function enableSubmitOTPBtn() {
+  const otpField = document.querySelector('.field-otpnumber input');
+  const submitOTPBtn = document.querySelector('.field-submitotp button');
+  if (otpField && submitOTPBtn) {
+    otpField.addEventListener('keyup', () => {
+      const otpLength = otpField.value.length;
+      if (otpLength === 6) {
+        submitOTPBtn.disabled = false;
+      } else {
+        submitOTPBtn.disabled = true;
+      }
+    });
+  }
+}
+
 /**
  * Validates the OTP input field to ensure it contains only digits.
  *
@@ -199,6 +214,7 @@ setTimeout(() => {
 }, 1200);
 
 export {
+  enableSubmitOTPBtn,
   addGaps,
   addMobileValidation,
   validateOtpInput,
