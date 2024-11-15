@@ -172,6 +172,10 @@ const validFDPan = (val) => {
   return true;
 };
 
+function isNullOrEmpty(value) {
+  return value == null || value.trim() === '';
+}
+
 const getCountryName = (countryCodeIst) => new Promise((resolve) => {
   const finalURL = `/content/hdfc_commonforms/api/mdm.COMMON.COUNTRYCODE_MASTER.COUNTRYCODE-${countryCodeIst}.json`;
   fetchJsonResponse(urlPath(finalURL), null, 'GET', true)
@@ -401,8 +405,10 @@ function otpTimer(globals) {
 }
 
 function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
-  if (!email) globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)}` });
-  globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)} & email ID ${customerDataMasking('eMail', email)}.` });
+  const emailText = !isNullOrEmpty(email) ? ` & email ID ${customerDataMasking('eMail', email)}` : '';
+  const maskedMobile = maskNumber(mobileNo, 6);
+
+  globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskedMobile}${emailText}` });
   const otpField = document.querySelector('.field-otpnumber input');
   otpField.addEventListener('mouseover', () => {
     otpField.focus();
@@ -593,7 +599,7 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1.trim()}, ${response.txtCustadrAdd2.trim()}, ${response.txtCustadrAdd3.trim()}, ${response.namCustadrCity}, ${response.namCustadrState}, ${response.namCustadrCntry}, ${response.txtCustadrZip}`?.toUpperCase());
 
   setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)}, ${customerDataMasking('AddressLine', response.txtPermadrAdd3)},
-${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMasking('CityState', response.namPermadrState)}, ${customerDataMasking('Country', response.namPermadrCntry)}, ${response.txtPermadrZip}`);
+${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMasking('CityState', response.namPermadrState)}, ${customerDataMasking('Country', response.namPermadrCntry)}, ${response.txtPermadrZip}`?.toUpperCase());
 
   getCountryName(response.txtCustNATNLTY)
     .then(() => setFormValue(fatcaDetails.nationality, currentFormContext.countryName?.toUpperCase()));
@@ -1149,12 +1155,24 @@ async function fetchIdComToken() {
  * @returns {void}
  */
 function prefillThankYouPage(accountNumber, globals) {
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: accountNumber }); // Setting the account number
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.accounttype, { value: finalResult.journeyParamStateInfo.accounttype }); // Setting the account type
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.homeBranch, { value: finalResult.journeyParamStateInfo.homeBranch }); // Setting the home branch
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchCode, { value: finalResult.journeyParamStateInfo.branchCode }); // Setting the branch code
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.ifsc, { value: finalResult.journeyParamStateInfo.ifsc }); // Setting the ifsc code
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.communicationAddress, { value: finalResult.journeyParamStateInfo.communicationAddress }); // Setting the communication address
+  const { thankyouLeftPanel } = globals.form.thankYouPanel.thankYoufragment;
+  const journeyAccountType = finalResult.journeyParamStateInfo.currentFormContext.journeyAccountType === 'NRE' ? 'NRO' : 'NRE';
+  globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
+  if (!isNullOrEmpty(accountNumber)) {
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountNumber }); // Setting the account number
+  } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.confirmText, { value: 'Congratulations! Your online application is successfully submitted !!!' });
+  } else {
+    globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
+  }
+
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: finalResult.journeyParamStateInfo.accounttype }); // Setting the account type
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: finalResult.journeyParamStateInfo.homeBranch }); // Setting the home branch
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: finalResult.journeyParamStateInfo.branchCode }); // Setting the branch code
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: finalResult.journeyParamStateInfo.ifsc }); // Setting the ifsc code
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: finalResult.journeyParamStateInfo.communicationAddress }); // Setting the communication address
 }
 
 /**
