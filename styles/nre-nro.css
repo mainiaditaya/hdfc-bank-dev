@@ -1424,6 +1424,10 @@
 
             &.field-communicationaddress,
             &.field-permanentaddress {
+              @media (768px <=width <=991px) {
+                grid-column: span 12;
+              }
+
               @media (320px <=width <=600px) {
                 margin-bottom: 20px;
               }
@@ -3168,8 +3172,25 @@
             position: absolute;
             top: -230px;
             display: none;
+
+            @media (768px <=width <=991px) {
+              top: -390px;
+            }
+
             @media (320px <=width <=991px) {
               display: block;
+              top: -275px;
+            }
+
+            p{
+              margin-bottom: 0;
+              p{
+                margin-bottom: 0;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                color: #fff;
+              }
             }
           }
 
@@ -3199,7 +3220,7 @@
                   line-height: 40px;
                   max-width: 60%;
                   margin-left: 15px;
-                  margin-top: -180px;
+                  margin-top: -165px;
                 }
 
                 @media (320px <=width <=600px) {
@@ -3218,14 +3239,14 @@
                   top: -245px;
                   right: 0;
 
-                  /*   @media (768px <=width <=991px) {
-                    top: 135px;
-                  } */
+                  @media (768px <=width <=991px) {
+                    top: -315px;
+                  } 
 
                   @media (320px <=width <=600px) {
-                    top: -190px;
+                    top: -245px;
                     background-size: 30%;
-                    width: 80%;
+                    width: 90%;
                     right: 15px;
                   }
                 }
@@ -3248,7 +3269,7 @@
               margin-top: -55px;
 
               @media (768px <=width <=991px) {
-                margin-top: -55px;
+                margin-top: -10px;
                 border-bottom: none;
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
@@ -3940,6 +3961,7 @@
 
         @media (768px <=width <=991px) {
           left: 30%;
+          top: -430px;
         }
 
         @media (320px <=width <=600px) {
