@@ -656,6 +656,7 @@
             text-align: left;
             position: relative;
             width: 272px;
+            margin-top: 10px;
 
             @media (768px <=width <=991px) {
               width: 222px;
@@ -995,6 +996,7 @@
                 color: var(--color-interface-text-primary);
                 border-color: var(--color-interface-border-secondary);
                 caret-color: currentcolor;
+                margin-top: 0;
 
                 @media (320px <=width <=600px) {
                   letter-spacing: 25px;
@@ -1422,6 +1424,10 @@
 
             &.field-communicationaddress,
             &.field-permanentaddress {
+              @media (768px <=width <=991px) {
+                grid-column: span 12;
+              }
+
               @media (320px <=width <=600px) {
                 margin-bottom: 20px;
               }
@@ -3107,6 +3113,12 @@
         height: 300px !important;
       }
 
+      .cmp-container>div:nth-child(1) {
+        @media screen and (min-width: 768px) {
+          margin-left: 72px;
+        }
+      }
+
       .cmp-container>div:nth-child(3) {
         display: none;
 
@@ -3116,18 +3128,19 @@
         }
       }
 
-      .cmp-container {
+      .cmp-container {     
+        
         @media (width >=900px) {
-          max-width: 1200px !important;
+          max-width: 1400px !important;
         }
 
       }
     }
 
-    main {
+    main {  
       overflow: initial;
 
-      @media (width >=900px) {
+       @media (width >=900px) {
         max-width: 1400px !important;
       }
 
@@ -3155,12 +3168,38 @@
             flex-direction: column;
           }
 
+          .field-thankyoupagetitle{
+            position: absolute;
+            top: -230px;
+            display: none;
+
+            @media (768px <=width <=991px) {
+              top: -390px;
+            }
+
+            @media (320px <=width <=991px) {
+              display: block;
+              top: -275px;
+            }
+
+            p{
+              margin-bottom: 0;
+              p{
+                margin-bottom: 0;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 24px;
+                color: #fff;
+              }
+            }
+          }
+
           .field-thankyouleftpanel {
-            flex: 0 0 74%;
-           
+            flex: 0 0 76%;
             margin-top: -130px;
-            @media (width >=1440px) {
-              flex: 0 0 76%;             
+
+            @media (1200px <=width <=1300px) {
+              flex: 0 0 74%;
             }
 
             @media (320px <=width <=991px) {
@@ -3181,7 +3220,7 @@
                   line-height: 40px;
                   max-width: 60%;
                   margin-left: 15px;
-                  margin-top: -180px;
+                  margin-top: -165px;
                 }
 
                 @media (320px <=width <=600px) {
@@ -3200,14 +3239,14 @@
                   top: -245px;
                   right: 0;
 
-                  /*   @media (768px <=width <=991px) {
-                    top: 135px;
-                  } */
+                  @media (768px <=width <=991px) {
+                    top: -315px;
+                  } 
 
                   @media (320px <=width <=600px) {
-                    top: -190px;
+                    top: -245px;
                     background-size: 30%;
-                    width: 80%;
+                    width: 90%;
                     right: 15px;
                   }
                 }
@@ -3230,7 +3269,7 @@
               margin-top: -55px;
 
               @media (768px <=width <=991px) {
-                margin-top: -55px;
+                margin-top: -10px;
                 border-bottom: none;
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
@@ -3418,6 +3457,10 @@
                   height: auto;
                   padding: 0;
                   margin: 0;
+                  border-radius: 0;
+                  @media (1200px <=width <=1300px) {
+                    font-size: 17px;
+                  }
 
                   @media (320px <=width <=600px) {
                     font-size: 14px;
@@ -3558,8 +3601,12 @@
                     height: 100%;
                     border-radius: 0;
 
-                    &.active,
                     &:hover {
+                      background: transparent !important;
+                      border: none;
+                    }
+
+                    &.active {
                       background: #ED5A6E !important;
 
                       height: 52px;
@@ -3573,7 +3620,6 @@
                   &:nth-child(9),
                   &:nth-child(10) {
                     button {
-                      &:hover,
                       &.active {
                         background: #F99F35 !important;
                       }
@@ -3583,7 +3629,6 @@
                   &:nth-child(11),
                   &:nth-child(12) {
                     button {
-                      &:hover,
                       &.active {
                         background: #2DB780 !important;
                       }
@@ -3595,7 +3640,7 @@
                   }
                 }
 
-                &:hover~.field-ratingcolorcodes {
+                &:has(.button-wrapper button.active)~.field-ratingcolorcodes {
                   display: flex;
                 }
               }
@@ -3680,13 +3725,14 @@
             .field-issuesradio {
               display: flex;
               align-items: center;
+              margin-top: 15px;
 
               legend {
                 font-size: 18px;
                 font-weight: 600;
                 line-height: 24px;
                 color: var(--color-interface-text-primary);
-                margin-bottom: 10px;
+                margin-bottom: 0px;
 
                 @media (320px <=width <=600px) {
                   font-size: 14px;
@@ -3746,23 +3792,31 @@
               }
             }
 
+            .field-describeissueifno {
+              margin-top: 20px;
+
+              p {
+                margin-bottom: 0;
+
+                p {
+                  font-size: 18px;
+                  font-weight: 600;
+                  line-height: 24px;
+                  color: var(--color-interface-text-primary);
+                  position: initial;
+                  margin: 0;
+
+                  @media (320px <=width <=600px) {
+                    font-size: 14px;
+                    line-height: 20px;
+                  }
+                }
+              }
+            }
+
             .field-describeissue {
               @media (320px <=width <=600px) {
                 margin-top: 20px;
-              }
-
-              label {
-                font-size: 18px;
-                font-weight: 600;
-                line-height: 24px;
-                color: var(--color-interface-text-primary);
-                position: initial;
-                margin: 0;
-
-                @media (320px <=width <=600px) {
-                  font-size: 14px;
-                  line-height: 20px;
-                }
               }
 
               textarea {
@@ -3775,6 +3829,7 @@
                 line-height: 20px;
                 color: var(--color-input-text-placeholder-default);
                 padding: 15px;
+                margin-top: -10px;
 
                 @media (320px <=width <=600px) {
                   margin-bottom: 0;
@@ -3891,7 +3946,8 @@
         }
       }
 
-      .field-rateabovenine, .field-beloweight{
+      .field-rateabovenine,
+      .field-beloweight {
         position: absolute;
         top: -280px;
         left: 380px;
@@ -3905,6 +3961,7 @@
 
         @media (768px <=width <=991px) {
           left: 30%;
+          top: -430px;
         }
 
         @media (320px <=width <=600px) {
