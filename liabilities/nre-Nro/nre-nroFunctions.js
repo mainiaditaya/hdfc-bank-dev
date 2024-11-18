@@ -873,7 +873,7 @@ async function accountOpeningNreNro(idComToken) {
       sex: response.txtCustSex,
       email: response.refCustEmail,
       accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
-      ProductCategory: response.customerAccountDetailsDTO[accIndex].productName,
+      ProductCategory: journeyParamStateInfo.currentFormContext.productCategory,
       name: response.customerFullName,
       otherThanAgriIncome: '',
       nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
@@ -941,7 +941,7 @@ async function accountOpeningNreNro(idComToken) {
       selfServiceAnnualIncome: '',
       sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
       sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
-      displayProductName: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productName,
+      displayProductName: journeyParamStateInfo.currentFormContext.productAccountName,
       state: response.namPermadrState,
       city: response.namPermadrCity,
       residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
@@ -996,8 +996,8 @@ async function accountOpeningNreNro(idComToken) {
       employmentType: '',
       employmentTypeOthers: '',
       phone: journeyParamStateInfo.currentFormContext.mobileNumber,
-      productCategory: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productCategory,
-      productName: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productName,
+      productCategory: journeyParamStateInfo.currentFormContext.productCategory,
+      productName: journeyParamStateInfo.currentFormContext.productAccountName,
       ratingKey: '',
       residentialStatus: '',
       residentialStatus_label: '',
@@ -1024,9 +1024,9 @@ async function accountOpeningNreNro(idComToken) {
       occupationTypeCode: '',
       occupationTypeID: '',
       ownerCode: '',
-      productCategoryID: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productCategoryID,
+      productCategoryID: journeyParamStateInfo.currentFormContext.productCategoryID,
       productCode: journeyParamStateInfo.currentFormContext.productAccountType,
-      productKey: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productKey,
+      productKey: journeyParamStateInfo.currentFormContext.productKey,
       ItemKey: journeyParamStateInfo.form.confirmDetails.crm_leadId,
       leadCustomerID: '',
       residentialStatusID: '',
@@ -1502,7 +1502,7 @@ const crmLeadIdDetail = (globals) => {
       selfServiceAnnualIncome: '',
       sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
       sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
-      displayProductName: globals.form.crmProductPanel.productName.$value,
+      displayProductName: currentFormContext.productAccountName,
       state: response.namPermadrState,
       city: response.namPermadrCity,
       residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
@@ -1558,7 +1558,7 @@ const crmLeadIdDetail = (globals) => {
       employmentTypeOthers: '',
       phone: currentFormContext.mobileNumber,
       productCategory: globals.form.crmProductPanel.productCategory.$value,
-      productName: globals.form.crmProductPanel.productName.$value,
+      productName: currentFormContext.productAccountName,
       ratingKey: '',
       residentialStatus: '',
       residentialStatus_label: '',
@@ -1585,9 +1585,9 @@ const crmLeadIdDetail = (globals) => {
       occupationTypeCode: '',
       occupationTypeID: '',
       ownerCode: '',
-      productCategoryID: globals.form.crmProductPanel.productCategoryID.$value,
-      productCode: currentFormContext.productAccountType,
-      productKey: globals.form.crmProductPanel.productKey.$value,
+      productCategoryID: currentFormContext.productCategoryID,
+      productCode: response.customerAccountDetailsDTO[accIndex].productCode.toString(),
+      productKey: currentFormContext.productKey,
       residentialStatusID: '',
       websiteUrl: '',
       expirayDateVideo: '',
@@ -1709,24 +1709,24 @@ function crmProductID(crmProductPanel, response, globals) {
   };
   if (productID === 201 && productvarient === 'NRO') {
     setFormValue(crmProductPanel.productName, 'NRO current account');
-    setFormValue(crmProductPanel.productCategory, 'Current');
-    setFormValue(crmProductPanel.productCategoryID, '484');
-    setFormValue(crmProductPanel.productKey, '604');
+   // setFormValue(crmProductPanel.productCategory, 'Current');
+   // setFormValue(crmProductPanel.productCategoryID, '484');
+    //setFormValue(crmProductPanel.productKey, '604');
   } else if (productID === 218 && productvarient === 'NRE') {
     setFormValue(crmProductPanel.productName, 'NRE Current account');
-    setFormValue(crmProductPanel.productCategory, 'Current');
-    setFormValue(crmProductPanel.productCategoryID, '484');
-    setFormValue(crmProductPanel.productKey, '605');
+    //setFormValue(crmProductPanel.productCategory, 'Current');
+    //setFormValue(crmProductPanel.productCategoryID, '484');
+    //setFormValue(crmProductPanel.productKey, '605');
   } else if (productvarient === 'NRO') {
     setFormValue(crmProductPanel.productName, 'NRO savings account');
-    setFormValue(crmProductPanel.productKey, '602');
-    setFormValue(crmProductPanel.productCategory, 'Savings');
-    setFormValue(crmProductPanel.productCategoryID, '483');
+    //setFormValue(crmProductPanel.productKey, '602');
+    //setFormValue(crmProductPanel.productCategory, 'Savings');
+    //setFormValue(crmProductPanel.productCategoryID, '483');
   } else if (productvarient === 'NRE') {
     setFormValue(crmProductPanel.productName, 'NRE savings account');
-    setFormValue(crmProductPanel.productCategory, 'Savings');
-    setFormValue(crmProductPanel.productCategoryID, '483');
-    setFormValue(crmProductPanel.productKey, '601');
+    //setFormValue(crmProductPanel.productCategory, 'Savings');
+    //setFormValue(crmProductPanel.productCategoryID, '483');
+    //setFormValue(crmProductPanel.productKey, '601');
   }
 }
 
@@ -1738,23 +1738,41 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel) {
   const nreRegularSavingsAcco = nreAccountTypePanel.NreregularSavingsAccountPanel.regularSavingsAccount.$value;
   const nreCurrentAcco = nreAccountTypePanel.nreCurrentAccountPanel.currentAccount.$value;
   if (nroEliteSavingsAcco === 'on') {
-    currentFormContext.productAccountName = 'NRO ELITE SAVINGS';
+    currentFormContext.productAccountName = 'NRO savings account';
     currentFormContext.productAccountType = '1345';
+    currentFormContext.productCategory = 'Savings';
+    currentFormContext.productCategoryID = '483';
+    currentFormContext.productKey = '602';
   } else if (nroRegularSavingsAcco === 'on') {
-    currentFormContext.productAccountName = 'SAVINGS - NRO';
+    currentFormContext.productAccountName = 'NRO savings account';
     currentFormContext.productAccountType = '101';
+    currentFormContext.productCategory = 'Savings';
+    currentFormContext.productCategoryID = '483';
+    currentFormContext.productKey = '602';
   } else if (nroCurrentAcco === 'on') {
-    currentFormContext.productAccountName = 'CURRENT ACCOUNT - NRO';
+    currentFormContext.productAccountName = 'NRO current account';
     currentFormContext.productAccountType = '201';
+    currentFormContext.productCategory = 'Current';
+    currentFormContext.productCategoryID = '484';
+    currentFormContext.productKey = '605';
   } else if (nreRegularSavingsAcco === 'on') {
-    currentFormContext.productAccountName = 'SAVINGS - NRE';
+    currentFormContext.productAccountName = 'NRE savings account';
     currentFormContext.productAccountType = '106';
+    currentFormContext.productCategory = 'Savings';
+    currentFormContext.productCategoryID = '483';
+    currentFormContext.productKey = '601';
   } else if (nreEliteSavingsAcco === 'on') {
-    currentFormContext.productAccountName = 'NRE ELITE SAVINGS';
+    currentFormContext.productAccountName = 'NRE savings account';
     currentFormContext.productAccountType = '1350';
+    currentFormContext.productCategory = 'Savings';
+    currentFormContext.productCategoryID = '483';
+    currentFormContext.productKey = '601';
   } else if (nreCurrentAcco === 'on') {
-    currentFormContext.productAccountName = 'CURRENT ACCOUNT - NRE';
+    currentFormContext.productAccountName = 'NRE  current account';
     currentFormContext.productAccountType = '218';
+    currentFormContext.productCategory = 'Current';
+    currentFormContext.productCategoryID = '484';
+    currentFormContext.productKey = '604';
   }
 }
 
