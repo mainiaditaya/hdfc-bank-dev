@@ -1120,6 +1120,7 @@ async function accountOpeningNreNro(idComToken) {
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
   return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
+
   /*if (typeof window !== 'undefined') {
     hideLoaderGif();
   }
@@ -1129,6 +1130,7 @@ async function accountOpeningNreNro(idComToken) {
       accountNumber: '50919394857273',
     },
   };*/
+
 }
 
 /**
@@ -1584,7 +1586,7 @@ const crmLeadIdDetail = (globals) => {
       occupationTypeID: '',
       ownerCode: '',
       productCategoryID: globals.form.crmProductPanel.productCategoryID.$value,
-      productCode: response.customerAccountDetailsDTO[accIndex].productCode.toString(),
+      productCode: currentFormContext.productAccountType,
       productKey: globals.form.crmProductPanel.productKey.$value,
       residentialStatusID: '',
       websiteUrl: '',
