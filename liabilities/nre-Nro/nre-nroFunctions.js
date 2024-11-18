@@ -1563,7 +1563,6 @@ const crmLeadIdDetail = (globals) => {
       occupationTypeID: '',
       ownerCode: '',
       productCategoryID: globals.form.crmProductPanel.productCategoryID.$value,
-     // productCode: response.customerAccountDetailsDTO[accIndex].productCode.toString(),
       productCode: currentFormContext.productAccountType,
       productKey: globals.form.crmProductPanel.productKey.$value,
       residentialStatusID: '',
