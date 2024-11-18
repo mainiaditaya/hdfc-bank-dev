@@ -26,10 +26,10 @@ function sendPageloadEvent(journeyState, formData, pageName, nextPage = '') {
   }
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
   digitalData.page.pageInfo.pageName = pageName;
+  digitalData.formDetails = {};
   setAnalyticPageLoadProps(journeyState, formData, digitalData, ANALYTICS.formName, pageName, CURRENT_FORM_CONTEXT);
   switch (nextPage) {
     case 'selectFd':
-      digitalData.formDetails = {};
       digitalData.formDetails.eligibleCustomerID = '';
       break;
     case 'selectCard':
@@ -84,7 +84,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.submitOtp.nextPage);
+        sendPageloadEvent(ANALYTICS.event.selectFd.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.submitOtp.nextPage);
       }, 2000);
       break;
     case 'selectCustomerId':
@@ -105,7 +105,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.reviewDetails.pageName, ANALYTICS.event.selectFd.nextPage);
+        sendPageloadEvent(ANALYTICS.event.reviewDetails.journeyState, formData, ANALYTICS.event.reviewDetails.pageName, ANALYTICS.event.selectFd.nextPage);
       }, 2000);
       break;
     case 'reviewDetailsBack':
@@ -115,7 +115,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
+        sendPageloadEvent(ANALYTICS.event.selectFd.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectFd.nextPage);
       }, 2000);
       break;
     case 'reviewDetails':
@@ -148,7 +148,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.selectCard.nextPage);
+        sendPageloadEvent(ANALYTICS.event.reviewDetails.journeyState, formData, ANALYTICS.event.reviewDetails.pageName, ANALYTICS.event.selectFd.nextPage);
       }, 2000);
       break;
     case 'selectCard':
@@ -159,7 +159,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.validationMethodKYC.pageName, ANALYTICS.event.selectCard.nextPage);
+        sendPageloadEvent(ANALYTICS.event.validationMethodKYC.journeyState, formData, ANALYTICS.event.validationMethodKYC.pageName, ANALYTICS.event.selectCard.nextPage);
       }, 2000);
       break;
     case 'selectCardConsent':
@@ -180,7 +180,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.validationMethodKYC.nextPage);
+        sendPageloadEvent(ANALYTICS.event.addressDeclaration.journeyState, formData, ANALYTICS.event.addressDeclaration.pageName, ANALYTICS.event.validationMethodKYC.nextPage);
       }, 2000);
       break;
     case 'addressDeclaration':
@@ -194,7 +194,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
+        sendPageloadEvent(ANALYTICS.event.docUpload.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.addressDeclaration.nextPage);
       }, 2000);
       break;
     case 'docUpload':
@@ -204,7 +204,7 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       }
       _satellite.track('submit');
       setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.docUpload.nextPage);
+        sendPageloadEvent(ANALYTICS.event.docUpload.journeyState, formData, ANALYTICS.event.docUpload.pageName, ANALYTICS.event.docUpload.nextPage);
       }, 2000);
       break;
     case 'docUploadUpload':
@@ -215,14 +215,11 @@ const sendSubmitClickEvent = async (eventType, formData, journeyState, digitalDa
       _satellite.track('submit');
       break;
     case 'confirmationPage':
-      digitalData.event.rating = '';
+      digitalData.event.rating = formData.FDlienCard.rating;
       if (window) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('survey');
-      setTimeout(() => {
-        sendPageloadEvent(ANALYTICS.event.submitOtp.journeyState, formData, ANALYTICS.event.selectFd.pageName, ANALYTICS.event.confirmationPage.nextPage);
-      }, 2000);
       break;
     case 'comepleteVKYC':
       digitalData.event.status = '1';

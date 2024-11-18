@@ -35,8 +35,8 @@ const fdCardBoardingSuccess = async (data, stateInfoData) => {
     vkycConfirmationPanel.setAttribute('data-visible', true);
   }
   setArnNumberInResult(stateInfoData.currentFormContext.ARN_NUM, 'refNumPanel', 'referenceNumber');
-  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
-  sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETED', stateInfoData, 'Confirmation', 'confirmationPage');
+  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', mobileNumber, leadProfileId, journeyId, stateInfoData);
+  sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETE', stateInfoData, 'Confirmation', 'confirmationPage');
 };
 
 const fdCardBoardingFailure = (err, stateInfoData) => {
@@ -112,6 +112,11 @@ const pageRedirected = () => {
       sendFDAnalytics(formLoad.type, formLoad.pageName, {}, formLoad.journeyState, journeyData);
     }, 1200);
     return;
+  }
+  if (aadharRedirect && delayedUtilState.visitType === 'EKYC_AUTH') {
+    setTimeout(() => {
+      sendPageloadEvent('IDCOM_REDIRECTION_INITIATED', CURRENT_FORM_CONTEXT, 'Address Details', '');
+    }, 1200);
   }
   if (idComRedirect && errorCode !== sessionExpiredErrorCode) {
     displayLoader();

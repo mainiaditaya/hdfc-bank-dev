@@ -40,9 +40,10 @@ import { reloadPage } from '../../common/functions.js';
 
 setTimeout(async () => {
   if (typeof window !== 'undefined') {
-    const { addGaps, validateOtpInput } = await import('./nre-nro-dom-functions.js');
+    const { addGaps, validateOtpInput, enableSubmitOTPBtn } = await import('./nre-nro-dom-functions.js');
     addGaps();
     validateOtpInput();
+    enableSubmitOTPBtn();
   }
 }, 1200);
 
@@ -171,6 +172,10 @@ const validFDPan = (val) => {
   if (![...val.slice(0, 5)]?.every((c) => /[a-zA-Z]/.test(c))) return false;
   return true;
 };
+
+function isNullOrEmpty(value) {
+  return value == null || value.trim() === '';
+}
 
 const getCountryName = (countryCodeIst) => new Promise((resolve) => {
   const finalURL = `/content/hdfc_commonforms/api/mdm.COMMON.COUNTRYCODE_MASTER.COUNTRYCODE-${countryCodeIst}.json`;
@@ -401,8 +406,11 @@ function otpTimer(globals) {
 }
 
 function updateOTPHelpText(mobileNo, otpHelpText, email, globals) {
-  if (!email) globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)}` });
-  globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskNumber(mobileNo, 6)} & email ID ${customerDataMasking('eMail', email)}.` });
+  const emailText = !isNullOrEmpty(email) ? ` & email ID ${customerDataMasking('eMail', email)}` : '';
+  const maskedMobile = maskNumber(mobileNo, 6);
+
+  globals.functions.setProperty(otpHelpText, { value: `${otpHelpText} ${maskedMobile}${emailText}` });
+  globals.functions.setProperty(globals.form.otppanelwrapper.submitOTP, { enabled: false });
   const otpField = document.querySelector('.field-otpnumber input');
   otpField.addEventListener('mouseover', () => {
     otpField.focus();
@@ -593,7 +601,7 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1.trim()}, ${response.txtCustadrAdd2.trim()}, ${response.txtCustadrAdd3.trim()}, ${response.namCustadrCity}, ${response.namCustadrState}, ${response.namCustadrCntry}, ${response.txtCustadrZip}`?.toUpperCase());
 
   setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)}, ${customerDataMasking('AddressLine', response.txtPermadrAdd3)},
-${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMasking('CityState', response.namPermadrState)}, ${customerDataMasking('Country', response.namPermadrCntry)}, ${response.txtPermadrZip}`);
+${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMasking('CityState', response.namPermadrState)}, ${customerDataMasking('Country', response.namPermadrCntry)}, ${response.txtPermadrZip}`?.toUpperCase());
 
   getCountryName(response.txtCustNATNLTY)
     .then(() => setFormValue(fatcaDetails.nationality, currentFormContext.countryName?.toUpperCase()));
@@ -631,7 +639,7 @@ function prefillAccountDetail(response, i, responseLength, globals) {
   const setFormValue = (field, value) => {
     globals.functions.setProperty(field, { value });
   };
-  setFormValue(customerName, response.customerFullName);
+  setFormValue(customerName, response.customerFullName?.toUpperCase());
   setFormValue(custIDWithoutMasking, response.customerId);
   if (responseLength > 1) {
     setFormValue(customerID, customerDataMasking('cutomerIDMasking', response.customerId.toString()));
@@ -721,6 +729,8 @@ const resendOTP = async (globals) => {
   globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.otpResend, { visible: false });
   globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.secondsPanel, { visible: true });
   globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.secondsPanel.seconds, { value: dispSec });
+  globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.incorrectOTPText, { visible: false });
+  globals.functions.setProperty(globals.form.otppanelwrapper.submitOTP, { enabled: false });
   if (resendOtpCount < MAX_OTP_RESEND_COUNT) {
     resendOtpCount += 1;
 
@@ -931,7 +941,7 @@ async function accountOpeningNreNro(idComToken) {
       selfServiceAnnualIncome: '',
       sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
       sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
-      displayProductName: response.customerAccountDetailsDTO[accIndex].productName,
+      displayProductName: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productName,
       state: response.namPermadrState,
       city: response.namPermadrCity,
       residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
@@ -1110,9 +1120,17 @@ async function accountOpeningNreNro(idComToken) {
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
   return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
- /* if (typeof window !== 'undefined') {
+
+  /*if (typeof window !== 'undefined') {
     hideLoaderGif();
-  }*/
+  }
+  return {
+    accountOpening: {
+      errorCode: '0',
+      accountNumber: '50919394857273',
+    },
+  };*/
+
 }
 
 /**
@@ -1143,12 +1161,24 @@ async function fetchIdComToken() {
  * @returns {void}
  */
 function prefillThankYouPage(accountNumber, globals) {
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountNumber.accountNumber, { value: accountNumber }); // Setting the account number
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.accounttype, { value: finalResult.journeyParamStateInfo.accounttype }); // Setting the account type
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.homeBranch, { value: finalResult.journeyParamStateInfo.homeBranch }); // Setting the home branch
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.branchCode, { value: finalResult.journeyParamStateInfo.branchCode }); // Setting the branch code
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.ifsc, { value: finalResult.journeyParamStateInfo.ifsc }); // Setting the ifsc code
-  globals.functions.setProperty(globals.form.thankYouPanel.thankYoufragment.thankyouLeftPanel.accountSummary.communicationAddress, { value: finalResult.journeyParamStateInfo.communicationAddress }); // Setting the communication address
+  const { thankyouLeftPanel } = globals.form.thankYouPanel.thankYoufragment;
+  const journeyAccountType = finalResult.journeyParamStateInfo.currentFormContext.journeyAccountType === 'NRE' ? 'NRO' : 'NRE';
+  globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
+  if (!isNullOrEmpty(accountNumber)) {
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountNumber }); // Setting the account number
+  } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.confirmText, { value: 'Congratulations! Your online application is successfully submitted !!!' });
+  } else {
+    globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
+  }
+
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: finalResult.journeyParamStateInfo.accounttype }); // Setting the account type
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: finalResult.journeyParamStateInfo.homeBranch }); // Setting the home branch
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: finalResult.journeyParamStateInfo.branchCode }); // Setting the branch code
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: finalResult.journeyParamStateInfo.ifsc }); // Setting the ifsc code
+  globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: finalResult.journeyParamStateInfo.communicationAddress }); // Setting the communication address
 }
 
 /**
@@ -1376,13 +1406,6 @@ setTimeout(() => {
   onPageLoadAnalytics();
 }, 5000);
 
-// eslint-disable-next-line func-names
-setTimeout(async () => {
-  if (typeof window !== 'undefined') { /* check document-undefined */
-    getCountryCodes(document.querySelector('.field-countrycode select'));
-  }
-}, 1200);
-
 const crmLeadIdDetail = (globals) => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
 
@@ -1479,7 +1502,7 @@ const crmLeadIdDetail = (globals) => {
       selfServiceAnnualIncome: '',
       sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
       sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
-      displayProductName: globals.form.crmProductPanel.productCategory.$value,
+      displayProductName: globals.form.crmProductPanel.productName.$value,
       state: response.namPermadrState,
       city: response.namPermadrCity,
       residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
