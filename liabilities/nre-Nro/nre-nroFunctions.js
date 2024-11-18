@@ -941,7 +941,7 @@ async function accountOpeningNreNro(idComToken) {
       selfServiceAnnualIncome: '',
       sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
       sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
-      displayProductName: response.customerAccountDetailsDTO[accIndex].productName,
+      displayProductName: journeyParamStateInfo.AccountOpeningNRENRO.crmLeadDetails.productName,
       state: response.namPermadrState,
       city: response.namPermadrCity,
       residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
@@ -1119,8 +1119,8 @@ async function accountOpeningNreNro(idComToken) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  // return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
-  if (typeof window !== 'undefined') {
+  return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
+  /*if (typeof window !== 'undefined') {
     hideLoaderGif();
   }
   return {
@@ -1128,7 +1128,7 @@ async function accountOpeningNreNro(idComToken) {
       errorCode: '0',
       accountNumber: '50919394857273',
     },
-  };
+  };*/
 }
 
 /**
@@ -1500,7 +1500,7 @@ const crmLeadIdDetail = (globals) => {
       selfServiceAnnualIncome: '',
       sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
       sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
-      displayProductName: globals.form.crmProductPanel.productCategory.$value,
+      displayProductName: globals.form.crmProductPanel.productName.$value,
       state: response.namPermadrState,
       city: response.namPermadrCity,
       residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
