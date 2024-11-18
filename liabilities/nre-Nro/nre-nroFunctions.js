@@ -1404,13 +1404,6 @@ setTimeout(() => {
   onPageLoadAnalytics();
 }, 5000);
 
-// eslint-disable-next-line func-names
-setTimeout(async () => {
-  if (typeof window !== 'undefined') { /* check document-undefined */
-    getCountryCodes(document.querySelector('.field-countrycode select'));
-  }
-}, 1200);
-
 const crmLeadIdDetail = (globals) => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
 
