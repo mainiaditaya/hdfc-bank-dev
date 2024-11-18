@@ -2048,7 +2048,7 @@
               margin-bottom: 20px;
               margin-top: -20px;
 
-              @media (320px <=width <=600px) {
+              @media (320px <=width <=767px) {
                 margin-top: 0;
               }
 
@@ -2197,7 +2197,7 @@
                           font-size: 12px !important;
                           font-weight: 400 !important;
                           line-height: 17px !important;
-                          margin-top: -20px;
+                          top: -17px;
                         }
                       }
 
@@ -2643,7 +2643,7 @@
                 }
 
                 &.field-lccode {
-                  @media (320px <=width <=600px) {
+                  @media (320px <=width <=767px) {
                     margin-top: 20px;
                   }
 
