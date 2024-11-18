@@ -18,6 +18,65 @@ export default function searchPanel(panel) {
         .then((res) => {
             const newOptionTemp = document.createElement('ul');
             let searchOptions = [];
+            if(res.length > 0){
+                let code91 = {
+                    "MODNO": "1",
+                    "ONCEAUTH": "Y",
+                    "CHECKERID": "USER1",
+                    "MAKERID": "USER1",
+                    "DESCRIPTION": "INDIA",
+                    "COUNTRYNAME": "AF-AFGHANISTAN",
+                    "EUCOUNTRY": null,
+                    "RECORDSTAT": "O",
+                    "ISDCODE": "91",
+                    "MAKERDTSTAMP": "1/11/2010 8:47",
+                    "ALTCOUNTRYCODE": null,
+                    "CLEARINGNETWORK": null,
+                    "OVERALLLIMIT": null,
+                    "IBANCHECKREQD": null,
+                    "REGIONCODE": null,
+                    "AUTHSTAT": "A",
+                    "ISONUMCOUNTRYCODE": null,
+                    "LIMITCCY": null,
+                    "INTRAEUROPEAN": null,
+                    "CHECKERDTSTAMP": "1/11/2010 8:56",
+                    "CODE": "30",
+                    "COUNTRYCODE": "AF",
+                    "BLACKLISTED": "N",
+                    "CLRCODEBIC": "N",
+                    "GENMT205": "N"
+                };
+
+                let code291 = {
+                    "MODNO": "1",
+                    "ONCEAUTH": "Y",
+                    "CHECKERID": "USER1",
+                    "MAKERID": "USER1",
+                    "DESCRIPTION": "Eritrea",
+                    "COUNTRYNAME": "AF-AFGHANISTAN",
+                    "EUCOUNTRY": null,
+                    "RECORDSTAT": "O",
+                    "ISDCODE": "291",
+                    "MAKERDTSTAMP": "1/11/2010 8:47",
+                    "ALTCOUNTRYCODE": null,
+                    "CLEARINGNETWORK": null,
+                    "OVERALLLIMIT": null,
+                    "IBANCHECKREQD": null,
+                    "REGIONCODE": null,
+                    "AUTHSTAT": "A",
+                    "ISONUMCOUNTRYCODE": null,
+                    "LIMITCCY": null,
+                    "INTRAEUROPEAN": null,
+                    "CHECKERDTSTAMP": "1/11/2010 8:56",
+                    "CODE": "30",
+                    "COUNTRYCODE": "AF",
+                    "BLACKLISTED": "N",
+                    "CLRCODEBIC": "N",
+                    "GENMT205": "N"
+                }
+                res.push(code291);
+                res.push(code91);
+            }
             res.forEach((countryCode) => {
                 if (countryCode.ISDCODE != null && countryCode.DESCRIPTION != null) {
                     const val = `+${String(countryCode.ISDCODE)}`;
