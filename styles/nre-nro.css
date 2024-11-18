@@ -178,15 +178,40 @@
                   border: 1px solid var(--color-interface-border-secondary);
                   width: 352px;
                   border-radius: 12px;
+                  /*  width: 88px;
+                  height: 60px; */
 
                   @media (320px <=width <=480px) {
                     width: 100%;
                   }
 
-                  &::before {
+                  input[name="countryCode"] {
+                    max-width: 80px;
+                    width: 80px;
+                    padding-left: 15px;
+                    border: none;
+                    border-color: var(--color-interface-border-secondary) !important;
+                    background: url('./../icons/select_arrow.png') no-repeat right center;
+                    position: relative;
+                    border: none !important;
+                    cursor: default;
+                    font-size: 18px !important;
+                    font-weight: 400 !important;
+                    line-height: 28px !important;
+                    letter-spacing: 0 !important;
+                    height: 60px;
+                    max-height: max-content;
+                    margin: 0;
+
+                    &:focus {
+                      outline: none;
+                    }
+                  }
+
+                   &::before {
                     content: '|';
                     color: #f0f0f0;
-                    margin-left: 80px;
+                    margin-left: 88px;
                     padding-right: 5px;
                     position: absolute;
                     top: 7px;
@@ -194,7 +219,7 @@
                     z-index: 2;
                   }
 
-                  select[name="countryCode"] {
+                  /* select[name="countryCode"] {
                     border-top-right-radius: 0 !important;
                     border-bottom-right-radius: 0 !important;
                     padding-right: 0 !important;
@@ -220,7 +245,7 @@
                     &:focus-visible {
                       outline: none;
                     }
-                  }
+                  } */
 
                   &[data-active="true"]~.field-registeredmobilenumber {
                     background-color: transparent;
@@ -254,10 +279,13 @@
                   border-radius: 12px;
                   z-index: 2;
                   max-width: 350px;
-                  left: 0;
+                  /* left: 0;
                   background-color: #fff;
-                  width: 98%;
-                  height: 96%;
+                  width: 98%; */
+                  /*  height: 96%; */
+
+                  left: 90px;
+                 /*  width: 72%; */
 
                   label {
                     top: 10px;
@@ -311,6 +339,55 @@
                       font-weight: 400;
                       line-height: 20px;
                       left: -78px;
+                    }
+                  }
+                }
+
+                .field-searchcode {
+                  border: 1px solid var(--color-interface-border-secondary);
+                  border-radius: 12px;
+                  z-index: 2;
+                  width: 352px;
+                  margin-top: -17px;
+
+                  input {
+                    margin: 0;
+                    background: url('../icons/search_icon.png') no-repeat 95% center;
+                    padding-left: 20px;
+                    border: none;
+                    border-bottom: 1px solid var(--color-interface-border-secondary);
+                    border-radius: 0;
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    color: var(--color-interface-text-primary);
+
+                    &:hover,
+                    &:focus {
+                      outline: none;
+                    }
+                  }
+
+                  .cocodrop {
+                    max-height: 264px;
+                    overflow: auto;
+                    margin: 0;
+                    padding: 0;
+                    list-style-type: none;
+
+                    li {
+                      height: 52px;
+                      font-size: 14px;
+                      font-weight: 500;
+                      line-height: 20px;
+                      color: var(--color-interface-text-primary);
+                      display: flex;
+                      align-items: center;
+                      padding: 0 20px;
+
+                      &:not(:last-child) {
+                        border-bottom: 1px solid var(--color-interface-border-secondary);
+                      }
                     }
                   }
                 }
@@ -3641,6 +3718,7 @@
                   &:nth-child(9),
                   &:nth-child(10) {
                     button {
+
                       &.active {
                         background: #F99F35 !important;
                       }
