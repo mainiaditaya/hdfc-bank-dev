@@ -1423,10 +1423,7 @@
             }
 
             &.field-communicationaddress,
-            &.field-permanentaddress {
-              @media (768px <=width <=991px) {
-                grid-column: span 12;
-              }
+            &.field-permanentaddress {   
 
               @media (320px <=width <=600px) {
                 margin-bottom: 20px;
@@ -3115,7 +3112,7 @@
 
       .cmp-container>div:nth-child(1) {
         @media screen and (min-width: 768px) {
-          margin-left: 72px;
+          margin-left: 42px;
         }
       }
 
@@ -3124,7 +3121,7 @@
 
         @media (320px <=width <=991px) {
           display: block;
-          margin-right: 5px;
+          margin-right: 0;
         }
       }
 
@@ -3174,12 +3171,14 @@
             display: none;
 
             @media (768px <=width <=991px) {
+              display: block;
               top: -390px;
+              left: 0;
             }
 
-            @media (320px <=width <=991px) {
+            @media (320px <=width <=600px) {
               display: block;
-              top: -275px;
+              top: -275px; 
             }
 
             p{
@@ -3213,13 +3212,13 @@
                 font-weight: 600;
                 line-height: 44px;
                 color: #fff;
-                margin-top: -150px;
+                margin-top: -85px;
 
                 @media (768px <=width <=991px) {
                   font-size: 32px;
                   line-height: 40px;
                   max-width: 60%;
-                  margin-left: 15px;
+                  margin-left: 0;
                   margin-top: -165px;
                 }
 
@@ -3236,7 +3235,7 @@
                   height: 158px;
                   position: absolute;
                   width: 100%;
-                  top: -245px;
+                  top: -260px;
                   right: 0;
 
                   @media (768px <=width <=991px) {
@@ -3266,7 +3265,7 @@
               border-radius: 20px;
               padding: 30px;
               background: #fff;
-              margin-top: -55px;
+              margin-top: 4px;
 
               @media (768px <=width <=991px) {
                 margin-top: -10px;
@@ -3502,9 +3501,11 @@
                   }
                 }
 
-                /* &.multiline-wrapper {
-                  grid-column: span 12;
-                } */
+                &.field-communicationaddress {
+                  @media (768px <=width <=991px) {
+                    grid-column: span 12;
+                  }
+                } 
               }
             }
 
@@ -3552,7 +3553,7 @@
             .field-feedbackconfirmation {
               border: 1px solid var(--color-interface-border-secondary);
               border-radius: 20px;
-              padding: 30px;
+              padding: 30px 30px 10px 30px;
 
               @media (320px <=width <=600px) {
                 padding: 20px;
@@ -3792,8 +3793,11 @@
               }
             }
 
-            .field-describeissueifno {
+            .field-describeissueifno, .field-describeissueifyes {
               margin-top: 20px;
+              @media (320px <=width <=600px) {
+                margin-top: 40px;
+              }
 
               p {
                 margin-bottom: 0;
@@ -3830,6 +3834,7 @@
                 color: var(--color-input-text-placeholder-default);
                 padding: 15px;
                 margin-top: -10px;
+                margin-bottom: 5px;
 
                 @media (320px <=width <=600px) {
                   margin-bottom: 0;
@@ -3852,12 +3857,13 @@
           .field-personalizeddebitcard {
             flex: 0 0 240px;
             display: flex;
-            margin-top: -165px;
+            margin-top: -106px;
             position: relative;
 
             @media (320px <=width <=991px) {
               max-width: 100%;
               margin-top: 0;
+              flex: auto;
             }
 
             .image-wrapper {
@@ -3877,7 +3883,7 @@
 
               @media (320px <=width <=600px) {
                 background: url("../icons/applying-for-dabit-card-mobile-banner.png") no-repeat center center;
-                height: 96px;
+                height: 85px;
                 width: 100%;
                 background-size: contain;
               }
@@ -3966,7 +3972,6 @@
 
         @media (320px <=width <=600px) {
           left: 0;
-          top: -115px;
           padding: 0 10px;
         }
 
