@@ -1790,6 +1790,7 @@
           .field-multiaccocountinue {
             text-align: left !important;
             max-width: 272px;
+            margin-top: 15px;
 
             @media (768px <=width <=991px) {
               width: 222px;
@@ -2106,9 +2107,10 @@
                       line-height: 20px;
                       text-align: center;
                       color: var(--color-interface-text-primary);
-                      width: 145px;
+                      width: 205px;
                       height: 20px;
                       background-color: #D0DDFC;
+                      padding: 0 10px;
 
                     }
                   }
@@ -2168,6 +2170,7 @@
                     .field-ifsccode {
                       height: 15px;
                       position: relative;
+                      margin: 0;
 
                       label,
                       textarea,
@@ -2191,6 +2194,10 @@
                           width: 105px !important;
                           overflow: hidden;
                           text-overflow: ellipsis;
+                          font-size: 12px !important;
+                          font-weight: 400 !important;
+                          line-height: 17px !important;
+                          margin-top: -20px;
                         }
                       }
 
@@ -2279,6 +2286,12 @@
                   margin-bottom: 30px;
                 }
               }
+            }
+
+            &.field-nre-account-type-pannel {
+              border: none;
+              margin-top: 20px;
+              padding-top: 0;
             }
           }
 
@@ -2559,6 +2572,7 @@
                 position: relative;
                 transition: background-color 0.3s, background-position 0.3s;
                 margin-top: 5px;
+                margin-left: 10px;
 
                 &[disabled] {
                   background-color: var(--color-action-background-primary-disabled);
@@ -2635,6 +2649,12 @@
 
                   label.field-label {
                     top: -2px;
+                  }
+                }
+
+                &.field-lgcode{
+                  input{
+                    color: var(--color-interface-text-primary);
                   }
                 }
               }
