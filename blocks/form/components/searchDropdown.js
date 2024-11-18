@@ -51,6 +51,10 @@ export default function searchPanel(panel) {
                         });
                         panel.dataset.visible = false;
                         inputField?.dispatchEvent(event1);
+                         
+                        let countryCodeEl = document.querySelector('[name="countryCode"]');
+                        countryCodeEl.value = event.target.dataset.id; 
+                        countryCodeEl.dispatchEvent(event1);
                     });
                 }
                 document.querySelector('[name="searchCode"]')?.addEventListener('keyup', (event) => {
@@ -100,7 +104,7 @@ function drawCountryCode(searchOptions, key, inputField, panel) {
             return searchText.toLowerCase().includes(key.toLowerCase());
         });
     }
-    if(filteredOptions.length == 0) {
+    if (filteredOptions.length == 0) {
         filteredOptions = searchOptions;
     }
     let cocodrop = document.querySelector('.cocodrop');
@@ -117,9 +121,12 @@ function drawCountryCode(searchOptions, key, inputField, panel) {
                 bubbles: true, // Allow the event to bubble up
                 cancelable: true, // Allow the event to be canceled
             });
-            
+
             panel.dataset.visible = false;
             inputField?.dispatchEvent(event1);
+            let countryCodeEl = document.querySelector('[name="countryCode"]');
+            countryCodeEl.value = event.target.dataset.id; 
+            countryCodeEl.dispatchEvent(event1);
         });
         cocodrop.appendChild(newOption);
     })
