@@ -80,7 +80,6 @@ setTimeout(() => {
   [DOM_ELEMENT.identifyYourself.dob, DOM_ELEMENT.personalDetails.dob].forEach((dateField) => setMaxDateToToday(dateField));
   addGaps('.field-pan.char-gap-4 input');
   addMobileValidation();
-  // to be removed later
   document.querySelector('.field-password input').type = 'password';
 }, 1200);
 
