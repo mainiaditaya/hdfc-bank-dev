@@ -1,5 +1,4 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
-import { maskString } from '../../common/formutils.js';
 
 const creditCardSummary = (globals) => {
   const { functions, form } = globals;
@@ -25,7 +24,7 @@ const creditCardSummary = (globals) => {
   }
   const formattedFDs = fdNumberSelection.reduce((acc, fd) => {
     if (fd.fdAccSelect === 'on') {
-      acc.push({ selectedFDNum: maskString(fd?.fdNumber?.toString()) });
+      acc.push({ selectedFDNum: fd?.fdNumber?.toString() });
     }
     return acc;
   }, []);
