@@ -888,7 +888,7 @@ function prefillThankYouPage(accountres, globals) {
 
   const journeyInfo = finalResult.journeyParamStateInfo;
 
-  if (!isNullOrEmpty(accountres.accountOpening.accountNumber)) {
+  if (!isNullOrEmpty(accountres?.accountOpening?.accountNumber)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: true });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountOpening.accountNumber }); // Setting the account number
     setAccountSummaryProperties(journeyInfo);
