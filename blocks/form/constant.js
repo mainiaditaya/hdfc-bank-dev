@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 export const fileAttachmentText = 'Upload';
 export const dragDropText = 'Drag and Drop To Upload';
 
@@ -20,7 +19,8 @@ let submitBaseUrl = 'https://applyonline.hdfcbank.com';
 const localDev = ['aem.live', 'aem.page', 'localhost', 'hlx.live', 'hlx.page'];
 
 function isLocalDev() {
-  if (typeof location !== 'undefined') {
+  // eslint-disable-next-line no-restricted-globals
+  if(typeof location !== 'undefined') {
     const { hostname } = location;
     return localDev.some((dev) => hostname.includes(dev));
   }

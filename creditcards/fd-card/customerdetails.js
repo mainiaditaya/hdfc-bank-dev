@@ -294,7 +294,7 @@ const bindCustomerDetails = async (globals) => {
   setTimeout(() => {
     addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
   }, 100);
-  sendFDAnalytics('selectFd', 'Step 3 - Select FD', {}, 'CUSTOMER_LEAD_QUALIFIED', globals);
+  sendFDAnalytics('selectFd', 'Select FD', {}, 'CUSTOMER_LEAD_QUALIFIED', globals);
 };
 
 /**
@@ -556,6 +556,16 @@ const addressChangeHandler = (addressLineNumber, globals) => {
   }
 };
 
+const employeeAssistanceToggleHandler = (globals) => {
+  const { addressDetails, employeeAssistance } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
+  const { employeeAssistanceToggle } = employeeAssistance;
+  if (employeeAssistanceToggle.$value === 'on' && addressDetails.mailingAddressToggle.$value === 'off') {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: true });
+  } else {
+    globals.functions.setProperty(employeeAssistance.inPersonBioKYCPanel.inPersonBioKYCOptions, { visible: false });
+  }
+};
+
 const mailingAddressToggleHandler = (globals) => {
   const { employeeAssistance, addressDetails } = globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView;
   const { employeeAssistanceToggle } = employeeAssistance;
@@ -579,4 +589,5 @@ export {
   panvalidationSuccessHandler,
   addressChangeHandler,
   mailingAddressToggleHandler,
+  employeeAssistanceToggleHandler,
 };

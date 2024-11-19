@@ -1166,7 +1166,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         margin-top: -10px;
 
         p {
-          margin: 0 0 0 5px;
+          margin: 0 0 0 5px;          
           font-size: var(--body-fd-sm-font-size);
           font-weight: var(--font-weight-regular);
 
@@ -1427,8 +1427,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               padding: 0 5px;
               margin: 0;
               height: auto !important;
-              width: 100%;
-              text-align: center;
+              width: 65%;
             }
           }
         }
@@ -2564,12 +2563,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         }
       }
 
-      .field-cardfeatureswrapper {
-        border: none;
-        padding: 0;
-        min-height: 125px;
-      }
-
       .field-cardfeatures1:has(p:empty),
       .field-cardfeatures2:has(p:empty),
       .field-cardfeatures3:has(p:empty) {
@@ -2620,11 +2613,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           margin: 0 0 -3px 6px;
           vertical-align: text-top !important;
         }
-      }
-
-      .field-joiningrenewalfeewrapper {
-        border: none;
-        padding: 0;
       }
 
       .field-joiningfeeamt,
@@ -3998,7 +3986,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     .field-bannerimagepanel,
     .field-multiplecustidbanner {
       background: var(--color-interface-fd-background-secondary)
-        url('../icons/banner_tablet.webp') no-repeat center center / 100% 100%;
+        url('../icons/banner_tablet.png') no-repeat center center / 100% 100%;
       min-height: 225px;
     }
 
@@ -4126,10 +4114,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
         .repeat-wrapper {
           .field-cardselection-display {
             margin-top: 0 !important;
-          }
-          
-          .field-cardfaciaimage {
-            min-height: 180px;
           }
         }
       }
@@ -4476,7 +4460,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     .field-bannerimagepanel,
     .field-multiplecustidbanner {
       background: var(--color-interface-fd-background-secondary)
-        url('../icons/banner_mobile.webp') no-repeat center center / 100% 100%;
+        url('../icons/banner_mobile.png') no-repeat center center / 100% 100%;
       min-height: 225px;
     }
 
@@ -4830,10 +4814,6 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
           .field-cardtagline {
             margin-top: 20px !important;
             margin-bottom: 10px !important;
-          }
-
-          .field-cardfaciaimage {
-            min-height: 180px;
           }
 
           .field-cardfeatures2,
