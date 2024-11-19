@@ -35,8 +35,8 @@ const fdCardBoardingSuccess = async (data, stateInfoData) => {
     vkycConfirmationPanel.setAttribute('data-visible', true);
   }
   setArnNumberInResult(stateInfoData.currentFormContext.ARN_NUM, 'refNumPanel', 'referenceNumber');
-  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETED', mobileNumber, leadProfileId, journeyId, stateInfoData);
-  sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETED', stateInfoData, 'Confirmation', 'confirmationPage');
+  invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', mobileNumber, leadProfileId, journeyId, stateInfoData);
+  sendPageloadEvent('CUSTOMER_ONBOARDING_COMPLETE', stateInfoData, 'Confirmation', 'confirmationPage');
 };
 
 const fdCardBoardingFailure = (err, stateInfoData) => {
@@ -127,12 +127,18 @@ const pageRedirected = () => {
 };
 
 (() => {
-  const searchParam = new URLSearchParams(window.location.search);
-  delayedUtilState.visitType = searchParam.get('visitType');
-  delayedUtilState.authMode = searchParam.get('authmode');
-  delayedUtilState.journeyId = searchParam.get('journeyId');
-  delayedUtilState.errorCode = searchParam.get('errorCode');
-  delayedUtilState.aadharRedirect = delayedUtilState.visitType && (delayedUtilState.visitType === 'EKYC_AUTH' || delayedUtilState.visitType === 'EKYC_AUTH_FAILED');
-  delayedUtilState.idComRedirect = delayedUtilState.authMode && ((delayedUtilState.authMode === 'DebitCard') || (delayedUtilState.authMode === 'CreditCard')); // debit card or credit card flow
-  pageRedirected();
+  const searchParams = new URLSearchParams(window.location.search);
+
+  setTimeout(() => {
+    const visitType = searchParams.get('visitType');
+    const authMode = searchParams.get('authmode');
+
+    delayedUtilState.visitType = visitType;
+    delayedUtilState.authMode = authMode;
+    delayedUtilState.journeyId = searchParams.get('journeyId');
+    delayedUtilState.errorCode = searchParams.get('errorCode');
+    delayedUtilState.aadharRedirect = visitType === 'EKYC_AUTH' || visitType === 'EKYC_AUTH_FAILED';
+    delayedUtilState.idComRedirect = authMode === 'DebitCard' || authMode === 'CreditCard';
+    pageRedirected();
+  }, 0);
 })();
