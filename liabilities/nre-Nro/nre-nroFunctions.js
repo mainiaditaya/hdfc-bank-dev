@@ -191,6 +191,37 @@ const getCountryName = (countryCodeIst) => new Promise((resolve) => {
     });
 });
 
+function errorHandling(response, journeyState, globals) {
+  const {
+    mobileNumber,
+    leadProfileId,
+    journeyID,
+  } = currentFormContext;
+  if (response.errorCode === '02') {
+    globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.incorrectOTPText, { visible: true });
+  } else if (response.errorCode === '04') {
+    document.body.classList.add('errorPageBody');
+    document.body.classList.remove('wizardPanelBody');
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.incorrectOTPPanel, { visible: true });
+  } else if (response.errorCode === 'V01' || response.errorCode === 'V02' || response.errorCode === 'V03' || response.errorCode === 'V04'
+    || response.errorCode === 'V05' || response.errorCode === 'VO6' || response.errorCode === 'V07' || response.errorCode === 'V08'
+    || response.errorCode === 'V09' || response.errorCode === 'V10' || response.errorCode === 'V11' || response.errorCode === 'V12') {
+    document.body.classList.add('errorPageBody');
+    document.body.classList.remove('wizardPanelBody');
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.differentErrorCodes, { visible: true });
+  } else {
+    document.body.classList.add('errorPageBody');
+    document.body.classList.remove('wizardPanelBody');
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
+  }
+
+  invokeJourneyDropOffUpdate(journeyState, mobileNumber, leadProfileId, journeyID, globals);
+}
+
 /**
  * Validates the date of birth field to ensure the age is between 18 and 120.
  * @param {Object} globals - The global object containing necessary data for DAP request.
@@ -836,10 +867,49 @@ const finalResult = {
 };
 
 /**
+ * Prefills the Thank You page based on the DB
+ * @returns {void}
+ */
+function prefillThankYouPage(accountres, globals) {
+  const { thankyouLeftPanel } = globals.form.thankYouPanel.thankYoufragment;
+
+  globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
+  globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
+  const journeyAccountType = finalResult.journeyParamStateInfo.currentFormContext.journeyAccountType === 'NRE' ? 'NRO' : 'NRE';
+  globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
+
+  const setAccountSummaryProperties = (summary) => {
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: summary.accounttype });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: summary.homeBranch });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: summary.branchCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: summary.ifsc });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: summary.communicationAddress });
+  };
+
+  const journeyInfo = finalResult.journeyParamStateInfo;
+
+  if (!isNullOrEmpty(accountres.accountOpening.accountNumber)) {
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: true });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountOpening.accountNumber }); // Setting the account number
+    setAccountSummaryProperties(journeyInfo);
+    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadId, currentFormContext.journeyId, globals);
+  } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { visible: true });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.confirmText, { value: 'Congratulations! Your online application is successfully submitted !!!' });
+    setAccountSummaryProperties(journeyInfo);
+    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadId, currentFormContext.journeyId, globals);
+  } else {
+    globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
+    errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+  }
+}
+
+/**
  * Call Account Opening Function
  * @returns {PROMISE}
  */
-async function accountOpeningNreNro(idComToken) {
+async function accountOpeningNreNro(idComToken, globals) {
   const journeyParamStateInfo = finalResult.journeyParamStateInfo;
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
@@ -1119,9 +1189,16 @@ async function accountOpeningNreNro(idComToken) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
+  const fetchResult = fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
 
-  /*if (typeof window !== 'undefined') {
+  Promise.resolve(fetchResult).then((res) => {
+    prefillThankYouPage(res, globals);
+  }).catch((err) => {
+    console.log(err);
+    errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+  });
+
+  /* if (typeof window !== 'undefined') {
     hideLoaderGif();
   }
   return {
@@ -1129,8 +1206,7 @@ async function accountOpeningNreNro(idComToken) {
       errorCode: '0',
       accountNumber: '50919394857273',
     },
-  };*/
-
+  }; */
 }
 
 /**
@@ -1157,35 +1233,12 @@ async function fetchIdComToken() {
 }
 
 /**
- * Prefills the Thank You page based on the DB
- * @returns {void}
- */
-function prefillThankYouPage(accountNumber, globals) {
-  const { thankyouLeftPanel } = globals.form.thankYouPanel.thankYoufragment;
-  const journeyAccountType = finalResult.journeyParamStateInfo.currentFormContext.journeyAccountType === 'NRE' ? 'NRO' : 'NRE';
-  globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
-  if (!isNullOrEmpty(accountNumber)) {
-    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountNumber }); // Setting the account number
-  } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
-    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId });
-    globals.functions.setProperty(thankyouLeftPanel.accountNumber.confirmText, { value: 'Congratulations! Your online application is successfully submitted !!!' });
-  } else {
-    globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
-  }
-
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: finalResult.journeyParamStateInfo.accounttype }); // Setting the account type
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: finalResult.journeyParamStateInfo.homeBranch }); // Setting the home branch
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: finalResult.journeyParamStateInfo.branchCode }); // Setting the branch code
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: finalResult.journeyParamStateInfo.ifsc }); // Setting the ifsc code
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: finalResult.journeyParamStateInfo.communicationAddress }); // Setting the communication address
-}
-
-/**
  * @name validateJourneyParams - Validates the last Journey state
  * @returns {PROMISE}
  */
 async function validateJourneyParams(formData, globals) {
+  currentFormContext.mobileNumber = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value;
+  currentFormContext.leadProfileId = globals.form.runtime.leadProifileId.$value;
   try {
     const journeyDropOffParamLast = formData.journeyStateInfo[formData.journeyStateInfo.length - 1];
     finalResult.journeyParamState = journeyDropOffParamLast.state;
@@ -1434,7 +1487,7 @@ const crmLeadIdDetail = (globals) => {
       sex: response.txtCustSex,
       email: response.refCustEmail,
       accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
-      ProductCategory: globals.form.crmProductPanel.productCategory.$value,
+      ProductCategory: currentFormContext.productCategory,
       name: response.customerFullName,
       otherThanAgriIncome: '',
       nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
@@ -1709,24 +1762,24 @@ function crmProductID(crmProductPanel, response, globals) {
   };
   if (productID === 201 && productvarient === 'NRO') {
     setFormValue(crmProductPanel.productName, 'NRO current account');
-   // setFormValue(crmProductPanel.productCategory, 'Current');
-   // setFormValue(crmProductPanel.productCategoryID, '484');
-    //setFormValue(crmProductPanel.productKey, '604');
+    // setFormValue(crmProductPanel.productCategory, 'Current');
+    // setFormValue(crmProductPanel.productCategoryID, '484');
+    // setFormValue(crmProductPanel.productKey, '604');
   } else if (productID === 218 && productvarient === 'NRE') {
     setFormValue(crmProductPanel.productName, 'NRE Current account');
-    //setFormValue(crmProductPanel.productCategory, 'Current');
-    //setFormValue(crmProductPanel.productCategoryID, '484');
-    //setFormValue(crmProductPanel.productKey, '605');
+    // setFormValue(crmProductPanel.productCategory, 'Current');
+    // setFormValue(crmProductPanel.productCategoryID, '484');
+    // setFormValue(crmProductPanel.productKey, '605');
   } else if (productvarient === 'NRO') {
     setFormValue(crmProductPanel.productName, 'NRO savings account');
-    //setFormValue(crmProductPanel.productKey, '602');
-    //setFormValue(crmProductPanel.productCategory, 'Savings');
-    //setFormValue(crmProductPanel.productCategoryID, '483');
+    // setFormValue(crmProductPanel.productKey, '602');
+    // setFormValue(crmProductPanel.productCategory, 'Savings');
+    // setFormValue(crmProductPanel.productCategoryID, '483');
   } else if (productvarient === 'NRE') {
     setFormValue(crmProductPanel.productName, 'NRE savings account');
-    //setFormValue(crmProductPanel.productCategory, 'Savings');
-    //setFormValue(crmProductPanel.productCategoryID, '483');
-    //setFormValue(crmProductPanel.productKey, '601');
+    // setFormValue(crmProductPanel.productCategory, 'Savings');
+    // setFormValue(crmProductPanel.productCategoryID, '483');
+    // setFormValue(crmProductPanel.productKey, '601');
   }
 }
 
@@ -1790,37 +1843,6 @@ function multiAccountVarient(selectAccount, globals) {
     globals.functions.setProperty(selectAccount.nre_account_type_pannel, { visible: true });
     globals.functions.setProperty(selectAccount.nro_account_type_pannel.eliteSavingsAccountPanel.eliteSavingsAccount, { value: null });
   }
-}
-
-function errorHandling(response, journeyState, globals) {
-  const {
-    mobileNumber,
-    leadProfileId,
-    journeyID,
-  } = currentFormContext;
-  if (response.errorCode === '02') {
-    globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.incorrectOTPText, { visible: true });
-  } else if (response.errorCode === '04') {
-    document.body.classList.add('errorPageBody');
-    document.body.classList.remove('wizardPanelBody');
-    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.incorrectOTPPanel, { visible: true });
-  } else if (response.errorCode === 'V01' || response.errorCode === 'V02' || response.errorCode === 'V03' || response.errorCode === 'V04'
-    || response.errorCode === 'V05' || response.errorCode === 'VO6' || response.errorCode === 'V07' || response.errorCode === 'V08'
-    || response.errorCode === 'V09' || response.errorCode === 'V10' || response.errorCode === 'V11' || response.errorCode === 'V12') {
-    document.body.classList.add('errorPageBody');
-    document.body.classList.remove('wizardPanelBody');
-    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.differentErrorCodes, { visible: true });
-  } else {
-    document.body.classList.add('errorPageBody');
-    document.body.classList.remove('wizardPanelBody');
-    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-    globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
-  }
-
-  invokeJourneyDropOffUpdate(journeyState, mobileNumber, leadProfileId, journeyID, globals);
 }
 
 function submitThankYou(globals) {
