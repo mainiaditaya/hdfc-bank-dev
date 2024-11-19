@@ -2408,7 +2408,7 @@
 
             &:last-child {
               @media (320px <=width <=767px) {
-                margin-bottom: 0px;
+                margin-bottom: 0px !important;
               }
             }
 
@@ -3238,8 +3238,11 @@
       }
 
       .cmp-container>div:nth-child(1) {
-        @media screen and (min-width: 768px) {
-          margin-left: 74px;
+        @media (320px <=width <=990px) {
+           margin-left: 74px;
+        }
+        @media screen and (min-width: 991px) {
+          margin-left: 42px;
         }
       }
 
@@ -4137,6 +4140,14 @@
 
         &.field-rateabovenine{
           left: 280px;
+
+          @media (768px <=width <=991px) {
+            left: 0;
+          }
+  
+          @media (320px <=width <=767px) {
+            left: 0;
+          }
         }
       }
 
