@@ -879,11 +879,11 @@ function prefillThankYouPage(accountres, globals) {
   globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
 
   const setAccountSummaryProperties = (summary) => {
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: summary.accounttype });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: summary.homeBranch });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: summary.branchCode });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: summary.ifsc });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: summary.communicationAddress });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: currentFormContext.selectedAccountName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: currentFormContext.fatca_responsecustomerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: currentFormContext.fatca_responsecustomerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: currentFormContext.fatca_responsecustomerAccountDetailsDTO[currentFormContext.selectedCheckedValue].ifscCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: summary.form.confirmDetails.personalDetails.communicationAddress });
   };
 
   const journeyInfo = finalResult.journeyParamStateInfo;
@@ -892,14 +892,14 @@ function prefillThankYouPage(accountres, globals) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: true });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountOpening.accountNumber }); // Setting the account number
     setAccountSummaryProperties(journeyInfo);
-    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadId, currentFormContext.journeyId, globals);
+    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadProfileId, currentFormContext.journeyId, globals);
   } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { visible: true });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: false });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { value: finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.confirmText, { value: 'Congratulations! Your online application is successfully submitted !!!' });
     setAccountSummaryProperties(journeyInfo);
-    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadId, currentFormContext.journeyId, globals);
+    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadProfileId, currentFormContext.journeyId, globals);
   } else {
     globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
     errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
@@ -1214,7 +1214,7 @@ async function accountOpeningNreNro(idComToken, globals) {
  * 1Call Account Opening Function
  * @returns {PROMISE}
  */
-async function accountOpeningNreNro1(idComToken, globals) {
+async function accountOpeningNreNro1(idComToken) {
   const journeyParamStateInfo = finalResult.journeyParamStateInfo;
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
@@ -1546,6 +1546,7 @@ async function validateJourneyParams(formData, globals) {
       if (currentFormContext.idComSuccess === 'TRUE') {
         if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
           currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
+          currentFormContext.selectedAccountName = finalResult.journeyParamStateInfo.currentFormContext.selectedAccountName;
         }
         invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value, globals.form.runtime.leadProifileId.$value, currentFormContext.journeyId, globals);
         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'fetchIdComToken' });
@@ -1747,7 +1748,7 @@ setTimeout(() => {
   onPageLoadAnalytics();
 }, 5000);
 
-const crmLeadIdDetail = (globals) => {
+const crmLeadIdDetail = () => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
 
   const jsonObj = {
@@ -2084,36 +2085,42 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel) {
     currentFormContext.productCategory = 'Savings';
     currentFormContext.productCategoryID = '483';
     currentFormContext.productKey = '602';
+    currentFormContext.selectedAccountName = 'NRO - Elite Savings Account';
   } else if (nroRegularSavingsAcco === 'on') {
     currentFormContext.productAccountName = 'NRO savings account';
     currentFormContext.productAccountType = '101';
     currentFormContext.productCategory = 'Savings';
     currentFormContext.productCategoryID = '483';
     currentFormContext.productKey = '602';
+    currentFormContext.selectedAccountName = 'NRO - Regular Savings Account';
   } else if (nroCurrentAcco === 'on') {
     currentFormContext.productAccountName = 'NRO current account';
     currentFormContext.productAccountType = '201';
     currentFormContext.productCategory = 'Current';
     currentFormContext.productCategoryID = '484';
     currentFormContext.productKey = '605';
+    currentFormContext.selectedAccountName = 'NRO - Current Account';
   } else if (nreRegularSavingsAcco === 'on') {
     currentFormContext.productAccountName = 'NRE savings account';
     currentFormContext.productAccountType = '106';
     currentFormContext.productCategory = 'Savings';
     currentFormContext.productCategoryID = '483';
     currentFormContext.productKey = '601';
+    currentFormContext.selectedAccountName = 'NRE - Regular Savings Account';
   } else if (nreEliteSavingsAcco === 'on') {
     currentFormContext.productAccountName = 'NRE savings account';
     currentFormContext.productAccountType = '1350';
     currentFormContext.productCategory = 'Savings';
     currentFormContext.productCategoryID = '483';
     currentFormContext.productKey = '601';
+    currentFormContext.selectedAccountName = 'NRE - Elite Savings Account';
   } else if (nreCurrentAcco === 'on') {
     currentFormContext.productAccountName = 'NRE  current account';
     currentFormContext.productAccountType = '218';
     currentFormContext.productCategory = 'Current';
     currentFormContext.productCategoryID = '484';
     currentFormContext.productKey = '604';
+    currentFormContext.selectedAccountName = 'NRE - Current Account';
   }
 }
 
