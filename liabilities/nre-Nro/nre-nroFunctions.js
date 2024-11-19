@@ -880,15 +880,15 @@ function prefillThankYouPage(accountres, globals) {
 
   const setAccountSummaryProperties = (summary) => {
     globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: currentFormContext.selectedAccountName });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: currentFormContext.fatca_responsecustomerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: currentFormContext.fatca_responsecustomerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: currentFormContext.fatca_responsecustomerAccountDetailsDTO[currentFormContext.selectedCheckedValue].ifscCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].ifscCode });
     globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: summary.form.confirmDetails.personalDetails.communicationAddress });
   };
 
   const journeyInfo = finalResult.journeyParamStateInfo;
 
-  if (!isNullOrEmpty(accountres?.accountOpening?.accountNumber)) {
+  if (!isNullOrEmpty(accountres?.accountNumber)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: true });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountOpening.accountNumber }); // Setting the account number
     setAccountSummaryProperties(journeyInfo);
