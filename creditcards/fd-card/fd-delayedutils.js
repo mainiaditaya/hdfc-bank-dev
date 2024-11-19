@@ -100,14 +100,14 @@ const finalDapFetchRes = async () => {
 const pageRedirected = () => {
   const { aadharRedirect, idComRedirect, errorCode } = delayedUtilState;
   const sessionExpiredErrorCode = IDCOM.response.sessionExpired.errorCode;
-  if (!aadharRedirect && !idComRedirect) {
-    const { formLoad } = ANALYTICS.event;
     // eslint-disable-next-line no-undef
     const journeyId = myForm.resolveQualifiedName('$form.runtime.journeyId')._data.$_value;
     const journeyData = {
       journeyId,
       journeyName: ANALYTICS.JOURNEY_NAME,
     };
+  if (!aadharRedirect && !idComRedirect) {
+    const { formLoad } = ANALYTICS.event;
     setTimeout(() => {
       sendFDAnalytics(formLoad.type, formLoad.pageName, {}, formLoad.journeyState, journeyData);
     }, 1200);
@@ -115,12 +115,14 @@ const pageRedirected = () => {
   }
   if (aadharRedirect && delayedUtilState.visitType === 'EKYC_AUTH') {
     setTimeout(() => {
-      sendPageloadEvent('IDCOM_REDIRECTION_INITIATED', CURRENT_FORM_CONTEXT, 'Address Details', '');
+      sendFDAnalytics('page load', 'Address Details', {}, 'IDCOM_REDIRECTION_INITIATED', journeyData);
     }, 1200);
   }
-  if (idComRedirect && errorCode !== sessionExpiredErrorCode) {
+  if (delayedUtilState.idComRedirect && delayedUtilState?.errorCode !== IDCOM.response.sessionExpired.errorCode) {
     displayLoader();
-    setTimeout(finalDapFetchRes, 5000);
+    setTimeout(() => {
+      finalDapFetchRes();
+    }, 5000);
   }
 };
 
