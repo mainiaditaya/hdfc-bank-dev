@@ -2150,6 +2150,26 @@ function submitThankYou(globals) {
   invokeJourneyDropOffUpdate('CUSTOMER_REVIEW_SUBMITTED', mobileNumber, leadProfileId, journeyID, globals);
 }
 
+const feedbackButton = () => {
+  const thankyouSubmit = document.querySelector('button[name="tqSubmitButton"]');
+  setTimeout(() => {
+    document.querySelectorAll('.field-ratingbuttons .button').forEach((button) => {
+      button.addEventListener('click', function ratingClick() {
+        document.querySelectorAll('.field-ratingbuttons .button').forEach((btn) => {
+          btn.classList.remove('active');
+        });
+        this.classList.add('active');
+        const ratingValue = this.textContent;
+        const captureRatingInput = document.querySelector('input[name="captureRating"]');
+        if (captureRatingInput) {
+          captureRatingInput.value = ratingValue;
+          thankyouSubmit.removeAttribute('disabled');
+        }
+      });
+    });
+  }, 100);
+};
+
 export {
   validateLogin,
   getOtpNRE,
@@ -2188,4 +2208,5 @@ export {
   submitThankYou,
   reloadPage,
   accountOpeningNreNro1,
+  feedbackButton,
 };
