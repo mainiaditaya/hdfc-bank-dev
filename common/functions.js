@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import {
   validatePan,
@@ -7,6 +8,8 @@ import {
 import fetchAuthCode from './idcomutils.js';
 
 import {
+// ssss
+// ssss
   urlPath,
   santizedFormDataWithContext,
   createLabelInElement,
@@ -20,11 +23,13 @@ import {
 import { initRestAPIDataSecurityServiceES6 } from './apiDataSecurity.js';
 
 import * as CONSTANT from './constants.js';
+import * as CC_CONSTANT from '../creditcards/corporate-creditcard/constant.js';
 
 const {
   ENDPOINTS,
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
+const { JOURNEY_NAME: journeyNameConstant } = CC_CONSTANT;
 
 /**
   * @name isValidJson
@@ -135,7 +140,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
       initParameters: {
         journeyId: currentFormContext.journeyID,
         transactionId: currentFormContext.journeyID.replace(/-/g, '').replace(/_/g, ''),
-        journeyName: currentFormContext.journeyName,
+        journeyName: journeyNameConstant,
         userAgent: window.navigator.userAgent,
         mobileNumber: mobileNumber.$value,
         leadProfileId: globals?.form.runtime.leadProifileId.$value,
@@ -163,7 +168,7 @@ async function aadharInit(mobileNumber, pan, dob, globals) {
         },
         journeyStateInfo: {
           state: 'CUSTOMER_AADHAR_VALIDATION',
-          stateInfo: currentFormContext.journeyName,
+          stateInfo: journeyNameConstant,
           formData: santizedFormDataWithContext(globals, currentFormContext),
         },
         auditData: {

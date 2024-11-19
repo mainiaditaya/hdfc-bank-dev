@@ -6,7 +6,6 @@ import {
 } from '../../common/makeRestAPI.js';
 import { FD_ENDPOINTS } from './constant.js';
 import { SELECTED_CUSTOMER_ID } from './customeridutil.js';
-import { sendPageloadEvent } from './analytics.js';
 
 const IPA_RESPONSE = {};
 const createIpaRequest = (payload, globals) => {
@@ -33,7 +32,6 @@ const createIpaRequest = (payload, globals) => {
       productCode: applicableCardsArr.join(','),
     },
   };
-  CURRENT_FORM_CONTEXT.eligibleCards = ipaRequest?.requestString?.productCode;
   return ipaRequest;
 };
 /**
@@ -71,12 +69,12 @@ const updateData = (globals, productDetail, panel, index) => {
 
   const properties = [
     { element: panel.cardSelection_display, value: product },
-    { element: panel.joiningRenewalFeeWrapper.joiningFeeAmt, value: joiningFee },
-    { element: panel.joiningRenewalFeeWrapper.renewalFeeAmt, value: renewalFee },
+    { element: panel.joiningFeeAmt, value: joiningFee },
+    { element: panel.renewalFeeAmt, value: renewalFee },
     { element: panel.cardTagline, value: cardLine },
-    { element: panel.cardfeaturesWrapper.cardfeatures1, value: keyBenefits[0] || '' },
-    { element: panel.cardfeaturesWrapper.cardfeatures2, value: keyBenefits[1] || '' },
-    { element: panel.cardfeaturesWrapper.cardfeatures3, value: keyBenefits[2] || '' },
+    { element: panel.cardfeatures1, value: keyBenefits[0] || '' },
+    { element: panel.cardfeatures2, value: keyBenefits[1] || '' },
+    { element: panel.cardfeatures3, value: keyBenefits[2] || '' },
   ];
 
   properties.forEach(({ element, value }) => setProperty(element, { value }));
@@ -139,8 +137,6 @@ const bindSingleCardDetails = (panel, globals, productDetail) => {
  */
 const fdIpaSuccessHandler = (response, globals) => {
   CURRENT_FORM_CONTEXT.eRefNumber = response?.APS_E_REF_NUM;
-  if (response?.FILLER1 !== '') CURRENT_FORM_CONTEXT.eligibleCards = response?.FILLER1;
-  sendPageloadEvent('CUSTOMER_CARD_SELECTED', CURRENT_FORM_CONTEXT, 'Step 5 - Choose Card', 'selectCard');
   const productDetails = response?.productEligibility?.productDetails?.length
     ? response.productEligibility.productDetails
     : response?.productEligibility?.defaultProducts ?? [];
