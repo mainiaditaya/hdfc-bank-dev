@@ -17,6 +17,7 @@ export const defaultErrorMessages = {
 let submitBaseUrl = 'https://applyonline.hdfcbank.com';
 
 const localDev = ['aem.live', 'aem.page', 'localhost', 'hlx.live', 'hlx.page'];
+const mainProd - ['hdfc-bank-prod'];
 
 function isLocalDev() {
   // eslint-disable-next-line no-restricted-globals
@@ -27,7 +28,16 @@ function isLocalDev() {
   return false;
 }
 
-if (isLocalDev()) {
+function isMainProd() {
+  // eslint-disable-next-line no-restricted-globals
+  if(typeof location !== 'undefined') {
+    const { hostname } = location;
+    return mainProd.some((main) => hostname.includes(main));
+  }
+  return false;
+}
+
+if (isLocalDev() && !isMainProd() ) {
   submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
 }
 
