@@ -122,6 +122,11 @@
     &>.form-container {
       margin: 0 !important;
       border-radius: 0;
+      width: 100%;
+
+      & .form-wrapper{
+        max-width: inherit;
+      }
     }
 
     .form {
@@ -968,7 +973,7 @@
           .field-otppanel {
             max-width: 100% !important;
             grid-template-rows: auto;
-            padding: 40px 40px 0 10px;
+            padding: 40px 0px 0 0px;
 
             @media (320px <=width <=767px) {
               padding: 40px 0 0 0;
@@ -3345,7 +3350,7 @@
                   margin-top: -165px;
                 }
 
-                @media (320px <=width <=767) {
+                @media (320px <=width <=767px) {
                   font-size: 20px;
                   line-height: 32px;
                   margin-top: -90px;
@@ -3987,7 +3992,7 @@
             flex: 0 0 240px;
             display: flex;            
             position: relative;
-            @media (min-width: 991px) {
+            @media (min-width: 1200px) {
               margin-top: -106px;
             }
 
@@ -4086,9 +4091,10 @@
       .field-rateabovenine,
       .field-beloweight {
         position: absolute;
+        left: 380px;
         top: -280px;
         padding-left: 15px;
-        height: 40px;
+        min-height: 40px;
         border-radius: 8px;
         background-color: #EBF9EF;
         display: flex;
@@ -4098,6 +4104,7 @@
         @media (768px <=width <=991px) {
           left: 0;
           padding: 0 10px;
+          top:-390px;
         }
 
         @media (320px <=width <=767px) {
@@ -4128,9 +4135,6 @@
           }
         }
 
-        &.field-beloweight {
-          left: 380px;
-        }
         &.field-rateabovenine{
           left: 280px;
         }
