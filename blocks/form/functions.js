@@ -8,7 +8,7 @@ export const formIdPathMapping = {
   '/content/forms/af/hdfc_haf/loan-against-assets/smartemi/smartemi': '../../../creditcards/semi/semi-functions.js',
   '/content/forms/af/hdfc_haf/digital/pvtestfdliencugtest': '../../../creditcards/fd-card/fd-functions.js', // fd
   '/content/forms/af/hdfc_haf/digital/fd-lien-cug': '../../../creditcards/fd-card/fd-functions.js', // fd
-  '/content/forms/af/hdfc_haf/digital/fdlienprodtest': '../../../creditcards/fd-card/fd-functions.js', // fd
+  '/content/forms/af/hdfc_haf/digital/fdlienprodtest': '../../../creditcards/fd-card/fd-functions.js', // fd form
 };
 
 export default function getCustomFunctionPath(id) {
