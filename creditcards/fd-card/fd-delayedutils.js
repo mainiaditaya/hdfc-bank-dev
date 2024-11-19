@@ -137,7 +137,6 @@ const pageRedirected = () => {
     delayedUtilState.errorCode = searchParams.get('errorCode');
     delayedUtilState.aadharRedirect = visitType === 'EKYC_AUTH' || visitType === 'EKYC_AUTH_FAILED';
     delayedUtilState.idComRedirect = authMode === 'DebitCard' || authMode === 'CreditCard';
-
     pageRedirected();
   }, 0);
 })();
