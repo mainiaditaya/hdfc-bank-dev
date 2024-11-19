@@ -45,7 +45,7 @@ const FORM_CONSTANT = [
     launchScript: {
       dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
-      loadTime: 1200,
+      loadTime: 1100,
     },
   },
 ];
