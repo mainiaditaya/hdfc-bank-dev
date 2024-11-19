@@ -896,10 +896,6 @@ function prefillThankYouPage(accountres, globals) {
   } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { visible: true });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: false });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { visible: false });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { visible: false });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { visible: false });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { visible: false });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { value: finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.confirmText, { value: 'Congratulations! Your online application is successfully submitted !!!' });
     setAccountSummaryProperties(journeyInfo);
