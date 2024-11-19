@@ -124,7 +124,7 @@
       border-radius: 0;
       width: 100%;
 
-      & .form-wrapper{
+      & .form-wrapper {
         max-width: inherit;
       }
     }
@@ -3238,11 +3238,15 @@
       }
 
       .cmp-container>div:nth-child(1) {
-        @media (320px <=width <=990px) {
-           margin-left: 74px;
-        }
-        @media screen and (min-width: 991px) {
+        @media (767px <=width <=992px) {
           margin-left: 42px;
+        }
+        @media (320px <=width <=766px) {
+          margin-left: 42px;
+        }
+
+        @media (min-width: 768px) {
+          margin-left: 70px;
         }
       }
 
@@ -3352,6 +3356,7 @@
                   margin-left: 0;
                   margin-top: -165px;
                 }
+                
 
                 @media (320px <=width <=767px) {
                   font-size: 20px;
@@ -3373,7 +3378,10 @@
                     top: -315px;
                   }
 
-                  @media (320px <=width <=767px) {
+                  @media (655px <=width <=766px) {
+                    top: -280px;
+                  }
+                  @media (320px <=width <=654px) {
                     top: -245px;
                     background-size: 30%;
                     width: 90%;
@@ -3414,7 +3422,8 @@
                 margin-bottom: 20px;
               }
 
-              &>.field-accountnumber, &>.field-leadid-number {
+              &>.field-accountnumber,
+              &>.field-leadid-number {
                 position: relative;
                 padding-left: 95px;
 
@@ -3993,8 +4002,9 @@
 
           .field-personalizeddebitcard {
             flex: 0 0 240px;
-            display: flex;            
+            display: flex;
             position: relative;
+
             @media (min-width: 1200px) {
               margin-top: -106px;
             }
@@ -4107,7 +4117,7 @@
         @media (768px <=width <=991px) {
           left: 0;
           padding: 0 10px;
-          top:-390px;
+          top: -390px;
         }
 
         @media (320px <=width <=767px) {
@@ -4138,13 +4148,12 @@
           }
         }
 
-        &.field-rateabovenine{
+        &.field-rateabovenine {
           left: 280px;
 
           @media (768px <=width <=991px) {
             left: 0;
           }
-  
           @media (320px <=width <=767px) {
             left: 0;
           }
