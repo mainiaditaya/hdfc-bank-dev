@@ -1189,7 +1189,7 @@ async function accountOpeningNreNro(idComToken, globals) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  const fetchResult = fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
+  const fetchResult = fetchJsonResponse(apiEndPoint, jsonObj, 'POST', false);
 
   Promise.resolve(fetchResult).then((res) => {
     prefillThankYouPage(res, globals);
