@@ -1493,7 +1493,7 @@ async function accountOpeningNreNro1(idComToken, globals) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  return fetchResult = fetchJsonResponse(apiEndPoint, jsonObj, 'POST', false);
+  return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', false);
 }
 
 /**
