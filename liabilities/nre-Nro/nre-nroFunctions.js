@@ -879,8 +879,8 @@ function prefillThankYouPage(accountres, globals) {
   globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
 
   const setAccountSummaryProperties = (summary) => {
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: currentFormContext.selectedAccountName });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accountTypePanel.accounttype, { value: currentFormContext.selectedAccountName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranchPanel.homeBranch, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
     globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode });
     globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].ifscCode });
     globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: summary.form.confirmDetails.personalDetails.communicationAddress });
