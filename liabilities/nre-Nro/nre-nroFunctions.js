@@ -890,7 +890,7 @@ function prefillThankYouPage(accountres, globals) {
 
   if (!isNullOrEmpty(accountres?.accountNumber)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: true });
-    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountOpening.accountNumber }); // Setting the account number
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountNumber }); // Setting the account number
     setAccountSummaryProperties(journeyInfo);
     invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadProfileId, currentFormContext.journeyId, globals);
   } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
