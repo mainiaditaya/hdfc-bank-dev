@@ -871,19 +871,44 @@ const finalResult = {
  * @returns {void}
  */
 function prefillThankYouPage(accountres, globals) {
+  if(isNullOrEmpty(accountres)){
+    accountres = {
+      "errorText": "0",
+      "errorCode": "0",
+      "externalReferenceNo": "679225519",
+      "accountNumber": "50100117366369",
+      "status": {
+          "isOverriden": false,
+          "replyText": "0",
+          "internalReferenceNumber": "2024324353401194",
+          "errorCode": "0",
+          "memo": null,
+          "replyCode": 0,
+          "validationErrors": null,
+          "externalReferenceNo": "679225519",
+          "postingDate": {
+              "dateString": "20241119000000"
+          },
+          "extendedReply": {
+              "messages": null
+          },
+          "userReferenceNumber": null
+      }
+  };
+  }
   const { thankyouLeftPanel } = globals.form.thankYouPanel.thankYoufragment;
 
   globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
   globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
-  const journeyAccountType = finalResult.journeyParamStateInfo.currentFormContext.journeyAccountType === 'NRE' ? 'NRO' : 'NRE';
+  const journeyAccountType =  'NRE';
   globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
 
   const setAccountSummaryProperties = (summary) => {
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accountTypePanel.accounttype, { value: currentFormContext.selectedAccountName });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranchPanel.homeBranch, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].ifscCode });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: summary.form.confirmDetails.personalDetails.communicationAddress });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accountTypePanel.accounttype, { value: 'NRE NRO Savings account jhdgsbds' });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranchPanel.homeBranch, { value: 'Congratulations! Your online application is successfully submitted jfvjbfdjbvjkhbfdjhvbdfjbvjhdfvjhbdfjbvjhdbfjhvbjhdfbv!!!' });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: '78234632' });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: '8763458' });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: 'Congratulations! Your online application is successfully submitted !!!' });
   };
 
   const journeyInfo = finalResult.journeyParamStateInfo;
@@ -891,7 +916,7 @@ function prefillThankYouPage(accountres, globals) {
   if (!isNullOrEmpty(accountres?.accountNumber)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: true });
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountOpening.accountNumber }); // Setting the account number
-    setAccountSummaryProperties(journeyInfo);
+    setAccountSummaryProperties({});
     invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadProfileId, currentFormContext.journeyId, globals);
   } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { visible: true });
