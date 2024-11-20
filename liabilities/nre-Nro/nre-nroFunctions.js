@@ -191,6 +191,37 @@ const getCountryName = (countryCodeIst) => new Promise((resolve) => {
     });
 });
 
+function errorHandling(response, journeyState, globals) {
+  const {
+    mobileNumber,
+    leadProfileId,
+    journeyID,
+  } = currentFormContext;
+  if (response.errorCode === '02') {
+    globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.incorrectOTPText, { visible: true });
+  } else if (response.errorCode === '04') {
+    document.body.classList.add('errorPageBody');
+    document.body.classList.remove('wizardPanelBody');
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.incorrectOTPPanel, { visible: true });
+  } else if (response.errorCode === 'V01' || response.errorCode === 'V02' || response.errorCode === 'V03' || response.errorCode === 'V04'
+    || response.errorCode === 'V05' || response.errorCode === 'VO6' || response.errorCode === 'V07' || response.errorCode === 'V08'
+    || response.errorCode === 'V09' || response.errorCode === 'V10' || response.errorCode === 'V11' || response.errorCode === 'V12') {
+    document.body.classList.add('errorPageBody');
+    document.body.classList.remove('wizardPanelBody');
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.differentErrorCodes, { visible: true });
+  } else {
+    document.body.classList.add('errorPageBody');
+    document.body.classList.remove('wizardPanelBody');
+    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
+    globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
+    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
+  }
+
+  invokeJourneyDropOffUpdate(journeyState, mobileNumber, leadProfileId, journeyID, globals);
+}
+
 /**
  * Validates the date of birth field to ensure the age is between 18 and 120.
  * @param {Object} globals - The global object containing necessary data for DAP request.
@@ -836,10 +867,50 @@ const finalResult = {
 };
 
 /**
+ * Prefills the Thank You page based on the DB
+ * @returns {void}
+ */
+function prefillThankYouPage(accountres, globals) {
+  const { thankyouLeftPanel } = globals.form.thankYouPanel.thankYoufragment;
+
+  globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
+  globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
+  const journeyAccountType = finalResult.journeyParamStateInfo.currentFormContext.journeyAccountType === 'NRE' ? 'NRO' : 'NRE';
+  globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
+
+  const setAccountSummaryProperties = (summary) => {
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: currentFormContext.selectedAccountName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].ifscCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: summary.form.confirmDetails.personalDetails.communicationAddress });
+  };
+
+  const journeyInfo = finalResult.journeyParamStateInfo;
+
+  if (!isNullOrEmpty(accountres?.accountNumber)) {
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: true });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountOpening.accountNumber }); // Setting the account number
+    setAccountSummaryProperties(journeyInfo);
+    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadProfileId, currentFormContext.journeyId, globals);
+  } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { visible: true });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: false });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { value: finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId });
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.confirmText, { value: 'Congratulations! Your online application is successfully submitted !!!' });
+    setAccountSummaryProperties(journeyInfo);
+    invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadProfileId, currentFormContext.journeyId, globals);
+  } else {
+    globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
+    errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+  }
+}
+
+/**
  * Call Account Opening Function
  * @returns {PROMISE}
  */
-async function accountOpeningNreNro(idComToken) {
+async function accountOpeningNreNro(idComToken, globals) {
   const journeyParamStateInfo = finalResult.journeyParamStateInfo;
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
@@ -1119,9 +1190,16 @@ async function accountOpeningNreNro(idComToken) {
 
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', true);
+  const fetchResult = fetchJsonResponse(apiEndPoint, jsonObj, 'POST', false);
 
-  /*if (typeof window !== 'undefined') {
+  Promise.resolve(fetchResult).then((res) => {
+    prefillThankYouPage(res, globals);
+  }).catch((err) => {
+    console.log(err);
+    errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+  });
+
+  /* if (typeof window !== 'undefined') {
     hideLoaderGif();
   }
   return {
@@ -1129,8 +1207,294 @@ async function accountOpeningNreNro(idComToken) {
       errorCode: '0',
       accountNumber: '50919394857273',
     },
-  };*/
+  }; */
+}
 
+/**
+ * 1Call Account Opening Function
+ * @returns {PROMISE}
+ */
+async function accountOpeningNreNro1(idComToken) {
+  const journeyParamStateInfo = finalResult.journeyParamStateInfo;
+  const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
+  const jsonObj = {
+    requestString: {
+      journeyID: journeyParamStateInfo.currentFormContext.journeyID,
+      journeyName: currentFormContext.journeyName,
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
+      misCodeDetails: '',
+      identifierValue: parseDate(response.datBirthCust),
+      flgChqBookIssue: 'N',
+      DoB: parseDate(response.datBirthCust),
+      IDCOM_Token: idComToken,
+      Id_token_jwt: journeyParamStateInfo.AccountOpeningNRENRO.fatcaJwtToken,
+      dateofBirth: parseDate(response.datBirthCust),
+      custBirthDate: parseDate(response.datBirthCust),
+      identifierName: '',
+      preferredChannel: '',
+      territoryName: '',
+      address: `${response?.txtCustadrAdd1} ${response?.txtCustadrAdd2} ${response?.txtCustadrAdd3}`,
+      companyName: '',
+      nomineeAge: '',
+      typeOfFirm: '',
+      typCompany: '',
+      typeOfFirm_label: '',
+      accountNumber: response.customerAccountDetailsDTO[accIndex].accountNumber,
+      customerID: response.customerId.toString(),
+      maskedCustID: response.customerId.toString().slice((response.customerId.toString().length - 4), response.customerId.toString().length),
+      maskedAccountNumber: 'X'.repeat((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4))
+                            + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
+      agriculturalIncome: '',
+      sex: response.txtCustSex,
+      email: response.refCustEmail,
+      accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
+      ProductCategory: journeyParamStateInfo.currentFormContext.productCategory,
+      name: response.customerFullName,
+      otherThanAgriIncome: '',
+      nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
+      birthCertificate: '',
+      PANNumber: response.refCustItNum,
+      nomineeAddress: '',
+      maidenName: response.namMotherMaiden,
+      countryOfNominee: '',
+      country: response.namHoldadrCntry,
+      passpostExpiryDate: '',
+      codeLC: '',
+      codeLG: '',
+      applicationDate: new Date().toISOString().slice(0, 19),
+      DLExpiryDate: '',
+      selfEmployedProfessionalCategory: '',
+      selfEmployedProfessionalCategory_label: '',
+      nomineeCity: '',
+      stateOfBirth: '',
+      cityOfBirth: response.customerFATCADtlsDTO[0].namCityBirth,
+      taxCntry1: response.customerFATCADtlsDTO[0].codTaxCntry1,
+      permanentAddressState: response.namPermadrState,
+      permanentAddressCity: response.namPermadrCity,
+      permanentAddressLM: response.txtPermadrAdd3,
+      permanentAddressLine2: response.txtPermadrAdd2,
+      permanentAddressLine1: response.txtPermadrAdd1 || '',
+      presentAddressLM: response.txtCustadrAdd3,
+      presentAddressLine2: response.txtCustadrAdd2,
+      presentAddressLine1: response.txtCustadrAdd1,
+      isIndianTaxResident: '',
+      isTaxAddressSame: '',
+      isMailIDAvailable: '',
+      isPresentAddressSame: '',
+      isCommunicationAddressSame: '',
+      isPermanentAddressSame: '',
+      isSameAddress: '',
+      fatherNAme: response.customerFATCADtlsDTO[0].namCustFather,
+      employeeCategory: '',
+      employeeCategory_label: '',
+      otherEmployeeCategory: '',
+      otherEmployeeCategory_label: '',
+      occupationType: '',
+      permanentAddressPin: response.txtPermadrZip,
+      presentAddressPin: response.txtPermadrZip,
+      maritalStatus: response.maritalStatusDescription,
+      marital_Status: '',
+      spouseName: response.customerFATCADtlsDTO[0].namCustSpouse,
+      declareNominee: '',
+      otherTypeOfFirm: '',
+      otherTypeOfFirm_label: '',
+      otherSourceOfFunds: '',
+      nomineeAddressLine2: '',
+      nomineeLandmark: '',
+      nomAdrCity: '',
+      nomAdrCntry: '',
+      nomAdrState: '',
+      nomAdrZip: '',
+      nomRelation: '',
+      nomineeDoB: response.customerAccountDetailsDTO[accIndex].nomineeDOB ? parseDate(response.customerAccountDetailsDTO[accIndex].nomineeDOB) : '',
+      isForm60Attached: '',
+      PANAckNo: '',
+      doaInput: '',
+      grossAnnualIncome: response.customerAMLDetailsDTO[0].grossIncome || '',
+      grossAnnualIncome_range: '',
+      monthlyIncome: '',
+      selfServiceAnnualIncome: '',
+      sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
+      sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
+      displayProductName: journeyParamStateInfo.currentFormContext.productAccountName,
+      state: response.namPermadrState,
+      city: response.namPermadrCity,
+      residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
+      residenceType_label: '',
+      doYouHavePAN: response.refCustItNum ? 'Y' : 'N',
+      voterIDNo: '',
+      drivingLicenseNo: '',
+      isSeniorCitizen: '',
+      countryOfTaxResidency: response.customerFATCADtlsDTO[0].codTaxCntry1,
+      AadharFSDocument: '',
+      PANFSDocument: '',
+      passportFSDocument: '',
+      voterIDFSDocument: '',
+      DLFSDocument: '',
+      otherDocumentFS: '',
+      proofOfAddress: '',
+      passportNumber: '',
+      existingCustomer: 'Y',
+      motherMaidenName: response.namMotherMaiden,
+      declarationforRequiredBalance: '',
+      incorporationDate: '',
+      nationality: response.namHoldadrCntry,
+      custNationality: response.txtCustNATNLTY,
+      addressTypeOtherThanResidential: '',
+      AadharBSDocument: '',
+      passportBSDocument: '',
+      votersIDBSDocument: '',
+      DLBSDocument: '',
+      otherProfileImage: '',
+      otherBSDocument: '',
+      AadharConsentTaken: '',
+      aadharConsentDataTime: new Date().toISOString().slice(0, 19),
+      utilityBillsFSDocument: '',
+      utilityBillsBSDocument: '',
+      municipalBSDocument: '',
+      familyPPSFSDocument: '',
+      familyPPSBSDocument: '',
+      allotmentLetterFSDocument: '',
+      allotmentLEtterBSDocument: '',
+      firstName: response.customerFirstName || '',
+      gender: response.txtCustSex,
+      lastName: response.customerLastName || '',
+      layout: '',
+      customerFullName: response.customerFullName,
+      leadParentLame: '',
+      leadRating: '',
+      leadSource: 'NRI Insta ETB STP', // TODO: Check in Backend if it is being picked from Backend
+      leadSourceKey: '33609',
+      middleName: response.customerMiddleName || '',
+      mobileNo: journeyParamStateInfo.currentFormContext.mobileNumber,
+      multipleTaxResidencyID: '',
+      employmentType: '',
+      employmentTypeOthers: '',
+      phone: journeyParamStateInfo.currentFormContext.mobileNumber,
+      productCategory: journeyParamStateInfo.currentFormContext.productCategory,
+      productName: journeyParamStateInfo.currentFormContext.productAccountName,
+      ratingKey: '',
+      residentialStatus: '',
+      residentialStatus_label: '',
+      salutationKey: '',
+      salutationName: response.txtCustPrefix,
+      statusCodeInOn: new Date().toISOString().slice(0, 19),
+      territoryCode: '',
+      territoryKey: '',
+      zipCode: response.txtPermadrZip,
+      videoKYCConsent: '',
+      transcriptLatLong: '',
+      videoKYCFinalStatus: '',
+      isAadharBasedAccountOpening: '',
+      AMBStamping: '',
+      companyCode: '',
+      occupationTypeOther: '',
+      natureOfBusinessOther: '',
+      natureOfBus: '',
+      natureOfBusinessOther_label: '',
+      genderCode: '',
+      genderID: '',
+      lastModifiedBy: '',
+      lastModifiedOn: '',
+      occupationTypeCode: '',
+      occupationTypeID: '',
+      ownerCode: '',
+      productCategoryID: journeyParamStateInfo.currentFormContext.productCategoryID,
+      productCode: journeyParamStateInfo.currentFormContext.productAccountType,
+      productKey: journeyParamStateInfo.currentFormContext.productKey,
+      ItemKey: journeyParamStateInfo.form.confirmDetails.crm_leadId,
+      leadCustomerID: '',
+      residentialStatusID: '',
+      websiteUrl: '',
+      expirayDateVideo: '',
+      custPrefix: response.txtCustPrefix,
+      cc_RequestType: '',
+      cc_Fraudnet: '',
+      cc_Hunter: '',
+      cc_Final_Status: '',
+      cc_HU_Sec_Status: '',
+      cc_Error_Msg: '',
+      browserName: '',
+      browserVersion: '',
+      osVersion: '',
+      osName: '',
+      browserFingerprint: '',
+      cookieSource: '',
+      cookieTime: '',
+      cookieVintage: '',
+      cookieID: '',
+      cookieName: '',
+      customerEligibilityCheckFlag: 'true',
+      customerEligibilityStatus: 'success',
+      promoCode: null,
+      accountTitle: response.customerFullName,
+      codCCBrn: '',
+      codProd: '',
+      codOccupation: '',
+      codProfession: '',
+      selfEmpFrom: '',
+      incomeSource: '',
+      typEmployer: '',
+      typResidence: '',
+      typResidence_label: '',
+      addr1: response.txtPermadrAdd1 || '',
+      custFirstName: response.customerFirstName || '',
+      custFullName: response.customerFullName,
+      custLastName: response.customerLastName || '',
+      custSex: response.txtCustSex,
+      custType: response.flgCustTyp,
+      permAddr1: response.txtPermadrAdd1 || '',
+      permAddr2: response.txtPermadrAdd2,
+      permAddr3: response.txtPermadrAdd3,
+      permAddrCity: response.namPermadrCity,
+      permAddrState: response.namPermadrState,
+      zip: response.txtPermadrZip,
+      addrProof: '',
+      addressType: '',
+      branchCode: response.customerAccountDetailsDTO[accIndex].branchCode.toString(),
+      branchId: '',
+      custFatherName: response.customerFATCADtlsDTO[0].namCustFather,
+      docNumber: response.customerFATCADtlsDTO[0].idDocNum,
+      ADVRefrenceKey: '',
+      RRN: '',
+      validPAN: response.refCustItNum ? 'Y' : 'N',
+      oneAadhaarOneAcStatus: '',
+      docType: '',
+      resStatus: '',
+      mandateFlag: '',
+      acctOperInstrs: response.customerAccountDetailsDTO[accIndex].accountOperatingInstructions,
+      amtShareFixed: '',
+      codRel: response.customerAccountDetailsDTO[accIndex].codRel.toString(),
+      AMBDateTime: new Date().toISOString().slice(0, 19),
+      guardianName: null,
+      namGuardian: null,
+      guardianDob: '',
+      guardianAge: '',
+      nomineeAddressLine1: '',
+      selfEmployedSinceMonths: '',
+      selfEmployedSinceYears: '',
+      guardAdrAdd1: '',
+      guardAdrAdd2: '',
+      guardAdrAdd3: '',
+      guardAdrCity: '',
+      guardAdrState: '',
+      guardAdrZip: '',
+      addressIndicator: '',
+      partnerId: '',
+      referenceNo: '',
+      utmSource: '',
+      utmMedium: '',
+      utmCampaign: '',
+      utmMcId: '',
+      pep: '',
+      isAccountCreated: 'No',
+      annualTurnOver: '',
+    },
+  };
+
+  // Calling the fetch IDComToken API
+  const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
+  return fetchJsonResponse(apiEndPoint, jsonObj, 'POST', false);
 }
 
 /**
@@ -1157,35 +1521,12 @@ async function fetchIdComToken() {
 }
 
 /**
- * Prefills the Thank You page based on the DB
- * @returns {void}
- */
-function prefillThankYouPage(accountNumber, globals) {
-  const { thankyouLeftPanel } = globals.form.thankYouPanel.thankYoufragment;
-  const journeyAccountType = finalResult.journeyParamStateInfo.currentFormContext.journeyAccountType === 'NRE' ? 'NRO' : 'NRE';
-  globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
-  if (!isNullOrEmpty(accountNumber)) {
-    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountNumber }); // Setting the account number
-  } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
-    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId });
-    globals.functions.setProperty(thankyouLeftPanel.accountNumber.confirmText, { value: 'Congratulations! Your online application is successfully submitted !!!' });
-  } else {
-    globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
-  }
-
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: finalResult.journeyParamStateInfo.accounttype }); // Setting the account type
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: finalResult.journeyParamStateInfo.homeBranch }); // Setting the home branch
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: finalResult.journeyParamStateInfo.branchCode }); // Setting the branch code
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: finalResult.journeyParamStateInfo.ifsc }); // Setting the ifsc code
-  globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: finalResult.journeyParamStateInfo.communicationAddress }); // Setting the communication address
-}
-
-/**
  * @name validateJourneyParams - Validates the last Journey state
  * @returns {PROMISE}
  */
 async function validateJourneyParams(formData, globals) {
+  currentFormContext.mobileNumber = globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value;
+  currentFormContext.leadProfileId = globals.form.runtime.leadProifileId.$value;
   try {
     const journeyDropOffParamLast = formData.journeyStateInfo[formData.journeyStateInfo.length - 1];
     finalResult.journeyParamState = journeyDropOffParamLast.state;
@@ -1205,6 +1546,7 @@ async function validateJourneyParams(formData, globals) {
       if (currentFormContext.idComSuccess === 'TRUE') {
         if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
           currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
+          currentFormContext.selectedAccountName = finalResult.journeyParamStateInfo.currentFormContext.selectedAccountName;
         }
         invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value, globals.form.runtime.leadProifileId.$value, currentFormContext.journeyId, globals);
         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'fetchIdComToken' });
@@ -1406,7 +1748,7 @@ setTimeout(() => {
   onPageLoadAnalytics();
 }, 5000);
 
-const crmLeadIdDetail = (globals) => {
+const crmLeadIdDetail = () => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
 
   const jsonObj = {
@@ -1434,7 +1776,7 @@ const crmLeadIdDetail = (globals) => {
       sex: response.txtCustSex,
       email: response.refCustEmail,
       accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
-      ProductCategory: globals.form.crmProductPanel.productCategory.$value,
+      ProductCategory: currentFormContext.productCategory,
       name: response.customerFullName,
       otherThanAgriIncome: '',
       nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
@@ -1557,7 +1899,7 @@ const crmLeadIdDetail = (globals) => {
       employmentType: '',
       employmentTypeOthers: '',
       phone: currentFormContext.mobileNumber,
-      productCategory: globals.form.crmProductPanel.productCategory.$value,
+      productCategory: currentFormContext.productCategory,
       productName: currentFormContext.productAccountName,
       ratingKey: '',
       residentialStatus: '',
@@ -1586,7 +1928,7 @@ const crmLeadIdDetail = (globals) => {
       occupationTypeID: '',
       ownerCode: '',
       productCategoryID: currentFormContext.productCategoryID,
-      productCode: response.customerAccountDetailsDTO[accIndex].productCode.toString(),
+      productCode: currentFormContext.productAccountType,
       productKey: currentFormContext.productKey,
       residentialStatusID: '',
       websiteUrl: '',
@@ -1709,24 +2051,24 @@ function crmProductID(crmProductPanel, response, globals) {
   };
   if (productID === 201 && productvarient === 'NRO') {
     setFormValue(crmProductPanel.productName, 'NRO current account');
-   // setFormValue(crmProductPanel.productCategory, 'Current');
-   // setFormValue(crmProductPanel.productCategoryID, '484');
-    //setFormValue(crmProductPanel.productKey, '604');
+    // setFormValue(crmProductPanel.productCategory, 'Current');
+    // setFormValue(crmProductPanel.productCategoryID, '484');
+    // setFormValue(crmProductPanel.productKey, '604');
   } else if (productID === 218 && productvarient === 'NRE') {
     setFormValue(crmProductPanel.productName, 'NRE Current account');
-    //setFormValue(crmProductPanel.productCategory, 'Current');
-    //setFormValue(crmProductPanel.productCategoryID, '484');
-    //setFormValue(crmProductPanel.productKey, '605');
+    // setFormValue(crmProductPanel.productCategory, 'Current');
+    // setFormValue(crmProductPanel.productCategoryID, '484');
+    // setFormValue(crmProductPanel.productKey, '605');
   } else if (productvarient === 'NRO') {
     setFormValue(crmProductPanel.productName, 'NRO savings account');
-    //setFormValue(crmProductPanel.productKey, '602');
-    //setFormValue(crmProductPanel.productCategory, 'Savings');
-    //setFormValue(crmProductPanel.productCategoryID, '483');
+    // setFormValue(crmProductPanel.productKey, '602');
+    // setFormValue(crmProductPanel.productCategory, 'Savings');
+    // setFormValue(crmProductPanel.productCategoryID, '483');
   } else if (productvarient === 'NRE') {
     setFormValue(crmProductPanel.productName, 'NRE savings account');
-    //setFormValue(crmProductPanel.productCategory, 'Savings');
-    //setFormValue(crmProductPanel.productCategoryID, '483');
-    //setFormValue(crmProductPanel.productKey, '601');
+    // setFormValue(crmProductPanel.productCategory, 'Savings');
+    // setFormValue(crmProductPanel.productCategoryID, '483');
+    // setFormValue(crmProductPanel.productKey, '601');
   }
 }
 
@@ -1743,36 +2085,42 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel) {
     currentFormContext.productCategory = 'Savings';
     currentFormContext.productCategoryID = '483';
     currentFormContext.productKey = '602';
+    currentFormContext.selectedAccountName = 'NRO - Elite Savings Account';
   } else if (nroRegularSavingsAcco === 'on') {
     currentFormContext.productAccountName = 'NRO savings account';
     currentFormContext.productAccountType = '101';
     currentFormContext.productCategory = 'Savings';
     currentFormContext.productCategoryID = '483';
     currentFormContext.productKey = '602';
+    currentFormContext.selectedAccountName = 'NRO - Regular Savings Account';
   } else if (nroCurrentAcco === 'on') {
     currentFormContext.productAccountName = 'NRO current account';
     currentFormContext.productAccountType = '201';
     currentFormContext.productCategory = 'Current';
     currentFormContext.productCategoryID = '484';
     currentFormContext.productKey = '605';
+    currentFormContext.selectedAccountName = 'NRO - Current Account';
   } else if (nreRegularSavingsAcco === 'on') {
     currentFormContext.productAccountName = 'NRE savings account';
     currentFormContext.productAccountType = '106';
     currentFormContext.productCategory = 'Savings';
     currentFormContext.productCategoryID = '483';
     currentFormContext.productKey = '601';
+    currentFormContext.selectedAccountName = 'NRE - Regular Savings Account';
   } else if (nreEliteSavingsAcco === 'on') {
     currentFormContext.productAccountName = 'NRE savings account';
     currentFormContext.productAccountType = '1350';
     currentFormContext.productCategory = 'Savings';
     currentFormContext.productCategoryID = '483';
     currentFormContext.productKey = '601';
+    currentFormContext.selectedAccountName = 'NRE - Elite Savings Account';
   } else if (nreCurrentAcco === 'on') {
     currentFormContext.productAccountName = 'NRE  current account';
     currentFormContext.productAccountType = '218';
     currentFormContext.productCategory = 'Current';
     currentFormContext.productCategoryID = '484';
     currentFormContext.productKey = '604';
+    currentFormContext.selectedAccountName = 'NRE - Current Account';
   }
 }
 
@@ -1792,37 +2140,6 @@ function multiAccountVarient(selectAccount, globals) {
   }
 }
 
-function errorHandling(response, journeyState, globals) {
-  const {
-    mobileNumber,
-    leadProfileId,
-    journeyID,
-  } = currentFormContext;
-  if (response.errorCode === '02') {
-    globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.incorrectOTPText, { visible: true });
-  } else if (response.errorCode === '04') {
-    document.body.classList.add('errorPageBody');
-    document.body.classList.remove('wizardPanelBody');
-    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.incorrectOTPPanel, { visible: true });
-  } else if (response.errorCode === 'V01' || response.errorCode === 'V02' || response.errorCode === 'V03' || response.errorCode === 'V04'
-    || response.errorCode === 'V05' || response.errorCode === 'VO6' || response.errorCode === 'V07' || response.errorCode === 'V08'
-    || response.errorCode === 'V09' || response.errorCode === 'V10' || response.errorCode === 'V11' || response.errorCode === 'V12') {
-    document.body.classList.add('errorPageBody');
-    document.body.classList.remove('wizardPanelBody');
-    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.differentErrorCodes, { visible: true });
-  } else {
-    document.body.classList.add('errorPageBody');
-    document.body.classList.remove('wizardPanelBody');
-    globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
-    globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
-    globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
-  }
-
-  invokeJourneyDropOffUpdate(journeyState, mobileNumber, leadProfileId, journeyID, globals);
-}
-
 function submitThankYou(globals) {
   const {
     mobileNumber,
@@ -1832,6 +2149,26 @@ function submitThankYou(globals) {
 
   invokeJourneyDropOffUpdate('CUSTOMER_REVIEW_SUBMITTED', mobileNumber, leadProfileId, journeyID, globals);
 }
+
+const feedbackButton = () => {
+  const thankyouSubmit = document.querySelector('button[name="tqSubmitButton"]');
+  setTimeout(() => {
+    document.querySelectorAll('.field-ratingbuttons .button').forEach((button) => {
+      button.addEventListener('click', function ratingClick() {
+        document.querySelectorAll('.field-ratingbuttons .button').forEach((btn) => {
+          btn.classList.remove('active');
+        });
+        this.classList.add('active');
+        const ratingValue = this.textContent;
+        const captureRatingInput = document.querySelector('input[name="captureRating"]');
+        if (captureRatingInput) {
+          captureRatingInput.value = ratingValue;
+          thankyouSubmit.removeAttribute('disabled');
+        }
+      });
+    });
+  }, 100);
+};
 
 export {
   validateLogin,
@@ -1870,4 +2207,6 @@ export {
   nreNroShowHidePage,
   submitThankYou,
   reloadPage,
+  accountOpeningNreNro1,
+  feedbackButton,
 };
