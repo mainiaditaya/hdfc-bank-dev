@@ -3238,15 +3238,12 @@
       }
 
       .cmp-container>div:nth-child(1) {
-        @media (767px <=width <=992px) {
-          margin-left: 42px;
-        }
         @media (320px <=width <=766px) {
-          margin-left: 42px;
+          margin-left: 21px;
         }
 
         @media (min-width: 768px) {
-          margin-left: 70px;
+          margin-left: 42px;
         }
       }
 
@@ -3294,6 +3291,7 @@
           display: flex;
           flex-wrap: wrap;
           position: relative;
+          justify-content:space-between;
 
           @media (320px <=width <=991px) {
             flex-direction: column;
@@ -3333,7 +3331,7 @@
             margin-top: -130px;
 
             @media (1200px <=width <=1300px) {
-              flex: 0 0 74%;
+              flex: 0 0 75%;
             }
 
             @media (320px <=width <=991px) {
@@ -3385,7 +3383,6 @@
                     top: -245px;
                     background-size: 30%;
                     width: 90%;
-                    right: 15px;
                   }
                 }
 
@@ -3413,7 +3410,6 @@
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
                 padding-bottom: 0;
-                margin-bottom: 20px;
               }
 
               @media (320px <=width <=767px) {
@@ -3464,7 +3460,7 @@
                   @media (768px <=width <=991px) {
                     font-size: 28px;
                     line-height: 36px;
-                    background-position-x: 75%;
+                    background-position-x: 44%;
                   }
 
                   @media (320px <=width <=767px) {
@@ -3492,6 +3488,14 @@
                     width: 52px;
                     height: 52px;
                     background-size: 35%;
+                  }
+                }
+
+                & .field-leadid-number {
+                  background-position-x: 42%;
+
+                  @media (320px <=width <=767px) {
+                    background-position-x: 55%;
                   }
                 }
               }
