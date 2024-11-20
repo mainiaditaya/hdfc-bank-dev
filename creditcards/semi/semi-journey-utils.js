@@ -11,10 +11,10 @@ const {
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
 
-const BASEURL = "https://applyonline.hdfcbank.com";
+const BASEURL = 'https://applyonline.hdfcbank.com';
 const urlPath = (path) => `${BASEURL}${path}`;
 
- /* Restructures sanitizedFormData adding URL parameters and missing properties for the journey state:CUSTOMER_ONBOARDING_COMPLETE
+/* Restructures sanitizedFormData adding URL parameters and missing properties for the journey state:CUSTOMER_ONBOARDING_COMPLETE
  *
  * @param {Object} data - The original form data to be restructured.
  * @param {Object} formContextObject - Contains current form context-specific parameters, such as UTM tracking values.
@@ -173,8 +173,8 @@ const invokeJourneyDropOffByParam = async (mobileNumber, leadProfileId, journeyI
       },
     },
   };
-  
-  const url = urlPath("/content/hdfc_commonforms/api/whatsappdata.json");
+
+  const url = urlPath('/content/hdfc_commonforms/api/whatsappdata.json');
   const method = 'POST';
   return fetchJsonResponse(url, journeyJSONObj, method);
 };
