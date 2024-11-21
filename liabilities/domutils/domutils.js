@@ -30,6 +30,15 @@ const groupCharacters = (inputField, gapLengths) => {
 };
 
 /**
+ * Sets the maximum allowable date for an input field to today's date.
+ * @param {string} inputName - The name attribute of the input field to be validated.
+ */
+const setMaxDateToToday = (inputName) => {
+  const calendarEl = document.querySelector(`[name= ${inputName}]`);
+  calendarEl?.setAttribute('max', new Date()?.toISOString()?.split('T')?.[0]);
+};
+
+/**
    * Validates and formats a phone number input field.
    *
    * @param {HTMLInputElement} inputField - The input field element containing the phone number.
@@ -126,4 +135,5 @@ export {
   validatePanInput,
   validateTextInputOnPaste,
   moveWizardView,
+  setMaxDateToToday,
 };

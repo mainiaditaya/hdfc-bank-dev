@@ -225,34 +225,6 @@
                     z-index: 2;
                   }
 
-                  /* select[name="countryCode"] {
-                    border-top-right-radius: 0 !important;
-                    border-bottom-right-radius: 0 !important;
-                    padding-right: 0 !important;
-                    border-color: var(--color-interface-border-secondary) !important;
-                    max-width: 75px;
-                    width: 75px;
-                    border-right: 0;
-                    -moz-appearance: none;
-                    -webkit-appearance: none;
-                    appearance: none;
-                    background: url('./../icons/select_arrow.png') no-repeat right center;
-                    background-size: 20px;
-                    margin: 0;
-                    position: relative;
-                    border: none !important;
-
-                    font-size: 18px !important;
-                    font-weight: 400 !important;
-                    line-height: 28px !important;
-                    letter-spacing: 0 !important;
-                    ;
-
-                    &:focus-visible {
-                      outline: none;
-                    }
-                  } */
-
                   &[data-active="true"]~.field-registeredmobilenumber {
                     background-color: transparent;
                     width: 72%;
@@ -273,6 +245,24 @@
                       label {
                         top: 12px;
                       }
+                    }
+                  }
+
+                  &.errorField {
+                    border: 1px solid var(--color-input-border-error);
+                    box-shadow: 2px 2px 2px 0px var(--color-input-box-shadow-error-default);
+
+                    &~.field-registeredmobilenumber[data-active="true"] label {
+                      color: var(--color-input-text-msg-error);
+                    }
+                  }
+
+                  &.successField {
+                    border: 1px solid var(--color-action-border-primary-default);
+                    box-shadow: 2px 2px 2px 0px var(--color-interface-background-box-shadow-secondary);
+
+                    &~.field-registeredmobilenumber[data-active="true"] label {
+                      color: var(--color-action-text-secondary-default);
                     }
                   }
                 }
@@ -395,6 +385,7 @@
                       display: flex;
                       align-items: center;
                       padding: 0 20px;
+                      cursor: default;
 
                       &:not(:last-child) {
                         border-bottom: 1px solid var(--color-interface-border-secondary);
@@ -409,10 +400,25 @@
 
                   p {
                     margin-top: -12px;
-                    font-size: 16px !important;
+                    font-size: 16px;
                     line-height: 24px;
                     font-weight: 400;
-                    color: var(--color-input-text-msg-error) !important;
+                    color: var(--color-input-text-msg-error);
+
+                    @media (768px <=width <=991px) {
+                      font-size: 14px;
+                    }
+                  }
+                }
+
+                &:has(.field-registermobilenumbererror[data-visible="true"]) {
+                  .field-countrycode {
+                    border: 1px solid var(--color-input-border-error);
+                    box-shadow: 2px 2px 2px 0px var(--color-input-box-shadow-error-default);
+                  }
+
+                  .field-registeredmobilenumber[data-empty="false"] label {
+                    color: var(--color-input-text-msg-error);
                   }
                 }
               }
@@ -557,7 +563,7 @@
                     }
 
                     input:not([edit-value="Date of Birth"]) {
-                      background: url("../icons//cal_icon.png") no-repeat 97.2%;
+                      background: url("../icons/cal_icon.png") no-repeat 97.2%;
                       font-weight: 500;
                       color: var(--color-interface-text-primary);
                       word-spacing: 20px;
@@ -584,6 +590,46 @@
                       }
                     }
                   }
+
+
+                  .field-description {
+                    display: none;
+                  }
+
+                  &.errorField {
+                    input {
+                      border: 1px solid var(--color-input-border-error);
+                      box-shadow: 2px 2px 2px 0px var(--color-input-box-shadow-error-default);
+                    }
+
+                    input[name="dateOfBirth"] {
+                      &::-webkit-calendar-picker-indicator {
+                        background: url("../icons/cal_red_icon.png") no-repeat 98%;
+                      }
+                    }
+
+                    &[data-empty="false"] {
+                      input:not([edit-value="Date of Birth"]) {
+                        background: url("../icons/cal_red_icon.png") no-repeat 97.2%;
+                      }
+                    }
+
+                    &~.field-registeredmobilenumber label {
+                      color: var(--color-input-text-msg-error);
+                    }
+                  }
+
+
+                  &.successField {
+                    input {
+                      border: 1px solid var(--color-action-border-primary-default);
+                      box-shadow: 2px 2px 2px 0px var(--color-interface-background-box-shadow-secondary);
+                    }
+
+                    &~.field-registeredmobilenumber label {
+                      color: var(--color-action-text-secondary-default);
+                    }
+                  }
                 }
 
                 .field-pan {
@@ -599,7 +645,7 @@
                   }
 
                   input[name="pan"] {
-                    max-width: 320px !important;
+                    max-width: 352px !important;
                     margin-bottom: 0;
                     margin-top: 0;
                     letter-spacing: 5px;
@@ -623,6 +669,32 @@
                       font-weight: 400;
                     }
                   }
+
+                  &.errorField {
+                    input {
+                      border: 1px solid var(--color-input-border-error);
+                      box-shadow: 2px 2px 2px 0px var(--color-input-box-shadow-error-default);
+                    }
+
+                    &[data-active="true"] {
+                      label {
+                        color: var(--color-input-text-msg-error);
+                      }
+                    }
+                  }
+
+                  &.successField {
+                    input {
+                      border: 1px solid var(--color-action-border-primary-default);
+                      box-shadow: 2px 2px 2px 0px var(--color-interface-background-box-shadow-secondary);
+                    }
+
+                    &[data-active="true"] {
+                      label {
+                        color: var(--color-action-text-secondary-default);
+                      }
+                    }
+                  }
                 }
 
                 .field-panerrortext {
@@ -643,10 +715,51 @@
 
                   p {
                     margin-top: -12px;
-                    font-size: 16px !important;
+                    font-size: 16px;
                     line-height: 24px;
                     font-weight: 400;
-                    color: var(--color-input-text-msg-error) !important;
+                    color: var(--color-input-text-msg-error);
+
+                    @media (768px <=width <=991px) {
+                      font-size: 14px;
+                    }
+                  }
+                }
+
+                &:has(.field-doberrortext[data-visible="true"]) .field-dateofbirth {
+                  input {
+                    border: 1px solid var(--color-input-border-error);
+                    box-shadow: 2px 2px 2px 0px var(--color-input-box-shadow-error-default);
+
+                    &:not([edit-value="Date of Birth"]) {
+                      background: url("../icons/cal_red_icon.png") no-repeat 97.2%;
+                    }
+
+                    &[name="dateOfBirth"] {
+                      &::-webkit-calendar-picker-indicator {
+                        background: url("../icons/cal_red_icon.png") no-repeat 98%;
+                      }
+                    }
+                  }
+
+                  &[data-empty="false"] {
+                    label {
+                      color: var(--color-input-text-msg-error);
+                    }
+                  }
+                }
+
+                &:has(.field-panerrortext[data-visible="true"]) .field-pan[data-visible="true"] {
+                  input {
+                    border: 1px solid var(--color-input-border-error);
+                    box-shadow: 2px 2px 2px 0px var(--color-input-box-shadow-error-default);
+                  }
+
+                  &[data-active="true"],
+                  &[data-empty="false"] {
+                    label {
+                      color: var(--color-input-text-msg-error);
+                    }
                   }
                 }
               }
@@ -1117,8 +1230,22 @@
               .bi-eye-slash,
               .bi-eye {
                 position: absolute;
-                top: 18px;
+                top: 20px;
                 right: 15px;
+              }
+
+              &.errorField {
+                input {
+                  border: 1px solid var(--color-input-border-error);
+                  box-shadow: 2px 2px 2px 0px var(--color-input-box-shadow-error-default);
+                }
+              }
+
+              &.successField {
+                input {
+                  border: 1px solid var(--color-action-border-primary-default);
+                  box-shadow: 2px 2px 2px 0px var(--color-interface-background-box-shadow-secondary);
+                }
               }
             }
 
@@ -1300,6 +1427,15 @@
                 @media (320px <=width <=767px) {
                   right: 36%;
                 }
+              }
+            }
+          }
+
+          &:has(.field-incorrectotptext[data-visible="true"]) {
+            .field-otpnumber {
+              input {
+                border: 1px solid var(--color-input-border-error);
+                box-shadow: 2px 2px 2px 0px var(--color-input-box-shadow-error-default);
               }
             }
           }
@@ -2600,24 +2736,6 @@
                 grid-column: span 4;
               }
             }
-
-            /* fieldset.field-nomineedetails.nre-style-accordian {
-              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"]:not([data-visible="false"]) {
-                display: grid !important;
-              }
-
-              fieldset.panel-wrapper.field-nomineepanel.field-wrapper[style="display: none;"][data-visible="false"] {
-                display: none !important;
-              }
-
-              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"]:not([data-visible="false"]) {
-                display: flex !important;
-              }
-
-              div.plain-text-wrapper.field-nonomineetext.field-wrapper[style="display: none;"][data-visible="false"] {
-                display: none !important;
-              }
-            } */
           }
 
           .field-needbankhelp {
@@ -3238,15 +3356,12 @@
       }
 
       .cmp-container>div:nth-child(1) {
-        @media (767px <=width <=992px) {
-          margin-left: 42px;
-        }
         @media (320px <=width <=766px) {
-          margin-left: 42px;
+          margin-left: 21px;
         }
 
         @media (min-width: 768px) {
-          margin-left: 70px;
+          margin-left: 42px;
         }
       }
 
@@ -3294,6 +3409,7 @@
           display: flex;
           flex-wrap: wrap;
           position: relative;
+          justify-content: space-between;
 
           @media (320px <=width <=991px) {
             flex-direction: column;
@@ -3329,11 +3445,11 @@
           }
 
           .field-thankyouleftpanel {
-            flex: 0 0 76%;
+            flex: 0 0 77%;
             margin-top: -130px;
 
             @media (1200px <=width <=1300px) {
-              flex: 0 0 74%;
+              flex: 0 0 75%;
             }
 
             @media (320px <=width <=991px) {
@@ -3356,7 +3472,7 @@
                   margin-left: 0;
                   margin-top: -165px;
                 }
-                
+
 
                 @media (320px <=width <=767px) {
                   font-size: 20px;
@@ -3381,11 +3497,11 @@
                   @media (655px <=width <=766px) {
                     top: -280px;
                   }
+
                   @media (320px <=width <=654px) {
                     top: -245px;
                     background-size: 30%;
                     width: 90%;
-                    right: 15px;
                   }
                 }
 
@@ -3413,7 +3529,6 @@
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
                 padding-bottom: 0;
-                margin-bottom: 20px;
               }
 
               @media (320px <=width <=767px) {
@@ -3464,7 +3579,7 @@
                   @media (768px <=width <=991px) {
                     font-size: 28px;
                     line-height: 36px;
-                    background-position-x: 75%;
+                    background-position-x: 44%;
                   }
 
                   @media (320px <=width <=767px) {
@@ -3492,6 +3607,14 @@
                     width: 52px;
                     height: 52px;
                     background-size: 35%;
+                  }
+                }
+
+                &.field-leadid-number {
+                  background-position-x: 42%;
+
+                  @media (320px <=width <=767px) {
+                    background-position-x: 55%;
                   }
                 }
               }
@@ -4028,6 +4151,7 @@
                 background: url("../icons/applying-for-dabit-card-ipad-banner.png") no-repeat center center;
                 height: 202px;
                 width: 100%;
+                border-radius: 16px;
               }
 
               @media (320px <=width <=767px) {
@@ -4035,6 +4159,7 @@
                 height: 85px;
                 width: 100%;
                 background-size: contain;
+                border-radius: 16px;
               }
             }
 
@@ -4154,6 +4279,7 @@
           @media (768px <=width <=991px) {
             left: 0;
           }
+
           @media (320px <=width <=767px) {
             left: 0;
           }

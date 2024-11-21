@@ -252,7 +252,7 @@ const validateLogin = (globals) => {
         const maxAge = 120;
         const dobErrorText = `Age should be between ${minAge} to ${maxAge}`;
         const ageValid = ageValidator(minAge, maxAge, dobValue);
-        if (ageValid && consentFirst) {
+        if (ageValid && consentFirst && mobileNo) {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: true });
           globals.functions.markFieldAsInvalid('$form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.dateOfBirth', '', { useQualifiedName: true });
         }
@@ -266,7 +266,7 @@ const validateLogin = (globals) => {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.dobErrorText, { visible: true });
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
         }
-        if (!consentFirst) {
+        if (!consentFirst && !ageValid && !mobileNo) {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
         }
       }
@@ -289,7 +289,7 @@ const validateLogin = (globals) => {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.panErrorText, { visible: true });
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
         }
-        if (!consentFirst && !mobileNo) {
+        if (!consentFirst && !mobileNo && !panIsValid) {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
         }
       }
@@ -507,7 +507,7 @@ function setupBankUseSection(mainBankUsePanel, globals) {
     globals.functions.setProperty(lcCode, { value: 'NRI INSTASTP' });
   }
   globals.functions.setProperty(resetAllBtn, { enabled: false });
-  globals.functions.setProperty(toggle, { enabled: false });
+  globals.functions.setProperty(toggle, { enabled: true });
   globals.functions.setProperty(lcCode, { enabled: false });
 }
 
@@ -871,52 +871,27 @@ const finalResult = {
  * @returns {void}
  */
 function prefillThankYouPage(accountres, globals) {
-  if(isNullOrEmpty(accountres)){
-    accountres = {
-      "errorText": "0",
-      "errorCode": "0",
-      "externalReferenceNo": "679225519",
-      "accountNumber": "50100117366369",
-      "status": {
-          "isOverriden": false,
-          "replyText": "0",
-          "internalReferenceNumber": "2024324353401194",
-          "errorCode": "0",
-          "memo": null,
-          "replyCode": 0,
-          "validationErrors": null,
-          "externalReferenceNo": "679225519",
-          "postingDate": {
-              "dateString": "20241119000000"
-          },
-          "extendedReply": {
-              "messages": null
-          },
-          "userReferenceNumber": null
-      }
-  };
-  }
   const { thankyouLeftPanel } = globals.form.thankYouPanel.thankYoufragment;
 
   globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
   globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
-  const journeyAccountType =  'NRE';
+  const journeyAccountType = finalResult.journeyParamStateInfo.currentFormContext.journeyAccountType === 'NRE' ? 'NRO' : 'NRE';
   globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
 
   const setAccountSummaryProperties = (summary) => {
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accountTypePanel.accounttype, { value: 'NRE NRO Savings account jhdgsbds' });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranchPanel.homeBranch, { value: 'Congratulations! Your online application is successfully submitted jfvjbfdjbvjkhbfdjhvbdfjbvjhdfvjhbdfjbvjhdbfjhvbjhdfbv!!!' });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: '78234632' });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: '8763458' });
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: 'Congratulations! Your online application is successfully submitted !!!' });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: currentFormContext.selectedAccountName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].ifscCode });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.communicationAddress, { value: summary.form.confirmDetails.personalDetails.communicationAddress });
   };
 
   const journeyInfo = finalResult.journeyParamStateInfo;
 
   if (!isNullOrEmpty(accountres?.accountNumber)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { visible: true });
-    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountOpening.accountNumber }); // Setting the account number
-    setAccountSummaryProperties({});
+    globals.functions.setProperty(thankyouLeftPanel.accountNumber.accountNumber, { value: accountres.accountNumber }); // Setting the account number
+    setAccountSummaryProperties(journeyInfo);
     invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_COMPLETE', currentFormContext.mobileNumber, currentFormContext.leadProfileId, currentFormContext.journeyId, globals);
   } else if (!isNullOrEmpty(finalResult.journeyParamStateInfo.form.confirmDetails.crm_leadId)) {
     globals.functions.setProperty(thankyouLeftPanel.accountNumber.leadId_number, { visible: true });
@@ -935,7 +910,7 @@ function prefillThankYouPage(accountres, globals) {
  * Call Account Opening Function
  * @returns {PROMISE}
  */
-async function accountOpeningNreNro(idComToken, globals) {
+async function accountOpeningNreNro(idComToken) {
   const journeyParamStateInfo = finalResult.journeyParamStateInfo;
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
@@ -1216,13 +1191,23 @@ async function accountOpeningNreNro(idComToken, globals) {
   // Calling the fetch IDComToken API
   const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
   const fetchResult = fetchJsonResponse(apiEndPoint, jsonObj, 'POST', false);
+  // res =  {
+  //   accountOpening: {
+  //     errorCode: '0',
+  //     accountNumber: '50919394857273',
+  //   },
+  // };
 
-  Promise.resolve(fetchResult).then((res) => {
-    prefillThankYouPage(res, globals);
-  }).catch((err) => {
-    console.log(err);
-    errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
-  });
+  // prefillThankYouPage(res, globals);
+
+  prefillThankYouPage(res, globals);
+
+  // Promise.resolve(fetchResult).then((res) => {
+  //   prefillThankYouPage(res, globals);
+  // }).catch((err) => {
+  //   console.log(err);
+  //   errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+  // });
 
   /* if (typeof window !== 'undefined') {
     hideLoaderGif();
@@ -1236,7 +1221,7 @@ async function accountOpeningNreNro(idComToken, globals) {
 }
 
 /**
- * 1Call Account Opening Function
+ * Call Account Opening Function
  * @returns {PROMISE}
  */
 async function accountOpeningNreNro1(idComToken) {
@@ -1556,14 +1541,11 @@ async function validateJourneyParams(formData, globals) {
     const journeyDropOffParamLast = formData.journeyStateInfo[formData.journeyStateInfo.length - 1];
     finalResult.journeyParamState = journeyDropOffParamLast.state;
     finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
-    if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
+    if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE' || journeyDropOffParamLast.state === 'CUSTOMER_REVIEW_SUBMITTED') {
       globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'showErrorPage' });
       globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-      return {
-        status: 'showErrorPage',
-        errorMessage: 'CUSTOMER_ONBOARDING_COMPLETE',
-        journeyParamStateInfo: finalResult.journeyParamStateInfo,
-      };
+      globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
+      globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
     }
     // eslint-disable-next-line no-unused-vars
     const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
@@ -1708,6 +1690,7 @@ function nreNroShowHidePage(globals) {
 function nreNroInit(globals) {
   globals.functions.setProperty(globals.form.runtime.journeyName, { value: JOURNEY_NAME }); // Setting the hidden field
   globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.init_hidden_field, { value: 'INIT' }); // Setting the hidden field
+  onPageLoadAnalytics();
 }
 
 /**
@@ -1724,6 +1707,9 @@ function nreNroPageRedirected(globals) {
   currentFormContext.idComErrorMessage = queryParams?.errorMessage;
   currentFormContext.idComSuccess = queryParams?.success.toUpperCase();
   currentFormContext.idComRedirect = currentFormContext?.authModeParam && ((currentFormContext?.authModeParam === 'DebitCard') || (currentFormContext?.authModeParam === 'NetBanking')); // debit card or net banking flow
+  if (currentFormContext.idComRedirect) {
+    sendAnalytics('idcom redirection check', { validationMethod: currentFormContext?.authModeParam, status: currentFormContext?.idComSuccess }, 'ON_IDCOM_REDIRECTION', globals);
+  }
   if (currentFormContext.idComRedirect && currentFormContext.idComSuccess === 'TRUE') {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'true' });
     globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
@@ -1762,11 +1748,10 @@ const switchWizard = (globals) => {
   invokeJourneyDropOffUpdate('CUSTOMER_ACCOUNT_VARIANT_SELECTED', mobileNumber, leadProfileId, journeyID, globals);
   moveWizardView('wizardNreNro', 'confirmDetails');
   currentFormContext.action = 'Confirm Details';
-  Promise.resolve(sendAnalytics('page load-Confirm Details', { }, 'ON_CONFIRM_DETAILS_PAGE_LOAD', globals));
 };
 
 const onPageLoadAnalytics = async (globals) => {
-  await Promise.resolve(sendAnalytics('page load-All Pages', { }, 'ON_PAGE_LOAD', globals));
+  sendAnalytics('page load-Step 1 : Identify Yourself', { }, 'ON_PAGE_LOAD', globals);
 };
 
 setTimeout(() => {
@@ -2097,7 +2082,7 @@ function crmProductID(crmProductPanel, response, globals) {
   }
 }
 
-function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel) {
+function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
   const nroEliteSavingsAcco = nroAccountTypePanel.eliteSavingsAccountPanel.eliteSavingsAccount.$value;
   const nroRegularSavingsAcco = nroAccountTypePanel.regularSavingsAccountPanel.regularSavingsAccount.$value;
   const nroCurrentAcco = nroAccountTypePanel.currentAccountPanel.currentAccount.$value;
@@ -2147,6 +2132,8 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel) {
     currentFormContext.productKey = '604';
     currentFormContext.selectedAccountName = 'NRE - Current Account';
   }
+
+  sendAnalytics('select account type click', { productAccountType: currentFormContext?.productAccountType ?? '' }, 'ON_SELECT_ACCOUNT_TYPE', globals);
 }
 
 function multiAccountVarient(selectAccount, globals) {
@@ -2163,16 +2150,13 @@ function multiAccountVarient(selectAccount, globals) {
     globals.functions.setProperty(selectAccount.nre_account_type_pannel, { visible: true });
     globals.functions.setProperty(selectAccount.nro_account_type_pannel.eliteSavingsAccountPanel.eliteSavingsAccount, { value: null });
   }
+
+  currentFormContext.existingAccountType = varientType;
+  sendAnalytics('continue btn select account', { varientType }, 'SELECT_ACCOUNT_ON_CONTINUE_CLICK', globals);
 }
 
 function submitThankYou(globals) {
-  const {
-    mobileNumber,
-    leadProfileId,
-    journeyID,
-  } = currentFormContext;
-
-  invokeJourneyDropOffUpdate('CUSTOMER_REVIEW_SUBMITTED', mobileNumber, leadProfileId, journeyID, globals);
+  invokeJourneyDropOffUpdate('CUSTOMER_REVIEW_SUBMITTED', globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value, globals.form.runtime.leadProifileId.$value, globals.form.runtime.journeyId.$value, globals);
 }
 
 const feedbackButton = () => {

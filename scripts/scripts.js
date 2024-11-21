@@ -71,7 +71,7 @@ const FORM_CONSTANT = [
     },
   },
 ];
-const ENV = 'prod'; // take it from common constant to denote
+const ENV = 'dev'; // take it from common constant to denote
 
 /**
  * Builds hero block and prepends to main in a new section.
