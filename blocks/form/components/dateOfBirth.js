@@ -6,11 +6,9 @@ export default async function decorate(fieldDiv, field, htmlForm) {
             let dob = new Date(input.value);
             let age = getAge(dob);
             let year = dob.getFullYear();
-            let yearInString = year.toString();
-            console.log(age);
+            let yearInString = year.toString();            
             yearInString = yearInString.replace(/^0+/, '');
             if((age < 0 || (age > 120 && yearInString.length === 4) || !(yearInString.startsWith('1') || yearInString.startsWith('2') || yearInString.startsWith('0')))){
-                debugger;
                 input.setAttribute('edit-value','Date of Birth');
                 input.setAttribute('display-value', 'Date of Birth');
                 input.value = 'Date of Birth';
