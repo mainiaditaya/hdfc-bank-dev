@@ -2,6 +2,7 @@ import {
   groupCharacters,
   validatePhoneNumber,
   validatePanInput,
+  setMaxDateToToday,
 } from '../domutils/domutils.js';
 import openModal from '../../blocks/modal/modal.js';
 import {
@@ -210,6 +211,7 @@ const consent2RequestProductTxtConfig = {
 linkModalFunction(consent2RequestProductTxtConfig);
 
 setTimeout(() => {
+  setMaxDateToToday('dateOfBirth');
   addMobileValidation();
 }, 1200);
 
