@@ -66,16 +66,16 @@ function setBodyPage(thanks) {
   }
 }
 
-function removeIDCOMQueryParameter() {
-  const url = new URL(window.location.href);
-  url.searchParams.delete('success');
-  url.searchParams.delete('authcode');
-  url.searchParams.delete('journeyId');
-  url.searchParams.delete('authmode');
-  url.searchParams.delete('errorCode');
-  url.searchParams.delete('errorMessage');
-  window.history.pushState({}, '', url);
-}
+// function removeIDCOMQueryParameter() {
+//   const url = new URL(window.location.href);
+//   url.searchParams.delete('success');
+//   url.searchParams.delete('authcode');
+//   url.searchParams.delete('journeyId');
+//   url.searchParams.delete('authmode');
+//   url.searchParams.delete('errorCode');
+//   url.searchParams.delete('errorMessage');
+//   window.history.pushState({}, '', url);
+// }
 
 setBodyPage();
-removeIDCOMQueryParameter();
+// removeIDCOMQueryParameter();
