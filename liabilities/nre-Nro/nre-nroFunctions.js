@@ -910,7 +910,7 @@ function prefillThankYouPage(accountres, globals) {
  * Call Account Opening Function
  * @returns {PROMISE}
  */
-async function accountOpeningNreNro(idComToken, globals) {
+async function accountOpeningNreNro(idComToken) {
   const journeyParamStateInfo = finalResult.journeyParamStateInfo;
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
@@ -1541,14 +1541,11 @@ async function validateJourneyParams(formData, globals) {
     const journeyDropOffParamLast = formData.journeyStateInfo[formData.journeyStateInfo.length - 1];
     finalResult.journeyParamState = journeyDropOffParamLast.state;
     finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
-    if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
+    if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE' || journeyDropOffParamLast.state === 'CUSTOMER_REVIEW_SUBMITTED') {
       globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'showErrorPage' });
       globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-      return {
-        status: 'showErrorPage',
-        errorMessage: 'CUSTOMER_ONBOARDING_COMPLETE',
-        journeyParamStateInfo: finalResult.journeyParamStateInfo,
-      };
+      globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
+      globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
     }
     // eslint-disable-next-line no-unused-vars
     const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
@@ -1710,7 +1707,7 @@ function nreNroPageRedirected(globals) {
   currentFormContext.idComErrorMessage = queryParams?.errorMessage;
   currentFormContext.idComSuccess = queryParams?.success.toUpperCase();
   currentFormContext.idComRedirect = currentFormContext?.authModeParam && ((currentFormContext?.authModeParam === 'DebitCard') || (currentFormContext?.authModeParam === 'NetBanking')); // debit card or net banking flow
-  if(currentFormContext.idComRedirect){
+  if (currentFormContext.idComRedirect) {
     sendAnalytics('idcom redirection check', { validationMethod: currentFormContext?.authModeParam, status: currentFormContext?.idComSuccess }, 'ON_IDCOM_REDIRECTION', globals);
   }
   if (currentFormContext.idComRedirect && currentFormContext.idComSuccess === 'TRUE') {
@@ -2159,13 +2156,7 @@ function multiAccountVarient(selectAccount, globals) {
 }
 
 function submitThankYou(globals) {
-  const {
-    mobileNumber,
-    leadProfileId,
-    journeyID,
-  } = currentFormContext;
-
-  invokeJourneyDropOffUpdate('CUSTOMER_REVIEW_SUBMITTED', mobileNumber, leadProfileId, journeyID, globals);
+  invokeJourneyDropOffUpdate('CUSTOMER_REVIEW_SUBMITTED', globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value, globals.form.runtime.leadProifileId.$value, globals.form.runtime.journeyId.$value, globals);
 }
 
 const feedbackButton = () => {
