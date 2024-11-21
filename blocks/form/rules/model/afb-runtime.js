@@ -4705,7 +4705,7 @@ class DateField extends Field {
         }
         else {
             if (this._jsonModel.editFormat !== 'short' && this._jsonModel.editFormat !== 'date|short') {
-                const parsedDate = parseDate(value, this._jsonModel.lang, this._jsonModel.editFormat) || parseDate(value, this.locale, 'yyyy-MM-dd');
+                const parsedDate = parseDate(value, 'en-GB', this._jsonModel.editFormat) || parseDate(value, 'en-GB', 'yyyy-MM-dd');
                 if (parsedDate instanceof Date) {
                     super.value = formatDate(parsedDate, this.locale, this._dataFormat);
                 }
