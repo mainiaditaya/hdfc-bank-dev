@@ -9,7 +9,6 @@ import {
 //   moveWizardView,
 // } from '../domutils/domutils.js';
 import {
-  ageValidator,
   clearString,
   urlPath,
   getTimeStamp,
@@ -222,6 +221,26 @@ function errorHandling(response, journeyState, globals) {
   invokeJourneyDropOffUpdate(journeyState, mobileNumber, leadProfileId, journeyID, globals);
 }
 
+const ageValidate = (minAge, maxAge, dobValue) => {
+  const birthDate = new Date(dobValue);
+
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  const birthMonth = birthDate.getMonth();
+  const birthDay = birthDate.getDate();
+
+  const todayMonth = today.getMonth();
+  const todayDay = today.getDate();
+
+  if (todayMonth < birthMonth || (todayMonth === birthMonth && todayDay <= birthDay)) {
+    age -= 1;
+  }
+
+  return age >= minAge && age < maxAge;
+};
+
 /**
  * Validates the date of birth field to ensure the age is between 18 and 120.
  * @param {Object} globals - The global object containing necessary data for DAP request.
@@ -250,8 +269,8 @@ const validateLogin = (globals) => {
       if (dobValue && String(new Date(dobValue).getFullYear()).length === 4) {
         const minAge = 18;
         const maxAge = 120;
-        const dobErrorText = `Age should be between ${minAge} to ${maxAge}`;
-        const ageValid = ageValidator(minAge, maxAge, dobValue);
+        const dobErrorText = `Customers with age below ${minAge} years and above ${maxAge} are not allowed.`;
+        const ageValid = ageValidate(minAge, maxAge, dobValue);
         if (ageValid && consentFirst && mobileNo) {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: true });
           globals.functions.markFieldAsInvalid('$form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.dateOfBirth', '', { useQualifiedName: true });
