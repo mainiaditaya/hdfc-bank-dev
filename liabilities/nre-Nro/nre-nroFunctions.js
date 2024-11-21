@@ -252,7 +252,7 @@ const validateLogin = (globals) => {
         const maxAge = 120;
         const dobErrorText = `Age should be between ${minAge} to ${maxAge}`;
         const ageValid = ageValidator(minAge, maxAge, dobValue);
-        if (ageValid && consentFirst) {
+        if (ageValid && consentFirst && mobileNo) {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: true });
           globals.functions.markFieldAsInvalid('$form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.dateOfBirth', '', { useQualifiedName: true });
         }
@@ -266,7 +266,7 @@ const validateLogin = (globals) => {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.dobErrorText, { visible: true });
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
         }
-        if (!consentFirst) {
+        if (!consentFirst && !ageValid && !mobileNo) {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
         }
       }
@@ -289,7 +289,7 @@ const validateLogin = (globals) => {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.panErrorText, { visible: true });
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
         }
-        if (!consentFirst && !mobileNo) {
+        if (!consentFirst && !mobileNo && !panIsValid) {
           globals.functions.setProperty(globals.form.parentLandingPagePanel.getOTPbutton, { enabled: false });
         }
       }
@@ -507,7 +507,7 @@ function setupBankUseSection(mainBankUsePanel, globals) {
     globals.functions.setProperty(lcCode, { value: 'NRI INSTASTP' });
   }
   globals.functions.setProperty(resetAllBtn, { enabled: false });
-  globals.functions.setProperty(toggle, { enabled: false });
+  globals.functions.setProperty(toggle, { enabled: true });
   globals.functions.setProperty(lcCode, { enabled: false });
 }
 
