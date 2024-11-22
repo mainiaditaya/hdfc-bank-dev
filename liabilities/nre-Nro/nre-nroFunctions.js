@@ -511,7 +511,7 @@ function setupBankUseSection(mainBankUsePanel, globals) {
   const lcCode = mainBankUsePanel.lcCode;
   const toggle = mainBankUsePanel.bankUseToggle;
   const resetAllBtn = mainBankUsePanel.resetAllBtn;
-  globals.functions.setProperty(toggle, { checked: true });
+  // globals.functions.setProperty(toggle, { checked: false });
   if (urlParams.size > 0) {
     ['lgCode', 'lcCode'].forEach((param) => {
       const value = urlParams.get(param);
