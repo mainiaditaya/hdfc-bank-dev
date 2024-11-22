@@ -2780,7 +2780,7 @@
                 padding: 0;
                 box-sizing: content-box;
                 border-radius: 16px;
-                background-color: var(--color-interface-icon-highlight);
+                background-color: var(--color-interface-fd-title-border);
                 -webkit-appearance: none;
                 -moz-appearance: none;
                 appearance: none;
@@ -2792,6 +2792,10 @@
 
                 &[disabled] {
                   background-color: var(--color-action-background-primary-disabled);
+                }
+
+                &:checked{
+                  background-color: var(--color-interface-icon-highlight);
                 }
               }
 
