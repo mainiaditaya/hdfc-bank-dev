@@ -2257,7 +2257,7 @@
           /* second block multipleAccounts  */
           .field-multipleaccounts {
             border-bottom: 1px dashed var(--color-interface-border-secondary);
-            padding-bottom: 10px;
+            padding-bottom: 20px;
             margin-bottom: 10px;
 
             .field-multiselectaccountheading {
@@ -2462,7 +2462,9 @@
                         }
 
                         & input {
-                          left: 50px;
+                          left: 53px;
+                          position: absolute;
+                          width: 100px;
                         }
                       }
                     }
