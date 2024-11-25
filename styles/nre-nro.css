@@ -183,8 +183,6 @@
                   border: 1px solid var(--color-interface-border-secondary);
                   width: 352px;
                   border-radius: 12px;
-                  /*  width: 88px;
-                  height: 60px; */
 
                   @media (320px <=width <=480px) {
                     width: 100%;
@@ -275,13 +273,7 @@
                   border-radius: 12px;
                   z-index: 2;
                   max-width: 350px;
-                  /* left: 0;
-                  background-color: #fff;
-                  width: 98%; */
-                  /*  height: 96%; */
-
                   left: 90px;
-                  /*  width: 72%; */
 
                   label {
                     top: 10px;
@@ -2482,10 +2474,6 @@
                 }
               }
             }
-
-            /*  &[data-visible="false"]~.field-nro-account-type-pannel {
-                border-top: none;
-              } */
           }
 
           .field-nro-account-type-pannel,
@@ -2619,7 +2607,7 @@
 
             &~.plain-text-wrapper {
 
-              p ul {
+              p>ul {
 
                 margin: 0;
                 border-top: 1px dashed var(--color-interface-border-secondary);
@@ -2654,6 +2642,11 @@
                     text-decoration: underline;
                     font-weight: 400 !important;
                   }
+                }
+
+                ul {
+                  margin: 0;
+                  list-style-type: disc;
                 }
               }
             }
@@ -2794,7 +2787,7 @@
                   background-color: var(--color-action-background-primary-disabled);
                 }
 
-                &:checked{
+                &:checked {
                   background-color: var(--color-interface-icon-highlight);
                 }
               }
@@ -3307,7 +3300,6 @@
           }
 
           @media (320px <=width <=767px) {
-            /*  margin-left: 15px; */
             margin-top: 15px;
           }
         }
@@ -3751,10 +3743,8 @@
                   font-size: 18px;
                   line-height: 28px;
                   font-weight: 500;
-                  color: var(--color-interface-background-quaternary);
+                  color: var(--color-interface-text-primary);
                   resize: none;
-                  /* width: 100%; 
-                  min-height: auto;*/
 
                   @media (768px <=width <=991px) {
                     min-height: auto;
@@ -3768,6 +3758,13 @@
 
                   &:focus-visible {
                     outline: none;
+                  }
+
+                  &::placeholder,
+                  &::-webkit-input-placeholder,
+                  &::-moz-placeholder,
+                  &:-ms-input-placeholder {
+                    color: var(--color-interface-background-quaternary);
                   }
                 }
 
