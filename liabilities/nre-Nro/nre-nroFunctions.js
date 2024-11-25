@@ -241,6 +241,24 @@ const ageValidate = (minAge, maxAge, dobValue) => {
   return age >= minAge && age < maxAge;
 };
 
+function getGender(input) {
+  if (input === 'M') {
+    return 'Male';
+  } if (input === 'F') {
+    return 'Female';
+  }
+  return 'Third Gender';
+}
+
+function getLastWord(input) {
+  if (typeof input !== 'string' || input.trim() === '') {
+    return 'Invalid input';
+  }
+
+  const words = input.trim().split(/\s+/);
+  return words.length > 1 ? words[words.length - 1] : '';
+}
+
 /**
  * Validates the date of birth field to ensure the age is between 18 and 120.
  * @param {Object} globals - The global object containing necessary data for DAP request.
@@ -1518,6 +1536,11 @@ async function accountOpeningNreNro1(idComToken) {
       pep: '',
       isAccountCreated: 'No',
       annualTurnOver: '',
+      StatusCode: 'Branch Approved',
+      StatusCodeDisplayText: 'Branch Approved',
+      StatusCodeName: 'Branch Approved',
+      subLeadSource: 'Adobe Digital ETB Account',
+      StatusCodeKey: '645',
     },
   };
 
@@ -1777,8 +1800,9 @@ setTimeout(() => {
   onPageLoadAnalytics();
 }, 5000);
 
-const crmLeadIdDetail = () => {
+const crmLeadIdDetail = (globals) => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
+  const { financialDetails } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
 
   const jsonObj = {
     requestString: {
@@ -1790,23 +1814,23 @@ const crmLeadIdDetail = () => {
       DoB: parseDate(response.datBirthCust),
       dateofBirth: parseDate(response.datBirthCust),
       custBirthDate: parseDate(response.datBirthCust),
-      identifierName: 'DOB',
+      identifierName: globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.identifierPanel.pan.$value ? 'PAN' : 'dob',
       preferredChannel: '',
       territoryName: 'Khanda Colony - Panvel',
       address: `${response?.txtCustadrAdd1} ${response?.txtCustadrAdd2} ${response?.txtCustadrAdd3}`,
       companyName: 'ADOBE SYSTEMS INDIA PVT LTD',
-      nomineeAge: '60',
-      typeOfFirm: '',
+      nomineeAge: response.customerAccountDetailsDTO[accIndex].prodTypeDesc.toString(),
+      typeOfFirm: financialDetails.typeOfCompoanyFirm.$value,
       typCompany: '',
-      typeOfFirm_label: '',
+      typeOfFirm_label: financialDetails.typeOfCompoanyFirm.$value,
       accountNumber: response.customerAccountDetailsDTO[accIndex].accountNumber,
       customerID: response.customerId.toString(),
       agriculturalIncome: '',
-      sex: response.txtCustSex,
+      sex: getGender(response.txtCustSex),
       email: response.refCustEmail,
       accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
       ProductCategory: currentFormContext.productCategory,
-      name: response.customerFullName,
+      name: `${response.txtCustPrefix} ${response.customerFullName}`,
       otherThanAgriIncome: '',
       nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
       birthCertificate: '',
@@ -1820,8 +1844,8 @@ const crmLeadIdDetail = () => {
       codeLG: '',
       applicationDate: new Date().toISOString().slice(0, 19),
       DLExpiryDate: '',
-      selfEmployedProfessionalCategory: '',
-      selfEmployedProfessionalCategory_label: '',
+      selfEmployedProfessionalCategory: financialDetails.selfEmployedProfessional.$value,
+      selfEmployedProfessionalCategory_label: financialDetails.selfEmployedProfessional.$value,
       nomineeCity: '',
       stateOfBirth: '',
       cityOfBirth: response.customerFATCADtlsDTO[0].namCityBirth,
@@ -1867,23 +1891,22 @@ const crmLeadIdDetail = () => {
       isForm60Attached: '',
       PANAckNo: '',
       doaInput: '',
-      grossAnnualIncome: response.customerAMLDetailsDTO[0].grossIncome || '',
-      grossAnnualIncome_range: '',
+      grossAnnualIncome: financialDetails.grossAnnualIncome.$value,
+      grossAnnualIncome_range: financialDetails.grossAnnualIncome.$value,
       monthlyIncome: '',
       selfServiceAnnualIncome: '',
-      sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
-      sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
+      sourceOfFunds: financialDetails.sourceOfFunds.$value.$value,
+      sourceOfFunds_label: financialDetails.sourceOfFunds.$value.$value,
       displayProductName: currentFormContext.productAccountName,
       state: response.namPermadrState,
       city: response.namPermadrCity,
-      residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
-      residenceType_label: '',
+      residenceType: financialDetails.residenceType.$value,
+      residenceType_label: financialDetails.residenceType.$value,
       doYouHavePAN: response.refCustItNum ? 'Y' : 'N',
       voterIDNo: '',
       drivingLicenseNo: '',
       isSeniorCitizen: '',
       countryOfTaxResidency: response.customerFATCADtlsDTO[0].codTaxCntry1,
-      AadharFSDocument: '',
       PANFSDocument: '',
       passportFSDocument: '',
       voterIDFSDocument: '',
@@ -1898,14 +1921,11 @@ const crmLeadIdDetail = () => {
       nationality: response.namHoldadrCntry,
       custNationality: response.txtCustNATNLTY,
       addressTypeOtherThanResidential: '',
-      AadharBSDocument: '',
       passportBSDocument: '',
       votersIDBSDocument: '',
       DLBSDocument: '',
       otherProfileImage: '',
       otherBSDocument: '',
-      AadharConsentTaken: '',
-      aadharConsentDataTime: new Date().toISOString().slice(0, 19),
       utilityBillsFSDocument: '',
       utilityBillsBSDocument: '',
       municipalBSDocument: '',
@@ -1914,23 +1934,23 @@ const crmLeadIdDetail = () => {
       allotmentLetterFSDocument: '',
       allotmentLEtterBSDocument: '',
       firstName: response.customerFirstName || '',
-      gender: response.txtCustSex,
-      lastName: response.customerLastName || 'test',
+      gender: getGender(response.txtCustSex),
+      lastName: response.customerLastName ? response.customerLastName : getLastWord(response.customerFullName),
       layout: '',
-      customerFullName: response.customerFullName,
+      customerFullName: `${response.txtCustPrefix} ${response.customerFullName}`,
       leadParentLame: '',
       leadRating: '',
-      leadSource: 'NRI Insta ETB STP',
-      leadSourceKey: '33609',
+      leadSource: 'Adobe',
+      leadSourceKey: '33262',
       middleName: response.customerMiddleName || '',
       mobileNo: currentFormContext.mobileNumber,
-      multipleTaxResidencyID: '',
+      multipleTaxResidencyID: '-1',
       employmentType: '',
       employmentTypeOthers: '',
       phone: currentFormContext.mobileNumber,
       productCategory: currentFormContext.productCategory,
       productName: currentFormContext.productAccountName,
-      ratingKey: '',
+      ratingKey: '3',
       residentialStatus: '',
       residentialStatus_label: '',
       salutationKey: '',
@@ -1939,16 +1959,13 @@ const crmLeadIdDetail = () => {
       territoryCode: '',
       territoryKey: '',
       zipCode: response.txtPermadrZip,
-      videoKYCConsent: '',
       transcriptLatLong: '',
-      videoKYCFinalStatus: '',
-      isAadharBasedAccountOpening: '',
       AMBStamping: '',
       companyCode: '',
       occupationTypeOther: '',
       natureOfBusinessOther: '',
-      natureOfBus: '',
-      natureOfBusinessOther_label: '',
+      natureOfBus: financialDetails.natureOfBusiness.$value,
+      natureOfBusinessOther_label: financialDetails.natureOfBusiness.$value,
       genderCode: '',
       genderID: '',
       lastModifiedBy: '',
@@ -1959,7 +1976,7 @@ const crmLeadIdDetail = () => {
       productCategoryID: currentFormContext.productCategoryID,
       productCode: currentFormContext.productAccountType,
       productKey: currentFormContext.productKey,
-      residentialStatusID: '',
+      residentialStatusID: '-1',
       websiteUrl: '',
       expirayDateVideo: '',
       custPrefix: response.txtCustPrefix,
@@ -1982,21 +1999,21 @@ const crmLeadIdDetail = () => {
       customerEligibilityCheckFlag: 'true',
       customerEligibilityStatus: 'success',
       promoCode: null,
-      accountTitle: response.customerFullName,
+      accountTitle: `${response.txtCustPrefix} ${response.customerFullName}`,
       codCCBrn: '',
       codProd: '',
-      codOccupation: '',
+      codOccupation: financialDetails.occupation.$value,
       codProfession: '',
       selfEmpFrom: '',
       incomeSource: '',
-      typEmployer: '',
+      typEmployer: financialDetails.employerCategory.$value,
       typResidence: '',
       typResidence_label: '',
       addr1: response.txtPermadrAdd1 || '',
       custFirstName: response.customerFirstName || '',
-      custFullName: response.customerFullName,
-      custLastName: response.customerLastName || '',
-      custSex: response.txtCustSex,
+      custFullName: `${response.txtCustPrefix} ${response.customerFullName}`,
+      custLastName: response.customerLastName ? response.customerLastName : getLastWord(response.customerFullName),
+      custSex: getGender(response.txtCustSex),
       custType: response.flgCustTyp,
       permAddr1: response.txtPermadrAdd1 || '',
       permAddr2: response.txtPermadrAdd2,
@@ -2050,6 +2067,12 @@ const crmLeadIdDetail = () => {
       dbtConsentDateTime: '',
       isGigaCard: '',
       dbtConsent: '',
+      StatusCode: 'Fresh',
+      StatusCodeDisplayText: 'Fresh',
+      StatusCodeName: 'Fresh',
+      subLeadSource: 'Adobe Insta Lead',
+      LayoutKey: '100542',
+      StatusCodeKey: '9',
     },
   };
 
