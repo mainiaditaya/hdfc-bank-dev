@@ -37,6 +37,7 @@ import {
   reloadPage,
   accountOpeningNreNro1,
   feedbackButton,
+  selectVarient,
 
 } from './nre-nroFunctions.js';
 
@@ -94,4 +95,5 @@ export {
   reloadPage,
   accountOpeningNreNro1,
   feedbackButton,
+  selectVarient,
 };
