@@ -191,6 +191,9 @@ const getCountryName = (countryCodeIst) => new Promise((resolve) => {
 });
 
 function errorHandling(response, journeyState, globals) {
+  setTimeout(() => {
+    Promise.resolve(sendAnalytics('page load-Error Page', { }, 'ON_ERROR_PAGE_LOAD', globals));
+  }, 2000);
   const {
     mobileNumber,
     leadProfileId,
@@ -2183,7 +2186,7 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
 function multiAccountVarient(selectAccount, globals) {
   const varientType = currentFormContext.journeyAccountType;
   globals.functions.setProperty(selectAccount.multipleAccounts, { visible: false });
-  // globals.functions.setProperty(globals.form.wizardPanel.continue, { visible: true });
+  globals.functions.setProperty(globals.form.wizardPanel.continue, { visible: true });
   globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
   globals.functions.setProperty(selectAccount.text, { visible: false });
   globals.functions.setProperty(selectAccount.customerName, { visible: false });
