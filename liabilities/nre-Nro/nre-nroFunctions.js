@@ -377,6 +377,7 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
       identifierValue: clearString(identifierVal),
       identifierName: identifierNam,
       getEmail: 'Y',
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad' 
     },
   };
 
@@ -513,6 +514,7 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
       journeyID: currentFormContext.journeyID,
       journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
       referenceNumber: referenceNumber ?? '',
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad'
     },
   };
 
