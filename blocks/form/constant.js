@@ -37,7 +37,7 @@ function isMainProd() {
   return false;
 }
 
-if (isLocalDev() && !isMainProd() ) {
+if (isLocalDev() && !isMainProd()) {
   submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
 }
 

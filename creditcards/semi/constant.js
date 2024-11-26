@@ -1,3 +1,5 @@
+import { getSubmitBaseUrl } from '../../blocks/form/constant.js';
+
 const JOURNEY_NAME = 'SMART_EMI_JOURNEY';
 const PRO_CODE = '009';
 const ERROR_MSG = {
@@ -17,15 +19,11 @@ const CHANNELS = {
   adobeWhatsApp: 'ADOBE_WHATSAPP',
 };
 
-const ENV = 'prod';
-
-const DEV_URL = 'https://applyonlinedev.hdfcbank.com';
-const PROD_URL = 'https://applyonline.hdfcbank.com';
-const BASE_URL = (ENV === 'dev') ? DEV_URL : PROD_URL;
+const BASE_URL = getSubmitBaseUrl();
 
 const SEMI_ENDPOINTS = {
   otpGen: `${BASE_URL}/content/hdfc_ccforms/api/validatecardotpgen.json`,
-  otpVal: (ENV === 'dev') ? `${'https://applyonlineuat01.hdfcbank.com'}/content/hdfc_hafcards/api/eligibilitycheck.json` : `${BASE_URL}/content/hdfc_hafcards/api/eligibilitycheck.json`,
+  otpVal: (BASE_URL?.includes('dev')) ? `${'https://applyonlineuat01.hdfcbank.com'}/content/hdfc_hafcards/api/eligibilitycheck.json` : `${BASE_URL}/content/hdfc_hafcards/api/eligibilitycheck.json`,
   preexecution: `${BASE_URL}/content/hdfc_ccforms/api/preexecution.json`,
   masterChanel: `${BASE_URL}/content/hdfc_commonforms/api/mdm.CREDIT.POST_ISSUANCE_CHANNEL_MASTER.json`,
   ccSmartEmi: `${BASE_URL}/content/hdfc_ccforms/api/ccsmartemi.json`,
@@ -65,4 +63,5 @@ export {
   MISC,
   DATA_LIMITS,
   FLOWS_ERROR_MESSAGES,
+  BASE_URL,
 };
