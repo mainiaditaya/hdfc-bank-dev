@@ -17,6 +17,7 @@ import {
   addDisableClass,
   setSelectOptions,
   addClassToElement,
+  validateTextInput,
 } from '../domutils/domutils.js';
 import {
   FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
@@ -27,6 +28,7 @@ import {
   MAX_FULLNAME_LENGTH,
   EMPLOYEE_SECTION_VISIBILITY,
   FD_JOURNEY_STATE,
+  MAX_ANNUAL_INCOME_LENGTH,
 } from './constant.js';
 import { fullNamePanValidation } from '../../common/panvalidation.js';
 import { sendFDAnalytics } from './analytics.js';
@@ -136,6 +138,12 @@ const bindEmployeeAssistanceField = async (globals) => {
  */
 const bindCustomerDetails = async (globals) => {
   if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  const digitRegex = /^\d+$/;
+  const annualIncomeField = document.querySelector('.field-annualincome input');
+  annualIncomeField.addEventListener('input', () => {
+    validateTextInput(annualIncomeField, digitRegex, MAX_ANNUAL_INCOME_LENGTH);
+  });
+
   CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   CURRENT_FORM_CONTEXT.editFlags = {
     nameOnCard: true,
