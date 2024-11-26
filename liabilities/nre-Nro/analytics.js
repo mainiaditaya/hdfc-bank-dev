@@ -22,11 +22,11 @@ import { CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constan
  */
 
 function setAnalyticPageLoadProps(journeyState, formData, digitalData) {
-  digitalData.user.pseudoID = '';// Need to check
+  digitalData.user.pseudoID = 'NA';// Need to check
   digitalData.user.journeyName = currentFormContext?.journeyName;
   digitalData.user.journeyID = formData?.journeyId;
   digitalData.user.journeyState = journeyState;
-  digitalData.user.casa = '';
+  digitalData.user.casa = 'NA';
   digitalData.form.name = FORM_NAME;
 }
 
@@ -45,12 +45,12 @@ function setAnalyticClickGenericProps(linkName, linkType, formData, journeyState
     linkType,
   };
   digitalData.link.linkPosition = data[linkName].linkPosition;
-  digitalData.user.pseudoID = '';
+  digitalData.user.pseudoID = 'NA';
   digitalData.user.journeyName = currentFormContext?.journeyName;
   digitalData.user.journeyID = currentFormContext?.journeyID;
   digitalData.user.journeyState = journeyState;
   digitalData.form.name = FORM_NAME;
-  digitalData.user.casa = '';
+  digitalData.user.casa = 'NA';
 }
 
 function getValidationMethod(formContext) {
@@ -63,10 +63,15 @@ function getValidationMethod(formContext) {
  * @param {string} journeyState.
  * @param {object} formData.
  * @param {string} pageName.
+ * @param {string} errorAPI.
  */
-function sendPageloadEvent(journeyState, formData, pageName) {
+function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMessage, errorCode) {
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
   digitalData.page.pageInfo.pageName = pageName;
+  digitalData.page.pageInfo.errorAPI = errorAPI;
+  digitalData.page.pageInfo.errorCode = errorCode;
+  digitalData.page.pageInfo.errorMessage = errorMessage;
+  // digitalData.page.event.status = eventStatus;
   setAnalyticPageLoadProps(journeyState, formData, digitalData);
   switch (pageName) {
     case 'Step 3 : Select  Account': {
@@ -89,31 +94,32 @@ function sendPageloadEvent(journeyState, formData, pageName) {
       break;
     }
     case 'select account type': {
-      digitalData.formDetails.bankBranch = '';
-      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? '';
+      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? 'NA';
+      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? 'NA';
+      digitalData.formDetails.accountType = currentFormContext.productAccountName ?? 'NA';
 
       break;
     }
     case 'Step 4 : Confirm Details': {
-      digitalData.formDetails.city = currentFormContext?.fatca_response?.namCustadrCity ?? '';
-      digitalData.formDetails.state = currentFormContext?.fatca_response?.namCustadrState ?? '';
-      digitalData.formDetails.pincode = currentFormContext?.fatca_response?.txtCustadrZip ?? '';
-      digitalData.formDetails.nationality = formData?.form?.confirmDetails?.countryOfBirth ?? '';
-      digitalData.formDetails.countryTaxResidence = formData?.form?.confirmDetails?.countryTaxResidence ?? '';
-      digitalData.formDetails.countryofBirth = formData?.form?.confirmDetails?.countryOfBirth ?? '';
-      digitalData.formDetails.nomineeRelation = formData?.form?.confirmDetails?.nomineeDetails?.relation ?? '';
-      digitalData.formDetails.companyName = formData?.form?.confirmDetails?.financialDetails?.employeerName ?? '';
-      digitalData.formDetails.AnnualIncome = formData?.form?.confirmDetails?.financialDetails?.grossAnnualIncome ?? '';
-      digitalData.formDetails.currency = formData?.form?.confirmDetails?.financialDetails?.currencyName ?? '';
-      digitalData.formDetails.residenceType = formData?.form?.confirmDetails?.financialDetails?.residenceType ?? '';
-      digitalData.formDetails.sourceoffunds = formData?.form?.confirmDetails?.financialDetails?.sourceOfFunds ?? '';
-      digitalData.formDetails.selfemployeddate = formData?.form?.confirmDetails?.financialDetails?.selfEmployedSince ?? '';
-      digitalData.formDetails.natureofbusiness = formData?.form?.confirmDetails?.financialDetails?.natureOfBusiness ?? '';
-      digitalData.formDetails.typeofcompany = formData?.form?.confirmDetails?.financialDetails?.typeOfCompoanyFirm ?? '';
-      digitalData.formDetails.typeofprofessional = formData?.form?.confirmDetails?.financialDetails?.selfEmployedProfessional ?? '';
+      digitalData.formDetails.city = currentFormContext?.fatca_response?.namCustadrCity ?? 'NA';
+      digitalData.formDetails.state = currentFormContext?.fatca_response?.namCustadrState ?? 'NA';
+      digitalData.formDetails.pincode = currentFormContext?.fatca_response?.txtCustadrZip ?? 'NA';
+      digitalData.formDetails.nationality = formData?.form?.confirmDetails?.countryOfBirth ?? 'NA';
+      digitalData.formDetails.countryTaxResidence = formData?.form?.confirmDetails?.countryTaxResidence ?? 'NA';
+      digitalData.formDetails.countryofBirth = formData?.form?.confirmDetails?.countryOfBirth ?? 'NA';
+      digitalData.formDetails.nomineeRelation = formData?.form?.confirmDetails?.nomineeDetails?.relation ?? 'NA';
+      digitalData.formDetails.companyName = formData?.form?.confirmDetails?.financialDetails?.employeerName ?? 'NA';
+      digitalData.formDetails.AnnualIncome = formData?.form?.confirmDetails?.financialDetails?.grossAnnualIncome ?? 'NA';
+      digitalData.formDetails.currency = formData?.form?.confirmDetails?.financialDetails?.currencyName ?? 'NA';
+      digitalData.formDetails.residenceType = formData?.form?.confirmDetails?.financialDetails?.residenceType ?? 'NA';
+      digitalData.formDetails.sourceoffunds = formData?.form?.confirmDetails?.financialDetails?.sourceOfFunds ?? 'NA';
+      digitalData.formDetails.selfemployeddate = formData?.form?.confirmDetails?.financialDetails?.selfEmployedSince ?? 'NA';
+      digitalData.formDetails.natureofbusiness = formData?.form?.confirmDetails?.financialDetails?.natureOfBusiness ?? 'NA';
+      digitalData.formDetails.typeofcompany = formData?.form?.confirmDetails?.financialDetails?.typeOfCompoanyFirm ?? 'NA';
+      digitalData.formDetails.typeofprofessional = formData?.form?.confirmDetails?.financialDetails?.selfEmployedProfessional ?? 'NA';
     }
     case 'Step 5 : Confirmation': {
-      digitalData.formDetails.accountType
+      digitalData.formDetails.accountType;
     }
     default:
       // do nothing
@@ -229,18 +235,18 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
 function populateResponse(payload, eventType, digitalData, formData) {
   switch (eventType) {
     case 'otp click': {
-      let privacyConsent = '';
-      let callSmsWhatsappConsent = '';
-      let countryCode = '';
+      let privacyConsent = 'NA';
+      let callSmsWhatsappConsent = 'NA';
+      let countryCode = 'NA';
       // Check for privacy consent
       // if (formData && formData?.form && formData.form?.consent && formData.form.consent?.checkboxConsent1Label) {
-      privacyConsent = formData?.form?.consent?.checkboxConsent1Label ?? '';
+      privacyConsent = formData?.form?.consent?.checkboxConsent1Label ?? 'NA';
       // }
       // if (formData && formData?.form && formData.form?.consent && formData.form.consent?.checkboxConsent2Label) {
-      callSmsWhatsappConsent = formData?.form?.consent?.checkboxConsent2Label ?? '';
+      callSmsWhatsappConsent = formData?.form?.consent?.checkboxConsent2Label ?? 'NA';
       // }
       // if (formData && formData?.form && formData.form?.consent && formData.form.login?.countryCode) {
-      countryCode = formData?.form?.login?.countryCode ?? '';
+      countryCode = formData?.form?.login?.countryCode ?? 'NA';
       // }
       digitalData.formDetails.privacyContent = privacyConsent;
       digitalData.formDetails.callSmsWhatsappConsent = callSmsWhatsappConsent;
@@ -269,26 +275,27 @@ function populateResponse(payload, eventType, digitalData, formData) {
       break;
     }
     case 'continue btn select account': {
-      digitalData.formDetails.existingAccountType = payload?.varientType ?? '';
-      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
+      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? 'NA';
+      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? 'NA';
       break;
     }
     case 'select account type click': {
-      digitalData.formDetails.accountType = payload?.productAccountType ?? '';
-      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
+      digitalData.formDetails.accountType = currentFormContext.productAccountName ?? 'NA';
+      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? 'NA';
+      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? 'NA';
       break;
     }
     case 'confirm details click': {
-      digitalData.assisted.flag = '';
-      digitalData.assisted.lg = '';
-      digitalData.assisted.lc = '';
-      digitalData.formDetails.TAndCConsent = formData?.needBankHelp?.confirmDetailsConsent1 ?? '';
-      digitalData.formDetails.detailsConsent = formData?.needBankHelp?.confirmDetailsConsent2 ?? '';
+      digitalData.assisted.flag = 'NA';
+      digitalData.assisted.lg = 'NA';
+      digitalData.assisted.lc = 'NA';
+      digitalData.formDetails.TAndCConsent = formData?.needBankHelp?.confirmDetailsConsent1 ?? 'NA';
+      digitalData.formDetails.detailsConsent = formData?.needBankHelp?.confirmDetailsConsent2 ?? 'NA';
       break;
     }
     case 'idcom redirection check': {
-      digitalData.event.validationMethod = payload?.validationMethod ?? '';
-      digitalData.event.status = payload?.status ?? '';
+      digitalData.event.validationMethod = payload?.validationMethod ?? 'NA';
+      digitalData.event.status = payload?.status ?? 'NA';
       break;
     }
     default:
@@ -340,7 +347,11 @@ function sendAnalytics(eventType, payload, journeyState, globals) {
   const formData = santizedFormDataWithContext(globals);
   if (eventType.includes('page load')) {
     const pageName = eventType.split('-')[1];
-    sendPageloadEvent(journeyState, formData, pageName);
+    const errorAPI = formData?.AccountOpeningNRENRO?.apiDetails?.APIName ?? 'NA';
+    const errorMessage = formData?.AccountOpeningNRENRO?.apiDetails?.errorMessage ?? 'NA';
+    const errorCode = formData?.AccountOpeningNRENRO?.apiDetails?.errorCode ?? 'NA';
+    // const eventStatus = formData?.AccountOpeningNRENRO?.apiDetails?.status;
+    sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMessage, errorCode);
   } else {
     sendAnalyticsEvent(eventType, payload, journeyState, formData);
   }

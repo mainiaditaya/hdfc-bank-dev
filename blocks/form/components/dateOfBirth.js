@@ -8,7 +8,7 @@ export default async function decorate(fieldDiv, field, htmlForm) {
             let year = dob.getFullYear();
             let yearInString = year.toString();            
             yearInString = yearInString.replace(/^0+/, '');
-            if((age < 0 || (age > 120 && yearInString.length === 4) || !(yearInString.startsWith('1') || yearInString.startsWith('2') || yearInString.startsWith('0')))){
+            if((age < 0 || !(yearInString.startsWith('1') || yearInString.startsWith('2') || yearInString.startsWith('0')))){
                 input.setAttribute('edit-value','Date of Birth');
                 input.setAttribute('display-value', 'Date of Birth');
                 input.value = 'Date of Birth';
