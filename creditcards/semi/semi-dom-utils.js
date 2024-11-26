@@ -63,7 +63,7 @@ const linkToPopupToggle = (hyperLink, popupOverlay, popupContent, closeBtn = fal
     });
   }
   if (redirectBtn) {
-    document.querySelector(redirectBtn).addEventListener('click', (event) => {
+    document.querySelector(redirectBtn)?.addEventListener('click', (event) => {
       event.preventDefault();
       window.open(redirectionLink, '_blank').focus();
     });

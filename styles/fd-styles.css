@@ -1964,7 +1964,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
             border: none;
             pointer-events: none;
             margin-top: 2px;
-            margin-left: 0;
+            margin-left: -15px;
             padding: 0;
             width: 35px;
             height: 50px !important;

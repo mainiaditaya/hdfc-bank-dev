@@ -400,6 +400,19 @@ const onPageLoadAnalytics = async () => {
   const paramAuthMode = urlParams.get('authmode');
   const paramVisitType = urlParams.get('visittype');
   if (!paramAuthMode && !paramVisitType) sendAnalytics('page load-Identify yourself', {}, 'CRM_LEAD_SUCCESS', journeyData);
+  if (aadharRedirect) {
+    if (typeof document !== 'undefined') {
+      DOM_API.decorateStepper();
+    }
+    const { CURRENT_FORM_CONTEXT: currentFormContext } = (await import('../../common/constants.js'));
+    currentFormContext.action = 'aadhar redirected';
+    const formData = {
+      journeyId: currentFormContext?.journeyID,
+    };
+    setTimeout(() => {
+      Promise.resolve(sendPageloadEvent('CUSTOMER_BUREAU_OFFER_AVAILABLE', formData, 'Address Details'));
+    }, 1000);
+  }
 };
 
 setTimeout(() => {

@@ -11,7 +11,7 @@ const {
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
 
-const BASEURL = 'https://applyonline.hdfcbank.com';
+const BASEURL = CONSTANT.BASE_URL;
 const urlPath = (path) => `${BASEURL}${path}`;
 
 /* Restructures sanitizedFormData adding URL parameters and missing properties for the journey state:CUSTOMER_ONBOARDING_COMPLETE

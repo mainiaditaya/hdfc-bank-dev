@@ -4,6 +4,11 @@ const data = {
     StepName: 'Identify Yourself',
     linkPosition: 'Form',
   },
+  'confirm otp': {
+    linkType: 'button',
+    StepName: 'Verify With OTP',
+    linkPosition: 'Form',
+  },
   'submit otp': {
     error: '',
   },

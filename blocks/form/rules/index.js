@@ -190,6 +190,18 @@ function applyRuleEngine(htmlForm, form, captcha) {
     // console.log(JSON.stringify(form.exportData(), null, 2));
   });
 
+  htmlForm.addEventListener('input', (e) => {
+    const field = e.target;
+    const fieldWrapper = field?.closest('.field-wrapper');
+    if (!fieldWrapper || fieldWrapper.classList.contains('skip-onchange')) return;
+
+    const { id, value } = field;
+    const formElement = form.getElement(id);
+    if (formElement) {
+      formElement.value = value;
+    }
+  });
+
   htmlForm.addEventListener('click', async (e) => {
     if (e.target.tagName === 'BUTTON') {
       const element = form.getElement(e.target.id);

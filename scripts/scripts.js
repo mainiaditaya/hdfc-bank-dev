@@ -12,6 +12,8 @@ import {
   loadScript,
 } from './aem.js';
 
+import { getSubmitBaseUrl } from '../blocks/form/constant.js';
+
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 const FORM_CONSTANT = [
@@ -32,7 +34,7 @@ const FORM_CONSTANT = [
     class: '',
     urlKey: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
     launchScript: {
-      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
+      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-230317469f6b-development.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
       loadTime: 1200,
     },
@@ -49,7 +51,7 @@ const FORM_CONSTANT = [
     },
   },
 ];
-const ENV = 'prod'; // take it from common constant to denote
+const ENV = getSubmitBaseUrl()?.includes('dev') ? 'dev' : 'prod';
 
 /**
  * Builds hero block and prepends to main in a new section.
