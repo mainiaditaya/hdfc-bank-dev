@@ -1271,6 +1271,9 @@ async function accountOpeningNreNro1(idComToken) {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
     requestString: {
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
+      journeyID: journeyParamStateInfo.currentFormContext.journeyID,
+      journeyName: currentFormContext.journeyName,
       Id_token_jwt: journeyParamStateInfo.AccountOpeningNRENRO.fatcaJwtToken,
       IDCOM_Token: idComToken,
       ItemKey: journeyParamStateInfo.form.confirmDetails.crm_leadId,
