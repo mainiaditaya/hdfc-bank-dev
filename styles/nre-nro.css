@@ -141,6 +141,10 @@
           padding: 30px 20px 50px 20px !important;
         }
 
+        input, textarea, select{
+          font-family: "Inter", sans-serif !important;
+        }
+
         .field-parentlandingpagepanel {
           .field-landingpanel {
             .field-letsgetstarted p {
@@ -1630,7 +1634,6 @@
               height: fit-content;
               resize: none;
               min-height: auto;
-              font-family: "Inter", sans-serif !important;
 
               @media (320px <=width <=767px) {
                 font-size: 14px;
@@ -2077,7 +2080,6 @@
               height: 100%;
               min-height: auto;
               resize: none;
-              font-family: "Inter", sans-serif !important;
 
               &:focus-visible {
                 outline: none;
@@ -2233,7 +2235,6 @@
               font-weight: 500;
               color: var(--color-interface-background-quaternary);
               position: absolute;
-              font-family: "Inter", sans-serif !important;
 
               &:focus-visible {
                 outline: none;
@@ -2703,7 +2704,6 @@
                 color: var(--color-interface-background-quaternary);
                 margin-top: 2px;
                 position: absolute;
-                font-family: "Inter", sans-serif !important;
                 border-radius: 0;
 
                 &:focus-visible {
@@ -3766,7 +3766,7 @@
                   &::-webkit-input-placeholder,
                   &::-moz-placeholder,
                   &:-ms-input-placeholder {
-                    color: var(--color-interface-background-quaternary);
+                    color: var(--color-input-text-placeholder-default);
                   }
                 }
 
@@ -4103,6 +4103,7 @@
                 font-size: 14px;
                 font-weight: 400;
                 line-height: 20px;
+                color: var(--color-interface-text-primary);
                 color: var(--color-input-text-placeholder-default);
                 padding: 15px;
                 margin-top: -10px;
@@ -4114,6 +4115,13 @@
 
                 &:focus-visible {
                   outline: none;
+                }
+
+                &::placeholder,
+                &::-webkit-input-placeholder,
+                &::-moz-placeholder,
+                &:-ms-input-placeholder {
+                  color: var(--color-input-text-placeholder-default);
                 }
               }
             }
