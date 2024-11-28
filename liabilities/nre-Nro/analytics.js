@@ -22,7 +22,7 @@ import { CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constan
  */
 
 function setAnalyticPageLoadProps(journeyState, formData, digitalData) {
-  digitalData.user.pseudoID = 'NA';// Need to check
+  digitalData.user.pseudoID = '';// Need to check
   digitalData.user.journeyName = currentFormContext?.journeyName;
   digitalData.user.journeyID = formData?.journeyId;
   digitalData.user.journeyState = journeyState;
@@ -45,7 +45,7 @@ function setAnalyticClickGenericProps(linkName, linkType, formData, journeyState
     linkType,
   };
   digitalData.link.linkPosition = data[linkName].linkPosition;
-  digitalData.user.pseudoID = 'NA';
+  digitalData.user.pseudoID = '';
   digitalData.user.journeyName = currentFormContext?.journeyName;
   digitalData.user.journeyID = currentFormContext?.journeyID;
   digitalData.user.journeyState = journeyState;
@@ -94,31 +94,31 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
       break;
     }
     case 'select account type': {
-      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? 'NA';
-      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? 'NA';
-      digitalData.formDetails.accountType = currentFormContext.productAccountName ?? 'NA';
+      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
+      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? '';
+      digitalData.formDetails.accountType = currentFormContext.productAccountName ?? '';
 
       break;
     }
     case 'Step 4 : Confirm Details': {
-      digitalData.formDetails.city = currentFormContext?.fatca_response?.namCustadrCity ?? 'NA';
-      digitalData.formDetails.state = currentFormContext?.fatca_response?.namCustadrState ?? 'NA';
-      digitalData.formDetails.pincode = currentFormContext?.fatca_response?.txtCustadrZip ?? 'NA';
-      digitalData.formDetails.nationality = formData?.form?.confirmDetails?.countryOfBirth ?? 'NA';
-      digitalData.formDetails.countryTaxResidence = formData?.form?.confirmDetails?.countryTaxResidence ?? 'NA';
-      digitalData.formDetails.countryofBirth = formData?.form?.confirmDetails?.countryOfBirth ?? 'NA';
-      digitalData.formDetails.nomineeRelation = formData?.form?.confirmDetails?.nomineeDetails?.relation ?? 'NA';
-      digitalData.formDetails.companyName = formData?.form?.confirmDetails?.financialDetails?.employeerName ?? 'NA';
-      digitalData.formDetails.AnnualIncome = formData?.form?.confirmDetails?.financialDetails?.grossAnnualIncome ?? 'NA';
-      digitalData.formDetails.currency = formData?.form?.confirmDetails?.financialDetails?.currencyName ?? 'NA';
-      digitalData.formDetails.residenceType = formData?.form?.confirmDetails?.financialDetails?.residenceType ?? 'NA';
-      digitalData.formDetails.sourceoffunds = formData?.form?.confirmDetails?.financialDetails?.sourceOfFunds ?? 'NA';
-      digitalData.formDetails.selfemployeddate = formData?.form?.confirmDetails?.financialDetails?.selfEmployedSince ?? 'NA';
-      digitalData.formDetails.natureofbusiness = formData?.form?.confirmDetails?.financialDetails?.natureOfBusiness ?? 'NA';
-      digitalData.formDetails.typeofcompany = formData?.form?.confirmDetails?.financialDetails?.typeOfCompoanyFirm ?? 'NA';
-      digitalData.formDetails.typeofprofessional = formData?.form?.confirmDetails?.financialDetails?.selfEmployedProfessional ?? 'NA';
+      digitalData.formDetails.city = currentFormContext?.fatca_response?.namCustadrCity ?? '';
+      digitalData.formDetails.state = currentFormContext?.fatca_response?.namCustadrState ?? '';
+      digitalData.formDetails.pincode = currentFormContext?.fatca_response?.txtCustadrZip ?? '';
+      digitalData.formDetails.nationality = formData?.form?.confirmDetails?.countryOfBirth ?? '';
+      digitalData.formDetails.countryTaxResidence = formData?.form?.confirmDetails?.countryTaxResidence ?? '';
+      digitalData.formDetails.countryofBirth = formData?.form?.confirmDetails?.countryOfBirth ?? '';
+      digitalData.formDetails.nomineeRelation = formData?.form?.confirmDetails?.nomineeDetails?.relation ?? '';
+      digitalData.formDetails.companyName = formData?.form?.confirmDetails?.financialDetails?.employeerName ?? '';
+      digitalData.formDetails.AnnualIncome = formData?.form?.confirmDetails?.financialDetails?.grossAnnualIncome ?? '';
+      digitalData.formDetails.currency = formData?.form?.confirmDetails?.financialDetails?.currencyName ?? '';
+      digitalData.formDetails.residenceType = formData?.form?.confirmDetails?.financialDetails?.residenceType ?? '';
+      digitalData.formDetails.sourceoffunds = formData?.form?.confirmDetails?.financialDetails?.sourceOfFunds ?? '';
+      digitalData.formDetails.selfemployeddate = formData?.form?.confirmDetails?.financialDetails?.selfEmployedSince ?? '';
+      digitalData.formDetails.natureofbusiness = formData?.form?.confirmDetails?.financialDetails?.natureOfBusiness ?? '';
+      digitalData.formDetails.typeofcompany = formData?.form?.confirmDetails?.financialDetails?.typeOfCompoanyFirm ?? '';
+      digitalData.formDetails.typeofprofessional = formData?.form?.confirmDetails?.financialDetails?.selfEmployedProfessional ?? '';
     }
-    case 'Step 5 : Confirmation': {
+    case 'Step 5 - Confirmation': {
       digitalData.formDetails.accountType;
     }
     default:
@@ -145,6 +145,8 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
     case 'otp click': {
       if (window) {
         window.digitalData = digitalData || {};
+        digitalData.link.linkName = 'otp click';
+        digitalData.event.status = 1;
       }
       _satellite.track('submit');
       currentFormContext.action = 'otp click';
@@ -161,9 +163,10 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
       break;
     }
     case 'resend otp click': {
-      digitalData.link.linkName = 'Resend OTP';
       if (window) {
         window.digitalData = digitalData || {};
+        digitalData.page.pageInfo.pageName = 'Step 2 - Verify with OTP';
+        digitalData.link.linkName = 'Resend OTP';
       }
       _satellite.track('submit');
       break;
@@ -185,6 +188,7 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
     case 'submit otp click': {
       if (window) {
         window.digitalData = digitalData || {};
+        digitalData.page.pageInfo.pageName = 'Step 2 - Verify with OTP';
       }
       _satellite.track('submit');
       setTimeout(() => {
@@ -206,6 +210,7 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
     case 'select account type click': {
       if (window) {
         window.digitalData = digitalData || {};
+        digitalData.page.pageInfo.pageName = 'Step 3 - Select  Account';
       }
       _satellite.track('submit');
 
@@ -217,6 +222,7 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
     case 'confirm details click': {
       if (window) {
         window.digitalData = digitalData || {};
+        digitalData.page.pageInfo.pageName = 'Step 4 - Confirm Details';
       }
       _satellite.track('submit');
       break;
@@ -227,6 +233,34 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
       }, 1000);
       break;
     }
+    case 'personalDetails click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('event');
+      break;
+    }
+    case 'fatcaDetails click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('event');
+      break;
+    }
+    case 'financialDetails click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('event');
+      break;
+    }
+    case 'nomineePanel click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('event');
+      break;
+    }
     default:
       // do nothing
   }
@@ -235,18 +269,18 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
 function populateResponse(payload, eventType, digitalData, formData) {
   switch (eventType) {
     case 'otp click': {
-      let privacyConsent = 'NA';
-      let callSmsWhatsappConsent = 'NA';
-      let countryCode = 'NA';
+      let privacyConsent = '';
+      let callSmsWhatsappConsent = '';
+      let countryCode = '';
       // Check for privacy consent
       // if (formData && formData?.form && formData.form?.consent && formData.form.consent?.checkboxConsent1Label) {
-      privacyConsent = formData?.form?.consent?.checkboxConsent1Label ?? 'NA';
+      privacyConsent = formData?.form?.consent?.checkboxConsent1Label ? 'Yes' : 'No';
       // }
       // if (formData && formData?.form && formData.form?.consent && formData.form.consent?.checkboxConsent2Label) {
-      callSmsWhatsappConsent = formData?.form?.consent?.checkboxConsent2Label ?? 'NA';
+      callSmsWhatsappConsent = formData?.form?.consent?.checkboxConsent2Label ? 'Yes' : 'No';
       // }
       // if (formData && formData?.form && formData.form?.consent && formData.form.login?.countryCode) {
-      countryCode = formData?.form?.login?.countryCode ?? 'NA';
+      countryCode = formData?.form?.login?.countryCode ?? '';
       // }
       digitalData.formDetails.privacyContent = privacyConsent;
       digitalData.formDetails.callSmsWhatsappConsent = callSmsWhatsappConsent;
@@ -255,47 +289,49 @@ function populateResponse(payload, eventType, digitalData, formData) {
       break;
     }
     case 'privacy consent click': {
-      digitalData.event.status = 'Success';
+      digitalData.event.status = 1;
       break;
     }
     case 'mandatory I understand click': {
-      digitalData.event.status = 'Success';
+      digitalData.event.status = 1;
       break;
     }
     case 'optional I understand click': {
-      digitalData.event.status = 'Success';
+      digitalData.event.status = 1;
       break;
     }
     case 'resend otp click': {
-      digitalData.event.status = 'Success';
+      digitalData.event.status = 1;
       break;
     }
     case 'submit otp click': {
-      digitalData.event.status = '1';
+      digitalData.event.status = 1;
       break;
     }
     case 'continue btn select account': {
-      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? 'NA';
-      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? 'NA';
+      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? '';
+      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
       break;
     }
     case 'select account type click': {
-      digitalData.formDetails.accountType = currentFormContext.productAccountName ?? 'NA';
-      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? 'NA';
-      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? 'NA';
+      digitalData.formDetails.accountType = currentFormContext.productAccountName ?? '';
+      digitalData.formDetails.existingAccountType = currentFormContext.journeyAccountType ?? '';
+      digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
+      digitalData.event.status = 1;
       break;
     }
     case 'confirm details click': {
-      digitalData.assisted.flag = 'NA';
-      digitalData.assisted.lg = 'NA';
-      digitalData.assisted.lc = 'NA';
-      digitalData.formDetails.TAndCConsent = formData?.needBankHelp?.confirmDetailsConsent1 ?? 'NA';
-      digitalData.formDetails.detailsConsent = formData?.needBankHelp?.confirmDetailsConsent2 ?? 'NA';
+      digitalData.assisted.flag = '';
+      digitalData.assisted.lg = '';
+      digitalData.assisted.lc = '';
+      digitalData.formDetails.TAndCConsent = formData?.needBankHelp?.confirmDetailsConsent1 ?? '';
+      digitalData.formDetails.detailsConsent = formData?.needBankHelp?.confirmDetailsConsent2 ?? '';
+      digitalData.event.status = 1;
       break;
     }
     case 'idcom redirection check': {
-      digitalData.event.validationMethod = payload?.validationMethod ?? 'NA';
-      digitalData.event.status = payload?.status ?? 'NA';
+      digitalData.event.validationMethod = payload?.validationMethod ?? '';
+      digitalData.event.status = payload?.status ?? '';
       break;
     }
     default:
@@ -347,9 +383,9 @@ function sendAnalytics(eventType, payload, journeyState, globals) {
   const formData = santizedFormDataWithContext(globals);
   if (eventType.includes('page load')) {
     const pageName = eventType.split('-')[1];
-    const errorAPI = formData?.AccountOpeningNRENRO?.apiDetails?.APIName ?? 'NA';
-    const errorMessage = formData?.AccountOpeningNRENRO?.apiDetails?.errorMessage ?? 'NA';
-    const errorCode = formData?.AccountOpeningNRENRO?.apiDetails?.errorCode ?? 'NA';
+    const errorAPI = formData?.AccountOpeningNRENRO?.apiDetails?.APIName ?? '';
+    const errorMessage = formData?.AccountOpeningNRENRO?.apiDetails?.errorMessage ?? '';
+    const errorCode = formData?.AccountOpeningNRENRO?.apiDetails?.errorCode ?? '';
     // const eventStatus = formData?.AccountOpeningNRENRO?.apiDetails?.status;
     sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMessage, errorCode);
   } else {
@@ -364,7 +400,7 @@ function sendAnalytics(eventType, payload, journeyState, globals) {
  * @param {string} payload - The data to be sent with the event.
  * @param {string} journeyState - The state of the current journey.
  * @param {Object} globals - Global context or data required for the event.
- * @returns {Promise<object>} A promise that resolves with 'Success' if the operation is successful, or rejects with an error.
+ * @returns {Promise<object>} A promise that resolves with 1 if the operation is successful, or rejects with an error.
  */
 function asyncAnalytics(eventType, payload, journeyState, globals) {
   return new Promise((resolve) => {

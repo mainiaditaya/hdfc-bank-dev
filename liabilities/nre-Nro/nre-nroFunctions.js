@@ -57,7 +57,7 @@ let dispSec = OTP_TIMER;
 
 const { CHANNEL, JOURNEY_NAME, VISIT_MODE } = NRE_CONSTANT;
 // Initialize all NRE/NRO Journey Context Variables.
-currentFormContext.journeyName = "ACCOUNTOPENING_NRO_NRE_JOURNEY";
+currentFormContext.journeyName = 'ACCOUNTOPENING_NRO_NRE_JOURNEY';
 currentFormContext.journeyType = 'NTB';
 currentFormContext.errorCode = '';
 currentFormContext.errorMessage = '';
@@ -67,6 +67,7 @@ currentFormContext.productAccountType = '';
 currentFormContext.productAccountName = '';
 currentFormContext.journeyAccountType = '';
 currentFormContext.countryName = '';
+currentFormContext.phoneWithISD = '';
 
 formRuntime.getOtpLoader = currentFormContext.getOtpLoader || (typeof window !== 'undefined') ? displayLoader : false;
 formRuntime.otpValLoader = currentFormContext.otpValLoader || (typeof window !== 'undefined') ? displayLoader : false;
@@ -1550,7 +1551,7 @@ const switchWizard = (globals) => {
 };
 
 const onPageLoadAnalytics = async (globals) => {
-  sendAnalytics('page load-Step 1 : Identify Yourself', { }, 'ON_PAGE_LOAD', globals);
+  sendAnalytics('page load-Step 1 - Identify Yourself', { }, 'ON_PAGE_LOAD', globals);
 };
 
 setTimeout(() => {
@@ -1560,6 +1561,10 @@ setTimeout(() => {
 const crmLeadIdDetail = (globals) => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const { financialDetails } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
+  currentFormContext.phoneWithISD = currentFormContext.isdCode + currentFormContext.mobileNumber;
+  // if (currentFormContext.isdCode !== '91') {
+  //   currentFormContext.mobileWithISD = '';
+  // }
 
   const jsonObj = {
     requestString: {
@@ -1704,7 +1709,7 @@ const crmLeadIdDetail = (globals) => {
       multipleTaxResidencyID: '-1',
       employmentType: '',
       employmentTypeOthers: '',
-      phone: currentFormContext.mobileNumber,
+      phone: currentFormContext.phoneWithISD,
       productCategory: currentFormContext.productCategory,
       productName: currentFormContext.productAccountName,
       ratingKey: '3',
