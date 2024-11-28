@@ -10,7 +10,6 @@ import {
   displayLoader,
 } from '../../common/makeRestAPI.js';
 import * as NRE_CONSTANT from './constant.js';
-
 import * as CONSTANT from '../../common/constants.js';
 
 const { ENDPOINTS, CURRENT_FORM_CONTEXT: currentFormContext } = CONSTANT;
@@ -105,7 +104,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
       },
     },
   };
-    // sendSubmitClickEvent(mobileNumber, linkName, sanitizedFormData);
+  // sendSubmitClickEvent(mobileNumber, linkName, sanitizedFormData);
   const url = urlPath(ENDPOINTS.journeyDropOffUpdate);
   const method = 'POST';
   return fetchJsonResponse(url, journeyJSONObj, method);

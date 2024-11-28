@@ -38,6 +38,7 @@ import {
   accountOpeningNreNro1,
   feedbackButton,
   selectVarient,
+  setAMBValue,
 
 } from './nre-nroFunctions.js';
 
@@ -96,4 +97,5 @@ export {
   accountOpeningNreNro1,
   feedbackButton,
   selectVarient,
+  setAMBValue,
 };
