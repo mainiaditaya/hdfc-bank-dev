@@ -58,7 +58,7 @@ let dispSec = OTP_TIMER;
 
 const { CHANNEL, JOURNEY_NAME, VISIT_MODE } = NRE_CONSTANT;
 // Initialize all NRE/NRO Journey Context Variables.
-currentFormContext.journeyName = 'ACCOUNTOPENING_NRO_NRE_JOURNEY';
+currentFormContext.journeyName = 'ACCOUNTOPENING_NRE_NRO_JOURNEY';
 currentFormContext.journeyType = 'NTB';
 currentFormContext.errorCode = '';
 currentFormContext.errorMessage = '';
@@ -394,7 +394,8 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
 };
 
 const getCountryCodes = (dropdown) => {
-  const finalURL = '/content/hdfc_commonforms/api/mdm.ETB.NRI_ISD_MASTER.COUNTRYNAME-.json';
+  const finalURL = `/content/hdfc_commonforms/api/mdm.ETB.NRI_ISD_MASTER.COUNTRYNAME.json?pageSize=300`;
+  debugger;
   fetchJsonResponse(urlPath(finalURL), null, 'GET', true).then((response) => {
     dropdown?.addEventListener('change', () => {
       if (prevSelectedIndex !== -1) {
