@@ -6283,7 +6283,7 @@
         cookieJar = _ref.cookieJar,
         isPageSsl = _ref.isPageSsl;
       var extraCookieOptions = isPageSsl ? {
-        sameSite: "none",
+        sameSite: "lax",
         secure: true
       } : {};
       var processCookies = function processCookies(destinations) {
