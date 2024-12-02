@@ -14,6 +14,7 @@ import { DOM_ELEMENT } from './constant.js';
  * @returns {void}
  */
 const validateOtpInput = () => {
+  if (typeof document === 'undefined') return;
   const otpInputField = document.querySelector('.field-otpnumber input');
   otpInputField.placeholder = '••••••';
   otpInputField.addEventListener('input', () => {
@@ -24,7 +25,9 @@ const validateOtpInput = () => {
 };
 
 const addGaps = (elSelector) => {
+  if (typeof document === 'undefined') return;
   const panInputField = document.querySelector(elSelector);
+  if (!panInputField) return;
   panInputField.addEventListener('input', () => {
     const vaildInput = validatePanInput(panInputField.value.replace(/\s+/g, ''));
     if (!vaildInput) {
@@ -38,6 +41,7 @@ const addGaps = (elSelector) => {
 };
 
 const addMobileValidation = () => {
+  if (typeof document === 'undefined') return;
   const validFirstDigits = ['6', '7', '8', '9'];
   const inputField = document.querySelector('.field-registeredmobilenumber input');
   inputField.addEventListener('input', () => validatePhoneNumber(inputField, validFirstDigits));
