@@ -127,18 +127,20 @@ const pageRedirected = () => {
 };
 
 (() => {
-  const searchParams = new URLSearchParams(window.location.search);
+  if (typeof window !== 'undefined') {
+    const searchParams = new URLSearchParams(window.location.search);
 
-  setTimeout(() => {
-    const visitType = searchParams.get('visitType');
-    const authMode = searchParams.get('authmode');
+    setTimeout(() => {
+      const visitType = searchParams.get('visitType');
+      const authMode = searchParams.get('authmode');
 
-    delayedUtilState.visitType = visitType;
-    delayedUtilState.authMode = authMode;
-    delayedUtilState.journeyId = searchParams.get('journeyId');
-    delayedUtilState.errorCode = searchParams.get('errorCode');
-    delayedUtilState.aadharRedirect = visitType === 'EKYC_AUTH' || visitType === 'EKYC_AUTH_FAILED';
-    delayedUtilState.idComRedirect = authMode === 'DebitCard' || authMode === 'CreditCard';
-    pageRedirected();
-  }, 0);
+      delayedUtilState.visitType = visitType;
+      delayedUtilState.authMode = authMode;
+      delayedUtilState.journeyId = searchParams.get('journeyId');
+      delayedUtilState.errorCode = searchParams.get('errorCode');
+      delayedUtilState.aadharRedirect = visitType === 'EKYC_AUTH' || visitType === 'EKYC_AUTH_FAILED';
+      delayedUtilState.idComRedirect = authMode === 'DebitCard' || authMode === 'CreditCard';
+      pageRedirected();
+    }, 0);
+  }
 })();

@@ -2761,7 +2761,7 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               margin: 0;
               padding: 0;
               height: auto;
-              min-height: 1.5em;
+              min-height: 50px;
               max-height: none;
               overflow-y: hidden;
               resize: none;
@@ -2776,6 +2776,16 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
               &:focus {
                 box-shadow: none;
               }
+            }
+
+            p {
+              font-size: var(--body-fd-md-font-size);
+              color: var(--color-input-text-primary);
+              line-height: var(--font-linehight-regular);
+              font-weight: var(--font-weight-regular);
+              text-align: left;
+              padding-left: 35px;
+              display: block;
             }
 
             &::before {
@@ -2977,20 +2987,20 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     .field-confirmcardtnc3 {
       .field-description {
         position: absolute;
-        top: 40px;
-        left: 35px;
+        top: 15%;
+        left: 3.2%;
       }
     }
 
     .field-confirmcardtnc2 {
       .field-description {
-        top: 100px;
+        top: 38%;
       }
     }
 
     .field-confirmcardtnc3 {
       .field-description {
-        top: 140px;
+        top: 53%;
         left: 28%;
       }
     }
@@ -4137,20 +4147,22 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       .field-selectcardtnc {
         .field-confirmcardtnc1 {
           .field-description {
-            top: 65px !important;
+            top: 22%;
+            left: 5%;
           }
         }
 
         .field-confirmcardtnc2 {
           .field-description {
-            top: 110px !important;
+            top: 43%;
+            left: 5%;
           }
         }
 
         .field-confirmcardtnc3 {
           .field-description {
-            top: 130px !important;
-            left: 47% !important;
+            top: 57%;
+            left: 46%;
           }
         }
       }
@@ -4844,30 +4856,42 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .field-selectcardtnc {
-        width: 55%;
+        width: 100%;
+        margin-top: 20px;
 
         .field-confirmcardtnc1 {
           .field-description {
-            top: 105px !important;
+            top: 24%;
+            left: 10%;
           }
         }
 
         .field-confirmcardtnc2 {
           .field-description {
-            top: 170px !important;
+            top: 47%;
+            left: 10%;
           }
         }
 
         .field-confirmcardtnc3 {
           .field-description {
-            top: 213px !important;
-            left: 35px !important;
+            top: 62%;
+            left: 10%;
           }
         }
       }
 
       .field-selectidentifier {
         width: 55%;
+      }
+
+      .field-eligiblecreditlimitamount {
+        margin: 10px 0;
+        width: 100%;
+
+        input[type='text'] {
+          width: 180px;
+        }
       }
     }
   }
@@ -4920,6 +4944,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
     }
 
     .field-feessinglecard {
+      margin-top: 0 !important;
+    }
+
+    .field-singlecardtitle {
       margin-top: 0 !important;
     }
   }

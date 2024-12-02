@@ -24,13 +24,16 @@ const validateAndDisableFDSelection = (resumeJourneyResponse, globals) => {
   });
   const { fdNumberSelection } = globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo;
   fdNumberSelection.forEach((selectedFDItem) => {
+    let isCurrentFdFoundInResumeJourney = false;
     resumeJourneySelectedFDNumbers.forEach((item, index) => {
       if (selectedFDItem.fdNumber.$value === item && selectedResumeJourneyFdCheckBox[index] === 'on') {
         globals.functions.setProperty(selectedFDItem.fdAccSelect, { value: 'on' });
         globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.selectedFDPanel.selectAllFDButton, { enabled: false });
         globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.selectFD.fdSelectionInfo.fdNumberSelection, { readOnly: true });
+        isCurrentFdFoundInResumeJourney = true;
       }
     });
+    if (!isCurrentFdFoundInResumeJourney) { globals.functions.setProperty(selectedFDItem.fdAccSelect, { value: 'off' }); }
   });
 };
 
