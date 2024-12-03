@@ -351,7 +351,8 @@ const validateLogin = (globals) => {
   }
 };
 
-const getOtpNRE = (mobileNumber, pan, dob, globals) => {
+const getOtpNRE = async (mobileNumber, pan, dob, globals) => {
+  // const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
   const [year, month, day] = dob.$value ? dob.$value.split('-') : ['', '', ''];
@@ -374,7 +375,7 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
     pan.$value = '';
     datOfBirth = year + month + day;
   }
-  // currentFormContext.isdCode = '91'; // TODO : Comment
+
   const jsonObj = {
     requestString: {
       mobileNumber: currentFormContext.isdCode + mobileNumber.$value,
@@ -396,7 +397,6 @@ const getOtpNRE = (mobileNumber, pan, dob, globals) => {
 
 const getCountryCodes = (dropdown) => {
   const finalURL = `/content/hdfc_commonforms/api/mdm.ETB.NRI_ISD_MASTER.COUNTRYNAME.json?pageSize=300`;
-  debugger;
   fetchJsonResponse(urlPath(finalURL), null, 'GET', true).then((response) => {
     dropdown?.addEventListener('change', () => {
       if (prevSelectedIndex !== -1) {
@@ -895,6 +895,8 @@ async function idComRedirection(globals) {
     await globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.idcom_token, { value: resp.authCode });
     await invokeJourneyDropOffUpdate('IDCOM_REDIRECTION_INITIATED', mobileNumber, leadProfileId, journeyID, globals);
     window.location.href = resp.redirectUrl;
+  } else {
+    errorHandling('', 'IDCOM_REDIRECTION_FAILURE', globals);
   }
 }
 
@@ -929,7 +931,7 @@ function prefillThankYouPage(accountres, globals) {
   globals.functions.setProperty(thankyouLeftPanel.successfullyText, { value: `<p>Yay! ${journeyAccountType} account opened successfully.</p>` });
 
   const setAccountSummaryProperties = (summary) => {
-    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: currentFormContext.selectedAccountName });
+    globals.functions.setProperty(thankyouLeftPanel.accountSummary.accounttype, { value: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedAccountName.$value });
     globals.functions.setProperty(thankyouLeftPanel.accountSummary.homeBranch, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchName });
     globals.functions.setProperty(thankyouLeftPanel.accountSummary.branchCode, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode });
     globals.functions.setProperty(thankyouLeftPanel.accountSummary.ifsc, { value: currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].ifscCode });
@@ -962,328 +964,11 @@ function prefillThankYouPage(accountres, globals) {
  * Call Account Opening Function
  * @returns {PROMISE}
  */
-async function accountOpeningNreNro(idComToken) {
-  const journeyParamStateInfo = finalResult.journeyParamStateInfo;
-  const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
-  const jsonObj = {
-    requestString: {
-      journeyID: journeyParamStateInfo.currentFormContext.journeyID,
-      journeyName: currentFormContext.journeyName,
-      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
-      misCodeDetails: '',
-      identifierValue: parseDate(response.datBirthCust),
-      flgChqBookIssue: 'N',
-      DoB: parseDate(response.datBirthCust),
-      IDCOM_Token: idComToken,
-      Id_token_jwt: journeyParamStateInfo.AccountOpeningNRENRO.fatcaJwtToken,
-      dateofBirth: parseDate(response.datBirthCust),
-      custBirthDate: parseDate(response.datBirthCust),
-      identifierName: '',
-      preferredChannel: '',
-      territoryName: '',
-      address: `${response?.txtCustadrAdd1} ${response?.txtCustadrAdd2} ${response?.txtCustadrAdd3}`,
-      companyName: '',
-      nomineeAge: '',
-      typeOfFirm: '',
-      typCompany: '',
-      typeOfFirm_label: '',
-      accountNumber: response.customerAccountDetailsDTO[accIndex].accountNumber,
-      customerID: response.customerId.toString(),
-      maskedCustID: response.customerId.toString().slice((response.customerId.toString().length - 4), response.customerId.toString().length),
-      maskedAccountNumber: 'X'.repeat((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4))
-        + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
-      agriculturalIncome: '',
-      sex: response.txtCustSex,
-      email: response.refCustEmail,
-      accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
-      ProductCategory: journeyParamStateInfo.currentFormContext.productCategory,
-      name: response.customerFullName,
-      otherThanAgriIncome: '',
-      nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
-      birthCertificate: '',
-      PANNumber: response.refCustItNum,
-      nomineeAddress: '',
-      maidenName: response.namMotherMaiden,
-      countryOfNominee: '',
-      country: response.namHoldadrCntry,
-      passpostExpiryDate: '',
-      codeLC: '',
-      codeLG: '',
-      applicationDate: new Date().toISOString().slice(0, 19),
-      DLExpiryDate: '',
-      selfEmployedProfessionalCategory: '',
-      selfEmployedProfessionalCategory_label: '',
-      nomineeCity: '',
-      stateOfBirth: '',
-      cityOfBirth: response.customerFATCADtlsDTO[0].namCityBirth,
-      taxCntry1: response.customerFATCADtlsDTO[0].codTaxCntry1,
-      permanentAddressState: response.namPermadrState,
-      permanentAddressCity: response.namPermadrCity,
-      permanentAddressLM: response.txtPermadrAdd3,
-      permanentAddressLine2: response.txtPermadrAdd2,
-      permanentAddressLine1: response.txtPermadrAdd1 || '',
-      presentAddressLM: response.txtCustadrAdd3,
-      presentAddressLine2: response.txtCustadrAdd2,
-      presentAddressLine1: response.txtCustadrAdd1,
-      isIndianTaxResident: '',
-      isTaxAddressSame: '',
-      isMailIDAvailable: '',
-      isPresentAddressSame: '',
-      isCommunicationAddressSame: '',
-      isPermanentAddressSame: '',
-      isSameAddress: '',
-      fatherNAme: response.customerFATCADtlsDTO[0].namCustFather,
-      employeeCategory: '',
-      employeeCategory_label: '',
-      otherEmployeeCategory: '',
-      otherEmployeeCategory_label: '',
-      occupationType: '',
-      permanentAddressPin: response.txtPermadrZip,
-      presentAddressPin: response.txtPermadrZip,
-      maritalStatus: response.maritalStatusDescription,
-      marital_Status: '',
-      spouseName: response.customerFATCADtlsDTO[0].namCustSpouse,
-      declareNominee: '',
-      otherTypeOfFirm: '',
-      otherTypeOfFirm_label: '',
-      otherSourceOfFunds: '',
-      nomineeAddressLine2: '',
-      nomineeLandmark: '',
-      nomAdrCity: '',
-      nomAdrCntry: '',
-      nomAdrState: '',
-      nomAdrZip: '',
-      nomRelation: '',
-      nomineeDoB: response.customerAccountDetailsDTO[accIndex].nomineeDOB ? parseDate(response.customerAccountDetailsDTO[accIndex].nomineeDOB) : '',
-      isForm60Attached: '',
-      PANAckNo: '',
-      doaInput: '',
-      grossAnnualIncome: response.customerAMLDetailsDTO[0].grossIncome || '',
-      grossAnnualIncome_range: '',
-      monthlyIncome: '',
-      selfServiceAnnualIncome: '',
-      sourceOfFunds: response.customerAMLDetailsDTO[0].incomeSource || '',
-      sourceOfFunds_label: response.customerAMLDetailsDTO[0].incomeSource || '',
-      displayProductName: journeyParamStateInfo.currentFormContext.productAccountName,
-      state: response.namPermadrState,
-      city: response.namPermadrCity,
-      residenceType: response.customerAMLDetailsDTO[0].typResidence || '',
-      residenceType_label: '',
-      doYouHavePAN: response.refCustItNum ? 'Y' : 'N',
-      voterIDNo: '',
-      drivingLicenseNo: '',
-      isSeniorCitizen: '',
-      countryOfTaxResidency: response.customerFATCADtlsDTO[0].codTaxCntry1,
-      AadharFSDocument: '',
-      PANFSDocument: '',
-      passportFSDocument: '',
-      voterIDFSDocument: '',
-      DLFSDocument: '',
-      otherDocumentFS: '',
-      proofOfAddress: '',
-      passportNumber: '',
-      existingCustomer: 'Y',
-      motherMaidenName: response.namMotherMaiden,
-      declarationforRequiredBalance: '',
-      incorporationDate: '',
-      nationality: response.namHoldadrCntry,
-      custNationality: response.txtCustNATNLTY,
-      addressTypeOtherThanResidential: '',
-      AadharBSDocument: '',
-      passportBSDocument: '',
-      votersIDBSDocument: '',
-      DLBSDocument: '',
-      otherProfileImage: '',
-      otherBSDocument: '',
-      AadharConsentTaken: '',
-      aadharConsentDataTime: new Date().toISOString().slice(0, 19),
-      utilityBillsFSDocument: '',
-      utilityBillsBSDocument: '',
-      municipalBSDocument: '',
-      familyPPSFSDocument: '',
-      familyPPSBSDocument: '',
-      allotmentLetterFSDocument: '',
-      allotmentLEtterBSDocument: '',
-      firstName: response.customerFirstName || '',
-      gender: response.txtCustSex,
-      lastName: response.customerLastName || '',
-      layout: '',
-      customerFullName: response.customerFullName,
-      leadParentLame: '',
-      leadRating: '',
-      leadSource: 'NRI Insta ETB STP', // TODO: Check in Backend if it is being picked from Backend
-      leadSourceKey: '33609',
-      middleName: response.customerMiddleName || '',
-      mobileNo: journeyParamStateInfo.currentFormContext.mobileNumber,
-      multipleTaxResidencyID: '',
-      employmentType: '',
-      employmentTypeOthers: '',
-      phone: journeyParamStateInfo.currentFormContext.mobileNumber,
-      productCategory: journeyParamStateInfo.currentFormContext.productCategory,
-      productName: journeyParamStateInfo.currentFormContext.productAccountName,
-      ratingKey: '',
-      residentialStatus: '',
-      residentialStatus_label: '',
-      salutationKey: '',
-      salutationName: response.txtCustPrefix,
-      statusCodeInOn: new Date().toISOString().slice(0, 19),
-      territoryCode: '',
-      territoryKey: '',
-      zipCode: response.txtPermadrZip,
-      videoKYCConsent: '',
-      transcriptLatLong: '',
-      videoKYCFinalStatus: '',
-      isAadharBasedAccountOpening: '',
-      AMBStamping: '',
-      companyCode: '',
-      occupationTypeOther: '',
-      natureOfBusinessOther: '',
-      natureOfBus: '',
-      natureOfBusinessOther_label: '',
-      genderCode: '',
-      genderID: '',
-      lastModifiedBy: '',
-      lastModifiedOn: '',
-      occupationTypeCode: '',
-      occupationTypeID: '',
-      ownerCode: '',
-      productCategoryID: journeyParamStateInfo.currentFormContext.productCategoryID,
-      productCode: journeyParamStateInfo.currentFormContext.productAccountType,
-      productKey: journeyParamStateInfo.currentFormContext.productKey,
-      ItemKey: journeyParamStateInfo.form.confirmDetails.crm_leadId,
-      leadCustomerID: '',
-      residentialStatusID: '',
-      websiteUrl: '',
-      expirayDateVideo: '',
-      custPrefix: response.txtCustPrefix,
-      cc_RequestType: '',
-      cc_Fraudnet: '',
-      cc_Hunter: '',
-      cc_Final_Status: '',
-      cc_HU_Sec_Status: '',
-      cc_Error_Msg: '',
-      browserName: '',
-      browserVersion: '',
-      osVersion: '',
-      osName: '',
-      browserFingerprint: '',
-      cookieSource: '',
-      cookieTime: '',
-      cookieVintage: '',
-      cookieID: '',
-      cookieName: '',
-      customerEligibilityCheckFlag: 'true',
-      customerEligibilityStatus: 'success',
-      promoCode: null,
-      accountTitle: response.customerFullName,
-      codCCBrn: '',
-      codProd: '',
-      codOccupation: '',
-      codProfession: '',
-      selfEmpFrom: '',
-      incomeSource: '',
-      typEmployer: '',
-      typResidence: '',
-      typResidence_label: '',
-      addr1: response.txtPermadrAdd1 || '',
-      custFirstName: response.customerFirstName || '',
-      custFullName: response.customerFullName,
-      custLastName: response.customerLastName || '',
-      custSex: response.txtCustSex,
-      custType: response.flgCustTyp,
-      permAddr1: response.txtPermadrAdd1 || '',
-      permAddr2: response.txtPermadrAdd2,
-      permAddr3: response.txtPermadrAdd3,
-      permAddrCity: response.namPermadrCity,
-      permAddrState: response.namPermadrState,
-      zip: response.txtPermadrZip,
-      addrProof: '',
-      addressType: '',
-      branchCode: response.customerAccountDetailsDTO[accIndex].branchCode.toString(),
-      branchId: '',
-      custFatherName: response.customerFATCADtlsDTO[0].namCustFather,
-      docNumber: response.customerFATCADtlsDTO[0].idDocNum,
-      ADVRefrenceKey: '',
-      RRN: '',
-      validPAN: response.refCustItNum ? 'Y' : 'N',
-      oneAadhaarOneAcStatus: '',
-      docType: '',
-      resStatus: '',
-      mandateFlag: '',
-      acctOperInstrs: response.customerAccountDetailsDTO[accIndex].accountOperatingInstructions,
-      amtShareFixed: '',
-      codRel: response.customerAccountDetailsDTO[accIndex].codRel.toString(),
-      AMBDateTime: new Date().toISOString().slice(0, 19),
-      guardianName: null,
-      namGuardian: null,
-      guardianDob: '',
-      guardianAge: '',
-      nomineeAddressLine1: '',
-      selfEmployedSinceMonths: '',
-      selfEmployedSinceYears: '',
-      guardAdrAdd1: '',
-      guardAdrAdd2: '',
-      guardAdrAdd3: '',
-      guardAdrCity: '',
-      guardAdrState: '',
-      guardAdrZip: '',
-      addressIndicator: '',
-      partnerId: '',
-      referenceNo: '',
-      utmSource: '',
-      utmMedium: '',
-      utmCampaign: '',
-      utmMcId: '',
-      pep: '',
-      isAccountCreated: 'No',
-      annualTurnOver: '',
-    },
-  };
-
-  // Calling the fetch IDComToken API
-  const apiEndPoint = urlPath(NRENROENDPOINTS.accountOpening);
-  const fetchResult = fetchJsonResponse(apiEndPoint, jsonObj, 'POST', false);
-  // res =  {
-  //   accountOpening: {
-  //     errorCode: '0',
-  //     accountNumber: '50919394857273',
-  //   },
-  // };
-
-  // prefillThankYouPage(res, globals);
-
-  prefillThankYouPage(res, globals);
-
-  // Promise.resolve(fetchResult).then((res) => {
-  //   prefillThankYouPage(res, globals);
-  // }).catch((err) => {
-  //   console.log(err);
-  //   errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
-  // });
-
-  /* if (typeof window !== 'undefined') {
-    hideLoaderGif();
-  }
-  return {
-    accountOpening: {
-      errorCode: '0',
-      accountNumber: '50919394857273',
-    },
-  }; */
-}
-
-/**
- * Call Account Opening Function
- * @returns {PROMISE}
- */
 async function accountOpeningNreNro1(idComToken, globals) {
   const journeyParamStateInfo = finalResult.journeyParamStateInfo;
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const jsonObj = {
     requestString: {
-      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
-      journeyID: journeyParamStateInfo.currentFormContext.journeyID,
-      journeyName: currentFormContext.journeyName,
       Id_token_jwt: journeyParamStateInfo.AccountOpeningNRENRO.fatcaJwtToken,
       IDCOM_Token: idComToken,
       ItemKey: journeyParamStateInfo.form.confirmDetails.crm_leadId,
@@ -1296,7 +981,7 @@ async function accountOpeningNreNro1(idComToken, globals) {
       codeLC: 'INSTASTP',
       codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || '',
       flgChqBookIssue: 'N',
-      productCode: journeyParamStateInfo.currentFormContext.productAccountType,
+      productCode: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductAccountType.$value,
       StatusCode: 'Branch Approved',
       StatusCodeDisplayText: 'Branch Approved',
       StatusCodeName: 'Branch Approved',
@@ -1304,9 +989,12 @@ async function accountOpeningNreNro1(idComToken, globals) {
       StatusCodeKey: '645',
       leadSource: 'NRI INSTA ETB STP',
       leadSourceKey: '33609',
-      productName: journeyParamStateInfo.currentFormContext.productAccountName,
-      productKey: journeyParamStateInfo.currentFormContext.productKey,
-      productCategoryID: journeyParamStateInfo.currentFormContext.productCategoryID,
+      productName: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedAccountName.$value,
+      productKey: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductKey.$value,
+      productCategoryID: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductCatogeryID.$value,
+      userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
+      journeyID: journeyParamStateInfo.currentFormContext.journeyID,
+      journeyName: currentFormContext.journeyName,
       mobileNo: journeyParamStateInfo.currentFormContext.mobileNumber,
     },
   };
@@ -1362,7 +1050,7 @@ async function validateJourneyParams(formData, globals) {
       if (currentFormContext.idComSuccess === 'TRUE') {
         if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
           currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
-          currentFormContext.selectedAccountName = finalResult.journeyParamStateInfo.currentFormContext.selectedAccountName;
+          currentFormContext.selectedAccountName = globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedAccountName.$value;
         }
         invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value, globals.form.runtime.leadProifileId.$value, currentFormContext.journeyId, globals);
         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'fetchIdComToken' });
@@ -1597,7 +1285,7 @@ const crmLeadIdDetail = (globals) => {
       sex: getGender(response.txtCustSex),
       email: response.refCustEmail,
       accountType: response.customerAccountDetailsDTO[accIndex].prodTypeDesc,
-      ProductCategory: currentFormContext.productCategory,
+      ProductCategory: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductCatogery.$value,
       name: `${response.txtCustPrefix} ${response.customerFullName}`,
       otherThanAgriIncome: '',
       nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
@@ -1665,7 +1353,7 @@ const crmLeadIdDetail = (globals) => {
       selfServiceAnnualIncome: '',
       sourceOfFunds: financialDetails.sourceOfFunds.$value.$value,
       sourceOfFunds_label: financialDetails.sourceOfFunds.$value.$value,
-      displayProductName: currentFormContext.productAccountName,
+      displayProductName: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductName.$value,
       state: response.namPermadrState,
       city: response.namPermadrCity,
       residenceType: financialDetails.residenceType.$value,
@@ -1716,8 +1404,8 @@ const crmLeadIdDetail = (globals) => {
       employmentType: '',
       employmentTypeOthers: '',
       phone: currentFormContext.phoneWithISD,
-      productCategory: currentFormContext.productCategory,
-      productName: currentFormContext.productAccountName,
+      productCategory: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductCatogery.$value,
+      productName: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductName.$value,
       ratingKey: '3',
       residentialStatus: '',
       residentialStatus_label: '',
@@ -1741,9 +1429,9 @@ const crmLeadIdDetail = (globals) => {
       occupationTypeCode: '',
       occupationTypeID: '',
       ownerCode: '',
-      productCategoryID: currentFormContext.productCategoryID,
-      productCode: currentFormContext.productAccountType,
-      productKey: currentFormContext.productKey,
+      productCategoryID: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductCatogeryID.$value,
+      productCode: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductAccountType.$value,
+      productKey: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductKey.$value,
       residentialStatusID: '-1',
       websiteUrl: '',
       expirayDateVideo: '',
@@ -1872,24 +1560,12 @@ function crmProductID(crmProductPanel, response, globals) {
   };
   if (productID === 201 && productvarient === 'NRO') {
     setFormValue(crmProductPanel.productName, 'NRO current account');
-    // setFormValue(crmProductPanel.productCategory, 'Current');
-    // setFormValue(crmProductPanel.productCategoryID, '484');
-    // setFormValue(crmProductPanel.productKey, '604');
   } else if (productID === 218 && productvarient === 'NRE') {
     setFormValue(crmProductPanel.productName, 'NRE Current account');
-    // setFormValue(crmProductPanel.productCategory, 'Current');
-    // setFormValue(crmProductPanel.productCategoryID, '484');
-    // setFormValue(crmProductPanel.productKey, '605');
   } else if (productvarient === 'NRO') {
     setFormValue(crmProductPanel.productName, 'NRO savings account');
-    // setFormValue(crmProductPanel.productKey, '602');
-    // setFormValue(crmProductPanel.productCategory, 'Savings');
-    // setFormValue(crmProductPanel.productCategoryID, '483');
   } else if (productvarient === 'NRE') {
     setFormValue(crmProductPanel.productName, 'NRE savings account');
-    // setFormValue(crmProductPanel.productCategory, 'Savings');
-    // setFormValue(crmProductPanel.productCategoryID, '483');
-    // setFormValue(crmProductPanel.productKey, '601');
   }
 }
 
@@ -1900,51 +1576,60 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
   const nreEliteSavingsAcco = nreAccountTypePanel.nreeliteSavingsAccountPanel.eliteSavingsAccount.$value;
   const nreRegularSavingsAcco = nreAccountTypePanel.NreregularSavingsAccountPanel.regularSavingsAccount.$value;
   const nreCurrentAcco = nreAccountTypePanel.nreCurrentAccountPanel.currentAccount.$value;
+  const {
+    userSelectedProductName,
+    userSelectedProductAccountType,
+    userSelectedProductCatogery,
+    userSelectedProductCatogeryID,
+    userSelectedProductKey,
+    userSelectedAccountName,
+  } = globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails;
+
   if (nroEliteSavingsAcco === 'on') {
-    currentFormContext.productAccountName = 'NRO savings account';
-    currentFormContext.productAccountType = '1345';
-    currentFormContext.productCategory = 'Savings';
-    currentFormContext.productCategoryID = '483';
-    currentFormContext.productKey = '602';
-    currentFormContext.selectedAccountName = 'NRO - Elite Savings Account';
+    globals.functions.setProperty(userSelectedProductName, { value: 'NRO savings account' });
+    globals.functions.setProperty(userSelectedProductAccountType, { value: '1345' });
+    globals.functions.setProperty(userSelectedProductCatogery, { value: 'Savings' });
+    globals.functions.setProperty(userSelectedProductCatogeryID, { value: '483' });
+    globals.functions.setProperty(userSelectedProductKey, { value: '602' });
+    globals.functions.setProperty(userSelectedAccountName, { value: 'NRO - Elite Savings Account' });
   } else if (nroRegularSavingsAcco === 'on') {
-    currentFormContext.productAccountName = 'NRO savings account';
-    currentFormContext.productAccountType = '101';
-    currentFormContext.productCategory = 'Savings';
-    currentFormContext.productCategoryID = '483';
-    currentFormContext.productKey = '602';
-    currentFormContext.selectedAccountName = 'NRO - Regular Savings Account';
+    globals.functions.setProperty(userSelectedProductName, { value: 'NRO savings account' });
+    globals.functions.setProperty(userSelectedProductAccountType, { value: '101' });
+    globals.functions.setProperty(userSelectedProductCatogery, { value: 'Savings' });
+    globals.functions.setProperty(userSelectedProductCatogeryID, { value: '483' });
+    globals.functions.setProperty(userSelectedProductKey, { value: '602' });
+    globals.functions.setProperty(userSelectedAccountName, { value: 'NRO - Regular Savings Account' });
   } else if (nroCurrentAcco === 'on') {
-    currentFormContext.productAccountName = 'NRO current account';
-    currentFormContext.productAccountType = '201';
-    currentFormContext.productCategory = 'Current';
-    currentFormContext.productCategoryID = '484';
-    currentFormContext.productKey = '605';
-    currentFormContext.selectedAccountName = 'NRO - Current Account';
+    globals.functions.setProperty(userSelectedProductName, { value: 'NRO current account' });
+    globals.functions.setProperty(userSelectedProductAccountType, { value: '201' });
+    globals.functions.setProperty(userSelectedProductCatogery, { value: 'Current' });
+    globals.functions.setProperty(userSelectedProductCatogeryID, { value: '484' });
+    globals.functions.setProperty(userSelectedProductKey, { value: '605' });
+    globals.functions.setProperty(userSelectedAccountName, { value: 'NRO - Current Account' });
   } else if (nreRegularSavingsAcco === 'on') {
-    currentFormContext.productAccountName = 'NRE savings account';
-    currentFormContext.productAccountType = '106';
-    currentFormContext.productCategory = 'Savings';
-    currentFormContext.productCategoryID = '483';
-    currentFormContext.productKey = '601';
-    currentFormContext.selectedAccountName = 'NRE - Regular Savings Account';
+    globals.functions.setProperty(userSelectedProductName, { value: 'NRE savings account' });
+    globals.functions.setProperty(userSelectedProductAccountType, { value: '106' });
+    globals.functions.setProperty(userSelectedProductCatogery, { value: 'Savings' });
+    globals.functions.setProperty(userSelectedProductCatogeryID, { value: '483' });
+    globals.functions.setProperty(userSelectedProductKey, { value: '601' });
+    globals.functions.setProperty(userSelectedAccountName, { value: 'NRE - Regular Savings Account' });
   } else if (nreEliteSavingsAcco === 'on') {
-    currentFormContext.productAccountName = 'NRE savings account';
-    currentFormContext.productAccountType = '1350';
-    currentFormContext.productCategory = 'Savings';
-    currentFormContext.productCategoryID = '483';
-    currentFormContext.productKey = '601';
-    currentFormContext.selectedAccountName = 'NRE - Elite Savings Account';
+    globals.functions.setProperty(userSelectedProductName, { value: 'NRE savings account' });
+    globals.functions.setProperty(userSelectedProductAccountType, { value: '1350' });
+    globals.functions.setProperty(userSelectedProductCatogery, { value: 'Savings' });
+    globals.functions.setProperty(userSelectedProductCatogeryID, { value: '483' });
+    globals.functions.setProperty(userSelectedProductKey, { value: '601' });
+    globals.functions.setProperty(userSelectedAccountName, { value: 'NRE - Elite Savings Account' });
   } else if (nreCurrentAcco === 'on') {
-    currentFormContext.productAccountName = 'NRE  current account';
-    currentFormContext.productAccountType = '218';
-    currentFormContext.productCategory = 'Current';
-    currentFormContext.productCategoryID = '484';
-    currentFormContext.productKey = '604';
-    currentFormContext.selectedAccountName = 'NRE - Current Account';
+    globals.functions.setProperty(userSelectedProductName, { value: 'NRE  current account' });
+    globals.functions.setProperty(userSelectedProductAccountType, { value: '218' });
+    globals.functions.setProperty(userSelectedProductCatogery, { value: 'Current' });
+    globals.functions.setProperty(userSelectedProductCatogeryID, { value: '484' });
+    globals.functions.setProperty(userSelectedProductKey, { value: '604' });
+    globals.functions.setProperty(userSelectedAccountName, { value: 'NRE - Current Account' });
   }
 
-  sendAnalytics('select account type click', { productAccountType: currentFormContext?.productAccountType ?? '' }, 'CUSTOMER_ACCOUNT_VARIANT_SELECTED', globals);
+  sendAnalytics('select account type click', { productAccountType: userSelectedProductAccountType.$value ?? '' }, 'CUSTOMER_ACCOUNT_VARIANT_SELECTED', globals);
 }
 
 function multiAccountVarient(selectAccount, globals) {
@@ -2047,7 +1732,6 @@ export {
   prefillAccountDetail,
   fetchIdComToken,
   prefillThankYouPage,
-  accountOpeningNreNro,
   validateJourneyParams,
   errorHandling,
   getCountryName,
