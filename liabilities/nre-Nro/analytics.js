@@ -13,6 +13,27 @@ import { FORM_NAME } from './constant.js';
 import { CURRENT_FORM_CONTEXT as currentFormContext } from '../../common/constants.js';
 
 /**
+ * Hashes a phone number using SHA-256 algorithm.
+ *
+ * @function hashInSha256
+ * @param {string}  - The phone number to be hashed.
+ * @returns {Promise<string>} A promise that resolves to the hashed phone number in hexadecimal format.
+ */
+const hashInSha256 = async (inputString) => {
+  const encoder = new TextEncoder();
+  const rawdata = encoder.encode(inputString);
+  const hash = await crypto.subtle.digest('SHA-256', rawdata);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+};
+
+const hashPhNo = async (phoneNumber) => {
+  const hashed = await hashInSha256(String(phoneNumber));
+  return hashed;
+};
+
+/**
  * set analytics generic props for page load
  * @name setAnalyticPageLoadProps
  * @param {string} linkName - linkName
@@ -67,10 +88,10 @@ function getValidationMethod(formContext) {
  */
 function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMessage, errorCode) {
   const digitalData = createDeepCopyFromBlueprint(ANALYTICS_PAGE_LOAD_OBJECT);
-  digitalData.page.pageInfo.pageName = pageName;
-  digitalData.page.pageInfo.errorAPI = errorAPI;
-  digitalData.page.pageInfo.errorCode = errorCode;
-  digitalData.page.pageInfo.errorMessage = errorMessage;
+  digitalData.page.pageInfo.pageName = pageName ?? '';
+  digitalData.page.pageInfo.errorAPI = errorAPI ?? '';
+  digitalData.page.pageInfo.errorCode = errorCode ?? '';
+  digitalData.page.pageInfo.errorMessage = errorMessage ?? '';
   // digitalData.page.event.status = eventStatus;
   setAnalyticPageLoadProps(journeyState, formData, digitalData);
   switch (pageName) {
@@ -91,12 +112,20 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
       // digitalData.formDetails.natureofbusiness = dataReq.natureofbusiness;
       // digitalData.formDetails.typeofcompany = dataReq.typeofcompany;
       // digitalData.formDetails.typeofprofessional = dataReq.typeofprofessional;
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('pageload');
       break;
     }
     case 'select account type': {
       digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
       digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? '';
       digitalData.formDetails.accountType = currentFormContext.productAccountName ?? '';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('pageload');
 
       break;
     }
@@ -117,17 +146,25 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
       digitalData.formDetails.natureofbusiness = formData?.form?.confirmDetails?.financialDetails?.natureOfBusiness ?? '';
       digitalData.formDetails.typeofcompany = formData?.form?.confirmDetails?.financialDetails?.typeOfCompoanyFirm ?? '';
       digitalData.formDetails.typeofprofessional = formData?.form?.confirmDetails?.financialDetails?.selfEmployedProfessional ?? '';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('pageload');
+      break;
     }
     case 'Step 5 - Confirmation': {
-      digitalData.formDetails.accountType;
+      digitalData.formDetails.accountType = currentFormContext.accountType ?? '';
+      digitalData.formDetails.branchCode = currentFormContext.branchCode ?? '';
+      digitalData.formDetails.bankBranch = currentFormContext.branchName ?? '';
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('pageload');
+      break;
     }
     default:
-      // do nothing
+    // do nothing
   }
-  if (window) {
-    window.digitalData = digitalData || {};
-  }
-  _satellite.track('pageload');
 }
 
 // /**
@@ -147,6 +184,7 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
         window.digitalData = digitalData || {};
         digitalData.link.linkName = 'otp click';
         digitalData.event.status = 1;
+        // digitalData.event.phone = hashPhNo(string(formData?.login?.registeredMobileNumber));
       }
       _satellite.track('submit');
       currentFormContext.action = 'otp click';
@@ -219,6 +257,12 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
       }, 1000);
       break;
     }
+    case 'thankyou page click': {
+      setTimeout(() => {
+        sendPageloadEvent(journeyState, formData, PAGE_NAME.nrenro['thank you screen']);
+      }, 1000);
+      break;
+    }
     case 'confirm details click': {
       if (window) {
         window.digitalData = digitalData || {};
@@ -233,36 +277,78 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
       }, 1000);
       break;
     }
-    case 'personalDetails click': {
+    case 'accordion click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+        digitalData.page.pageInfo.pageName = 'Step 4 - Confirm Details';
+        digitalData.event.status = 1;
+      }
+      _satellite.track('submit');
+      break;
+    }
+    case 'privacy click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      break;
+    }
+    case 'apply for click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      break;
+    }
+    case 'hdfc website click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      break;
+    }
+    case 'requested product click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      break;
+    }
+    case 'other products click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+      }
+      _satellite.track('submit');
+      break;
+    }
+    case 'Nominee Details click': {
+      if (window) {
+        window.digitalData = digitalData || {};
+        digitalData.page.pageInfo.pageName = 'Step 4 - Confirm Details';
+        digitalData.event.status = 1;
+      }
+      _satellite.track('event');
+      break;
+    }
+    case 'Fatca Details click': {
       if (window) {
         window.digitalData = digitalData || {};
       }
       _satellite.track('event');
       break;
     }
-    case 'fatcaDetails click': {
+    case 'on submit click': {
       if (window) {
         window.digitalData = digitalData || {};
+        digitalData.event.status = (formData?.form?.thankyou?.facingIssue === '0') ? 'No' : 'Yes';
+        digitalData.event.rating = currentFormContext.ratedVal;
       }
-      _satellite.track('event');
-      break;
-    }
-    case 'financialDetails click': {
-      if (window) {
-        window.digitalData = digitalData || {};
-      }
-      _satellite.track('event');
-      break;
-    }
-    case 'nomineePanel click': {
-      if (window) {
-        window.digitalData = digitalData || {};
-      }
-      _satellite.track('event');
+      digitalData.page.pageInfo.pageName = 'Step 5 - Confirmation';
+      _satellite.track('submit');
       break;
     }
     default:
-      // do nothing
+    // do nothing
   }
 }
 
@@ -321,9 +407,9 @@ function populateResponse(payload, eventType, digitalData, formData) {
       break;
     }
     case 'confirm details click': {
-      digitalData.assisted.flag = '';
-      digitalData.assisted.lg = '';
-      digitalData.assisted.lc = '';
+      digitalData.assisted.flag = (currentFormContext.flag === 'off') ? 1 : 0;
+      digitalData.assisted.lg = currentFormContext.lgCode ?? '';
+      digitalData.assisted.lc = currentFormContext.lcCode ?? '';
       digitalData.formDetails.TAndCConsent = formData?.needBankHelp?.confirmDetailsConsent1 ?? '';
       digitalData.formDetails.detailsConsent = formData?.needBankHelp?.confirmDetailsConsent2 ?? '';
       digitalData.event.status = 1;
@@ -381,6 +467,9 @@ function sendErrorAnalytics(errorCode, errorMsg, journeyState, globals) {
 */
 function sendAnalytics(eventType, payload, journeyState, globals) {
   const formData = santizedFormDataWithContext(globals);
+  currentFormContext.lgCode = globals?.form?.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value;
+  currentFormContext.lcCode = globals?.form?.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lcCode.$value;
+  currentFormContext.flag = globals?.form?.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.bankUseToggle.$value;
   if (eventType.includes('page load')) {
     const pageName = eventType.split('-')[1];
     const errorAPI = formData?.AccountOpeningNRENRO?.apiDetails?.APIName ?? '';
@@ -413,10 +502,86 @@ function asyncAnalytics(eventType, payload, journeyState, globals) {
   });
 }
 
+function enableAccordionClick(globals) {
+  const accordions = document.querySelectorAll('.panel-wrapper .nre-style-accordian');
+  accordions.forEach((accordion) => {
+    if (!accordion.dataset.listenerAdded) {
+      accordion.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const legendElement = accordion.querySelector('.field-label.nrenro-accordian');
+        if (legendElement) {
+          const accordionName = legendElement.textContent.trim();
+          setTimeout(() => {
+            if (legendElement.classList.contains('accordion-collapse')) {
+              sendAnalytics('accordion click', {}, 'Click', globals);
+            }
+          }, 1000);
+        }
+      });
+      accordion.dataset.listenerAdded = 'true';
+    }
+  });
+}
+
+function attachPrivacyPolicyAnalytics(globals) {
+  const privacyPolicyLink = document.querySelector('.checkbox-wrapper a');
+  if (privacyPolicyLink && privacyPolicyLink.textContent.includes("Privacy Policy")) {
+    privacyPolicyLink.addEventListener('click', function (event) {
+      event.preventDefault();
+      sendAnalytics('privacy click', {}, 'Click', globals);
+      setTimeout(function () {
+        window.open(privacyPolicyLink.href, '_blank');
+      }, 100);
+    });
+  }
+  const applyForLinks = document.querySelectorAll('a');
+  applyForLinks.forEach(function (link) {
+    if (link.textContent.trim() === "Apply for a") {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        sendAnalytics('apply for click', {}, 'Click', globals);
+        setTimeout(function () {
+          window.open(link.href, '_blank');
+        }, 100);
+      });
+    }
+  });
+  const hdfcBankWebsiteLinks = document.querySelectorAll('a');
+  hdfcBankWebsiteLinks.forEach(function (link) {
+    if (link.textContent.trim() === "HDFC Bank Website") {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        sendAnalytics('hdfc website click', {}, 'Click', globals);
+        setTimeout(function () {
+          window.open(link.href, '_blank');
+        }, 100);
+      });
+    }
+  });
+  const requestedProduct = document.querySelector('.field-checkboxconsent1label .link');
+  if (requestedProduct) {
+    requestedProduct.addEventListener('click', function (event) {
+      event.preventDefault();
+      sendAnalytics('requested product click', {}, 'Click', globals);
+    });
+  }
+  const otherProducts = document.querySelector('.field-checkboxconsent2label .link');
+  if (otherProducts) {
+    otherProducts.addEventListener('click', function (event) {
+      event.preventDefault();
+      sendAnalytics('other products click', {}, 'Click', globals);
+      setTimeout(function () {
+      }, 100);
+    });
+  }
+}
+
 export {
   sendPageloadEvent,
   sendAnalyticsEvent,
   sendErrorAnalytics,
   sendAnalytics,
   asyncAnalytics,
+  enableAccordionClick,
+  attachPrivacyPolicyAnalytics,
 };

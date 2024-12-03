@@ -35,6 +35,11 @@ const data = {
     StepName: 'Confirm Details',
     linkPosition: 'Form',
   },
+  'thankyou page click': {
+    linkType: 'button',
+    StepName: 'Confirm Details',
+    linkPosition: 'Form',
+  },
   'idcom redirection check': {
     linkType: 'button',
     StepName: 'IDCOM Redirection',
@@ -85,6 +90,56 @@ const data = {
   'submit review': {
     linkType: 'button',
     linkName: 'Submit Feedback',
+    linkPosition: 'Form',
+  },
+  'accordion click': {
+    linkType: 'accordion',
+    StepName: 'Confirm Details',
+    linkPosition: 'Form',
+  },
+  'Nominee Details click': {
+    linkType: 'accordion',
+    StepName: 'Confirm Details',
+    linkPosition: 'Form',
+  },
+  'Fatca Details click': {
+    linkType: 'accordion',
+    StepName: 'Confirm Details',
+    linkPosition: 'Form',
+  },
+  'Personal Details click': {
+    linkType: 'accordion',
+    StepName: 'Confirm Details',
+    linkPosition: 'Form',
+  },
+  'on submit click': {
+    linkType: 'button',
+    StepName: 'Step 5 - Confirmation',
+    linkPosition: 'Form',
+  },
+  'privacy click': {
+    linkType: 'cta',
+    linkName: 'privacy click',
+    linkPosition: 'Form',
+  },
+  'requested product click': {
+    linkType: 'cta',
+    linkName: 'requested product click',
+    linkPosition: 'Form',
+  },
+  'other products click': {
+    linkType: 'cta',
+    linkName: 'other products click',
+    linkPosition: 'Form',
+  },
+  'apply for click': {
+    linkType: 'cta',
+    linkName: 'apply for click',
+    linkPosition: 'Form',
+  },
+  'hdfc website click': {
+    linkType: 'cta',
+    linkName: 'hdfc website click',
     linkPosition: 'Form',
   },
 };
@@ -184,6 +239,7 @@ const ANALYTICS_PAGE_LOAD_OBJECT = {
     typeofprofessional: '',
     bankBranch: '',
     existingAccountType: '',
+    accountType: '',
   },
 };
 
@@ -200,14 +256,15 @@ const PAGE_NAME = {
     'aadhaar otp': 'Select KYC - Aadhaar OTP verification',
     'start kyc': 'Confirmation',
     'submit review': 'Confirmation',
-    'thank you screen': 'Confirmation',
+    'thank you screen': 'Step 5 - Confirmation',
   },
   nrenro: {
     'otp click': 'Step 1 - Identify Yourself',
     'confirm otp': 'Step 2 - Verify with OTP',
     'select account': 'Step 3 - Select  Account',
     'select account type': 'Step 3 - Account Type',
-    'confirm details': 'Step 4 - Confirm Details',
+    'confirm details': 'Step 4 : Confirm Details',
+    'confirmation page': 'Step 5 - Confirmation',
     'check offers': 'Customer Details',
     'get this card': 'Choose Card',
     'kyc continue': 'Select KYC',
@@ -217,7 +274,7 @@ const PAGE_NAME = {
     'aadhaar otp': 'Select KYC - Aadhaar OTP verification',
     'start kyc': 'Confirmation',
     'submit review': 'Confirmation',
-    'thank you screen': 'Confirmation',
+    'thank you screen': 'Step 5 - Confirmation',
   },
 };
 export {

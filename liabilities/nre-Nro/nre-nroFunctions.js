@@ -35,6 +35,7 @@ import {
 } from './constant.js';
 import {
   sendAnalytics,
+  sendPageloadEvent,
 } from './analytics.js';
 import { reloadPage } from '../../common/functions.js';
 
@@ -194,7 +195,7 @@ const getCountryName = (countryCodeIst) => new Promise((resolve) => {
 
 function errorHandling(response, journeyState, globals) {
   setTimeout(() => {
-    Promise.resolve(sendAnalytics('page load-Error Page', { }, 'ON_ERROR_PAGE_LOAD', globals));
+    Promise.resolve(sendAnalytics('page load-Error Page', {}, 'CUSTOMER_IDENTITY UNRESOLVED', globals));
   }, 2000);
   const {
     mobileNumber,
@@ -953,6 +954,8 @@ function prefillThankYouPage(accountres, globals) {
     globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
     errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
   }
+  sendAnalytics('thankyou page click', {}, 'THANKYOU_PAGE_TYPE', globals);
+  // sendPageloadEvent('page load thankyou page', formData, 'thankyou page');
 }
 
 /**
@@ -988,7 +991,7 @@ async function accountOpeningNreNro(idComToken) {
       customerID: response.customerId.toString(),
       maskedCustID: response.customerId.toString().slice((response.customerId.toString().length - 4), response.customerId.toString().length),
       maskedAccountNumber: 'X'.repeat((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4))
-                            + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
+        + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
       agriculturalIncome: '',
       sex: response.txtCustSex,
       email: response.refCustEmail,
@@ -1288,7 +1291,7 @@ async function accountOpeningNreNro1(idComToken, globals) {
       customerID: response.customerId.toString(),
       maskedCustID: response.customerId.toString().slice((response.customerId.toString().length - 4), response.customerId.toString().length),
       maskedAccountNumber: 'X'.repeat((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4))
-                            + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
+        + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
       branchCode: response.customerAccountDetailsDTO[accIndex].branchCode.toString(),
       codeLC: 'INSTASTP',
       codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || '',
@@ -1557,7 +1560,7 @@ const switchWizard = (globals) => {
 };
 
 const onPageLoadAnalytics = async (globals) => {
-  sendAnalytics('page load-Step 1 - Identify Yourself', { }, 'ON_PAGE_LOAD', globals);
+  sendAnalytics('page load-Step 1 - Identify Yourself', {}, 'ON_PAGE_LOADCUSTOMER_IDENTITY_INITIATED', globals);
 };
 
 setTimeout(() => {
@@ -1941,7 +1944,7 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
     currentFormContext.selectedAccountName = 'NRE - Current Account';
   }
 
-  sendAnalytics('select account type click', { productAccountType: currentFormContext?.productAccountType ?? '' }, 'ON_SELECT_ACCOUNT_TYPE', globals);
+  sendAnalytics('select account type click', { productAccountType: currentFormContext?.productAccountType ?? '' }, 'CUSTOMER_ACCOUNT_VARIANT_SELECTED', globals);
 }
 
 function multiAccountVarient(selectAccount, globals) {

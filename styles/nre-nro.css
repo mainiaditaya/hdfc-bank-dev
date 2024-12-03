@@ -3634,7 +3634,6 @@
                   @media (768px <=width <=991px) {
                     font-size: 28px;
                     line-height: 36px;
-                    background-position-x: 44%;
                   }
 
                   @media (320px <=width <=767px) {

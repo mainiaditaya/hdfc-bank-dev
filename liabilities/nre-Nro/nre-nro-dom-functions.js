@@ -9,6 +9,11 @@ import {
   DOM_ELEMENT,
 } from './constant.js';
 
+import {
+  enableAccordionClick,
+  attachPrivacyPolicyAnalytics,
+} from './analytics.js'
+
 function enableSubmitOTPBtn() {
   const otpField = document.querySelector('.field-otpnumber input');
   const submitOTPBtn = document.querySelector('.field-submitotp button');
@@ -212,6 +217,8 @@ linkModalFunction(consent2RequestProductTxtConfig);
 
 setTimeout(() => {
   setMaxDateToToday('dateOfBirth');
+  enableAccordionClick();
+  attachPrivacyPolicyAnalytics();
   addMobileValidation();
 }, 1200);
 
