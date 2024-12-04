@@ -7,6 +7,7 @@ import {
 } from '../../common/analyticsConstants.js';
 import {
   createDeepCopyFromBlueprint,
+  generateHash,
   santizedFormDataWithContext,
 } from '../../common/formutils.js';
 import { FORM_NAME } from './constant.js';
@@ -28,6 +29,8 @@ function setAnalyticPageLoadProps(journeyState, formData, digitalData) {
   digitalData.user.journeyState = journeyState;
   digitalData.user.casa = '';
   digitalData.form.name = FORM_NAME;
+  const leadID = currentFormContext.LEAD_ID || ((typeof window !== 'undefined') && new URLSearchParams(window.location.search).get('leadId')) || '';
+  digitalData.user.leadID = leadID;
 }
 
 /**
@@ -62,8 +65,8 @@ function setAnalyticClickGenericProps(linkName, linkType, formData, journeyState
 }
 
 const getValidationMethod = (formContext) => {
-  if (formContext && formContext?.login && formContext.login.panDobSelection) {
-    return formContext.login.panDobSelection === '0' ? 'DOB' : 'PAN';
+  if (formContext && formContext.form.login.panDobSelection) {
+    return formContext.form.login.panDobSelection === '0' ? 'DOB' : 'PAN';
   }
   return '';
 };
@@ -118,13 +121,13 @@ function sendPageloadEvent(journeyState, formData, pageName) {
  * @param {object} formContext
  * @param {object} digitalData
  */
-function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState, digitalData) {
+async function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState, digitalData) {
   setAnalyticClickGenericProps(eventType, linkType, formData, journeyState, digitalData);
   digitalData.page.pageInfo.pageName = PAGE_NAME.ccc[eventType];
   switch (eventType) {
     case 'otp click': {
       digitalData.event = {
-        phone,
+        phone: formData.form.login.maskedMobileNumber ? await generateHash(formData.form.login.maskedMobileNumber) : '',
         validationMethod: getValidationMethod(formData),
       };
       if (window) {
@@ -152,8 +155,11 @@ function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState
       break;
     }
     case 'check offers': {
+      digitalData.event = {
+        status: '1',
+      };
       digitalData.user.gender = formData.form.gender;
-      digitalData.user.email = formData.form.workEmailAddress;
+      digitalData.user.email = formData.form.workEmailAddress ? await generateHash(formData.form.workEmailAddress) : '';
       if (formData.form.currentAddressToggle === 'off') {
         digitalData.formDetails = {
           pincode: currentFormContext?.breDemogResponse?.VDCUSTZIPCODE,
