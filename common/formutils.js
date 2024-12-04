@@ -713,6 +713,33 @@ const maskString = (str, visibleCount = 4) => {
   return 'X'.repeat(str.length - visibleCount) + str.slice(-visibleCount);
 };
 
+/**
+ * Asynchronously generates a SHA-256 hash of the provided input value.
+ *
+ * @async
+ * @function generateHash
+ * @param {*} value - The input value to be hashed. It will be converted to a string before hashing.
+ * @returns {Promise<string>} A promise that resolves to the hexadecimal representation of the SHA-256 hash.
+ *
+ * @example
+ * generateHash("example").then(hash => {
+ * console.log(hash)
+ * return hash;
+ * });
+ * or
+ * await generateHash("example")
+ * // Output: "2d711642b726b04401627ca9fbac32f5c7b6d23fa8d39e21e5e8b4eebf7e5e73"
+ */
+const generateHash = async (value) => {
+  const input = String(value);
+  const encoder = new TextEncoder();
+  const rawdata = encoder.encode(input);
+  const hash = await crypto.subtle.digest('SHA-256', rawdata);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+};
+
 export {
   urlPath,
   maskNumber,
@@ -755,4 +782,5 @@ export {
   formatIndian,
   generateErefNumber,
   maskString,
+  generateHash,
 };

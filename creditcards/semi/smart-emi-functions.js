@@ -565,6 +565,7 @@ function checkELigibilityHandler(resPayload1, globals) {
       globals.functions.setProperty(globals.form.resultPanel, { visible: true });
       globals.functions.setProperty(globals.form.resultPanel.errorResultPanelSemi, { visible: true });
       globals.functions.setProperty(globals.form.resultPanel.errorResultPanelSemi.errorMessageText, { value: ERROR_MSG.noEligibleTxnFlow });
+      response.nextscreen = 'failure';
     }
     return response;
   } catch (error) {
