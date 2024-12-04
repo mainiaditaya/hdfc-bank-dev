@@ -46,7 +46,7 @@ async function fetchJsonResponse(url, payload, method, loader = false) {
         headers: {
           'Content-type': 'text/plain',
           Accept: 'application/json',
-          iat: window ? btoa(currentDate.getTime()) : '',
+          iat: typeof window !== 'undefined' ? btoa(currentDate.getTime()) : '',
 
         },
       })
