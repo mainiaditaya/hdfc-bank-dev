@@ -5245,7 +5245,7 @@
         setEcid: function setEcid(ecid) {
           if (idMigrationEnabled && getEcidFromLegacyCookies() !== ecid) {
             var extraOptions = isPageSsl ? {
-              sameSite: "none",
+              sameSite: "Lax",
               secure: true
             } : {};
             cookieJar.set(amcvCookieName, "MCMID|" + ecid, _objectSpread2({
