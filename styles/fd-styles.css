@@ -323,6 +323,11 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
   background: var(--color-interface-background-primary);
 }
 
+body.fdlien:has(.field-knowmorepopupwrapper[data-visible="true"]) {
+  overflow: hidden;
+  height: 100vh;
+}
+
 .fdlien:has(.section.form-container) .section.form-container {
   box-shadow: none;
   border-radius: 0;
@@ -2743,6 +2748,10 @@ body.fdlien:has(.field-selectkycoptionspanel[data-visible='true']) main {
       }
 
       .field-knowmorebenefitspanel {
+        height: 375px;
+        overflow: auto;
+        padding-top: 5px;
+
         .field-wrapper {
           display: grid;
 
