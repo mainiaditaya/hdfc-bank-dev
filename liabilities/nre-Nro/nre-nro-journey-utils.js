@@ -51,7 +51,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
       },
       formData: {
         channel: CHANNEL,
-        journeyName: globals.form.runtime.journeyName.$value,
+        journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
         journeyID: globals.form.runtime.journeyId.$value || createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals),
         journeyStateInfo: [
           {
@@ -92,7 +92,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
       },
       formData: {
         channel: CHANNEL,
-        journeyName: globals.form.runtime.journeyName.$value,
+        journeyName: globals.form.runtime.journeyName.$value || currentFormContext.journeyName,
         journeyID: journeyId,
         journeyStateInfo: [
           {

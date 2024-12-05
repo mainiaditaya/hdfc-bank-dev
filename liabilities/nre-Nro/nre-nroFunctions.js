@@ -355,12 +355,12 @@ const getOtpNRE = async (mobileNumber, pan, dob, globals) => {
   // const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
   /* jidTemporary  temporarily added for FD development it has to be removed completely once runtime create journey id is done with FD */
   const jidTemporary = createJourneyId(VISIT_MODE, JOURNEY_NAME, CHANNEL, globals);
+  globals.functions.setProperty(globals.form.runtime.journeyName, { value: 'ACCOUNTOPENING_NRE_NRO_JOURNEY' });
   const [year, month, day] = dob.$value ? dob.$value.split('-') : ['', '', ''];
   currentFormContext.action = 'getOTP';
   currentFormContext.journeyID = globals.form.runtime.journeyId.$value || jidTemporary;
   currentFormContext.mobileNumber = mobileNumber.$value;
   currentFormContext.leadIdParam = globals.functions.exportData().queryParams;
-  currentFormContext.journeyName = globals.form.runtime.journeyName.$value;
   let identifierNam = '';
   let identifierVal = '';
   let datOfBirth = '';
@@ -1072,98 +1072,6 @@ async function validateJourneyParams(formData, globals) {
     status: 'showErrorPage',
   };
 }
-// // eslint-disable-next-line no-unused-vars
-// const nreNroFetchRes = async (globals) => {
-//   try {
-//     globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
-//     const data = await nreNroInvokeJourneyDropOffByParam('', '', currentFormContext.journeyId);
-//     // debugger;
-//     if (data && data.errorCode === 'FJ0000') {
-//       const journeyDropOffParamLast = data.formData.journeyStateInfo[data.formData.journeyStateInfo.length - 1];
-//       finalResult.journeyParamState = journeyDropOffParamLast.state;
-//       finalResult.journeyParamStateInfo = JSON.parse(journeyDropOffParamLast.stateInfo);
-//       let leadId = '';
-//       let mobileNumber = '';
-//       if (data.leadProfile && data.leadProfile.mobileNumber) {
-//         mobileNumber = data.leadProfile.mobileNumber;
-//         currentFormContext.mobileNumber = mobileNumber;
-//       }
-//       if (data.leadProfile && data.leadProfile.leadProfileId) {
-//         leadId = data.leadProfile.leadProfileId;
-//       }
-//       if (journeyDropOffParamLast.state === 'CUSTOMER_ONBOARDING_COMPLETE') {
-//         // globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-//         globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//         globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
-//       }
-//       // eslint-disable-next-line no-unused-vars
-//       const checkFinalSuccess = (journeyDropOffParamLast.state === 'IDCOM_REDIRECTION_INITIATED');
-//       if (checkFinalSuccess) {
-//         if (currentFormContext.idComSuccess === 'true') {
-//           if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
-//             currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
-//           }
-//           invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_SUCCESS', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//           invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//           prefillAccountDetail(currentFormContext.fatca_response, currentFormContext.selectedCheckedValue, 1, globals);
-//           // Fetching IDComToken
-//           const idComTokenResponse = await fetchIdComToken();
-//           currentFormContext.IDCOMSuccessToken = idComTokenResponse.IDCOMtoken;
-//           if (currentFormContext.IDCOMSuccessToken !== null || currentFormContext.IDCOMSuccessToken !== undefined || currentFormContext.IDCOMSuccessToken !== '') {
-//             // Calling Account Opening Functions
-//             const eningResponse = await accountOpeningNreNro(finalResult.journeyParamStateInfo);
-//             // let accountOpeningResponse = {
-//             //   accountOpening: {
-//             //     errorCode: '0',
-//             //     accountNumber: '50919394857273',
-//             //   }
-//             // };
-//             if (accountOpeningResponse.accountOpening.errorCode === '0') {
-//               // hideLoaderGif(); // TODO : Uncomment
-//               currentFormContext.accountNumber = accountOpeningResponse.accountOpening.accountNumber;
-//               globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//               globals.functions.setProperty(globals.form.thankYouPanel, { visible: true });
-//               globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '0' }); // Setting the account number
-//               prefillThankYouPage(finalResult.journeyParamStateInfo, globals);
-//             } else {
-//               globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//               globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
-//               globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-//             }
-//             // Else journey drop off update onboarding failure, generic error page show here.
-//           } else {
-//             await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//             globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//             globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
-//             globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-//           }
-//         } else {
-//           await invokeJourneyDropOffUpdate('IDCOM_AUTHENTICATION_FAILURE', mobileNumber, leadId, currentFormContext.journeyId, globals);
-//           globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//           globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
-//           globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-//         }
-//       } else {
-//         const err = 'Bad response';
-//         throw err;
-//       }
-//     } else {
-//       const err = 'Journey Drop Off Params Update response failed';
-//       throw err;
-//     }
-//   } catch (error) {
-//     globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false }); // TODO: Needs to be changed from otpPanelWrapper to LandingPanel when onInit issue is fixed.
-//     globals.functions.setProperty(globals.form.errorPanel.errorresults.itsNotYouPanel, { visible: true });
-//     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.page_to_show_variable, { value: '1' }); // Setting the account number
-//     // eslint-disable-next-line no-unused-vars
-//     const errorCase = (finalResult.journeyParamState === 'CUSTOMER_FINAL_FAILURE');
-//     // eslint-disable-next-line no-unused-vars
-//     const stateInfoData = finalResult.journeyParamStateInfo;
-//     // if (errorCase) {
-//     //   console.log("Error Case : " , errorCase);
-//     // }
-//   }
-// };
 
 /**
  * Function to show hide page
