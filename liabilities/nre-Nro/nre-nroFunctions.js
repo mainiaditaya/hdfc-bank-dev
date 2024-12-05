@@ -996,6 +996,7 @@ async function accountOpeningNreNro1(idComToken, globals) {
       journeyID: journeyParamStateInfo.currentFormContext.journeyID,
       journeyName: currentFormContext.journeyName,
       mobileNo: journeyParamStateInfo.currentFormContext.mobileNumber,
+      mobileNumber: journeyParamStateInfo.currentFormContext.phoneWithISD,
     },
   };
 
@@ -1312,6 +1313,7 @@ const crmLeadIdDetail = (globals) => {
       employmentType: '',
       employmentTypeOthers: '',
       phone: currentFormContext.phoneWithISD,
+      mobileNumber: currentFormContext.phoneWithISD,
       productCategory: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductCatogery.$value,
       productName: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductName.$value,
       ratingKey: '3',
