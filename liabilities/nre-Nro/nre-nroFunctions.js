@@ -618,13 +618,14 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
   globals.functions.setProperty(financialDetails.currencyName, { visible: true });
   globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: true, value: sourceOfFundText?.toUpperCase() });
   globals.functions.setProperty(financialDetails.occupation, { value: occupationText?.toUpperCase() });
+  globals.functions.setProperty(financialDetails.occupation, { visible: true });
   globals.functions.setProperty(financialDetails.selfEmployedProfessional, { value: selfEmployedProfText?.toUpperCase() });
   globals.functions.setProperty(financialDetails.natureOfBusiness, { value: natureOfBusinessText?.toUpperCase() });
   globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { value: typeOfCompanyText?.toUpperCase() });
   globals.functions.setProperty(financialDetails.employerCategory, { value: employeerCatCodeText?.toUpperCase() });
 
   if (occupationCode === "2") {
-    globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
+    globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: false });
     globals.functions.setProperty(financialDetails.employerCategory, { visible: true });
   }
   if (occupationCode === "3") {
