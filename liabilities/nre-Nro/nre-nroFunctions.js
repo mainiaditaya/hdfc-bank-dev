@@ -194,6 +194,37 @@ const getCountryName = (countryCodeIst) => new Promise((resolve) => {
     });
 });
 
+const getaddressForTaxPurpose = async (value) => {
+  let result = '';
+
+  switch (value) {
+    case 1:
+      result = 'Residential or Business';
+      break;
+
+    case 2:
+      result = 'Residential';
+      break;
+
+    case 3:
+      result = 'Business';
+      break;
+
+    case 4:
+      result = 'Registered Office';
+      break;
+
+    case 5:
+      result = 'Unspecified';
+      break;
+
+    default:
+      result = '';
+  }
+
+  return result.toUpperCase();
+};
+
 function errorHandling(response, journeyState, globals) {
   setTimeout(() => {
     Promise.resolve(sendAnalytics('page load-Error Page', {}, 'CUSTOMER_IDENTITY UNRESOLVED', globals));
@@ -624,16 +655,16 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
   globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { value: typeOfCompanyText?.toUpperCase() });
   globals.functions.setProperty(financialDetails.employerCategory, { value: employeerCatCodeText?.toUpperCase() });
 
-  if (occupationCode === "2") {
+  if (occupationCode === '2') {
     globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: false });
     globals.functions.setProperty(financialDetails.employerCategory, { visible: true });
   }
-  if (occupationCode === "3") {
+  if (occupationCode === '3') {
     globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
     globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
     globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { visible: true });
   }
-  if (occupationCode === "5") {
+  if (occupationCode === '5') {
     globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: false });
     globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { visible: true });
     globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
@@ -708,13 +739,11 @@ ${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMask
     .then((countryName) => setFormValue(fatcaDetails.countryTaxResidence, countryName?.toUpperCase()));
   getCountryName(response.customerFATCADtlsDTO[0].codCntryBirth?.toUpperCase())
     .then((countryName) => setFormValue(fatcaDetails.countryOfBirth, countryName?.toUpperCase()));
-  // setFormValue(fatcaDetails.nationality, currentFormContext.countryName?.toUpperCase());
-  // setFormValue(fatcaDetails.countryTaxResidence, response.customerFATCADtlsDTO[0].codTaxCntry1?.toUpperCase());
   setFormValue(fatcaDetails.taxIdNumber, response.customerFATCADtlsDTO[0].tinNo1);
-  setFormValue(fatcaDetails.addressForTaxPurpose, response.customerFATCADtlsDTO[0].typAddrTax1);
+  getaddressForTaxPurpose(response.customerFATCADtlsDTO[0].addrTyp)
+    .then((taxPurpose) => setFormValue(fatcaDetails.addressForTaxPurpose, taxPurpose));
   setFormValue(fatcaDetails.taxIdType, response.customerFATCADtlsDTO[0].typTinNo1);
   setFormValue(fatcaDetails.cityOfBirth, response.customerFATCADtlsDTO[0].namCityBirth?.toUpperCase());
-  // setFormValue(fatcaDetails.countryOfBirth, response.customerFATCADtlsDTO[0].codCntryBirth?.toUpperCase());
   setFormValue(fatcaDetails.fathersName, response.customerFATCADtlsDTO[0].namCustFather?.toUpperCase());
   setFormValue(fatcaDetails.mothersName, response.namMotherMaiden?.toUpperCase());
   setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namCustSpouse?.toUpperCase());
@@ -723,7 +752,6 @@ ${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMask
   setFormValue(financialDetails.dateOfIncorporation, response.datIncorporated);
   setFormValue(financialDetails.currencyName, response.customerAMLDetailsDTO[0].namCcy);
   setFormValue(financialDetails.pepDeclaration, response.customerAMLDetailsDTO[0].amlCod1);
-  // setFormValue(financialDetails.codeOccupation, response.customerAMLDetailsDTO[0].codOccupation);
 }
 
 function prefillAccountDetail(response, i, responseLength, globals) {
@@ -1260,7 +1288,7 @@ const crmLeadIdDetail = async (globals) => {
       territoryName: '',
       address: `${response?.txtCustadrAdd1} ${response?.txtCustadrAdd2} ${response?.txtCustadrAdd3}`,
       companyName: '',
-      nomineeAge: response.customerAccountDetailsDTO[accIndex].prodTypeDesc.toString(),
+      nomineeAge: '',
       typeOfFirm: financialDetails.typeOfCompoanyFirm.$value,
       typCompany: '',
       typeOfFirm_label: financialDetails.typeOfCompoanyFirm.$value,
@@ -1273,7 +1301,7 @@ const crmLeadIdDetail = async (globals) => {
       ProductCategory: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductCatogery.$value,
       name: `${response.txtCustPrefix} ${response.customerFullName}`,
       otherThanAgriIncome: '',
-      nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeNam || '',
+      nomineeName: '',
       birthCertificate: '',
       PANNumber: response.refCustItNum,
       nomineeAddress: '',
@@ -1328,7 +1356,7 @@ const crmLeadIdDetail = async (globals) => {
       nomAdrState: '',
       nomAdrZip: '',
       nomRelation: '',
-      nomineeDoB: response.customerAccountDetailsDTO[accIndex].nomineeDOB ? parseDate(response.customerAccountDetailsDTO[accIndex].nomineeDOB) : '',
+      nomineeDoB: '',
       isForm60Attached: '',
       PANAckNo: '',
       doaInput: '',
@@ -1347,7 +1375,7 @@ const crmLeadIdDetail = async (globals) => {
       voterIDNo: '',
       drivingLicenseNo: '',
       isSeniorCitizen: '',
-      countryOfTaxResidency:  await getCountryName(response.customerFATCADtlsDTO[0].codTaxCntry1),
+      countryOfTaxResidency: await getCountryName(response.customerFATCADtlsDTO[0].codTaxCntry1),
       PANFSDocument: '',
       passportFSDocument: '',
       voterIDFSDocument: '',
@@ -1396,7 +1424,7 @@ const crmLeadIdDetail = async (globals) => {
       residentialStatus: '',
       residentialStatus_label: '',
       salutationKey: response.txtCustPrefix.toUpperCase() === 'MR' ? '1' : response.txtCustPrefix.toUpperCase() === 'MRS' ? '2' : '8',
-      salutationName: response.txtCustPrefix.toUpperCase() === 'MR' ? 'MR' : response.txtCustPrefix.toUpperCase() === 'MRS' ? 'MRS' : 'MX',
+      salutationName: response.txtCustPrefix.toUpperCase() === 'MR' ? 'MR.' : response.txtCustPrefix.toUpperCase() === 'MRS' ? 'MRS.' : 'MX.',
       statusCodeInOn: new Date().toISOString().slice(0, 19),
       territoryCode: '',
       territoryKey: '',
@@ -1521,6 +1549,7 @@ const crmLeadIdDetail = async (globals) => {
       cntTaxResidence: await getCountryName(response.customerFATCADtlsDTO[0].codTaxCntry1) || '',
       tinNumber2: response.customerFATCADtlsDTO[0].tinNo1 || '',
       nameOfCurrency: response.customerAMLDetailsDTO[0].namCcy || '',
+      addTaxPurpose: await getaddressForTaxPurpose(response.customerFATCADtlsDTO[0].addrTyp),
     },
   };
 
