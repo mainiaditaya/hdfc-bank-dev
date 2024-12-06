@@ -1516,10 +1516,10 @@ const crmLeadIdDetail = async (globals) => {
       StatusCodeKey: '9',
       misCode: '700',
       mailingCountry: await getCountryName(response.namCustadrCntry),
-      tinType2: response.typTinNo1,
-      cntTaxResidence: response.customerFATCADtlsDTO[0].codTaxCntry1,
-      tinNumber2: response.tinNo1,
-      nameOfCurrency: response.namCcy,
+      tinType2: response.customerFATCADtlsDTO[0].typTinNo1 || '',
+      cntTaxResidence: response.customerFATCADtlsDTO[0].codTaxCntry1 || '',
+      tinNumber2: response.customerFATCADtlsDTO[0].tinNo1 || '',
+      nameOfCurrency: response.customerAMLDetailsDTO[0].namCcy || '',
     },
   };
 
