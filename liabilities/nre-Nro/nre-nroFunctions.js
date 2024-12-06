@@ -623,16 +623,16 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
   globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { value: typeOfCompanyText?.toUpperCase() });
   globals.functions.setProperty(financialDetails.employerCategory, { value: employeerCatCodeText?.toUpperCase() });
 
-  if (occupationCode === "2") {
+  if (occupationCode === 2) {
     globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
     globals.functions.setProperty(financialDetails.employerCategory, { visible: true });
   }
-  if (occupationCode === "3") {
+  if (occupationCode === 3) {
     globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
     globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
     globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { visible: true });
   }
-  if (occupationCode === "5") {
+  if (occupationCode === 5) {
     globals.functions.setProperty(financialDetails.sourceOfFunds, { visible: false });
     globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { visible: true });
     globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: true });
