@@ -128,7 +128,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
     formContext.LoanReferenceNumber = journeyId?.loanNbr;
   }
   const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
-  const formDataSanitized = (state === 'CUSTOMER_ONBOARDING_COMPLETE' || state === 'CUSTOMER_ONBOARDING_FAILED') ? restructFormData(sanitizedFormData, formContext, globals) : sanitizedFormData;
+  const formDataSanitized = restructFormData(sanitizedFormData, formContext, globals);
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : '',
