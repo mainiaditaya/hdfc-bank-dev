@@ -584,7 +584,7 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
     typCompany: typCompanyCode,
     natureOfBus: natureOfBusCode,
     incomeSource: incomeSourceCode,
-    annualTurnover: annualTurnoverCode,
+    grossIncome: grossIncomeCode,
     typResidence: residenceTypeMappingCode,
     txtProfessionDesc: txtProfessionDescCode,
     typEmployer: employeerCatCode,
@@ -609,7 +609,7 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
   const natureOfBusinessText = setDropdownValue('natureOfBusinessMapping', natureOfBusCode);
   const typeOfCompanyText = setDropdownValue('typeOfCompanyMapping', typCompanyCode);
   const sourceOfFundText = setDropdownValue('sourceOfFundMapping', incomeSourceCode);
-  const grossAnnualIncomeText = setDropdownValue('grossAnnualIncomeMapping', annualTurnoverCode);
+  const grossAnnualIncomeText = setDropdownValue('grossAnnualIncomeMapping', grossIncomeCode);
   const selfEmployedProfText = setDropdownValue('selfEmployedProfMapping', txtProfessionDescCode);
   const employeerCatCodeText = setDropdownValue('employerCategoryMapping', employeerCatCode);
 
@@ -716,7 +716,7 @@ ${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMask
   // setFormValue(fatcaDetails.countryOfBirth, response.customerFATCADtlsDTO[0].codCntryBirth?.toUpperCase());
   setFormValue(fatcaDetails.fathersName, response.customerFATCADtlsDTO[0].namCustFather?.toUpperCase());
   setFormValue(fatcaDetails.mothersName, response.namMotherMaiden?.toUpperCase());
-  setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namSpouseCust?.toUpperCase());
+  setFormValue(fatcaDetails.spousesName, response.customerFATCADtlsDTO[0].namCustSpouse?.toUpperCase());
   setFormValue(financialDetails.employeerName, response.customerFATCADtlsDTO[0].namCustEmp);
   setFormValue(financialDetails.selfEmployedSince, response.customerAMLDetailsDTO[0].selfEmpFrom);
   setFormValue(financialDetails.dateOfIncorporation, response.datIncorporated);
@@ -997,7 +997,7 @@ async function accountOpeningNreNro1(idComToken, globals) {
       maskedAccountNumber: 'X'.repeat((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4))
         + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
       branchCode: response.customerAccountDetailsDTO[accIndex].branchCode.toString(),
-      codeLC: 'INSTASTP',
+      codeLC: 'NRISTP',
       codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || 'MKTG',
       flgChqBookIssue: 'N',
       productCode: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductAccountType.$value,
@@ -1280,7 +1280,7 @@ const crmLeadIdDetail = async (globals) => {
       countryOfNominee: '',
       country: await getCountryName(response.namPermadrCntry),
       passpostExpiryDate: '',
-      codeLC: 'INSTASTP',
+      codeLC: 'NRISTP',
       codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || 'MKTG',
       applicationDate: new Date().toISOString().slice(0, 19),
       DLExpiryDate: '',
@@ -1319,7 +1319,7 @@ const crmLeadIdDetail = async (globals) => {
       declareNominee: '',
       otherTypeOfFirm: '',
       otherTypeOfFirm_label: '',
-      otherSourceOfFunds: '',
+      otherSourceOfFunds: financialDetails.sourceOfFunds.$value,
       nomineeAddressLine2: '',
       nomineeLandmark: '',
       nomAdrCity: '',
@@ -1335,8 +1335,8 @@ const crmLeadIdDetail = async (globals) => {
       grossAnnualIncome_range: financialDetails.grossAnnualIncome.$value,
       monthlyIncome: '',
       selfServiceAnnualIncome: '',
-      sourceOfFunds: financialDetails.sourceOfFunds.$value.$value,
-      sourceOfFunds_label: financialDetails.sourceOfFunds.$value.$value,
+      sourceOfFunds: financialDetails.sourceOfFunds.$value,
+      sourceOfFunds_label: financialDetails.sourceOfFunds.$value,
       displayProductName: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductName.$value,
       state: response.namPermadrState,
       city: response.namPermadrCity,
@@ -1374,7 +1374,7 @@ const crmLeadIdDetail = async (globals) => {
       allotmentLetterFSDocument: '',
       allotmentLEtterBSDocument: '',
       firstName: response.customerFirstName ? response.customerFirstName : getNamePart(response.customerFullName, 'first'),
-      gender: getGender(response.txtCustSex),
+      gender: response.genderDescription,
       lastName: response.customerLastName ? response.customerLastName : getNamePart(response.customerFullName, 'last'),
       layout: '',
       customerFullName: `${response.txtCustPrefix} ${response.customerFullName}`,
@@ -1394,8 +1394,8 @@ const crmLeadIdDetail = async (globals) => {
       ratingKey: '3',
       residentialStatus: '',
       residentialStatus_label: '',
-      salutationKey: response.txtCustPrefix,
-      salutationName: response.txtCustPrefix,
+      salutationKey: response.txtCustPrefix.toUpperCase() === 'MR' ? '1' : response.txtCustPrefix.toUpperCase() === 'MRS' ? '2' : '8',
+      salutationName: response.txtCustPrefix.toUpperCase() === 'MR' ? 'MR' : response.txtCustPrefix.toUpperCase() === 'MRS' ? 'MRS' : 'MX',
       statusCodeInOn: new Date().toISOString().slice(0, 19),
       territoryCode: '',
       territoryKey: '',
