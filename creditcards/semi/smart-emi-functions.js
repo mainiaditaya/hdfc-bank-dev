@@ -538,6 +538,7 @@ function checkELigibilityHandler(resPayload1, globals) {
     if (!isNodeEnv) {
       cardDisplay(globals, resPayload);
       moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
+      handleMdmUtmParam(globals);
     }
     response.nextscreen = 'success';
     /* to display available count to select */
@@ -748,8 +749,7 @@ function selectTenure(globals) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: MSG });
   } else {
     if (!isNodeEnv) {
-      moveWizardView(domElements.semiWizard, domElements.selectTenure);
-      handleMdmUtmParam(globals);
+      moveWizardView(domElements.semiWizard, domElements.selectTenure);  
     }
     tenureDisplay(globals);
   }
