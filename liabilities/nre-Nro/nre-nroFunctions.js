@@ -70,6 +70,7 @@ currentFormContext.productAccountName = '';
 currentFormContext.journeyAccountType = '';
 currentFormContext.countryName = '';
 currentFormContext.phoneWithISD = '';
+currentFormContext.ambValue = '';
 
 formRuntime.getOtpLoader = currentFormContext.getOtpLoader || (typeof window !== 'undefined') ? displayLoader : false;
 formRuntime.otpValLoader = currentFormContext.otpValLoader || (typeof window !== 'undefined') ? displayLoader : false;
@@ -223,6 +224,7 @@ function errorHandling(response, journeyState, globals) {
     }
     globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
     globals.functions.setProperty(globals.form.wizardPanel, { visible: false });
+    globals.functions.setProperty(globals.form.thankYouPanel, { visible: false });
     globals.functions.setProperty(globals.form.errorPanel.errorresults.errorConnection, { visible: true });
   }
 
@@ -258,13 +260,29 @@ function getGender(input) {
   return 'Third Gender';
 }
 
-function getLastWord(input) {
-  if (typeof input !== 'string' || input.trim() === '') {
-    return 'Invalid input';
+function getNamePart(input, type) {
+  const words = input.trim().split(' ');
+
+  let result = '';
+
+  switch (type) {
+    case 'first':
+      result = words[0] || '';
+      break;
+
+    case 'middle':
+      result = words[1] || '';
+      break;
+
+    case 'last':
+      result = words.slice(2).join(' ') || '';
+      break;
+
+    default:
+      result = '';
   }
 
-  const words = input.trim().split(/\s+/);
-  return words.length > 1 ? words[words.length - 1] : '';
+  return result;
 }
 
 /**
@@ -396,7 +414,7 @@ const getOtpNRE = async (mobileNumber, pan, dob, globals) => {
 };
 
 const getCountryCodes = (dropdown) => {
-  const finalURL = `/content/hdfc_commonforms/api/mdm.ETB.NRI_ISD_MASTER.COUNTRYNAME.json?pageSize=300`;
+  const finalURL = '/content/hdfc_commonforms/api/mdm.ETB.NRI_ISD_MASTER.COUNTRYNAME.json?pageSize=300';
   fetchJsonResponse(urlPath(finalURL), null, 'GET', true).then((response) => {
     dropdown?.addEventListener('change', () => {
       if (prevSelectedIndex !== -1) {
@@ -643,6 +661,7 @@ function showNomineeDetails(nomineeDetails, response, globals) {
   if (nomineeName !== null) {
     globals.functions.setProperty(nomineeDetails, { visible: true });
     const formattedDate = convertDateToMmmDdYyyy(nomineeDob);
+    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.relation, { visible: false });
     globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.relation, { value: relationText?.toUpperCase() });
     globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.nomineeName, { value: nomineeName?.toUpperCase() });
     globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.nomineedob, { value: formattedDate });
@@ -683,11 +702,11 @@ function prefillCustomerDetail(response, globals) {
 ${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMasking('CityState', response.namPermadrState)}, ${customerDataMasking('Country', response.namPermadrCntry)}, ${response.txtPermadrZip}`?.toUpperCase());
 
   getCountryName(response.txtCustNATNLTY)
-    .then(() => setFormValue(fatcaDetails.nationality, currentFormContext.countryName?.toUpperCase()));
+    .then((countryName) => setFormValue(fatcaDetails.nationality, countryName?.toUpperCase()));
   getCountryName(response.customerFATCADtlsDTO[0].codTaxCntry1)
-    .then(() => setFormValue(fatcaDetails.countryTaxResidence, currentFormContext.countryName?.toUpperCase()));
+    .then((countryName) => setFormValue(fatcaDetails.countryTaxResidence, countryName?.toUpperCase()));
   getCountryName(response.customerFATCADtlsDTO[0].codCntryBirth?.toUpperCase())
-    .then(() => setFormValue(fatcaDetails.countryOfBirth, currentFormContext.countryName?.toUpperCase()));
+    .then((countryName) => setFormValue(fatcaDetails.countryOfBirth, countryName?.toUpperCase()));
   // setFormValue(fatcaDetails.nationality, currentFormContext.countryName?.toUpperCase());
   // setFormValue(fatcaDetails.countryTaxResidence, response.customerFATCADtlsDTO[0].codTaxCntry1?.toUpperCase());
   setFormValue(fatcaDetails.taxIdNumber, response.customerFATCADtlsDTO[0].tinNo1);
@@ -979,7 +998,7 @@ async function accountOpeningNreNro1(idComToken, globals) {
         + response.customerAccountDetailsDTO[accIndex].accountNumber.slice((response.customerAccountDetailsDTO[accIndex].accountNumber.length - 4), (response.customerAccountDetailsDTO[accIndex].accountNumber.length)),
       branchCode: response.customerAccountDetailsDTO[accIndex].branchCode.toString(),
       codeLC: 'INSTASTP',
-      codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || '',
+      codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || 'MKTG',
       flgChqBookIssue: 'N',
       productCode: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductAccountType.$value,
       StatusCode: 'Branch Approved',
@@ -1028,6 +1047,56 @@ async function fetchIdComToken() {
   return fetchJsonResponse(apiEndPoint, idComTokenObj, 'POST');
 }
 
+function validateAccountOpening(accountName, accountType, globals) {
+  switch (accountName) {
+    case
+      'NRE - Regular Savings Account':
+      if (accountType !== '106') {
+        errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+        return false;
+      }
+      break;
+    case
+      'NRE - Elite Savings Account':
+      if (accountType !== '1350') {
+        errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+        return false;
+      }
+      break;
+    case
+      'NRE - Current Account':
+      if (accountType !== '218') {
+        errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+        return false;
+      }
+      break;
+    case
+      'NRO - Elite Savings Account':
+      if (accountType !== '1345') {
+        errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+        return false;
+      }
+      break;
+    case
+      'NRO - Regular Savings Account':
+      if (accountType !== '101') {
+        errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+        return false;
+      }
+      break;
+    case
+      'NRO - Current Account':
+      if (accountType !== '201') {
+        errorHandling('', 'CUSTOMER_ONBOARDING_FAILURE', globals);
+        return false;
+      }
+      break;
+    default: break;
+    // do nothing
+  }
+  return true;
+}
+
 /**
  * @name validateJourneyParams - Validates the last Journey state
  * @returns {PROMISE}
@@ -1051,7 +1120,13 @@ async function validateJourneyParams(formData, globals) {
       if (currentFormContext.idComSuccess === 'TRUE') {
         if (finalResult.journeyParamStateInfo.currentFormContext && finalResult.journeyParamStateInfo.currentFormContext.fatca_response) {
           currentFormContext.fatca_response = finalResult.journeyParamStateInfo.currentFormContext.fatca_response;
-          currentFormContext.selectedAccountName = globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedAccountName.$value;
+          const accountValidation = await validateAccountOpening(finalResult.journeyParamStateInfo.form.confirmDetails.crm_selectedAccountName, finalResult.journeyParamStateInfo.form.confirmDetails.crm_selectedProductAccountType, globals);
+          if (!accountValidation) {
+            globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
+            return {
+              status: 'showErrorPage',
+            };
+          }
         }
         invokeJourneyDropOffUpdate('CUSTOMER_ONBOARDING_STARTED', globals.form.parentLandingPagePanel.landingPanel.loginFragmentNreNro.mobilePanel.registeredMobileNumber.$value, globals.form.runtime.leadProifileId.$value, currentFormContext.journeyId, globals);
         globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.toDo, { value: 'fetchIdComToken' });
@@ -1164,7 +1239,7 @@ setTimeout(() => {
   onPageLoadAnalytics();
 }, 5000);
 
-const crmLeadIdDetail = (globals) => {
+const crmLeadIdDetail = async (globals) => {
   const { fatca_response: response, selectedCheckedValue: accIndex } = currentFormContext;
   const { financialDetails } = globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.confirmDetailsAccordion;
   currentFormContext.phoneWithISD = currentFormContext.isdCode + currentFormContext.mobileNumber;
@@ -1197,16 +1272,16 @@ const crmLeadIdDetail = (globals) => {
       ProductCategory: globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails.userSelectedProductCatogery.$value,
       name: `${response.txtCustPrefix} ${response.customerFullName}`,
       otherThanAgriIncome: '',
-      nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeName || '',
+      nomineeName: response.customerAccountDetailsDTO[accIndex].nomineeNam || '',
       birthCertificate: '',
       PANNumber: response.refCustItNum,
       nomineeAddress: '',
       maidenName: response.namMotherMaiden,
       countryOfNominee: '',
-      country: response.namHoldadrCntry,
+      country: await getCountryName(response.namPermadrCntry),
       passpostExpiryDate: '',
       codeLC: 'INSTASTP',
-      codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || '',
+      codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || 'MKTG',
       applicationDate: new Date().toISOString().slice(0, 19),
       DLExpiryDate: '',
       selfEmployedProfessionalCategory: financialDetails.selfEmployedProfessional.$value,
@@ -1298,16 +1373,16 @@ const crmLeadIdDetail = (globals) => {
       familyPPSBSDocument: '',
       allotmentLetterFSDocument: '',
       allotmentLEtterBSDocument: '',
-      firstName: response.customerFirstName || '',
+      firstName: response.customerFirstName ? response.customerFirstName : getNamePart(response.customerFullName, 'first'),
       gender: getGender(response.txtCustSex),
-      lastName: response.customerLastName ? response.customerLastName : getLastWord(response.customerFullName),
+      lastName: response.customerLastName ? response.customerLastName : getNamePart(response.customerFullName, 'last'),
       layout: '',
       customerFullName: `${response.txtCustPrefix} ${response.customerFullName}`,
       leadParentLame: '',
       leadRating: '',
       leadSource: 'Adobe',
       leadSourceKey: '33262',
-      middleName: response.customerMiddleName || '',
+      middleName: response.customerMiddleName ? response.customerMiddleName : getNamePart(response.customerFullName, 'middle'),
       mobileNo: currentFormContext.mobileNumber,
       multipleTaxResidencyID: '-1',
       employmentType: '',
@@ -1319,14 +1394,13 @@ const crmLeadIdDetail = (globals) => {
       ratingKey: '3',
       residentialStatus: '',
       residentialStatus_label: '',
-      salutationKey: '',
+      salutationKey: response.txtCustPrefix,
       salutationName: response.txtCustPrefix,
       statusCodeInOn: new Date().toISOString().slice(0, 19),
       territoryCode: '',
       territoryKey: '',
       zipCode: response.txtPermadrZip,
       transcriptLatLong: '',
-      AMBStamping: '',
       companyCode: '',
       occupationTypeOther: '',
       natureOfBusinessOther: '',
@@ -1376,9 +1450,9 @@ const crmLeadIdDetail = (globals) => {
       typResidence: '',
       typResidence_label: '',
       addr1: response.txtPermadrAdd1 || '',
-      custFirstName: response.customerFirstName || '',
+      custFirstName: response.customerFirstName ? response.customerFirstName : getNamePart(response.customerFullName, 'first'),
       custFullName: `${response.txtCustPrefix} ${response.customerFullName}`,
-      custLastName: response.customerLastName ? response.customerLastName : getLastWord(response.customerFullName),
+      custLastName: response.customerLastName ? response.customerLastName : getNamePart(response.customerFullName, 'last'),
       custSex: getGender(response.txtCustSex),
       custType: response.flgCustTyp,
       permAddr1: response.txtPermadrAdd1 || '',
@@ -1403,6 +1477,7 @@ const crmLeadIdDetail = (globals) => {
       amtShareFixed: '',
       codRel: response.customerAccountDetailsDTO[accIndex].codRel.toString(),
       AMBValue: currentFormContext.ambValue,
+      AMBStamping: !isNullOrEmpty(currentFormContext.ambValue) ? 'Y' : 'N',
       TPTConsent: '',
       AMBDateTime: new Date().toISOString().slice(0, 19),
       guardianName: null,
@@ -1440,6 +1515,11 @@ const crmLeadIdDetail = (globals) => {
       LayoutKey: '100542',
       StatusCodeKey: '9',
       misCode: '700',
+      mailingCountry: await getCountryName(response.namCustadrCntry),
+      tinType2: response.typTinNo1,
+      cntTaxResidence: response.customerFATCADtlsDTO[0].codTaxCntry1,
+      tinNumber2: response.tinNo1,
+      nameOfCurrency: response.namCcy,
     },
   };
 
