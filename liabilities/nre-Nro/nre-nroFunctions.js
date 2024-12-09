@@ -1506,7 +1506,7 @@ const crmLeadIdDetail = async (globals) => {
       amtShareFixed: '',
       codRel: response.customerAccountDetailsDTO[accIndex].codRel.toString(),
       AMBValue: currentFormContext.ambValue,
-      AMBStamping: !isNullOrEmpty(currentFormContext.ambValue) ? 'Y' : 'N',
+      AMBStamping: !isNullOrEmpty(currentFormContext.ambValue) ? 'Yes' : 'No',
       TPTConsent: '',
       AMBDateTime: new Date().toISOString().slice(0, 19),
       guardianName: null,
@@ -1550,6 +1550,7 @@ const crmLeadIdDetail = async (globals) => {
       tinNumber2: response.customerFATCADtlsDTO[0].tinNo1 || '',
       nameOfCurrency: response.customerAMLDetailsDTO[0].namCcy || '',
       addTaxPurpose: await getaddressForTaxPurpose(response.customerFATCADtlsDTO[0].addrTyp),
+      mailingCity: response.namCustadrCity,
     },
   };
 
