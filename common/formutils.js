@@ -3,7 +3,7 @@
 
 import * as CONSTANT from './constants.js';
 import * as DOM_API from '../creditcards/domutils/domutils.js';
-import { getJsonResponse } from './makeRestAPI.js';
+import { getJsonResponse, getJsonWithoutEncrypt } from './makeRestAPI.js';
 
 const {
   setDataAttributeOnClosestAncestor,
@@ -633,7 +633,7 @@ const pincodeCheck = async (pincode, city, state) => {
   };
 
   try {
-    const response = await getJsonResponse(url, null, 'GET');
+    const response = await getJsonWithoutEncrypt(url, null, 'GET');
 
     if (response && Array.isArray(response)) {
       const [{
