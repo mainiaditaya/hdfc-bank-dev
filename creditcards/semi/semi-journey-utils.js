@@ -88,6 +88,7 @@ const getCurrentFormContext = (globals) => {
    * @return {PROMISE}
    */
 const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
+  const formContext = getCurrentFormContext(globals);
   const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
   const formDataSanitized = restructFormData(sanitizedFormData, formContext, globals);
   const journeyJSONObj = {
