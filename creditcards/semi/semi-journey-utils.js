@@ -88,6 +88,8 @@ const getCurrentFormContext = (globals) => {
    * @return {PROMISE}
    */
 const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
+  const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
+  const formDataSanitized = restructFormData(sanitizedFormData, formContext, globals);
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
@@ -101,7 +103,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
         journeyStateInfo: [
           {
             state,
-            stateInfo: JSON.stringify(santizedFormDataWithContext(globals)),
+            stateInfo: JSON.stringify(formDataSanitized),
             timeinfo: new Date().toISOString(),
           },
         ],
