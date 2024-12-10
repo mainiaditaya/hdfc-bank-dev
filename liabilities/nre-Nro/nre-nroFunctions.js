@@ -1553,6 +1553,7 @@ const crmLeadIdDetail = async (globals) => {
       nameOfCurrency: response.customerAMLDetailsDTO[0].namCcy || '',
       addTaxPurpose: await getaddressForTaxPurpose(response.customerFATCADtlsDTO[0].addrTyp),
       mailingCity: response.namCustadrCity,
+      birthCountry: await getCountryName(response.customerFATCADtlsDTO[0].codCntryBirth),
     },
   };
 
