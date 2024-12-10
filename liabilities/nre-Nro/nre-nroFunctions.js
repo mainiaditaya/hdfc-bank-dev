@@ -630,7 +630,7 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
         return item.text;
       }
       mappedValue.value = '';
-      return 'Others';
+      return '';
     }
     return '';
   };
@@ -687,7 +687,7 @@ function showNomineeDetails(nomineeDetails, response, globals) {
       return item.text;
     }
     dropdown.value = '';
-    return 'Others';
+    return '';
   };
   const relationText = setDropdownValue(relationDropdown, relationCode);
   if (nomineeName !== null) {
