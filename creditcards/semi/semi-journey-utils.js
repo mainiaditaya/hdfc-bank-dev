@@ -69,7 +69,6 @@ const restructFormData = (data, formContextObject, globals) => {
  * Ideally every custom function should be pure function, i.e it should not have any side effect
  * As per current implementation `currentFormContext` is a state outside of the function,
  * so for Flow we have did special handling by storing strigified value in `globals.form.runtime.currentFormContext`
- *
  * @param {scope} globals
  * @returns
  */
