@@ -547,7 +547,7 @@ const pinCodeMasterCheck = async (globals, cityField, stateField, pincodeField, 
   };
 
   try {
-    const response = await getJsonResponse(url, null, method);
+    const response = await getJsonWithoutEncrypt(url, null, method);
     globals.functions.setProperty(pincodeField, { valid: true });
     const [{ CITY, STATE }] = response;
     const [{ errorCode, errorMessage }] = response;
