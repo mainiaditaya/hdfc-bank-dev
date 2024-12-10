@@ -38,6 +38,7 @@ import {
   feedbackButton,
   selectVarient,
   setAMBValue,
+  setTerritoryValue,
 
 } from './nre-nroFunctions.js';
 
@@ -96,4 +97,5 @@ export {
   feedbackButton,
   selectVarient,
   setAMBValue,
+  setTerritoryValue,
 };
