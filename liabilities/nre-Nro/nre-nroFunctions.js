@@ -1047,6 +1047,7 @@ async function accountOpeningNreNro1(idComToken, globals) {
       journeyName: currentFormContext.journeyName,
       mobileNo: journeyParamStateInfo.currentFormContext.mobileNumber,
       mobileNumber: journeyParamStateInfo.currentFormContext.phoneWithISD,
+      misCode: '700',
     },
   };
 
