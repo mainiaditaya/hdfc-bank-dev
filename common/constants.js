@@ -55,7 +55,7 @@ const ID_COM = {
 
 const isNodeEnv = typeof process !== 'undefined' && process.versions && process.versions.node;
 // eslint-disable-next-line import/no-mutable-exports
-let ENV = 'prod';
+let ENV = 'dev';
 if (isNodeEnv) {
   ENV = 'dev';
 }
