@@ -235,6 +235,15 @@ const composeNameOption = (fn, mn, ln, cardType, maxlength) => {
     mn && ln ? [initial(mn), ln] : null,
   ].filter(Boolean); // Remove nulls
 
+    /**
+    * Generates a pattern for edge cases in CCC where no option exceeds the maximum limit.
+    * The pattern combines the first name and the initial of the last name, or vice versa.
+   */
+  const cccExtraPattern = [
+    fn && ln ? [fn, initial(ln)] : null,
+    fn && ln ? [ln, initial(fn)] : null,
+  ].filter(Boolean);
+  
   const fdExtraPatterns = [
     fn ? [fn] : null,
     mn ? [mn] : null,
@@ -244,7 +253,7 @@ const composeNameOption = (fn, mn, ln, cardType, maxlength) => {
   let names = [];
   switch (cardType) {
     case 'ccc':
-      names = createNames(basePatterns);
+      names = (createNames(basePatterns)?.length === 0) ? createNames(cccExtraPattern) : createNames(basePatterns);
       break;
     case 'fd':
       names = createNames([...basePatterns, ...fdExtraPatterns]);
