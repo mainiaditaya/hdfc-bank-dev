@@ -1339,7 +1339,7 @@ const crmLeadIdDetail = async (globals) => {
       isSameAddress: '',
       fatherNAme: response.customerFATCADtlsDTO[0].namCustFather,
       employeeCategory: '',
-      employeeCategory_label: '',
+      employeeCategory_label: financialDetails.employerCategory.$value,
       otherEmployeeCategory: '',
       otherEmployeeCategory_label: '',
       occupationType: '',
