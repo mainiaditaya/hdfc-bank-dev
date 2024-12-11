@@ -12,7 +12,7 @@ import {
 import {
   enableAccordionClick,
   attachPrivacyPolicyAnalytics,
-} from './analytics.js'
+} from './analytics.js';
 
 function enableSubmitOTPBtn() {
   const otpField = document.querySelector('.field-otpnumber input');
