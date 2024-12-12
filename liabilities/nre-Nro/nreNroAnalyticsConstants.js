@@ -236,6 +236,8 @@ const ANALYTICS_CLICK_OBJECT = {
     validationMethod: '',
     status: '',
     rating: '',
+    mobileWith: '',
+    mobileWithPlus: '',
   },
   formDetails: {
     employmentType: '',
@@ -251,6 +253,7 @@ const ANALYTICS_CLICK_OBJECT = {
     isVideoKYC: '',
     documentProof: '',
     nomineeRelation: '',
+    facingIssue: '',
   },
   card: {
     selectedCard: '',
@@ -280,6 +283,8 @@ const ANALYTICS_PAGE_LOAD_OBJECT = {
   },
   event: {
     authMethod: '',
+    mobileWith: '',
+    mobileWithPlus: '',
   },
   formDetails: {
     city: '',

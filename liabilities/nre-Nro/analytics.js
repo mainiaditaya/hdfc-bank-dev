@@ -47,7 +47,7 @@ function setAnalyticPageLoadProps(journeyState, formData, digitalData) {
   digitalData.user.journeyName = currentFormContext?.journeyName;
   digitalData.user.journeyID = formData?.journeyId;
   digitalData.user.journeyState = journeyState;
-  digitalData.user.casa = 'NA';
+  digitalData.user.casa = '';
   digitalData.form.name = FORM_NAME;
 }
 
@@ -71,7 +71,7 @@ function setAnalyticClickGenericProps(linkName, linkType, formData, journeyState
   digitalData.user.journeyID = currentFormContext?.journeyID;
   digitalData.user.journeyState = journeyState;
   digitalData.form.name = FORM_NAME;
-  digitalData.user.casa = 'NA';
+  digitalData.user.casa = '';
 }
 
 function getValidationMethod(formContext) {
@@ -92,6 +92,17 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
   digitalData.page.pageInfo.errorAPI = errorAPI ?? '';
   digitalData.page.pageInfo.errorCode = errorCode ?? '';
   digitalData.page.pageInfo.errorMessage = errorMessage ?? '';
+  
+  if(String(formData?.form?.login?.registeredMobileNumber) !== 'undefined'){
+    hashPhNo(String(formData?.form?.login?.registeredMobileNumber)).then((hashedMobile) => {
+      digitalData.event.mobileWith = hashedMobile;
+      hashPhNo(String(formData?.countryCode) + String(formData?.form?.login?.registeredMobileNumber)).then((hashedMobileWithPlus) => {
+          digitalData.event.mobileWithPlus = hashedMobileWithPlus;
+      });
+    });
+  }
+
+
   // digitalData.page.event.status = eventStatus;
   setAnalyticPageLoadProps(journeyState, formData, digitalData);
   if(typeof window !== 'undefined' && typeof _satellite !== 'undefined'){
@@ -166,6 +177,8 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
 async function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState, digitalData) {
   setAnalyticClickGenericProps(eventType, linkType, formData, journeyState, digitalData);
   digitalData.page.pageInfo.pageName = PAGE_NAME.nrenro[eventType];
+  digitalData.event.mobileWith = await hashPhNo(String(formData?.form?.login?.registeredMobileNumber));
+  digitalData.event.mobileWithPlus = await hashPhNo(String(formData?.countryCode)+String(formData?.form?.login?.registeredMobileNumber));
   switch (eventType) {
     case 'otp click': {
       if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
@@ -395,10 +408,11 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
     case 'on submit click': {
       if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
         window.digitalData = digitalData || {};
-        digitalData.event.status = (formData?.form?.thankyou?.facingIssue === '0') ? 'No' : 'Yes';
+        digitalData.event.status = '1';
+        digitalData.formDetails.facingIssue = (formData?.form?.thankyou?.facingIssue === '0') ? 'No' : 'Yes';
         digitalData.event.rating = formData?.AccountOpeningNRENRO?.feedbackrating ?? '';
         digitalData.page.pageInfo.pageName = 'Step 5 - Confirmation';
-        _satellite.track('submit');
+        _satellite.track('survey');
       }
       break;
     }

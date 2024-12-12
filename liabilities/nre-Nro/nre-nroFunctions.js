@@ -610,7 +610,7 @@ function setupBankUseSection(mainBankUsePanel, globals) {
   globals.functions.setProperty(lcCode, { enabled: false });
 }
 
-function showFinancialDetails(financialDetails, response, occupation, globals) {
+async function showFinancialDetails(financialDetails, response, occupation, globals) {
   const customerAMLDetails = response.customerAMLDetailsDTO[0];
   const {
     codOccupation: occupationCode,
@@ -622,6 +622,8 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
     txtProfessionDesc: txtProfessionDescCode,
     typEmployer: employeerCatCode,
   } = customerAMLDetails;
+
+  const codUtlComp = response.codUtlComp;
 
   const setDropdownValue = (name, code) => {
     const mappedValue = document.querySelector(`[name=${name}]`);
@@ -637,6 +639,7 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
     return '';
   };
 
+  const employerName = await getEmployerNameFromMDM(codUtlComp);
   const occupationText = setDropdownValue('occupationDropdown', occupationCode);
   const residenceTypeProfText = setDropdownValue('residenceTypeMapping', residenceTypeMappingCode);
   const natureOfBusinessText = setDropdownValue('natureOfBusinessMapping', natureOfBusCode);
@@ -656,10 +659,14 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
   globals.functions.setProperty(financialDetails.natureOfBusiness, { value: natureOfBusinessText?.toUpperCase() });
   globals.functions.setProperty(financialDetails.typeOfCompoanyFirm, { value: typeOfCompanyText?.toUpperCase() });
   globals.functions.setProperty(financialDetails.employerCategory, { value: employeerCatCodeText?.toUpperCase() });
+  globals.functions.setProperty(financialDetails.employeerName, { value: employerName});
 
-  if (occupationCode === '2') {
+  if (occupationCode === '2' || occupationCode === '28' || occupationCode === '30') {
     globals.functions.setProperty(financialDetails.selfEmployedProfessional, { visible: false });
     globals.functions.setProperty(financialDetails.employerCategory, { visible: true });
+    if(typeof employerName !== 'undefined'){
+      globals.functions.setProperty(financialDetails.employeerName, { visible: true });
+    }
   }
   if (occupationCode === '3') {
     globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
@@ -673,6 +680,8 @@ function showFinancialDetails(financialDetails, response, occupation, globals) {
     globals.functions.setProperty(financialDetails.selfEmployedSince, { visible: true });
     globals.functions.setProperty(financialDetails.natureOfBusiness, { visible: true });
   }
+
+  return true;
 }
 
 function showNomineeDetails(nomineeDetails, response, globals) {
@@ -1203,7 +1212,6 @@ function nreNroShowHidePage(globals) {
 function nreNroInit(globals) {
   globals.functions.setProperty(globals.form.runtime.journeyName, { value: currentFormContext.journeyName }); // Setting the hidden field
   globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.init_hidden_field, { value: 'INIT' }); // Setting the hidden field
-  onPageLoadAnalytics();
 }
 
 /**
@@ -1220,9 +1228,9 @@ function nreNroPageRedirected(globals) {
   currentFormContext.idComErrorMessage = queryParams?.errorMessage;
   currentFormContext.idComSuccess = queryParams?.success.toUpperCase();
   currentFormContext.idComRedirect = currentFormContext?.authModeParam && ((currentFormContext?.authModeParam === 'DebitCard') || (currentFormContext?.authModeParam === 'NetBanking')); // debit card or net banking flow
-  if (currentFormContext.idComRedirect) {
-    sendAnalytics('idcom redirection check', { validationMethod: currentFormContext?.authModeParam, status: currentFormContext?.idComSuccess }, 'ON_IDCOM_REDIRECTION', globals);
-  }
+  // if (currentFormContext.idComRedirect) {
+  //   sendAnalytics('idcom redirection check', { validationMethod: currentFormContext?.authModeParam, status: currentFormContext?.idComSuccess }, 'ON_IDCOM_REDIRECTION', globals);
+  // }
   if (currentFormContext.idComRedirect && currentFormContext.idComSuccess === 'TRUE') {
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'true' });
     globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
@@ -1268,7 +1276,12 @@ const onPageLoadAnalytics = async (globals) => {
 };
 
 setTimeout(() => {
-  onPageLoadAnalytics();
+  if(typeof window !== 'undefined' && typeof _satellite !== 'undefined'){
+    const params = new URLSearchParams(window.location.search);
+    if(!params?.get('authmode')){
+      onPageLoadAnalytics();
+    }
+  }
 }, 5000);
 
 const crmLeadIdDetail = async (globals) => {
@@ -1290,7 +1303,7 @@ const crmLeadIdDetail = async (globals) => {
       preferredChannel: '',
       territoryName: currentFormContext.territoryName,
       address: `${response?.txtCustadrAdd1} ${response?.txtCustadrAdd2} ${response?.txtCustadrAdd3}`,
-      companyName: '',
+      companyName: financialDetails.employeerName.$value,
       nomineeAge: '',
       typeOfFirm: financialDetails.typeOfCompoanyFirm.$value,
       typCompany: '',
@@ -1753,6 +1766,31 @@ function setTerritoryValue() {
     .catch((error) => {
       console.error('Error while getting territory value:', error);
     });
+}
+
+async function getEmployerNameFromMDM(employerCode){
+    const finalURL = `/content/hdfc_commonforms/api/mdm.INSTA.COMPANY_CODE.COMPANYCODE-${employerCode}.json`;
+    try{
+      const response = await getJsonResponse(urlPath(finalURL), null, 'GET');
+        if (!response || response.length === 0) {
+          console.warn('No response data received.');
+          return '';
+        }
+  
+        const employerName = response.length === 1
+        ? response[0].COMPANYNAME
+        : response.find((item) => item.COMPANYCODE === employerCode.toString()).COMPANYNAME;
+  
+        if (employerName) {
+          return employerName
+        } else {
+          console.warn('No matching employer name found for the employer code.');
+          return '';
+        }
+      } catch(error){
+        console.error('Error while getting employer name :', error);
+        return ''
+      }
 }
 
 export {

@@ -41,7 +41,7 @@ function setBodyPage(thanks) {
           digitalData.user.journeyID = document.querySelector(".field-journeyid input")?.value ?? '';
           digitalData.user.journeyState = 'CUSTOMER_ONBOARDING_COMPLETE';
           digitalData.form.name = FORM_NAME;
-          digitalData.user.casa = 'NA';
+          digitalData.user.casa = '';
           digitalData.page.pageInfo.pageName = PAGE_NAME.nrenro[linkName];
 
           if (window) {
@@ -65,7 +65,7 @@ function setBodyPage(thanks) {
           digitalData.user.journeyID = document.querySelector(".field-journeyid input")?.value ?? '';
           digitalData.user.journeyState = 'CUSTOMER_ONBOARDING_COMPLETE';
           digitalData.form.name = FORM_NAME;
-          digitalData.user.casa = 'NA';
+          digitalData.user.casa = '';
 
           digitalData.page.pageInfo.pageName = PAGE_NAME.nrenro[linkName];
 
@@ -86,7 +86,7 @@ function setBodyPage(thanks) {
         digitalData.user.journeyName = currentFormContext?.journeyName;
         digitalData.user.journeyID = document.querySelector(".field-journeyid input")?.value ?? '';
         digitalData.user.journeyState = 'CUSTOMER_ONBOARDING_COMPLETE';
-        digitalData.user.casa = 'NA';
+        digitalData.user.casa = '';
         digitalData.form.name = FORM_NAME;
         digitalData.formDetails.accountType = document.querySelector(".field-accounttype input").value ?? '';
         digitalData.formDetails.branchCode = document.querySelector(".field-branchcode input").value ?? '';
