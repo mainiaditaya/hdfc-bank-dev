@@ -139,7 +139,7 @@ const pageRedirected = () => {
       delayedUtilState.journeyId = searchParams.get('journeyId');
       delayedUtilState.errorCode = searchParams.get('errorCode');
       delayedUtilState.aadharRedirect = visitType === 'EKYC_AUTH' || visitType === 'EKYC_AUTH_FAILED';
-      delayedUtilState.idComRedirect = authMode === 'DebitCard' || authMode === 'CreditCard';
+      delayedUtilState.idComRedirect = authMode === 'DebitCard' || authMode === 'CreditCard' || authMode === 'NetBanking';
       pageRedirected();
     }, 0);
   }
