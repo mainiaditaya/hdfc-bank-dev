@@ -1073,8 +1073,8 @@
                       margin-bottom: 0;
                     }
 
-                    a {                     
-                      b{
+                    a {
+                      b {
                         font-weight: 600;
                       }
                     }
@@ -1225,13 +1225,13 @@
                   font-size: 41px;
                   line-height: 40px;
 
-                  @media (992px <=width <=1100px  ) {
+                  @media (992px <=width <=1100px) {
                     letter-spacing: 50px;
                   }
 
                   @-moz-document url-prefix() {
                     font-size: 20px;
-                  }   
+                  }
                 }
 
                 &::placeholder {
@@ -1710,6 +1710,10 @@
               border-top-right-radius: 15px;
             }
           }
+        }
+
+        .field-financialdetails.nre-style-accordian .field-employeername.text-wrapper.field-wrapper input {
+          position: initial;
         }
 
         fieldset.field-confirmdetails.nre-style-accordian {
@@ -3739,8 +3743,8 @@
                 }
               }
 
-              .field-accounttype.text-wrapper.field-wrapper{
-                input{
+              .field-accounttype.text-wrapper.field-wrapper {
+                input {
                   @media (1200px <=width <=1300px) {
                     font-size: 17px;
                   }
