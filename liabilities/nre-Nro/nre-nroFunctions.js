@@ -714,7 +714,6 @@ function showNomineeDetails(nomineeDetails, response, globals) {
     globals.functions.setProperty(nomineeDetails.nomineePanel, { visible: false });
     globals.functions.setProperty(nomineeDetails.nonomineeText, { visible: true });
     globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel, { visible: false });
-    globals.functions.setProperty(nomineeDetails.nomineePanel.nomineeSubpanel.textnominee, { visible: false });
   }
 }
 
@@ -737,7 +736,7 @@ function prefillCustomerDetail(response, globals) {
   setFormValue(personalDetails.mobileNumber, `+${currentFormContext.isdCode} ${maskNumber(currentFormContext.mobileNumber, 6)}`);
   setFormValue(personalDetails.pan, customerDataMasking('PANnmbr', response.refCustItNum)?.toUpperCase());
   if (!response.refCustTelex) globals.functions.setProperty(personalDetails.telephoneNumber, { visible: false });
-  else setFormValue(personalDetails.telephoneNumber, response.refCustTelex?.toUpperCase());
+  else setFormValue(personalDetails.telephoneNumber, maskNumber(response.refCustTelex, 6));
 
   setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1.trim()}, ${response.txtCustadrAdd2.trim()}, ${response.txtCustadrAdd3.trim()}, ${response.namCustadrCity}, ${response.namCustadrState}, ${response.namCustadrCntry}, ${response.txtCustadrZip}`?.toUpperCase());
 
