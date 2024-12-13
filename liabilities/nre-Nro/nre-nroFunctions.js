@@ -1567,6 +1567,7 @@ const crmLeadIdDetail = async (globals) => {
       addTaxPurpose: await getaddressForTaxPurpose(response.customerFATCADtlsDTO[0].addrTyp),
       mailingCity: response.namCustadrCity,
       birthCountry: await getCountryName(response.customerFATCADtlsDTO[0].codCntryBirth),
+      teleNumber: response.refCustTelex,
     },
   };
 
