@@ -135,6 +135,7 @@ function createJourneyId(visitMode, journeyAbbreviationValue, channelValue, glob
  */
 function getOTPV1(mobileNumber, cardDigits, channel, globals) {
   if (!isNodeEnv) {
+    handleMdmUtmParam(globals);
     /* restrict to show otp-resend option once it reaches max-attemt and to show otptimer */
     const { otpPanel } = globals.form.aem_semiWizard.aem_identifierPanel.aem_otpPanel;
     if (resendOtpCount < DATA_LIMITS.maxOtpResendLimit) {
@@ -538,6 +539,7 @@ function checkELigibilityHandler(resPayload1, globals) {
     if (!isNodeEnv) {
       cardDisplay(globals, resPayload);
       moveWizardView(domElements.semiWizard, domElements.chooseTransaction);
+      handleMdmUtmParam(globals);
     }
     response.nextscreen = 'success';
     /* to display available count to select */
@@ -748,8 +750,7 @@ function selectTenure(globals) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: MSG });
   } else {
     if (!isNodeEnv) {
-      moveWizardView(domElements.semiWizard, domElements.selectTenure);
-      handleMdmUtmParam(globals);
+      moveWizardView(domElements.semiWizard, domElements.selectTenure);  
     }
     tenureDisplay(globals);
   }

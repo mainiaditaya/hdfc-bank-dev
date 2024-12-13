@@ -12,7 +12,7 @@ import {
   removeSpecialCharacters,
   pincodeCheck,
 } from '../../common/formutils.js';
-import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
+import { getJsonResponse, getJsonWithoutEncrypt, displayLoader } from '../../common/makeRestAPI.js';
 import {
   addDisableClass,
   setSelectOptions,
@@ -88,7 +88,7 @@ const bindEmployeeAssistanceField = async (globals) => {
       globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
       globals.functions.setProperty(inPersonBioKYCPanel.inPersonBioKYCOptions, { value: 0 });
     }
-    const response = await getJsonResponse(FD_ENDPOINTS.masterchannel, null, 'GET');
+    const response = await getJsonWithoutEncrypt(FD_ENDPOINTS.masterchannel, null, 'GET');
     if (!response) return;
     if (response?.[0].errorCode === '500') {
       globals.functions.setProperty(resultPanel, { visible: true });
@@ -318,7 +318,7 @@ const validateFdEmail = async (email, globals) => {
   };
   const method = 'POST';
   try {
-    const emailValid = await getJsonResponse(url, payload, method);
+    const emailValid = await getJsonWithoutEncrypt(url, payload, method);
     if (emailValid === true) {
       globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { valid: true });
     } else {
@@ -352,7 +352,7 @@ const dsaCodeHandler = async (globals) => {
   const url = `${FD_ENDPOINTS.dsamaster}${dsaCode}.json`;
 
   try {
-    const response = await getJsonResponse(url, null, 'GET');
+    const response = await getJsonWithoutEncrypt(url, null, 'GET');
 
     if (response && response.length === 1) {
       const { DSA_CODE, DSA_NAME } = response[0];
@@ -382,7 +382,7 @@ const branchCodeHandler = async (globals) => {
   const branchNameUtil = formUtil(globals, employeeAssistancePanel.branchName);
   const branchCityUtil = formUtil(globals, employeeAssistancePanel.branchCity);
   try {
-    const response = await getJsonResponse(url, null, 'GET');
+    const response = await getJsonWithoutEncrypt(url, null, 'GET');
     if (response?.total === 1) {
       const changeDataAttrObj = { attrChange: true, value: false, disable: true };
       branchNameUtil.setValue(response.branchDetails[0].Name, changeDataAttrObj);
