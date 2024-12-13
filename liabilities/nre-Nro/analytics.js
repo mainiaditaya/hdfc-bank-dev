@@ -93,8 +93,8 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
   digitalData.page.pageInfo.errorCode = errorCode ?? '';
   digitalData.page.pageInfo.errorMessage = errorMessage ?? '';
   
-  if(String(formData?.form?.login?.registeredMobileNumber) !== 'undefined'){
-    hashPhNo(String(formData?.form?.login?.registeredMobileNumber)).then((hashedMobile) => {
+  if(String(formData?.form?.login?.registeredMobileNumber) !== 'undefined' && String(formData?.countryCode) !== 'undefined'){
+    hashPhNo(String(formData?.countryCode.substring(1,)) + String(formData?.form?.login?.registeredMobileNumber)).then((hashedMobile) => {
       digitalData.event.mobileWith = hashedMobile;
       hashPhNo(String(formData?.countryCode) + String(formData?.form?.login?.registeredMobileNumber)).then((hashedMobileWithPlus) => {
           digitalData.event.mobileWithPlus = hashedMobileWithPlus;
@@ -177,7 +177,7 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
 async function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState, digitalData) {
   setAnalyticClickGenericProps(eventType, linkType, formData, journeyState, digitalData);
   digitalData.page.pageInfo.pageName = PAGE_NAME.nrenro[eventType];
-  digitalData.event.mobileWith = await hashPhNo(String(formData?.form?.login?.registeredMobileNumber));
+  digitalData.event.mobileWith = await hashPhNo(String(formData?.countryCode.substring(1,)) + String(formData?.form?.login?.registeredMobileNumber));
   digitalData.event.mobileWithPlus = await hashPhNo(String(formData?.countryCode)+String(formData?.form?.login?.registeredMobileNumber));
   switch (eventType) {
     case 'otp click': {
@@ -228,7 +228,6 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
       if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
         window.digitalData = digitalData || {};
         digitalData.page.pageInfo.pageName = 'Step 2 - Verify with OTP';
-        digitalData.event.phone = await hashPhNo(String(formData?.form?.login?.registeredMobileNumber));
         _satellite.track('submit');
       }
       setTimeout(() => {
