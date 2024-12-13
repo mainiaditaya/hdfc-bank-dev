@@ -81,7 +81,7 @@ const finalDapFetchRes = async () => {
     finalDapConst.journeyParamState = journeyDropOffParamLast?.state;
     finalDapConst.journeyParamStateInfo = journeyDropOffParamLast?.stateInfo;
     const checkFinalDapSuccess = (journeyDropOffParamLast?.state === 'CUSTOMER_FINAL_DAP_SUCCESS');
-    if (true) {
+    if (checkFinalDapSuccess) {
       return eventHandler.successMethod(journeyDropOffParamLast);
     }
     const err = 'Bad response';
