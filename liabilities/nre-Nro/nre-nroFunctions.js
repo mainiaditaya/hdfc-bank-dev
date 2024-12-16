@@ -873,7 +873,7 @@ const resendOTP = async (globals) => {
     resendOtpCount += 1;
 
     const otpResult = await getOtpNRE(mobileNo, panValue, dobValue, globals);
-    invokeJourneyDropOffUpdate('CUSTOMER_LEAD_QUALIFIED_SUCESS', mobileNumber, globals.form.runtime.leadProifileId.$value, journeyID, globals);
+    invokeJourneyDropOffUpdate('CUSTOMER_LEAD_QUALIFIED', mobileNumber, globals.form.runtime.leadProifileId.$value, journeyID, globals);
     globals.functions.setProperty(globals.form.otppanelwrapper.otpFragment.otpPanel.secondsPanel.seconds, { value: dispSec });
     if (otpResult && otpResult.customerIdentificationResponse.existingCustomer === 'Y') {
       sec = OTP_TIMER;
@@ -1324,7 +1324,7 @@ const crmLeadIdDetail = async (globals) => {
       countryOfNominee: '',
       country: await getCountryName(response.namPermadrCntry),
       passpostExpiryDate: '',
-      codeLC: 'NRISTP',
+      codeLC: 'NRI INSTASTP',
       codeLG: globals.form.wizardPanel.wizardFragment.wizardNreNro.confirmDetails.needBankHelp.bankUseFragment.mainBankUsePanel.lgCode.$value || 'MKTG',
       applicationDate: new Date().toISOString().slice(0, 19),
       DLExpiryDate: '',

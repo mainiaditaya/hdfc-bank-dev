@@ -3670,11 +3670,16 @@
 
                 &.field-leadid-number {
                   input {
-                    background-position-x: 42%;
+                    background-position-x: 48%;
 
-                    @media (320px <=width <=767px) {
-                      background-position-x: 55%;
+                    @media (481px <=width <=767px) {
+                      background-position-x: 50%;
                     }
+
+                    @media (320px <=width <=480px) {
+                      background-position-x: 74%;
+                    }
+                    
                   }
                 }
               }
