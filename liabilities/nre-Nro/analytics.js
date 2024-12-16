@@ -100,6 +100,13 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
           digitalData.event.mobileWithPlus = hashedMobileWithPlus;
       });
     });
+  } else if(String(currentFormContext?.mobileNumber) !== 'undefined' && String(currentFormContext?.isdCode) !== 'undefined'){
+    hashPhNo(String(currentFormContext?.isdCode) + String(currentFormContext?.mobileNumber)).then((hashedMobile) => {
+      digitalData.event.mobileWith = hashedMobile;
+      hashPhNo('+' + String(currentFormContext?.isdCode) + String(currentFormContext?.mobileNumber)).then((hashedMobileWithPlus) => {
+          digitalData.event.mobileWithPlus = hashedMobileWithPlus;
+      });
+    });
   }
 
 
@@ -107,32 +114,13 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
   setAnalyticPageLoadProps(journeyState, formData, digitalData);
   if(typeof window !== 'undefined' && typeof _satellite !== 'undefined'){
     switch (pageName) {
-      case 'Step 3 : Select  Account': {
-        // dataReq = getFatcaData(formData);
-        // digitalData.formDetails.state = dataReq.state;
-        // digitalData.formDetails.pincode = dataReq.pincode;
-        // digitalData.formDetails.nationality = dataReq.nationality;
-        // digitalData.formDetails.countryTaxResidence = dataReq.countryTaxResidence;
-        // digitalData.formDetails.countryofBirth = dataReq.countryofBirth;
-        // digitalData.nomineeRelation = dataReq.nomineeRelation;
-        // digitalData.formDetails.companyName = dataReq.companyName;
-        // digitalData.formDetails.AnnualIncome = dataReq.AnnualIncome;
-        // digitalData.formDetails.currency = dataReq.currency;
-        // digitalData.formDetails.residenceType = dataReq.residenceType;
-        // digitalData.formDetails.sourceoffunds = dataReq.sourceoffunds;
-        // digitalData.formDetails.selfemployeddate = dataReq.selfemployeddate;
-        // digitalData.formDetails.natureofbusiness = dataReq.natureofbusiness;
-        // digitalData.formDetails.typeofcompany = dataReq.typeofcompany;
-        // digitalData.formDetails.typeofprofessional = dataReq.typeofprofessional;
-        break;
-      }
       case 'select account type': {
         digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
         digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? '';
         digitalData.formDetails.accountType = currentFormContext.productAccountName ?? '';
         break;
       }
-      case 'Step 4 : Confirm Details': {
+      case 'Step 4 - Confirm Details': {
         digitalData.formDetails.city = currentFormContext?.fatca_response?.namCustadrCity ?? '';
         digitalData.formDetails.state = currentFormContext?.fatca_response?.namCustadrState ?? '';
         digitalData.formDetails.pincode = currentFormContext?.fatca_response?.txtCustadrZip ?? '';
@@ -177,8 +165,14 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
 async function sendSubmitClickEvent(phone, eventType, linkType, formData, journeyState, digitalData) {
   setAnalyticClickGenericProps(eventType, linkType, formData, journeyState, digitalData);
   digitalData.page.pageInfo.pageName = PAGE_NAME.nrenro[eventType];
-  digitalData.event.mobileWith = await hashPhNo(String(formData?.countryCode.substring(1,)) + String(formData?.form?.login?.registeredMobileNumber));
-  digitalData.event.mobileWithPlus = await hashPhNo(String(formData?.countryCode)+String(formData?.form?.login?.registeredMobileNumber));
+  if((formData?.countryCode ?? '' !== '') && (formData?.form?.login?.registeredMobileNumber ?? '' !== '')){
+    digitalData.event.mobileWith = await hashPhNo(String(formData?.countryCode.substring(1,)) + String(formData?.form?.login?.registeredMobileNumber));
+    digitalData.event.mobileWithPlus = await hashPhNo(String(formData?.countryCode)+String(formData?.form?.login?.registeredMobileNumber));
+  } else if((currentFormContext?.isdCode ?? '' !== '') && (currentFormContext?.mobileNumber ?? '' !== '')){
+    digitalData.event.mobileWith = await hashPhNo(String(currentFormContext?.isdCode) + String(currentFormContext?.mobileNumber));
+    digitalData.event.mobileWithPlus = await hashPhNo('+' + String(currentFormContext?.isdCode)+String(currentFormContext?.mobileNumber));
+  }
+  
   switch (eventType) {
     case 'otp click': {
       if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
@@ -415,6 +409,28 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
       }
       break;
     }
+    case 'nine_rating_cta_click': {
+      if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
+        window.digitalData = digitalData || {};
+        digitalData.event.status = '1';
+        digitalData.formDetails.facingIssue = (formData?.form?.thankyou?.facingIssue === '0') ? 'No' : 'Yes';
+        digitalData.event.rating = formData?.AccountOpeningNRENRO?.feedbackrating ?? '';
+        digitalData.page.pageInfo.pageName = 'Step 5 - Confirmation';
+        _satellite.track('survey');
+      }
+      break;
+    }
+    case 'ten_rating_cta_click': {
+      if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
+        window.digitalData = digitalData || {};
+        digitalData.event.status = '1';
+        digitalData.formDetails.facingIssue = (formData?.form?.thankyou?.facingIssue === '0') ? 'No' : 'Yes';
+        digitalData.event.rating = formData?.AccountOpeningNRENRO?.feedbackrating ?? '';
+        digitalData.page.pageInfo.pageName = 'Step 5 - Confirmation';
+        _satellite.track('survey');
+      }
+      break;
+    }
     case 'on apply for CTA click': {
       if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
         window.digitalData = digitalData || {};
@@ -475,7 +491,7 @@ function populateResponse(payload, eventType, digitalData, formData) {
       break;
     }
     case 'select account type click': {
-      digitalData.formDetails.accountType = currentFormContext.productAccountName ?? '';
+      digitalData.formDetails.accountType = currentFormContext?.productAccountName ?? '';
       digitalData.formDetails.existingAccountType = currentFormContext.journeyAccountType ?? '';
       digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
       digitalData.event.status = 1;
@@ -640,14 +656,14 @@ function attachPrivacyPolicyAnalytics(globals) {
       });
     }
   });
-  const requestedProduct = document.querySelector('.field-checkboxconsent1label .link');
+  const requestedProduct = document.querySelector('.field-checkboxconsent1label b');
   if (requestedProduct) {
     requestedProduct.addEventListener('click', (event) => {
       event.preventDefault();
       sendAnalytics('requested product click', {}, '', globals);
     });
   }
-  const otherProducts = document.querySelector('.field-checkboxconsent2label .link');
+  const otherProducts = document.querySelector('.field-checkboxconsent2label b');
   if (otherProducts) {
     otherProducts.addEventListener('click', (event) => {
       event.preventDefault();

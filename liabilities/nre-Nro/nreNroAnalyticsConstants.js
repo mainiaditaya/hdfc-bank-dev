@@ -55,6 +55,16 @@ const data = {
     StepName: 'Clicked HDFC Bank Website Link',
     linkPosition: 'Form',
   },
+  'nine_rating_cta_click': {
+    linkType: 'link',
+    StepName: 'Nine Rating CTA Clicked',
+    linkPosition: 'Form',
+  },
+  'ten_rating_cta_click': {
+    linkType: 'link',
+    StepName: 'Ten Rating CTA Clicked',
+    linkPosition: 'Form',
+  },
   'submit otp': {
     error: '',
   },

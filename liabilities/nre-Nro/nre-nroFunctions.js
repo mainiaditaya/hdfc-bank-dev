@@ -1624,6 +1624,7 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
   } = globals.form.parentLandingPagePanel.landingPanel.userSelectedProductDetails;
 
   if (nroEliteSavingsAcco === 'on') {
+    currentFormContext.productAccountName = 'NRO - Elite Savings Account';
     globals.functions.setProperty(userSelectedProductName, { value: 'NRO savings account' });
     globals.functions.setProperty(userSelectedProductAccountType, { value: '1345' });
     globals.functions.setProperty(userSelectedProductCatogery, { value: 'Savings' });
@@ -1631,6 +1632,7 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
     globals.functions.setProperty(userSelectedProductKey, { value: '602' });
     globals.functions.setProperty(userSelectedAccountName, { value: 'NRO - Elite Savings Account' });
   } else if (nroRegularSavingsAcco === 'on') {
+    currentFormContext.productAccountName = 'NRO - Regular Savings Account';
     globals.functions.setProperty(userSelectedProductName, { value: 'NRO savings account' });
     globals.functions.setProperty(userSelectedProductAccountType, { value: '101' });
     globals.functions.setProperty(userSelectedProductCatogery, { value: 'Savings' });
@@ -1638,6 +1640,7 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
     globals.functions.setProperty(userSelectedProductKey, { value: '602' });
     globals.functions.setProperty(userSelectedAccountName, { value: 'NRO - Regular Savings Account' });
   } else if (nroCurrentAcco === 'on') {
+    currentFormContext.productAccountName = 'NRO - Current Account';
     globals.functions.setProperty(userSelectedProductName, { value: 'NRO current account' });
     globals.functions.setProperty(userSelectedProductAccountType, { value: '201' });
     globals.functions.setProperty(userSelectedProductCatogery, { value: 'Current' });
@@ -1645,6 +1648,7 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
     globals.functions.setProperty(userSelectedProductKey, { value: '605' });
     globals.functions.setProperty(userSelectedAccountName, { value: 'NRO - Current Account' });
   } else if (nreRegularSavingsAcco === 'on') {
+    currentFormContext.productAccountName = 'NRE - Regular Savings Account';
     globals.functions.setProperty(userSelectedProductName, { value: 'NRE savings account' });
     globals.functions.setProperty(userSelectedProductAccountType, { value: '106' });
     globals.functions.setProperty(userSelectedProductCatogery, { value: 'Savings' });
@@ -1652,6 +1656,7 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
     globals.functions.setProperty(userSelectedProductKey, { value: '601' });
     globals.functions.setProperty(userSelectedAccountName, { value: 'NRE - Regular Savings Account' });
   } else if (nreEliteSavingsAcco === 'on') {
+    currentFormContext.productAccountName = 'NRE - Elite Savings Account';
     globals.functions.setProperty(userSelectedProductName, { value: 'NRE savings account' });
     globals.functions.setProperty(userSelectedProductAccountType, { value: '1350' });
     globals.functions.setProperty(userSelectedProductCatogery, { value: 'Savings' });
@@ -1659,6 +1664,7 @@ function nreNroAccountType(nroAccountTypePanel, nreAccountTypePanel, globals) {
     globals.functions.setProperty(userSelectedProductKey, { value: '601' });
     globals.functions.setProperty(userSelectedAccountName, { value: 'NRE - Elite Savings Account' });
   } else if (nreCurrentAcco === 'on') {
+    currentFormContext.productAccountName = 'NRE - Current Account';
     globals.functions.setProperty(userSelectedProductName, { value: 'NRE  current account' });
     globals.functions.setProperty(userSelectedProductAccountType, { value: '218' });
     globals.functions.setProperty(userSelectedProductCatogery, { value: 'Current' });

@@ -11,6 +11,10 @@ import { FORM_NAME } from './constant.js';
 import {
   createDeepCopyFromBlueprint,
 } from '../../common/formutils.js';
+import {
+  enableAccordionClick,
+  attachPrivacyPolicyAnalytics,
+} from './analytics.js';
 
 /**
  * Hashes a phone number using SHA-256 algorithm.
@@ -38,6 +42,8 @@ const thanks = document?.querySelector('[name="thankYouPanel"]');
 function setBodyPage(thanks) {
   if (thanks) {
     if (window && document && typeof _satellite !== 'undefined') {
+      enableAccordionClick();
+      attachPrivacyPolicyAnalytics();
       console.log(currentFormContext);
       thanks = document.querySelector('[name="thankYouPanel"]');
       const errorPanel = document.querySelector('[name="itsNotYouPanel"]');
