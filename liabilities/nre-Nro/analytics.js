@@ -114,10 +114,10 @@ function sendPageloadEvent(journeyState, formData, pageName, errorAPI, errorMess
   setAnalyticPageLoadProps(journeyState, formData, digitalData);
   if(typeof window !== 'undefined' && typeof _satellite !== 'undefined'){
     switch (pageName) {
-      case 'select account type': {
+      case 'Step 3 - Account Type': {
         digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
-        digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? '';
-        digitalData.formDetails.accountType = currentFormContext.productAccountName ?? '';
+        digitalData.formDetails.existingAccountType = currentFormContext?.journeyAccountType ?? '';
+        digitalData.formDetails.accountType = currentFormContext?.productAccountName ?? '';
         break;
       }
       case 'Step 4 - Confirm Details': {
@@ -224,9 +224,6 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
         digitalData.page.pageInfo.pageName = 'Step 2 - Verify with OTP';
         _satellite.track('submit');
       }
-      setTimeout(() => {
-        sendPageloadEvent(journeyState, formData, PAGE_NAME.nrenro['select account']);
-      }, 1000);
       break;
     }
     case 'continue btn select account': {
@@ -236,14 +233,14 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
       }
 
       setTimeout(() => {
-        sendPageloadEvent(journeyState, formData, PAGE_NAME.nrenro['select account type']);
+        sendPageloadEvent(journeyState, formData, PAGE_NAME.nrenro['select account type click']);
       }, 1000);
       break;
     }
     case 'select account type click': {
       if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
         window.digitalData = digitalData || {};
-        digitalData.page.pageInfo.pageName = 'Step 3 - Select  Account';
+        digitalData.page.pageInfo.pageName = PAGE_NAME.nrenro['select account type click'];
         _satellite.track('submit');
       }
 
@@ -344,6 +341,15 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
       }
       break;
     }
+    case 'Confirm Details accordion collapse click': {
+      if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
+        window.digitalData = digitalData || {};
+        digitalData.page.pageInfo.pageName = 'Step 4 - Confirm Details';
+        digitalData.event.status = 1;
+        _satellite.track('submit');
+      }
+      break;
+    }
     case 'privacy click': {
       if (typeof window !== 'undefined' && typeof _satellite !== 'undefined') {
         window.digitalData = digitalData || {};
@@ -414,7 +420,7 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
         window.digitalData = digitalData || {};
         digitalData.event.status = '1';
         digitalData.formDetails.facingIssue = (formData?.form?.thankyou?.facingIssue === '0') ? 'No' : 'Yes';
-        digitalData.event.rating = formData?.AccountOpeningNRENRO?.feedbackrating ?? '';
+        digitalData.event.rating = '9';
         digitalData.page.pageInfo.pageName = 'Step 5 - Confirmation';
         _satellite.track('survey');
       }
@@ -425,7 +431,7 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
         window.digitalData = digitalData || {};
         digitalData.event.status = '1';
         digitalData.formDetails.facingIssue = (formData?.form?.thankyou?.facingIssue === '0') ? 'No' : 'Yes';
-        digitalData.event.rating = formData?.AccountOpeningNRENRO?.feedbackrating ?? '';
+        digitalData.event.rating = '10';
         digitalData.page.pageInfo.pageName = 'Step 5 - Confirmation';
         _satellite.track('survey');
       }
@@ -446,23 +452,10 @@ async function sendSubmitClickEvent(phone, eventType, linkType, formData, journe
 function populateResponse(payload, eventType, digitalData, formData) {
   switch (eventType) {
     case 'otp click': {
-      let privacyConsent = '';
-      let callSmsWhatsappConsent = '';
-      let countryCode = '';
-      // Check for privacy consent
-      // if (formData && formData?.form && formData.form?.consent && formData.form.consent?.checkboxConsent1Label) {
-      privacyConsent = formData?.form?.consent?.checkboxConsent1Label ? 'Yes' : 'No';
-      // }
-      // if (formData && formData?.form && formData.form?.consent && formData.form.consent?.checkboxConsent2Label) {
-      callSmsWhatsappConsent = formData?.form?.consent?.checkboxConsent2Label ? 'Yes' : 'No';
-      // }
-      // if (formData && formData?.form && formData.form?.consent && formData.form.login?.countryCode) {
-      countryCode = formData?.form?.login?.countryCode ?? '';
-      // }
-      digitalData.formDetails.privacyContent = privacyConsent;
-      digitalData.formDetails.callSmsWhatsappConsent = callSmsWhatsappConsent;
+      digitalData.formDetails.privacyContent = formData?.form?.consent?.checkboxConsent1Label ? 'Yes' : 'No';;
+      digitalData.formDetails.callSmsWhatsappConsent = formData?.form?.consent?.checkboxConsent2Label ? 'Yes' : 'No';
       digitalData.event.validationMethod = getValidationMethod(formData);
-      digitalData.formDetails.country = countryCode;
+      digitalData.formDetails.country = formData?.countryCode ?? '';;
       break;
     }
     case 'privacy consent click': {
@@ -486,13 +479,13 @@ function populateResponse(payload, eventType, digitalData, formData) {
       break;
     }
     case 'continue btn select account': {
-      digitalData.formDetails.existingAccountType = currentFormContext?.existingAccountType ?? '';
+      digitalData.formDetails.existingAccountType = currentFormContext?.journeyAccountType ?? '';
       digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
       break;
     }
     case 'select account type click': {
       digitalData.formDetails.accountType = currentFormContext?.productAccountName ?? '';
-      digitalData.formDetails.existingAccountType = currentFormContext.journeyAccountType ?? '';
+      digitalData.formDetails.existingAccountType = currentFormContext?.journeyAccountType ?? '';
       digitalData.formDetails.bankBranch = currentFormContext?.fatca_response?.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue]?.branchName ?? '';
       digitalData.event.status = 1;
       break;

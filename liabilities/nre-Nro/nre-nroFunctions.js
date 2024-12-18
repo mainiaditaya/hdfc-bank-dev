@@ -813,6 +813,9 @@ function multiCustomerId(response, selectAccount, singleAccountCust, multipleAcc
 
   // globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.multipleAccounts.multipleAccountRepeatable[0]?.AccountNumber, { value: accountDetailsList[0].accountNumber });
   if (responseLength > 1) {
+    setTimeout(() => {
+      sendAnalytics('page load_Step 3 - Select Account', {}, 'CUSTOMER_ELIGIBILITY_SUCCESS', globals);
+    }, 1000);
     globals.functions.setProperty(singleAccountCust, { visible: false });
     globals.functions.setProperty(multipleAccountsPanel, { visible: true });
     globals.functions.setProperty(globals.form.wizardPanel.continue, { visible: false });
@@ -840,6 +843,9 @@ function multiCustomerId(response, selectAccount, singleAccountCust, multipleAcc
       }, 1000);
     });
   } else {
+    setTimeout(() => {
+      sendAnalytics('page load_Step 3 - Account Type', {}, 'CUSTOMER_ELIGIBILITY_SUCCESS', globals);
+    }, 1000);
     globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
     prefillAccountDetail(response, responseLength - 1, responseLength, globals);
   }
@@ -1692,8 +1698,7 @@ function multiAccountVarient(selectAccount, globals) {
     globals.functions.setProperty(selectAccount.nro_account_type_pannel.eliteSavingsAccountPanel.eliteSavingsAccount, { value: null });
   }
 
-  currentFormContext.existingAccountType = varientType;
-  sendAnalytics('continue btn select account', { varientType }, 'SELECT_ACCOUNT_ON_CONTINUE_CLICK', globals);
+  sendAnalytics('continue btn select account', { varientType }, 'CUSTOMER_ACCOUNT_SELECTED', globals);
 }
 
 function submitThankYou(globals) {

@@ -165,6 +165,12 @@ const data = {
     StepName: 'Confirm Details',
     linkPosition: 'Form',
   },
+  'Confirm Details accordion collapse click': {
+    linkType: 'accordion',
+    linkName: 'Confirm Details Checkbox Clicked',
+    StepName: 'Confirm Details',
+    linkPosition: 'Form',
+  },
   'Nominee Details click': {
     linkType: 'accordion',
     StepName: 'Confirm Details',
@@ -337,8 +343,8 @@ const PAGE_NAME = {
   nrenro: {
     'otp click': 'Step 1 - Identify Yourself',
     'confirm otp': 'Step 2 - Verify with OTP',
-    'select account': 'Step 3 - Select  Account',
-    'select account type': 'Step 3 - Account Type',
+    'continue btn select account': 'Step 3 - Select Account',
+    'select account type click': 'Step 3 - Account Type',
     'confirm details': 'Step 4 - Confirm Details',
     'confirmation page': 'Step 5 - Confirmation',
     'Apply for a CTA Click': 'Step 5 - Confirmation',
