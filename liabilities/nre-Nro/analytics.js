@@ -600,13 +600,15 @@ function enableAccordionClick(globals) {
         const legendElement = accordion.querySelector('.field-label.nrenro-accordian');
         if (legendElement) {
           const accordionName = legendElement.textContent.trim();
-          setTimeout(() => {
-            if (legendElement.classList.contains('accordion-collapse')) {
-              sendAnalytics(accordionName + ' accordion expand click', {}, '', globals);
-            } else{
-              sendAnalytics(accordionName + ' accordion collapse click', {}, '', globals);
-            }
-          }, 1000);
+          if(accordionName !== 'Confirm Details'){
+            setTimeout(() => {
+              if (legendElement.classList.contains('accordion-collapse')) {
+                sendAnalytics(accordionName + ' accordion expand click', {}, '', globals);
+              } else{
+                sendAnalytics(accordionName + ' accordion collapse click', {}, '', globals);
+              }
+            }, 1000);
+          }
         }
       });
       accordion.dataset.listenerAdded = 'true';

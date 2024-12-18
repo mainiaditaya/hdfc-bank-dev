@@ -133,7 +133,7 @@ function setBodyPage(thanks) {
         digitalData.user.journeyState = 'CUSTOMER_ONBOARDING_COMPLETE';
         digitalData.user.casa = '';
         digitalData.form.name = FORM_NAME;
-        digitalData.formDetails.accountType = document.querySelector(".field-accounttype input").value ?? '';
+        digitalData.formDetails.accountType = document.querySelector('.field-accountsummary .field-accounttype input').value ?? '';
         digitalData.formDetails.branchCode = document.querySelector(".field-branchcode input").value ?? '';
         digitalData.formDetails.bankBranch = document.querySelector(".field-homebranch input").value ?? '';
         digitalData.event.authMethod = params?.get('authmode') ?? '';
