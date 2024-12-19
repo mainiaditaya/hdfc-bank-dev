@@ -1284,7 +1284,7 @@ const onPageLoadAnalytics = async (globals) => {
 setTimeout(() => {
   if(typeof window !== 'undefined' && typeof _satellite !== 'undefined'){
     const params = new URLSearchParams(window.location.search);
-    if(!params?.get('authmode')){
+    if(params?.get('success') !== 'true' || (params?.get('authmode') !== 'DebitCard' && params?.get('authmode') !== 'NetBanking')){
       onPageLoadAnalytics();
     }
   }
