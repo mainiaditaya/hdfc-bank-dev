@@ -171,8 +171,8 @@ function handleRuleEngineEvent(e, form, generateFormRendition) {
 function applyRuleEngine(htmlForm, form, captcha) {
   htmlForm.addEventListener('change', (e) => {
     const field = e.target;
-    const { id, value, name, checked } = field;
-    // const { id } = field.closest('.field-wrapper').dataset;
+    const { value, name, checked } = field;
+    const { id } = field.closest('.field-wrapper').dataset;
     if ((field.type === 'checkbox' && field.dataset.fieldType === 'checkbox-group')) {
       const val = getCheckboxGroupValue(name, htmlForm);
       const el = form.getElement(name);
@@ -188,6 +188,18 @@ function applyRuleEngine(htmlForm, form, captcha) {
       form.getElement(id).value = value;
     }
     // console.log(JSON.stringify(form.exportData(), null, 2));
+  });
+
+  htmlForm.addEventListener('input', (e) => {
+    const field = e.target;
+    const fieldWrapper = field?.closest('.field-wrapper');
+    if (!fieldWrapper || fieldWrapper.classList.contains('skip-onchange')) return;
+
+    const { id, value } = field;
+    const formElement = form.getElement(id);
+    if (formElement) {
+      formElement.value = value;
+    }
   });
 
   htmlForm.addEventListener('click', async (e) => {

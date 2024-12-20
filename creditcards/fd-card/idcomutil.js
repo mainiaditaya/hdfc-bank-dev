@@ -18,7 +18,7 @@ const createIdComRequestObj = (globals) => {
     requestString: {
       mobileNumber: `${globals.form.loginMainPanel.loginPanel.mobilePanel.registeredMobileNumber._data.$_value}`,
       ProductCode: IDCOM.productCode,
-      PANNo: personalDetails.panNumberPersonalDetails._data.$_value.replace(/\s+/g, ''),
+      PANNo: personalDetails.panNumberPersonalDetails._data.$_value.replace(/\s+/g, '')?.toUpperCase(),
       userAgent: navigator.userAgent,
       journeyID: CURRENT_FORM_CONTEXT?.journeyID || globals.functions.exportData()?.currentFormContext?.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,

@@ -1,5 +1,6 @@
 import { CURRENT_FORM_CONTEXT } from '../../common/constants.js';
 import { getUrlParamCaseInsensitive } from '../../common/formutils.js';
+import { replaceElementsWith } from '../domutils/domutils.js';
 import { buttonEnableOnCheck } from './fd-dom-functions.js';
 import { IPA_RESPONSE } from './ipautil.js';
 
@@ -61,6 +62,9 @@ const setknowMoreBenefitsPanelData = (moreFeatures, knowMoreBenefitsPanel, globa
     cardBenefitsText: feature,
   }));
   globals.functions.importData(transformedMoreFeatures, knowMoreBenefitsPanel.$qualifiedName);
+  setTimeout(() => {
+    replaceElementsWith('.field-knowmorebenefitspanel textarea', 'p', -1);
+  }, 200);
 };
 
 const knowMoreCardClickHandler = (globals) => {

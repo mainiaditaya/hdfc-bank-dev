@@ -158,7 +158,7 @@ const createExecuteInterfaceRequest = (payload, source, globals) => {
       panDobMatch: payload?.validDob,
       panEditFlag: customerInfo?.refCustItNum ? 'N' : 'Y',
       panNameMatch: payload?.validName,
-      panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, ''),
+      panNumber: personalDetails.panNumberPersonalDetails.$value.replace(/\s+/g, '')?.toUpperCase(),
       permanentAddress1: communicationAddress?.line1,
       permanentAddress2: communicationAddress?.line2,
       permanentAddress3: communicationAddress?.line3,

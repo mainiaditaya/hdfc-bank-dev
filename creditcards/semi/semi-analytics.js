@@ -113,7 +113,7 @@ const sendPageloadEvent = (journeyState, formData, pageName) => {
   }
   if (currentState.pageName === ANALYTICS_PAGE_NAME['thank you']) {
     digitalData.formDetails = {};
-    digitalData.formDetails.reference = formData?.smartemi?.originAcct ?? '';
+    digitalData.formDetails.reference = currentFormContext?.LoanReferenceNumber ?? '';
     digitalData.formDetails.amtCreditedDealer = formData?.smartemi?.SmartEMIAmt ?? '';
     digitalData.user.casa = 'YES';
     digitalData.user.aan = formData?.smartemi?.originAcct;

@@ -176,7 +176,7 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
       // mobileNumber: FD_CONSTANT.MODE === 'dev' ? '9810558449' : mobileNumber.$value,
       // panNumber: FD_CONSTANT.MODE === 'dev' ? 'OJSPS6821J' : panValue || '',
       mobileNumber: mobileNumber.$value,
-      panNumber: panValue || '',
+      panNumber: panValue?.toUpperCase() || '',
       journeyID: globals.form.runtime.journeyId.$value,
       journeyName: globals.form.runtime.journeyName.$value || CURRENT_FORM_CONTEXT.journeyName,
       identifierValue: panValue || dob.$value,
@@ -185,11 +185,6 @@ const getOTP = (mobileNumber, pan, dob, globals) => {
   };
   const path = urlPath(FD_ENDPOINTS.otpGen);
   formRuntime?.getOtpLoader();
-
-  // if (FD_CONSTANT.MODE === 'dev') {
-  //   globals.functions.setProperty(mobileNumber, { value: '9810558449' });
-  //   globals.functions.setProperty(pan, { value: 'OJSPS6821J' });
-  // }
 
   return fetchJsonResponse(path, jsonObj, 'POST', true);
 };
@@ -233,7 +228,7 @@ const otpValidation = (mobileNumber, pan, dob, otpNumber, globals) => {
       mobileNumber: mobileNumber.$value,
       passwordValue: otpNumber.$value,
       dateOfBirth: clearString(dob.$value) || '',
-      panNumber: panValue || '',
+      panNumber: panValue?.toUpperCase() || '',
       channelSource: '',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: globals.form.runtime.journeyName.$value || CURRENT_FORM_CONTEXT.journeyName,

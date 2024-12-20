@@ -12,11 +12,12 @@ import {
   removeSpecialCharacters,
   pincodeCheck,
 } from '../../common/formutils.js';
-import { getJsonResponse, displayLoader } from '../../common/makeRestAPI.js';
+import { getJsonResponse, getJsonWithoutEncrypt, displayLoader } from '../../common/makeRestAPI.js';
 import {
   addDisableClass,
   setSelectOptions,
   addClassToElement,
+  validateTextInput,
 } from '../domutils/domutils.js';
 import {
   FD_ENDPOINTS, NAME_ON_CARD_LENGTH, AGE_LIMIT, ERROR_MSG,
@@ -27,6 +28,7 @@ import {
   MAX_FULLNAME_LENGTH,
   EMPLOYEE_SECTION_VISIBILITY,
   FD_JOURNEY_STATE,
+  MAX_ANNUAL_INCOME_LENGTH,
 } from './constant.js';
 import { fullNamePanValidation } from '../../common/panvalidation.js';
 import { sendFDAnalytics } from './analytics.js';
@@ -86,7 +88,7 @@ const bindEmployeeAssistanceField = async (globals) => {
       globals.functions.setProperty(inPersonBioKYCPanel, { visible: true });
       globals.functions.setProperty(inPersonBioKYCPanel.inPersonBioKYCOptions, { value: 0 });
     }
-    const response = await getJsonResponse(FD_ENDPOINTS.masterchannel, null, 'GET');
+    const response = await getJsonWithoutEncrypt(FD_ENDPOINTS.masterchannel, null, 'GET');
     if (!response) return;
     if (response?.[0].errorCode === '500') {
       globals.functions.setProperty(resultPanel, { visible: true });
@@ -136,6 +138,12 @@ const bindEmployeeAssistanceField = async (globals) => {
  */
 const bindCustomerDetails = async (globals) => {
   if (!CUSTOMER_DATA_BINDING_CHECK) return;
+  const digitRegex = /^\d+$/;
+  const annualIncomeField = document.querySelector('.field-annualincome input');
+  annualIncomeField.addEventListener('input', () => {
+    validateTextInput(annualIncomeField, digitRegex, MAX_ANNUAL_INCOME_LENGTH);
+  });
+
   CURRENT_FORM_CONTEXT.customerIdentityChange = false;
   CURRENT_FORM_CONTEXT.editFlags = {
     nameOnCard: true,
@@ -310,7 +318,7 @@ const validateFdEmail = async (email, globals) => {
   };
   const method = 'POST';
   try {
-    const emailValid = await getJsonResponse(url, payload, method);
+    const emailValid = await getJsonWithoutEncrypt(url, payload, method);
     if (emailValid === true) {
       globals.functions.setProperty(globals.form.fdBasedCreditCardWizard.basicDetails.reviewDetailsView.personalDetails.emailID, { valid: true });
     } else {
@@ -344,7 +352,7 @@ const dsaCodeHandler = async (globals) => {
   const url = `${FD_ENDPOINTS.dsamaster}${dsaCode}.json`;
 
   try {
-    const response = await getJsonResponse(url, null, 'GET');
+    const response = await getJsonWithoutEncrypt(url, null, 'GET');
 
     if (response && response.length === 1) {
       const { DSA_CODE, DSA_NAME } = response[0];
@@ -374,7 +382,7 @@ const branchCodeHandler = async (globals) => {
   const branchNameUtil = formUtil(globals, employeeAssistancePanel.branchName);
   const branchCityUtil = formUtil(globals, employeeAssistancePanel.branchCity);
   try {
-    const response = await getJsonResponse(url, null, 'GET');
+    const response = await getJsonWithoutEncrypt(url, null, 'GET');
     if (response?.total === 1) {
       const changeDataAttrObj = { attrChange: true, value: false, disable: true };
       branchNameUtil.setValue(response.branchDetails[0].Name, changeDataAttrObj);
