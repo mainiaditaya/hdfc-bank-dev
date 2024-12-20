@@ -13,7 +13,7 @@ const createPayload = (mobileNumber, panNumber, dob, jwtToken) => {
     requestString: {
       mobileNumber,
       dateOfBirth: dob ? dateFormat(dob, 'YYYYMMDD') : '',
-      panNumber: panNumber ? panNumber?.replace(/\s+/g, '') : '',
+      panNumber: panNumber ? panNumber?.replace(/\s+/g, '')?.toUpperCase() : '',
       journeyID: CURRENT_FORM_CONTEXT.journeyID,
       journeyName: CURRENT_FORM_CONTEXT.journeyName,
       jwtToken,

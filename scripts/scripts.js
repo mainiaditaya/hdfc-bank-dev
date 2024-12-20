@@ -12,6 +12,8 @@ import {
   loadScript,
 } from './aem.js';
 
+import { getSubmitBaseUrl } from '../blocks/form/constant.js';
+
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 const FORM_CONSTANT = [
@@ -32,7 +34,7 @@ const FORM_CONSTANT = [
     class: '',
     urlKey: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
     launchScript: {
-      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
+      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-230317469f6b-development.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
       loadTime: 1200,
     },
@@ -60,18 +62,17 @@ const FORM_CONSTANT = [
     },
   },
   {
-    // NRE NRO
-    formPath: ['nre-nro', 'account-opening-nre-nro'],
-    class: 'nre',
-    urlKey: ['nre-nro', 'account-opening-nre-nro'],
+    formPath: ['etb-fixed-deposit-cc', 'pvtestfdliencugtest', 'fd-lien-cug-test', 'fdlienprodtest'],
+    class: 'fdlien',
+    urlKey: ['fdlien', 'pvtestfdliencugtest', 'fd-lien-cug-test', 'etb-fixed-deposit-cc', 'fdlienprodtest'],
     launchScript: {
-      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-e17de29eec01-development.min.js',
+      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
-      loadTime: 3600,
+      loadTime: 1200,
     },
   },
 ];
-const ENV = 'dev'; // take it from common constant to denote
+const ENV = getSubmitBaseUrl()?.includes('dev') ? 'dev' : 'prod';
 
 /**
  * Builds hero block and prepends to main in a new section.

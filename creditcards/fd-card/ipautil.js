@@ -68,7 +68,7 @@ const updateData = (globals, productDetail, panel, index) => {
     joiningFee: productDetail.annualFee || '0',
     renewalFee: productDetail.annualFee || '0',
   };
-
+  // updated panel
   const properties = [
     { element: panel.cardSelection_display, value: product },
     { element: panel.joiningRenewalFeeWrapper.joiningFeeAmt, value: joiningFee },

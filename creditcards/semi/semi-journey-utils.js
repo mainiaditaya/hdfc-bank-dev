@@ -11,7 +11,7 @@ const {
   CURRENT_FORM_CONTEXT: currentFormContext,
 } = CONSTANT;
 
-const BASEURL = 'https://applyonline.hdfcbank.com';
+const BASEURL = CONSTANT.BASE_URL;
 const urlPath = (path) => `${BASEURL}${path}`;
 
 /* Restructures sanitizedFormData adding URL parameters and missing properties for the journey state:CUSTOMER_ONBOARDING_COMPLETE
@@ -69,7 +69,6 @@ const restructFormData = (data, formContextObject, globals) => {
  * Ideally every custom function should be pure function, i.e it should not have any side effect
  * As per current implementation `currentFormContext` is a state outside of the function,
  * so for Flow we have did special handling by storing strigified value in `globals.form.runtime.currentFormContext`
- *
  * @param {scope} globals
  * @returns
  */
@@ -88,6 +87,9 @@ const getCurrentFormContext = (globals) => {
    * @return {PROMISE}
    */
 const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
+  const formContext = getCurrentFormContext(globals);
+  const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
+  const formDataSanitized = restructFormData(sanitizedFormData, formContext, globals);
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : 'onLoad',
@@ -101,7 +103,7 @@ const invokeJourneyDropOff = async (state, mobileNumber, globals) => {
         journeyStateInfo: [
           {
             state,
-            stateInfo: JSON.stringify(santizedFormDataWithContext(globals)),
+            stateInfo: JSON.stringify(formDataSanitized),
             timeinfo: new Date().toISOString(),
           },
         ],
@@ -128,7 +130,7 @@ const invokeJourneyDropOffUpdate = async (state, mobileNumber, leadProfileId, jo
     formContext.LoanReferenceNumber = journeyId?.loanNbr;
   }
   const sanitizedFormData = santizedFormDataWithContext(globals, formContext);
-  const formDataSanitized = (state === 'CUSTOMER_ONBOARDING_COMPLETE' || state === 'CUSTOMER_ONBOARDING_FAILED') ? restructFormData(sanitizedFormData, formContext, globals) : sanitizedFormData;
+  const formDataSanitized = restructFormData(sanitizedFormData, formContext, globals);
   const journeyJSONObj = {
     RequestPayload: {
       userAgent: (typeof window !== 'undefined') ? window.navigator.userAgent : '',
