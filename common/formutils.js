@@ -3,7 +3,7 @@
 
 import * as CONSTANT from './constants.js';
 import * as DOM_API from '../creditcards/domutils/domutils.js';
-import { getJsonWithoutEncrypt } from './makeRestAPI.js';
+import { getJsonResponse, getJsonWithoutEncrypt } from './makeRestAPI.js';
 
 const {
   setDataAttributeOnClosestAncestor,
@@ -235,7 +235,7 @@ const composeNameOption = (fn, mn, ln, cardType, maxlength) => {
     mn && ln ? [initial(mn), ln] : null,
   ].filter(Boolean); // Remove nulls
 
-  /**
+   /**
     * Generates a pattern for edge cases in CCC where no option exceeds the maximum limit.
     * The pattern combines the first name and the initial of the last name, or vice versa.
    */
@@ -243,6 +243,7 @@ const composeNameOption = (fn, mn, ln, cardType, maxlength) => {
     fn && ln ? [fn, initial(ln)] : null,
     fn && ln ? [ln, initial(fn)] : null,
   ].filter(Boolean);
+
 
   const fdExtraPatterns = [
     fn ? [fn] : null,
