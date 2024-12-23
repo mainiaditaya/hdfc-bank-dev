@@ -300,7 +300,7 @@ const bindCustomerDetails = async (globals) => {
 
   const personaldetails = document.querySelector('.field-personaldetails');
   setTimeout(() => {
-    addDisableClass(personaldetails, ['nameOnCardDD', 'emailID', 'employmentType']);
+    addDisableClass(personaldetails, ['nameOnCardDD', 'employmentType']);
   }, 100);
   sendFDAnalytics('selectFd', 'Step 3 - Select FD', {}, 'CUSTOMER_LEAD_QUALIFIED', globals);
 };

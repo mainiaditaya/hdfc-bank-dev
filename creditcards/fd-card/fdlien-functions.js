@@ -337,6 +337,7 @@ const checkModeFd = async (globals) => {
   }
 
   const aadhaarSuccess = aadhaarVisit === 'EKYC_AUTH' && formData?.aadhaar_otp_val_data?.message?.toLowerCase() === 'aadhaar otp validate success';
+  const aadhaarCancelled = aadhaarVisit === 'EKYC_AUTH' && !formData?.aadhaar_otp_val_data?.message;
   const aadhaarFail = aadhaarVisit === 'EKYC_AUTH_FAILED';
   if (aadhaarSuccess) {
     try {
@@ -400,7 +401,7 @@ const checkModeFd = async (globals) => {
       );
     }
   }
-  if (aadhaarFail) {
+  else if (aadhaarFail) {
     const {
       selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3, wrongAttemptPopupWrapper,
     } = selectKYCOptionsPanel;
@@ -417,6 +418,19 @@ const checkModeFd = async (globals) => {
       globals.functions.setProperty(wrongAttemptPopupWrapper.wrongAttemptPopup.wrongAttemptPopupText1, { value: FD_CONSTANT.ERROR_MSG.aadhaarTimeoutTitle });
       globals.functions.setProperty(wrongAttemptPopupWrapper.wrongAttemptPopup.wrongAttemptPopupText2, { value: FD_CONSTANT.ERROR_MSG.aadhaarTimeout });
     }
+    if (!formData?.currentFormContext?.isIntegraFlow) {
+      globals.form.selectKYCOptionsPanel.selectKYCMethodOption1.aadharBiometricVerification._jsonModel.enumNames[0] = 'Aadhaar Biometric KYC at your Doorstep.';
+    }
+  }
+  else if (aadhaarCancelled) {
+    const {
+      selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3,
+    } = selectKYCOptionsPanel;
+    globals.functions.setProperty(selectKYCOptionsPanel, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption1, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption2, { visible: false });
+    globals.functions.setProperty(selectKYCMethodOption3, { visible: true });
+    globals.functions.setProperty(selectKYCMethodOption1.aadharBiometricVerification, { value: '0' });
     if (!formData?.currentFormContext?.isIntegraFlow) {
       globals.form.selectKYCOptionsPanel.selectKYCMethodOption1.aadharBiometricVerification._jsonModel.enumNames[0] = 'Aadhaar Biometric KYC at your Doorstep.';
     }
