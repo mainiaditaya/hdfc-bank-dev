@@ -750,7 +750,7 @@ function selectTenure(globals) {
     globals.functions.setProperty(globals.form.aem_semiWizard.aem_chooseTransactions.aem_txtSelectionPopupWrapper.aem_txtSelectionPopup.aem_txtSelectionConfirmation, { value: MSG });
   } else {
     if (!isNodeEnv) {
-      moveWizardView(domElements.semiWizard, domElements.selectTenure);  
+      moveWizardView(domElements.semiWizard, domElements.selectTenure);
     }
     tenureDisplay(globals);
   }
