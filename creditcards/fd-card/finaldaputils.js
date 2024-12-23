@@ -33,7 +33,7 @@ const createDapRequestObj = (userRedirected, globals) => {
   const aadhaarData = formData.aadhaar_otp_val_data?.result || {};
   const aadhaarMobileMatch = formData?.aadhaar_otp_val_data?.result?.mobileValid === 'y';
   const selectedKyc = CURRENT_FORM_CONTEXT.aadhaarFailed ? CURRENT_FORM_CONTEXT?.selectedKyc : formContextCallbackData?.selectedKyc;
-  let ekycSuccess = (!aadhaarMobileMatch && aadhaarData.ADVRefrenceKey !== undefined && selectedKyc === 'aadhaar')
+  let ekycSuccess = (aadhaarData.ADVRefrenceKey !== undefined && selectedKyc === 'aadhaar')
     ? `${aadhaarData?.ADVRefrenceKey}X${aadhaarData?.RRN}`
     : '';
   let VKYCConsent = fetchFiller4(

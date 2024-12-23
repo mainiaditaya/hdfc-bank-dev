@@ -400,8 +400,7 @@ const checkModeFd = async (globals) => {
         globals,
       );
     }
-  }
-  else if (aadhaarFail) {
+  } else if (aadhaarFail) {
     const {
       selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3, wrongAttemptPopupWrapper,
     } = selectKYCOptionsPanel;
@@ -421,8 +420,7 @@ const checkModeFd = async (globals) => {
     if (!formData?.currentFormContext?.isIntegraFlow) {
       globals.form.selectKYCOptionsPanel.selectKYCMethodOption1.aadharBiometricVerification._jsonModel.enumNames[0] = 'Aadhaar Biometric KYC at your Doorstep.';
     }
-  }
-  else if (aadhaarCancelled) {
+  } else if (aadhaarCancelled) {
     const {
       selectKYCMethodOption1, selectKYCMethodOption2, selectKYCMethodOption3,
     } = selectKYCOptionsPanel;
