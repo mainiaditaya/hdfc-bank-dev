@@ -37,7 +37,7 @@ function isMainProd() {
   return false;
 }
 
-if (isLocalDev() && !isMainProd()) {
+if (isLocalDev()) {
   submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
 }
 
