@@ -73,7 +73,7 @@ if (typeof location !== 'undefined') {
   const params = new URLSearchParams(queryString);
   const isBlueGreenActive = params.get('isBGPrd');
   console.log(isBlueGreenActive);
-  const isReferrerAllowed = GREEN_ENV.some(hostname => GREEN_ENV.includes(hostname));
+  //const isReferrerAllowed = GREEN_ENV.some(hostname => GREEN_ENV.includes(hostname));
   if( isBlueGreenActive){
     setSubmitBaseUrl('https://applyonlinenew.hdfcbank.com');
   }
