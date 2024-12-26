@@ -12,7 +12,7 @@ import {
   loadScript,
 } from './aem.js';
 
-import { getSubmitBaseUrl } from '../blocks/form/constant.js';
+import { getSubmitBaseUrl, setSubmitBaseUrl } from '../blocks/form/constant.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
