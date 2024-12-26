@@ -13,7 +13,7 @@ import {
   pincodeCheck,
 } from '../../common/formutils.js';
 
-import { getJsonResponse, getJsonWithoutEncrypt, displayLoader } from '../../common/makeRestAPI.js';
+import { getJsonWithoutEncrypt, displayLoader } from '../../common/makeRestAPI.js';
 
 import {
   addDisableClass,
