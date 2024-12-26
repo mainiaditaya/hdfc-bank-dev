@@ -68,6 +68,17 @@ function buildHeroBlock(main) {
   }
 }
 
+if (typeof location !== 'undefined') {
+  const queryString = location.search;
+  const params = new URLSearchParams(queryString);
+  const isBlueGreenActive = params.get('isBGPrd');
+  console.log(isBlueGreenActive);
+  const isReferrerAllowed = GREEN_ENV.some(hostname => GREEN_ENV.includes(hostname));
+  if( isBlueGreenActive){
+    setSubmitBaseUrl('https://applyonlinenew.hdfcbank.com');
+  }
+}
+
 /**
  * load fonts.css and set a session storage flag
  */
