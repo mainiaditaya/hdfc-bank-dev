@@ -61,7 +61,7 @@ const FORM_CONSTANT = [
       loadTime: 3600,
     },
   },
-{
+  {
     formPath: ['etb-fixed-deposit-cc', 'pvtestfdliencugtest', 'fd-lien-cug-test', 'fdlienprodtest'],
     class: 'fdlien',
     urlKey: ['fdlien', 'pvtestfdliencugtest', 'fd-lien-cug-test', 'etb-fixed-deposit-cc', 'fdlienprodtest'],
