@@ -75,7 +75,7 @@ if (typeof location !== 'undefined') {
   console.log(isBlueGreenActive);
   //const isReferrerAllowed = GREEN_ENV.some(hostname => GREEN_ENV.includes(hostname));
   if( isBlueGreenActive){
-    setSubmitBaseUrl('https://applyonlinenew.hdfcbank.com');
+    setSubmitBaseUrl('https://publish1apsouth1-b80-28920470.prod.hdfc.adobecqms.net');
   }
 }
 
