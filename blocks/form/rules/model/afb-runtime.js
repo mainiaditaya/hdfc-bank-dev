@@ -3071,8 +3071,7 @@ class FunctionRuntimeImpl {
                         success = valueOf(args[4]);
                         error = valueOf(args[5]);
                     }
-                    request(interpreter.globals, uri, httpVerb, payload, success, error, headers);
-                    return {};
+                    return request(interpreter.globals, uri, httpVerb, payload, success, error, headers);
                 },
                 _signature: []
             },
@@ -3254,7 +3253,11 @@ class Form extends Container {
         this.promises.push(updates);
     }
     async waitForPromises() {
-        await Promise.all(this.promises);
+        let length = 0;
+        while (this.promises.length > length) {
+            length = this.promises.length;
+            await Promise.all(this.promises);
+        }
         this.promises = [];
     }
     _applyDefaultsInModel() {
@@ -4702,7 +4705,7 @@ class DateField extends Field {
         }
         else {
             if (this._jsonModel.editFormat !== 'short' && this._jsonModel.editFormat !== 'date|short') {
-                const parsedDate = parseDate(value, this.locale, this._jsonModel.editFormat) || parseDate(value, this.locale, 'yyyy-MM-dd');
+                const parsedDate = parseDate(value, 'en-GB', this._jsonModel.editFormat) || parseDate(value, 'en-GB', 'yyyy-MM-dd');
                 if (parsedDate instanceof Date) {
                     super.value = formatDate(parsedDate, this.locale, this._dataFormat);
                 }
