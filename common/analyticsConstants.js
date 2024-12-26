@@ -48,7 +48,7 @@ const data = {
   // },
   'start kyc': {
     linkType: 'button',
-    linkName: 'Start KYC',
+    linkName: 'Start VKYC',
     linkPosition: 'Form',
   },
   'submit review': {

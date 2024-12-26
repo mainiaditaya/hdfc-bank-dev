@@ -5,7 +5,7 @@ import { buttonEnableOnCheck } from './fd-dom-functions.js';
 import { IPA_RESPONSE } from './ipautil.js';
 
 const confirmCardState = {
-  selectedCardIndex: -1,
+  selectedCardIndex: 0,
   knowMoreClickedIndex: -1,
 };
 
