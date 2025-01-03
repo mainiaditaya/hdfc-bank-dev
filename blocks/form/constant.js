@@ -37,8 +37,8 @@ function isMainProd() {
   return false;
 }
 
-if (isLocalDev() && !isMainProd()) {
-  submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
+if (isLocalDev()) {
+  submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
 }
 
 export function setSubmitBaseUrl(url) {

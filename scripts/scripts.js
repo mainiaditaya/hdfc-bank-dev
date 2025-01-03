@@ -12,7 +12,7 @@ import {
   loadScript,
 } from './aem.js';
 
-import { getSubmitBaseUrl } from '../blocks/form/constant.js';
+import { getSubmitBaseUrl, setSubmitBaseUrl } from '../blocks/form/constant.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -75,6 +75,17 @@ function buildHeroBlock(main) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
+  }
+}
+
+if (typeof location !== 'undefined') {
+  const queryString = location.search;
+  const params = new URLSearchParams(queryString);
+  const isBlueGreenActive = params.get('isBGPrd');
+  console.log(isBlueGreenActive);
+  //const isReferrerAllowed = GREEN_ENV.some(hostname => GREEN_ENV.includes(hostname));
+  if( isBlueGreenActive){
+    setSubmitBaseUrl('https://publish1apsouth1-b80-28920470.prod.hdfc.adobecqms.net');
   }
 }
 
