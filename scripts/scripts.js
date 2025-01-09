@@ -12,7 +12,7 @@ import {
   loadScript,
 } from './aem.js';
 
-import { getSubmitBaseUrl } from '../blocks/form/constant.js';
+import { getSubmitBaseUrl, setSubmitBaseUrl } from '../blocks/form/constant.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -36,17 +36,6 @@ const FORM_CONSTANT = [
     launchScript: {
       dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-230317469f6b-development.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
-      loadTime: 1200,
-    },
-  },
-  {
-    // FD
-    formPath: ['etb-fixed-deposit-cc', 'pvtestfdliencugtest', 'fd-lien-cug-test'],
-    class: 'fdlien',
-    urlKey: ['fdlien', 'pvtestfdliencugtest', 'fd-lien-cug-test', 'etb-fixed-deposit-cc'],
-    launchScript: {
-      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
-      prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-a47f215bcdb9-development.min.js',
       loadTime: 1200,
     },
   },
@@ -86,6 +75,18 @@ function buildHeroBlock(main) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
+  }
+}
+
+if ((typeof window !== 'undefined') && (typeof window.location !== 'undefined')) {
+  const queryString = window.location.search;
+  const params = new URLSearchParams(queryString);
+  const isBlueGreenActive = params.get('isBGPrd');
+  // eslint-disable-next-line no-console
+  console.log(isBlueGreenActive);
+  // const isReferrerAllowed = GREEN_ENV.some(hostname => GREEN_ENV.includes(hostname));
+  if (isBlueGreenActive) {
+    setSubmitBaseUrl('https://publish1apsouth1-b80-28920470.prod.hdfc.adobecqms.net');
   }
 }
 
