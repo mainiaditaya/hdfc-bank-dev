@@ -365,7 +365,7 @@ const getMappedTxnPanelData = (transactions, qualifierName) => {
 
 const importTransactions = async (txnList, txnPannel, globals) => {
   const transactions = txnList || [];
-  const data = getMappedTxnPanelData(transactions, txnPannel.$qualifiedName);
+  const data = getMappedTxnPanelData(transactions);
   globals.functions.importData(data, txnPannel.$qualifiedName);
 };
 
@@ -386,47 +386,6 @@ const setTxnPanelData = async (allTxn, btxn, uBtxn, billedTxnPanel, unBilledTxnP
     const unbilledData = allTxn?.slice(btxn, allTxn?.length)?.map((txn) => ({ ...txn, type: 'UNBILLED' })) || [];
     importTransactions(billedData, billedTxnPanel, globals);
     importTransactions(unbilledData, unBilledTxnPanel, globals);
-    const processTransactions = allTxn.map((_txn, i) => {
-      const isBilled = i < btxn;
-      let panel = billedTxnPanel;
-      if (btxn !== undefined && unBilledTxnPanel !== undefined) {
-        // Case where we have both billed and unbilled transactions
-        panel = isBilled ? billedTxnPanel : unBilledTxnPanel;
-      }
-      const delay = DELAY + (DELTA_DELAY * i);
-      const panelIndex = isBilled ? i : i - btxn;
-      const processTxnInstances = async () => {
-        if (isBilled && (btxn - 1 >= billedTxnPanel.length)) {
-          /* condition to skip the default txn list data */
-          globals.functions.dispatchEvent(panel, 'addItem');
-        }
-        if (!isBilled && (uBtxn - 1) >= unBilledTxnPanel.length) {
-          /* condition to skip the default txn list data */
-          globals.functions.dispatchEvent(panel, 'addItem');
-        }
-        const txnData = {
-          ..._txn,
-          type: isBilled ? 'BILLED' : 'UNBILLED',
-        };
-        await setData(globals, panel, txnData, panelIndex);
-      };
-      const idleCallFallBack = new Promise((resolve) => {
-        setTimeout(() => {
-          processTxnInstances();
-          resolve();
-        }, delay);
-      });
-      const reqIdleCall = new Promise((resolve) => {
-        requestIdleCallback(() => {
-          processTxnInstances();
-          resolve();
-        }, { timeout: delay });
-      });
-      const processCallBack = ('requestIdleCallback' in window) ? reqIdleCall : idleCallFallBack;
-      return Promise.resolve(processCallBack);
-    });
-    // Wait for all tasks to complete
-    await Promise.allSettled(processTransactions);
   } else {
     // special handling for whatsapp flow
     addTransactions(allTxn, globals);
