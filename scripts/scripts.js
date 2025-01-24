@@ -43,7 +43,7 @@ if ((typeof window !== 'undefined') && (typeof window.location !== 'undefined'))
   console.log(isBlueGreenActive);
   // const isReferrerAllowed = GREEN_ENV.some(hostname => GREEN_ENV.includes(hostname));
   if (isBlueGreenActive) {
-    setSubmitBaseUrl('https://publish1apsouth1-b80-28920470.prod.hdfc.adobecqms.net');
+    setSubmitBaseUrl('https://publish1apsouth1-b80-28947060.prod.hdfc.adobecqms.net');
   }
 }
 
@@ -149,6 +149,7 @@ function loadDelayed() {
   FORM_CONSTANT.some((form) => {
     if (form.urlKey.some((el) => pathName.includes(el))) {
       window.setTimeout(() => loadScript(form.launchScript[ENV]), form.launchScript.loadTime);
+      loadCSS(`${window.hlx.codeBasePath}${'/creditcards/semi/styles/semi-styles.css'}`);
       return true;
     }
     return false;

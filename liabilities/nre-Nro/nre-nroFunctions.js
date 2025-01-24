@@ -2,6 +2,7 @@
 import {
   createJourneyId,
   nreNroInvokeJourneyDropOffByParam,
+  invokeJourneyDropOff,
   invokeJourneyDropOffUpdate,
   postIdCommRedirect,
 } from './nre-nro-journey-utils.js';
@@ -23,6 +24,7 @@ import {
   hideLoaderGif,
   fetchJsonResponse,
   getJsonResponse,
+  getJsonWithoutEncrypt,
 } from '../../common/makeRestAPI.js';
 import * as NRE_CONSTANT from './constant.js';
 import {
@@ -183,7 +185,7 @@ function isNullOrEmpty(value) {
 
 const getCountryName = (countryCodeIst) => new Promise((resolve) => {
   const finalURL = `/content/hdfc_commonforms/api/mdm.COMMON.COUNTRYCODE_MASTER.COUNTRYCODE-${countryCodeIst}.json`;
-  fetchJsonResponse(urlPath(finalURL), null, 'GET', true)
+  getJsonWithoutEncrypt(urlPath(finalURL), null, 'GET', true)
     .then((response) => {
       const country = response[0];
       const description = country.DESCRIPTION;
@@ -447,7 +449,7 @@ const getOtpNRE = async (mobileNumber, pan, dob, globals) => {
 
 const getCountryCodes = (dropdown) => {
   const finalURL = '/content/hdfc_commonforms/api/mdm.ETB.NRI_ISD_MASTER.COUNTRYNAME.json?pageSize=300';
-  fetchJsonResponse(urlPath(finalURL), null, 'GET', true).then((response) => {
+  getJsonWithoutEncrypt(urlPath(finalURL), null, 'GET', true).then((response) => {
     dropdown?.addEventListener('change', () => {
       if (prevSelectedIndex !== -1) {
         dropdown.remove(prevSelectedIndex);
@@ -504,6 +506,20 @@ const getCountryCodes = (dropdown) => {
     console.error('Dropdown Promise rejected:', error); // Handle any error (failure case)
   });
 };
+
+/**
+ * Validate lgCode.
+ * @param {Object} globals
+*/
+function validateLGCode(lgCode, globals){
+  const specialCharRegex = /[^a-zA-Z0-9\s]/;
+  const inputValue = lgCode.$value;
+   // Check if the last character is a special character
+   if (specialCharRegex.test(inputValue.slice(-1))) {
+    // Remove the last character if it's a special character
+    globals.functions.setProperty(lgCode, { value : inputValue.slice(0, -1)});
+  }
+}
 
 /**
  * Starts the Nre_Nro OTPtimer for resending OTP.
@@ -585,28 +601,39 @@ function otpValidationNRE(mobileNumber, pan, dob, otpNumber, globals) {
 function setupBankUseSection(mainBankUsePanel, globals) {
   /* eslint-disable prefer-destructuring */
   const urlParams = new URLSearchParams(window.location.search);
+  let caseInsensitiveUrlParams = new URLSearchParams();
+  for (const [name, value] of urlParams) {
+    caseInsensitiveUrlParams.append(name.toUpperCase(), value);
+  }
   const utmParams = {};
   const lgCode = mainBankUsePanel.lgCode;
   const lcCode = mainBankUsePanel.lcCode;
   const toggle = mainBankUsePanel.bankUseToggle;
   const resetAllBtn = mainBankUsePanel.resetAllBtn;
-  // globals.functions.setProperty(toggle, { checked: false });
-  if (urlParams.size > 0) {
-    ['lgCode', 'lcCode'].forEach((param) => {
-      const value = urlParams.get(param);
+  const specialCharRegex = /[^a-zA-Z0-9\s]/;
+
+  if (caseInsensitiveUrlParams.size > 0) {
+    ['LGCODE', 'LCCODE'].forEach((param) => {
+      const value = caseInsensitiveUrlParams.get(param);
       if (value) {
-        utmParams[param] = value;
+        utmParams[param] = value.replace(specialCharRegex, '');
       }
     });
 
-    globals.functions.setProperty(lgCode, { value: utmParams.lgCode });
-    globals.functions.setProperty(lcCode, { value: utmParams.lcCode });
+    if(Object.keys(utmParams).length > 0){
+      globals.functions.setProperty(toggle, { checked: 'on' });
+      globals.functions.setProperty(lgCode, { enabled: false });
+      globals.functions.setProperty(lgCode, { value: utmParams.LGCODE });
+      globals.functions.setProperty(toggle, { enabled: false });
+    } else{
+      globals.functions.setProperty(toggle, { enabled: true });
+    }
   } else {
-    globals.functions.setProperty(lcCode, { value: 'NRI INSTASTP' });
+    globals.functions.setProperty(toggle, { enabled: true });
   }
   globals.functions.setProperty(resetAllBtn, { enabled: false });
-  globals.functions.setProperty(toggle, { enabled: true });
   globals.functions.setProperty(lcCode, { enabled: false });
+  globals.functions.setProperty(lcCode, { value: 'NRI INSTASTP' });
 }
 
 async function showFinancialDetails(financialDetails, response, occupation, globals) {
@@ -737,9 +764,15 @@ function prefillCustomerDetail(response, globals) {
   if (!response.refCustTelex) globals.functions.setProperty(personalDetails.telephoneNumber, { visible: false });
   else setFormValue(personalDetails.telephoneNumber, maskNumber(response.refCustTelex, 6));
 
-  setFormValue(personalDetails.communicationAddress, `${response.txtCustadrAdd1.trim()}, ${response.txtCustadrAdd2.trim()}, ${response.txtCustadrAdd3.trim()}, ${response.namCustadrCity}, ${response.namCustadrState}, ${response.namCustadrCntry}, ${response.txtCustadrZip}`?.toUpperCase());
+  const addressLine1 = response.txtCustadrAdd1?.trim() ?? '';
+  const formattedAddress1 = addressLine1 ? `${addressLine1}, ` : '';
+  const addressLine2 = response.txtCustadrAdd2?.trim() ?? '';
+  const formattedAddress2 = addressLine2 ? `${addressLine2}, ` : '';
+  const addressLine3 = response.txtCustadrAdd3?.trim() ?? '';
+  const formattedAddress3 = addressLine3 ? `${addressLine3}, ` : '';
+  setFormValue(personalDetails.communicationAddress, `${formattedAddress1}${formattedAddress2}${formattedAddress3} ${response.namCustadrCity}, ${response.namCustadrState}, ${response.namCustadrCntry}, ${response.txtCustadrZip}`?.toUpperCase());
 
-  setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)}, ${customerDataMasking('AddressLine', response.txtPermadrAdd3)},
+  setFormValue(personalDetails.permanentAddress, `${customerDataMasking('AddressLine', response.txtPermadrAdd1)} ${customerDataMasking('AddressLine', response.txtPermadrAdd2)} ${customerDataMasking('AddressLine', response.txtPermadrAdd3)},
 ${customerDataMasking('CityState', response.namPermadrCity)}, ${customerDataMasking('CityState', response.namPermadrState)}, ${customerDataMasking('Country', response.namPermadrCntry)}, ${response.txtPermadrZip}`?.toUpperCase());
 
   getCountryName(response.txtCustNATNLTY)
@@ -813,6 +846,7 @@ function multiCustomerId(response, selectAccount, singleAccountCust, multipleAcc
   // globals.functions.setProperty(globals.form.wizardPanel.wizardFragment.wizardNreNro.selectAccount.multipleAccounts.multipleAccountRepeatable[0]?.AccountNumber, { value: accountDetailsList[0].accountNumber });
   if (responseLength > 1) {
     setTimeout(() => {
+      invokeJourneyDropOff('CUSTOMER_ELIGIBILITY_SUCCESS', currentFormContext?.mobileNumber ?? '', globals);
       sendAnalytics('page load_Step 3 - Select Account', {}, 'CUSTOMER_ELIGIBILITY_SUCCESS', globals);
     }, 1000);
     globals.functions.setProperty(singleAccountCust, { visible: false });
@@ -843,6 +877,7 @@ function multiCustomerId(response, selectAccount, singleAccountCust, multipleAcc
     });
   } else {
     setTimeout(() => {
+      invokeJourneyDropOff('CUSTOMER_ELIGIBILITY_SUCCESS', currentFormContext?.mobileNumber ?? '', globals);
       sendAnalytics('page load_Step 3 - Account Type', {}, 'CUSTOMER_ELIGIBILITY_SUCCESS', globals);
     }, 1000);
     globals.functions.setProperty(globals.form.wizardPanel.MultiAccoCountinue, { visible: false });
@@ -1237,11 +1272,13 @@ function nreNroPageRedirected(globals) {
   //   sendAnalytics('idcom redirection check', { validationMethod: currentFormContext?.authModeParam, status: currentFormContext?.idComSuccess }, 'ON_IDCOM_REDIRECTION', globals);
   // }
   if (currentFormContext.idComRedirect && currentFormContext.idComSuccess === 'TRUE') {
+    globals.functions.setProperty(globals.form.bankLoginWrapper, { visible: false });
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'true' });
     globals.functions.setProperty(globals.form.runtime.journeyId, { value: currentFormContext.journeyId });
     // displayLoader(); // TODO : Uncomment : Error popping up
     // await nreNroFetchRes(globals);
   } else if (currentFormContext.idComSuccess === 'FALSE') {
+    globals.functions.setProperty(globals.form.bankLoginWrapper, { visible: false });
     globals.functions.setProperty(globals.form.parentLandingPagePanel.landingPanel.nreNroPageRedirectedResp, { value: 'false' });
     globals.functions.setProperty(globals.form.otppanelwrapper, { visible: false });
     globals.functions.setProperty(globals.form.parentLandingPagePanel, { visible: false });
@@ -1753,7 +1790,7 @@ function selectVarient(nroAccountTypePanel, nreAccountTypePanel, globals) {
 
 function setAMBValue() {
   const finalURL = `/content/hdfc_commonforms/api/mdm.INSTA.NRI_AMB_MASTER.BRANCH_CODE-${currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode}.json`;
-  getJsonResponse(urlPath(finalURL), null, 'GET')
+  getJsonWithoutEncrypt(urlPath(finalURL), null, 'GET')
     .then((response) => {
       const ambValue = response[0].AMB_AQB;
       currentFormContext.ambValue = ambValue;
@@ -1767,7 +1804,7 @@ function setTerritoryValue() {
   const branchCode = currentFormContext.fatca_response.customerAccountDetailsDTO[currentFormContext.selectedCheckedValue].branchCode;
   const finalURL = `/content/hdfc_commonforms/api/mdm.INSTA.BRANCH_MASTER.CODE-${branchCode}.json`;
 
-  getJsonResponse(urlPath(finalURL), null, 'GET')
+  getJsonWithoutEncrypt(urlPath(finalURL), null, 'GET')
     .then((response) => {
       if (!response || response.length === 0) {
         console.warn('No response data received.');
@@ -1791,28 +1828,29 @@ function setTerritoryValue() {
 }
 
 async function getEmployerNameFromMDM(employerCode){
-    const finalURL = `/content/hdfc_commonforms/api/mdm.INSTA.COMPANY_CODE.COMPANYCODE-${employerCode}.json`;
-    try{
-      const response = await getJsonResponse(urlPath(finalURL), null, 'GET');
-        if (!response || response.length === 0) {
-          console.warn('No response data received.');
-          return '';
-        }
-  
-        const employerName = response.length === 1
-        ? response[0].COMPANYNAME
-        : response.find((item) => item.COMPANYCODE === employerCode.toString()).COMPANYNAME;
-  
-        if (employerName) {
-          return employerName
-        } else {
-          console.warn('No matching employer name found for the employer code.');
-          return '';
-        }
-      } catch(error){
-        console.error('Error while getting employer name :', error);
-        return ''
+  const finalURL = `/content/hdfc_commonforms/api/mdm.INSTA.COMPANY_CODE.COMPANYCODE-${employerCode}.json`;
+  try{
+    if(isNullOrEmpty(employerCode)) return '';
+    const response = await getJsonWithoutEncrypt(urlPath(finalURL), null, 'GET');
+      if (!response || response.length === 0) {
+        console.warn('No response data received.');
+        return '';
       }
+
+      const employerName = response.length === 1
+      ? response[0].COMPANYNAME
+      : response.find((item) => item.COMPANYCODE === employerCode.toString()).COMPANYNAME;
+
+      if (employerName) {
+        return employerName
+      } else {
+        console.warn('No matching employer name found for the employer code.');
+        return '';
+      }
+    } catch(error){
+      console.error('Error while getting employer name :', error);
+      return ''
+    }
 }
 
 export {
@@ -1856,4 +1894,5 @@ export {
   selectVarient,
   setAMBValue,
   setTerritoryValue,
+  validateLGCode,
 };

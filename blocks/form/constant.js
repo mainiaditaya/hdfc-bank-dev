@@ -28,6 +28,7 @@ function isLocalDev() {
   return false;
 }
 
+// eslint-disable-next-line no-unused-vars
 function isMainProd() {
   // eslint-disable-next-line no-restricted-globals
   if (typeof location !== 'undefined') {

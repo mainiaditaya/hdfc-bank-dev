@@ -1015,6 +1015,17 @@ const firstLastNameValidation = (fn, ln, globals) => {
     globals.functions.markFieldAsInvalid(personalDetails.firstName.$qualifiedName, '', { useQualifiedName: true });
     globals.functions.markFieldAsInvalid(personalDetails.lastName.$qualifiedName, '', { useQualifiedName: true });
   }
+  const combinedLength = fn.length + ln.length;
+  if (combinedLength < 4) {
+    // return 'The combined length of first and last name must be at least 4 characters.';
+    globals.functions.markFieldAsInvalid(personalDetails.firstName.$qualifiedName, invalidMsg.fName, { useQualifiedName: true });
+    globals.functions.markFieldAsInvalid(personalDetails.lastName.$qualifiedName, invalidMsg.lName, { useQualifiedName: true });
+  }
+  // Check if either first name or last name is a single character
+  if ((fn.length === 1 || ln.length === 1) && (combinedLength >= 4)) {
+    globals.functions.markFieldAsInvalid(personalDetails.firstName.$qualifiedName, '', { useQualifiedName: true });
+    globals.functions.markFieldAsInvalid(personalDetails.lastName.$qualifiedName, '', { useQualifiedName: true });
+  }
 };
 
 /**
