@@ -1,28 +1,38 @@
 import semiFormContant from '../creditcards/semi/semi-form-constant.js';
 
+/**
+ * Similar to semiFormConstant, all form constants should be stored in their specific form folders.
+ * However, the drawback is that constants from different form folders are being loaded unnecessarily.
+ * A better solution needs to be implemented to load only the relevant constants,
+ * possibly through initAdaptiveFormDef, form ID, or another identifier.
+ */
+
+const ccFormConstant = {
+  formPath: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
+  class: '',
+  urlKey: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
+  launchScript: {
+    dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-230317469f6b-development.min.js',
+    prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
+    loadTime: 1200,
+  },
+  functionsExportPath: '../../../creditcards/corporate-creditcard/cc-functions.js',
+  functionsFormPaths: [
+    '/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc',
+    '/content/forms/af/hdfc_haf/digital/corporate-credit-cards-application-form',
+    '/content/forms/af/hdfc_haf/digital/corporate-credit-cards-application-cug',
+  ],
+};
+
 const otherForms = {
-  '/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', // cc
   '/content/forms/af/hdfc_haf/digital/etb-fixed-deposit-cc': '../../../creditcards/fd-card/fd-functions.js', // fd
-  '/content/forms/af/hdfc_haf/digital/corporate-credit-cards-application-form': '../../../creditcards/corporate-creditcard/cc-functions.js',
   '/content/forms/af/hdfc_haf/digital/pvtestfdliencugtest': '../../../creditcards/fd-card/fd-functions.js', // fd
   '/content/forms/af/hdfc_haf/digital/fd-lien-cug': '../../../creditcards/fd-card/fd-functions.js', // fd
-  '/content/forms/af/hdfc_haf/digital/corporate-credit-cards-application-cug': '../../../creditcards/corporate-creditcard/cc-functions.js', // ccc cug
   '/content/forms/af/hdfc_haf/digital/fdlienprodtest': '../../../creditcards/fd-card/fd-functions.js', // fd form
   '/content/forms/af/hdfc_haf/digital/account-opening-nre-nro': '../../../liabilities/nre-Nro/nre-nro.js',
 };
-
 const otherFormConst = [
-  {
-    // CC
-    formPath: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
-    class: '',
-    urlKey: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
-    launchScript: {
-      dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-230317469f6b-development.min.js',
-      prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
-      loadTime: 1200,
-    },
-  },
+  ccFormConstant,
   {
     // NRE NRO
     formPath: ['nre-nro', 'account-opening-nre-nro'],
@@ -51,11 +61,13 @@ const mapFormPath = (paths, rootPath) => paths?.reduce((acc, path) => {
   return acc;
 }, {});
 
-const semiFormPath = mapFormPath(semiFormContant.functionsFormPaths, semiFormContant.functionsExportPath);
+const semiFormPath = mapFormPath(semiFormContant?.functionsFormPaths, semiFormContant?.functionsExportPath);
+const ccFormPath = mapFormPath(ccFormConstant?.functionsFormPaths, ccFormConstant?.functionsExportPath);
 
 const formIdPathMapping = {
   ...otherForms,
   ...semiFormPath,
+  ...ccFormPath,
 };
 
 const FORM_CONSTANT = [
