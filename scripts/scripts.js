@@ -41,9 +41,9 @@ const FORM_CONSTANT = [
   },
   {
     // NRE NRO
-    formPath: ['nre-nro', 'account-opening-nre-nro'],
+    formPath: ['nre-nro', 'account-opening-nre-nro', 'nriaddonaccounts'],
     class: 'nre',
-    urlKey: ['nre-nro', 'account-opening-nre-nro'],
+    urlKey: ['nre-nro', 'account-opening-nre-nro', 'nriaddonaccounts'],
     launchScript: {
       dev: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-e17de29eec01-development.min.js',
       prod: 'https://assets.adobedtm.com/80673311e435/029b16140ccd/launch-39d52f236cd6.min.js',
@@ -86,7 +86,7 @@ if ((typeof window !== 'undefined') && (typeof window.location !== 'undefined'))
   console.log(isBlueGreenActive);
   // const isReferrerAllowed = GREEN_ENV.some(hostname => GREEN_ENV.includes(hostname));
   if (isBlueGreenActive) {
-    setSubmitBaseUrl('https://publish1apsouth1-b80-28920470.prod.hdfc.adobecqms.net');
+    setSubmitBaseUrl('https://publish1apsouth1-b80-28947060.prod.hdfc.adobecqms.net');
   }
 }
 
