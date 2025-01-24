@@ -1,7 +1,17 @@
-import semiFormContant from '../creditcards/semi/form-constant.js';
+import semiFormContant from '../creditcards/semi/semi-form-constant.js';
 
-const FORM_CONSTANT = [
-  semiFormContant,
+const otherForms = {
+  '/content/forms/af/hdfc_haf/cards/corporatecreditcard/uat/hdfc': '../../../creditcards/corporate-creditcard/cc-functions.js', // cc
+  '/content/forms/af/hdfc_haf/digital/etb-fixed-deposit-cc': '../../../creditcards/fd-card/fd-functions.js', // fd
+  '/content/forms/af/hdfc_haf/digital/corporate-credit-cards-application-form': '../../../creditcards/corporate-creditcard/cc-functions.js',
+  '/content/forms/af/hdfc_haf/digital/pvtestfdliencugtest': '../../../creditcards/fd-card/fd-functions.js', // fd
+  '/content/forms/af/hdfc_haf/digital/fd-lien-cug': '../../../creditcards/fd-card/fd-functions.js', // fd
+  '/content/forms/af/hdfc_haf/digital/corporate-credit-cards-application-cug': '../../../creditcards/corporate-creditcard/cc-functions.js', // ccc cug
+  '/content/forms/af/hdfc_haf/digital/fdlienprodtest': '../../../creditcards/fd-card/fd-functions.js', // fd form
+  '/content/forms/af/hdfc_haf/digital/account-opening-nre-nro': '../../../liabilities/nre-Nro/nre-nro.js',
+};
+
+const otherFormConst = [
   {
     // CC
     formPath: ['corporate-credit-card', 'corporate_credit_cards', 'corporate credit cards', 'corporatecreditcard'],
@@ -36,4 +46,24 @@ const FORM_CONSTANT = [
   },
 ];
 
-export default FORM_CONSTANT;
+const mapFormPath = (paths, rootPath) => paths?.reduce((acc, path) => {
+  acc[path] = rootPath;
+  return acc;
+}, {});
+
+const semiFormPath = mapFormPath(semiFormContant.functionsFormPaths, semiFormContant.functionsExportPath);
+
+const formIdPathMapping = {
+  ...otherForms,
+  ...semiFormPath,
+};
+
+const FORM_CONSTANT = [
+  semiFormContant,
+  ...otherFormConst,
+];
+
+export {
+  formIdPathMapping,
+  FORM_CONSTANT,
+};

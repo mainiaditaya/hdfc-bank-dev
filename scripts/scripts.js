@@ -14,7 +14,7 @@ import {
 
 import { getSubmitBaseUrl, setSubmitBaseUrl } from '../blocks/form/constant.js';
 
-import FORM_CONSTANT from './form-constant.js';
+import { FORM_CONSTANT } from './form-constant.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -109,6 +109,9 @@ async function loadEager(doc) {
     FORM_CONSTANT.some((form) => {
       if (form.formPath.some((el) => pathName.includes(el))) {
         document.body.classList.add(form.class);
+        if (form?.stylePath) {
+          loadCSS(`${window.hlx.codeBasePath}${form?.stylePath}`);
+        }
         return true;
       }
       return false;
@@ -148,8 +151,7 @@ function loadDelayed() {
   const pathName = window.location.pathname;
   FORM_CONSTANT.some((form) => {
     if (form.urlKey.some((el) => pathName.includes(el))) {
-      window.setTimeout(() => loadScript(form.launchScript[ENV]), form.launchScript.loadTime);
-      loadCSS(`${window.hlx.codeBasePath}${'/creditcards/semi/styles/semi-styles.css'}`);
+      window.setTimeout(() => form?.launchScript?.[ENV] && loadScript(form?.launchScript?.[ENV]), form.launchScript.loadTime);
       return true;
     }
     return false;
