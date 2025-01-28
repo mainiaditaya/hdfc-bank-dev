@@ -5,7 +5,7 @@ import { clearString, formUtil } from '../../common/formutils.js';
 
 const { SEMI_ENDPOINTS: semiEndpoints } = SEMI_CONSTANT;
 
-/* Utp-Params */
+/* Utp-Params test korbe */
 const UTM_PARAMS = {
   channel: null, // CHANNEL
   lgcode: null, // LGCODE
