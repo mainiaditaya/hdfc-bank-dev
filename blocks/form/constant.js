@@ -28,6 +28,7 @@ function isLocalDev() {
   return false;
 }
 
+// eslint-disable-next-line no-unused-vars
 function isMainProd() {
   // eslint-disable-next-line no-restricted-globals
   if (typeof location !== 'undefined') {
@@ -38,7 +39,7 @@ function isMainProd() {
 }
 
 if (isLocalDev()) {
-  submitBaseUrl = 'https://hdfc-dev-04.adobecqms.net';
+  submitBaseUrl = 'https://applyonlinedev.hdfcbank.com';
 }
 
 export function setSubmitBaseUrl(url) {

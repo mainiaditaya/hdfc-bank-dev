@@ -67,7 +67,7 @@ body.semi-form {
     }
 
     .hdfc-accordian-legend.field-expand-btn button {
-        background-image: url('../icons/Arrow-Collapse.svg') !important;
+        background-image: url('../assets/images/Arrow-Collapse.svg') !important;
     }
 
     .hdfc-accordian-semi .accordion-collapse { display: none; }
@@ -111,7 +111,7 @@ body.semi-form {
             .wizard-menu-item:not(:last-child) { width: 30%; }
             .wizard-menu-item:last-child { width: 10%; }
 
-            .wizard-menu-item:last-child::before { content: url('../icons/handImageSmall.png'); }
+            .wizard-menu-item:last-child::before { content: url('../assets/images/handImageSmall.png'); }
 
             .wizard-menu-item::before {
                 display: block;
@@ -154,7 +154,7 @@ body.semi-form {
             .wizard-completed-item {
                 &::before {
                     content: '';
-                    background: url('../icons/tick-completed-step.svg') center center / 1.5rem 0.8rem no-repeat var(--form-wizard-number-color);
+                    background: url('../assets/images/tick-completed-step.svg') center center / 1.5rem 0.8rem no-repeat var(--form-wizard-number-color);
                 }
 
                 &::after { background-color: var(--form-wizard-number-color) !important; }
@@ -524,7 +524,7 @@ body.semi-form {
             }
     
             .field-aem-totalselectedtxt::before {
-                content: url('../icons/info-icon.svg');
+                content: url('../assets/images/info-icon.svg');
                 align-self: center;
                 position: absolute;
                 bottom: -3px;
