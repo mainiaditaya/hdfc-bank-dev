@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef test korbe*/
 import {
   data,
   ANALYTICS_CLICK_OBJECT,
